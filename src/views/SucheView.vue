@@ -167,7 +167,7 @@ export default {
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer; 
     width: 130px;
-    height: 35px;
+    height: 37px;
     border-radius: 45px;
     text-align: center;
 }
@@ -189,7 +189,7 @@ export default {
     justify-content: left;
     gap: 10px;
     margin-top: 100px;
-    margin-left: 30px;
+    margin-left: 30px
 }
 
 .bookmark-arrow-div{
