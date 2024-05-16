@@ -31,7 +31,7 @@
                 <option value="8">Meine Freunde</option>
                 <option value="9">Meine Locations</option>
             </select>
-        </div>
+    </div>
     
         <div id="searchbar-and-icons">
             <div class="filter-container">
@@ -46,7 +46,8 @@
             </div>
         </div>
     </div>
-    
+
+  <div class="events-outside-div">
     <div id="bookmark-arrow">
         <div class="bookmark-arrow-div">
             <img alt="Bookmark White" id="bookmark-white" src="../assets/bookmark-white.jpg">
@@ -66,16 +67,39 @@
         </div>
         <div class="bookmark-arrow-div">
             <img alt="Normal Arrow" id="normal-arrow" src="../assets/normal-arrow.jpg">
-            </div>
+        </div>
     </div>
+    <div class="events">
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />
+      <EventCardComponent />          
+    </div>
+  </div>
 </template>
 
 <script>
 import LoginComponent from '@/components/LoginComponent';
+import EventCardComponent from '@/components/EventCardComponent';
 
 export default {
   components: {
-    LoginComponent
+    LoginComponent,
+    EventCardComponent
   },
   data() {
     return {
@@ -154,13 +178,33 @@ export default {
   
 
 <style scoped>
-/* Estilos existentes */
+
+
+
 #header {
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
   justify-content: space-between;
   margin-top: 30px;
+}
+
+.events-outside-div{
+  display:flex;
+  flex-direction: column;
+  margin-top: 40px;
+  display:flex;
+  background-color: #e3e2e2;
+  border: 0px solid #bebdbd;
+  min-height: 300px;
+}
+
+.events{
+  display:flex;
+  flex:5;
+  border-radius:10px; 
+  flex-wrap: wrap;
+  justify-content:flex-start;
 }
 
 .filter-container {
@@ -444,11 +488,9 @@ export default {
 #bookmark-arrow {
   display: grid;
   grid-template-columns: auto auto auto;
-  align-items: center;
   justify-content: left;
   gap: 10px;
-  margin-top: 100px;
-  margin-left: 30px;
+  background-color: white;
 }
 
 .bookmark-arrow-div {
@@ -462,6 +504,7 @@ export default {
   grid-template-columns: auto;
   align-items: center;
   justify-content: center;
+  flex:1;
 }
 
 #bookmark-white {
