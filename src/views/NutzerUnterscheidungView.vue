@@ -1,0 +1,58 @@
+<template>
+    <div class ="image">
+      <LoginComponent />
+    </div>
+
+    <div>
+      <button class="buttonPerson">Privatperson</button>
+    </div>
+
+    <div>
+      <button class="buttonDienst">Dienstleister</button>
+    </div>
+
+    <div>
+      <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.
+      </p>
+    </div>
+
+</template>
+
+<script>
+import LoginComponent from '@/components/LoginComponent'; 
+
+export default {
+  name: 'LoginPage', 
+  components: {
+    LoginComponent 
+  }
+}
+</script>
+
+<style scoped>
+
+  .image{
+    margin-top: -100px;
+    margin-bottom: 150px;
+  }
+
+  .buttonPerson{
+
+    width: 240px;
+    height: 30px;
+    margin-bottom: 40px;
+    border-radius: 20px; 
+    border: 1px solid #0a0a0a; 
+    cursor: pointer; 
+  }
+
+  .buttonDienst{
+    width: 240px;
+    height: 30px;
+    margin-bottom: 200px;
+    border-radius: 20px;
+    border: 1px solid #0a0a0a; 
+    cursor: pointer; 
+  }
+
+</style>
