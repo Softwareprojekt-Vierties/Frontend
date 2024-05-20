@@ -55,7 +55,7 @@ export default {
       .then(response => {
         console.log('Login erfolgreich:', response.data);
         localStorage.setItem('token', response.data.token);
-        this.$router.push('/homepage');
+        this.$router.push('/search');
       })
       .catch(error => {
         console.error('Fehler beim Login:', error);
