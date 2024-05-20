@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios'; 
 import LoginComponent from '@/components/LoginComponent'; 
 
 export default {
@@ -47,7 +48,18 @@ export default {
     },
 
     login() {
-      
+      axios.post('/login', {
+        username: this.benutzername,
+        password: this.password
+      })
+      .then(response => {
+        console.log('Login erfolgreich:', response.data);
+        localStorage.setItem('token', response.data.token);
+        this.$router.push('/homepage');
+      })
+      .catch(error => {
+        console.error('Fehler beim Login:', error);
+      });
     }
   },
 };
