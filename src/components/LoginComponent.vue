@@ -21,7 +21,6 @@ export default {
   align-items: center; /* Zentriert die Elemente vertikal */
   justify-content: center; /* Zentriert die Elemente horizontal */
   gap: 20px; /* Fügt einen Abstand zwischen den Spalten hinzu */
-  margin-top: 200px;
 }
 
 .logo {
