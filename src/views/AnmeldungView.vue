@@ -4,24 +4,24 @@
   </div>
 
   <div >
-   <input v-model="benutzername" class="textFeld" type="text" placeholder=" Benutzername" name="benutzername" />
+   <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
   </div>
   <div >
-   <input v-model="password" class="textFeld" type="password" placeholder=" Password" name="password" />
+   <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
   </div>
 
   <div class="buttonBox"> 
     <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
-    <button class="weiter" :disabled="!isFormValid">weiter</button>
+    <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
   <div>
     <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.
     </p>
   </div>
-
 </template>
 
 <script>
+import axios from 'axios'; 
 import LoginComponent from '@/components/LoginComponent'; 
 
 export default {
@@ -29,52 +29,64 @@ export default {
   components: {
     LoginComponent 
   },
-    data(){
-      return {
-        benutzername:'',
-        password:'',
-      };
-    }, 
-    computed: {
-      isFormValid(){
-        const passwordValid = this.password.length >= 6;
-        const benutzernameValid = this.benutzername.length > 0;
-        return passwordValid && benutzernameValid;
-      }
+  data() {
+    return {
+      benutzername: '',
+      password: '',
+    };
+  }, 
+  computed: {
+    isFormValid() {
+      const passwordValid = this.password.length >= 6;
+      const benutzernameValid = this.benutzername.length > 0;
+      return passwordValid && benutzernameValid;
+    }
+  },
+  methods: {
+    goToSignup() {
+      this.$router.push('/signup');
     },
-    methods: {
-      goToSignup(){
-        this.$router.push('/signup');
-      }
-    },
-  };
 
+    login() {
+      axios.post('/login', {
+        username: this.benutzername,
+        password: this.password
+      })
+      .then(response => {
+        console.log('Login erfolgreich:', response.data);
+        localStorage.setItem('token', response.data.token);
+        this.$router.push('/search');
+      })
+      .catch(error => {
+        console.error('Fehler beim Login:', error);
+      });
+    }
+  },
+};
 </script>
 
 <style scoped>
-
-.image{
+.image {
   margin-top: -100px;
   margin-bottom: 100px;
 }
 
-.textFeld{
+.textFeld {
   width: 240px;
   height: 25px;
-  border: 2px solid #cccccc; /* Cor da borda */
-  border-radius: 20px; /* Raio da borda arredondada */
+  border: 2px solid #cccccc;
+  border-radius: 20px;
   margin-bottom: 40px;
-  font-size: 13px; /* Tamanho da fonte */
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1); /* Sombra leve ao redor do input */
-  outline: none; /* Remove o contorno ao focar no input */
-
+  font-size: 13px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  outline: none;
 }
 
-.buttonBox{
-  margin-bottom: 220px;;
+.buttonBox {
+  margin-bottom: 220px;
 }
 
-.weiter{
+.weiter {
   margin-left: 15px;
   width: 110px;
   height: 30px;
@@ -83,9 +95,9 @@ export default {
   background-color: #1fda29; 
   cursor: pointer; 
   transition: background-color 0.3s; 
-
 }
-.kontoAnlegen{
+
+.kontoAnlegen {
   margin-right: 15px;
   width: 110px;
   height: 30px;
@@ -93,7 +105,5 @@ export default {
   border-radius: 20px; 
   background-color: #9543f9; 
   cursor: pointer; 
-
 }
-
 </style>
