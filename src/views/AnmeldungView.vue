@@ -49,8 +49,8 @@ export default {
 
     login() {
       axios.post('/login', {
-        username: this.benutzername,
-        password: this.password
+        email: this.benutzername,
+        pass: this.password
       })
       .then(response => {
         console.log('Login erfolgreich:', response.data);
