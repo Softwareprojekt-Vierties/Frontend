@@ -1,28 +1,27 @@
 <template>
-  <div class ="image">
+  <div class="image">
     <LoginComponent />
   </div>
 
-  <div >
+  <div>
    <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
   </div>
-  <div >
+  <div>
    <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
   </div>
 
   <div class="buttonBox"> 
-    <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
+    <button @click="fetchData" class="kontoAnlegen">Konto anlegen</button>
     <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
   <div>
-    <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.
-    </p>
+    <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
   </div>
 </template>
 
 <script>
 import axios from 'axios'; 
-import LoginComponent from '@/components/LoginComponent'; 
+import LoginComponent from '@/components/LoginComponent';
 
 export default {
   name: 'LoginPage', 
@@ -49,16 +48,37 @@ export default {
 
     login() {
       axios.post('/login', {
-        username: this.benutzername,
-        password: this.password
+        email: this.benutzername,
+        pass: this.password
       })
       .then(response => {
-        console.log('Login erfolgreich:', response.data);
-        localStorage.setItem('token', response.data.token);
-        this.$router.push('/search');
+        console.log('Login erfolgreich:', response);
+        
+        // Speichere das Token im Local Storage
+        const token = response.data;
+        localStorage.setItem('authToken', token);
+
       })
       .catch(error => {
-        console.error('Fehler beim Login:', error);
+        console.error('Fehler beim Login:', error.response.data.message);
+        alert(`Login fehlgeschlagen: ${error.response.data.message}`);
+      });
+    },
+    fetchData() {
+      // Hole den Token aus dem Local Storage
+      const token = localStorage.getItem('authToken');
+
+      // Füge den Token zu den HTTP-Headern hinzu
+      axios.get('/MyPage', {
+        headers: {
+          'auth': token
+        }
+      })
+      .then(response => {
+        console.log('Daten erfolgreich abgerufen:', response.data);
+      })
+      .catch(error => {
+        console.error('Fehler beim Abrufen der Daten:', error);
       });
     }
   },
@@ -91,19 +111,19 @@ export default {
   width: 110px;
   height: 30px;
   border-radius: 20px;
-  border: 1px solid #ecf5ec; 
-  background-color: #1fda29; 
-  cursor: pointer; 
-  transition: background-color 0.3s; 
+  border: 1px solid #ecf5ec;
+  background-color: #1fda29;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .kontoAnlegen {
   margin-right: 15px;
   width: 110px;
   height: 30px;
-  border: 1px solid #ecf5ec; 
-  border-radius: 20px; 
-  background-color: #9543f9; 
-  cursor: pointer; 
+  border: 1px solid #ecf5ec;
+  border-radius: 20px;
+  background-color: #9543f9;
+  cursor: pointer;
 }
 </style>
