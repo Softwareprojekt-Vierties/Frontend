@@ -3,6 +3,7 @@ import AnmeldungView from '../views/AnmeldungView.vue'
 import SignupView from '../views/SignupView.vue'
 import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
+import CreateEvent from '../views/CreateEventView.vue'
 
 const routes = [
   {
@@ -22,6 +23,10 @@ const routes = [
     path: '/servicetype',
     name: 'SelectingServiceType',
     component: ServiceTypeView 
+  },  {
+    path: '/createevent',
+    name: 'CreateEventType',
+    component: CreateEvent 
   }
 ]
 
