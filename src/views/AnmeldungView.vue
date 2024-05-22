@@ -1,129 +1,144 @@
 <template>
-  <div class="image">
-    <LoginComponent />
-  </div>
+    <div class="image">
+        <LoginComponent v-if="!mobileView"/>
+        <MobileLogo v-if="mobileView"/>
+    </div>
 
-  <div>
-   <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
-  </div>
-  <div>
-   <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
-  </div>
+    <div>
+        <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
+    </div>
+    <div>
+        <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
+    </div>
 
-  <div class="buttonBox"> 
-    <button @click="fetchData" class="kontoAnlegen">Konto anlegen</button>
-    <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
-  </div>
-  <div>
-    <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
-  </div>
+    <div v-bind:class="[ mobileView ? 'buttonBoxMobile' : 'buttonBox' ]"> 
+        <button @click="fetchData" class="kontoAnlegen">Konto anlegen</button>
+        <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
+    </div>
+    <div>
+        <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
+    </div>
 </template>
 
 <script>
-import axios from 'axios'; 
-import LoginComponent from '@/components/LoginComponent';
+    import axios from 'axios'; 
+    import LoginComponent from '@/components/LoginComponent';
+    import MobileLogo from '../components/MoblieLogo.vue'
 
-export default {
-  name: 'LoginPage', 
-  components: {
-    LoginComponent 
-  },
-  data() {
-    return {
-      benutzername: '',
-      password: '',
-    };
-  }, 
-  computed: {
-    isFormValid() {
-      const passwordValid = this.password.length >= 6;
-      const benutzernameValid = this.benutzername.length > 0;
-      return passwordValid && benutzernameValid;
-    }
-  },
-  methods: {
-    goToSignup() {
-      this.$router.push('/signup');
-    },
+    export default {
+        name: 'LoginPage', 
+        components: {
+            LoginComponent,
+            MobileLogo
+        },
+        data() {
+            return {
+                benutzername: '',
+                password: '',
+                mobileView: false
+            };
+        }, 
+        computed: {
+            isFormValid() {
+                const passwordValid = this.password.length >= 6;
+                const benutzernameValid = this.benutzername.length > 0;
+                return passwordValid && benutzernameValid;
+            }
+        },
+        methods: {
+            handleView() {
+                this.mobileView = window.innerWidth < 800;
+            },
+            goToSignup() {
+                this.$router.push('/signup');
+            },
 
-    login() {
-      axios.post('/login', {
-        email: this.benutzername,
-        pass: this.password
-      })
-      .then(response => {
-        console.log('Login erfolgreich:', response);
-        
-        // Speichere das Token im Local Storage
-        const token = response.data;
-        localStorage.setItem('authToken', token);
+            login() {
+                axios.post('/login', {
+                    email: this.benutzername,
+                    pass: this.password
+                })
+                    .then(response => {
+                        console.log('Login erfolgreich:', response);
 
-      })
-      .catch(error => {
-        console.error('Fehler beim Login:', error.response.data.message);
-        alert(`Login fehlgeschlagen: ${error.response.data.message}`);
-      });
-    },
-    fetchData() {
-      // Hole den Token aus dem Local Storage
-      const token = localStorage.getItem('authToken');
+                        // Speichere das Token im Local Storage
+                        const token = response.data;
+                        localStorage.setItem('authToken', token);
 
-      // Füge den Token zu den HTTP-Headern hinzu
-      axios.get('/MyPage', {
-        headers: {
-          'auth': token
+                    })
+                    .catch(error => {
+                        console.error('Fehler beim Login:', error.response.data.message);
+                        alert(`Login fehlgeschlagen: ${error.response.data.message}`);
+                    });
+            },
+            fetchData() {
+                // Hole den Token aus dem Local Storage
+                const token = localStorage.getItem('authToken');
+
+                // Füge den Token zu den HTTP-Headern hinzu
+                axios.get('/MyPage', {
+                    headers: {
+                        'auth': token
+                    }
+                })
+                    .then(response => {
+                        console.log('Daten erfolgreich abgerufen:', response.data);
+                    })
+                    .catch(error => {
+                        console.error('Fehler beim Abrufen der Daten:', error);
+                    });
+            }
+        },
+        created() {
+            this.handleView()
+            window.addEventListener("resize", this.handleView);
         }
-      })
-      .then(response => {
-        console.log('Daten erfolgreich abgerufen:', response.data);
-      })
-      .catch(error => {
-        console.error('Fehler beim Abrufen der Daten:', error);
-      });
-    }
-  },
-};
+    };
 </script>
 
 <style scoped>
 .image {
-  margin-top: -100px;
-  margin-bottom: 100px;
+    margin-top: -100px;
+    margin-bottom: 100px;
 }
 
 .textFeld {
-  width: 240px;
-  height: 25px;
-  border: 2px solid #cccccc;
-  border-radius: 20px;
-  margin-bottom: 40px;
-  font-size: 13px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-  outline: none;
+    width: 240px;
+    height: 25px;
+    border: 2px solid #cccccc;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    font-size: 13px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    outline: none;
 }
 
 .buttonBox {
-  margin-bottom: 220px;
+    margin-bottom: 220px;
+}
+
+.buttonBoxMobile {
+    margin-bottom: 90px;;
 }
 
 .weiter {
-  margin-left: 15px;
-  width: 110px;
-  height: 30px;
-  border-radius: 20px;
-  border: 1px solid #ecf5ec;
-  background-color: #1fda29;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    margin-left: 15px;
+    width: 110px;
+    height: 30px;
+    border-radius: 20px;
+    border: 1px solid #ecf5ec;
+    background-color: #1fda29;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .kontoAnlegen {
-  margin-right: 15px;
-  width: 110px;
-  height: 30px;
-  border: 1px solid #ecf5ec;
-  border-radius: 20px;
-  background-color: #9543f9;
-  cursor: pointer;
+    margin-right: 15px;
+    width: 110px;
+    height: 30px;
+    border: 1px solid #ecf5ec;
+    border-radius: 20px;
+    background-color: #9543f9;
+    cursor: pointer;
 }
 </style>
