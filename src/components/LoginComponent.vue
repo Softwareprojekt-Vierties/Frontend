@@ -14,6 +14,7 @@ export default {
 }
 </script>
 
+
 <style scoped>
 #Eventure-Logo-Text {
   display: grid;
