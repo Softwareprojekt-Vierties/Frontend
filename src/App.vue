@@ -1,6 +1,27 @@
 <template>
-  <router-view/>
+    <p v-if="mobileView">Mobile</p>
+    <p v-if="!mobileView">Not Mobile</p>
+    <router-view>
 </template>
+
+<script>
+export default {
+    data: () => {
+        return {
+            mobileView: false
+        }
+    },
+    methods: {
+        handleView() {
+            this.mobileView = window.innerWidth < 800;
+        },
+    },
+    created() {
+        this.handleView();
+        window.addEventListener("resize", this.handleView);
+    }
+}
+</script>
 
 <style>
 #app {
