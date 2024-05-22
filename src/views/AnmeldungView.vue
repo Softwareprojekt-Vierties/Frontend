@@ -11,7 +11,7 @@
   </div>
 
   <div class="buttonBox"> 
-    <button @click="fetchData" class="kontoAnlegen">Konto anlegen</button>
+    <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
     <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
   <div>
