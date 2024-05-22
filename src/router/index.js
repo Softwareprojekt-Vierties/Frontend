@@ -1,11 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SucheView from '../views/SucheView.vue'
+import AnmeldungView from '../views/AnmeldungView.vue'
+import SignupView from '../views/SignupView.vue'
+import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
+import ServiceTypeView from '../views/ServiceTypeView.vue'
+import SucheView from '@/views/SucheView.vue'
 
 const routes = [
- {
+  {
+    path: '/',
+    name: 'anmeldung',
+    component: AnmeldungView // Corrigido para usar AnmeldungView
+  },  {
+    path: '/signup',
+    name: 'signupSeite',
+    component: SignupView 
+  }
+  ,  {
+    path: '/usertype',
+    name: 'SelectingUserType',
+    component: NutzerUnterscheidungView 
+  },  {
+    path: '/servicetype',
+    name: 'SelectingServiceType',
+    component: ServiceTypeView 
+  },  {
     path: '/search',
-    name: 'SearchAll',
-    component: SucheView
+    name: 'SucheViewType',
+    component: SucheView 
   }
 ]
 
