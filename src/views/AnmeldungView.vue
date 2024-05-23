@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     goToSignup() {
-      this.$router.push('/search');
+      this.$router.push('/signup');
     },
 
     login() {
@@ -57,6 +57,7 @@ export default {
         // Speichere das Token im Local Storage
         const token = response.data;
         localStorage.setItem('authToken', token);
+        this.$router.push('/search');
       })
       .catch(error => {
         console.error('Fehler beim Login:', error.response.data.message);
