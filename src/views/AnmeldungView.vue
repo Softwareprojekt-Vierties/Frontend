@@ -43,11 +43,10 @@ export default {
   },
   methods: {
     goToSignup() {
-      this.$router.push('/signup');
+      this.$router.push('/search');
     },
 
     login() {
-      this.$router.push('/search');
       axios.post('/login', {
         email: this.benutzername,
         pass: this.password
