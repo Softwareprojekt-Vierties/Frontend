@@ -36,7 +36,7 @@ export default {
   }, 
   computed: {
     isFormValid() {
-      const passwordValid = this.password.length >= 6;
+      const passwordValid = this.password.length > 0;
       const benutzernameValid = this.benutzername.length > 0;
       return passwordValid && benutzernameValid;
     }
