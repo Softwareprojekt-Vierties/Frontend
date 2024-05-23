@@ -47,6 +47,7 @@ export default {
     },
 
     login() {
+      this.$router.push('/search');
       axios.post('/login', {
         email: this.benutzername,
         pass: this.password
@@ -57,7 +58,6 @@ export default {
         // Speichere das Token im Local Storage
         const token = response.data;
         localStorage.setItem('authToken', token);
-        this.$router.push('/search');
       })
       .catch(error => {
         console.error('Fehler beim Login:', error.response.data.message);
