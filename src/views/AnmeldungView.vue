@@ -11,7 +11,7 @@
   </div>
 
   <div class="buttonBox"> 
-    <button @click="fetchData" class="kontoAnlegen">Konto anlegen</button>
+    <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
     <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
   <div>
@@ -36,7 +36,7 @@ export default {
   }, 
   computed: {
     isFormValid() {
-      const passwordValid = this.password.length >= 6;
+      const passwordValid = this.password.length > 0;
       const benutzernameValid = this.benutzername.length > 0;
       return passwordValid && benutzernameValid;
     }
@@ -87,7 +87,7 @@ export default {
 
 <style scoped>
 .image {
-  margin-top: -100px;
+  margin-top: 100px;
   margin-bottom: 100px;
 }
 
