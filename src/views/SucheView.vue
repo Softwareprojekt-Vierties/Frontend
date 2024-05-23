@@ -76,7 +76,7 @@
         </div>
         <div v-else>
             <div v-if="hasSearchResults" class="events">
-                <EventCardComponent v-for="result in searchResults" :name="result.name" :locationName="result.locationid" :date="result.datum" :startTime="result.uhrzeit" :endTime="result.uhrzeit" :imagePath="result.bild" :key="result.id"/>
+                <EventCardComponent v-for="result in searchResults" :name="result.name" :locationName="result.locationname" :date="result.datum.slice(0, 10)" :startTime="result.uhrzeit" :endTime="result.uhrzeit" :imagePath="result.bild" :key="result.id"/>
             </div>
             <div v-else>
                 <p>We couldn't find anything to suit you.<br>Maybe be less picky? ¯\_(ツ)_/¯</p>
@@ -263,7 +263,8 @@
                     .catch(error => {
                         console.error("Unsuccessful search:", error);
                         this.searchError = true;
-                    })
+                        this.hasSearchResults = false;
+                    });
             }
         },
         created() {

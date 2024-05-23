@@ -1,12 +1,12 @@
 <template>
     <div class="event-card">
         <div class="event-image-container">
-            <img :alt="name" :src="imagePath" class="event-image">
+            <img :alt="name" :src="computedImagePath" class="event-image">
         </div>
         <div class="event-details">
             <h3>{{name}}</h3>
             <p>Location: {{locationName}}</p>
-            <p>Date: {{locationName}}</p>
+            <p>Date: {{date}}</p>
             <p>Time: {{startTime}} Uhr - {{endTime}} Uhr</p>
             <button>Ticket buchen</button>
         </div>
@@ -39,6 +39,14 @@
             imagePath: {
                 type: String,
                 default : require("@/assets/bild-hsbi.jpg")
+            }
+        },
+        computed: {
+            computedImagePath() {
+                if (this.imagePath === null) {
+                    return require("@/assets/bild-hsbi.jpg");
+                }
+                return this.imagePath;
             }
         },
     }
