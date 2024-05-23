@@ -4,7 +4,7 @@
   </div>
 
   <div>
-   <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
+   <input v-model="benutzername" class="textFeld" type="text" placeholder="Email" name="benutzername" />
   </div>
   <div>
    <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
