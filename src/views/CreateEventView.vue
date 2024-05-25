@@ -38,43 +38,52 @@
         <input class="creator-input" type="text" placeholder="Hier einfügen…">
       </diV>
     </div>
-    <div id="right-side">
-      <label class="info-headline">Infos hinzufügen:</label>
-      <div class = "infos">
-        <label class="info-subheadline">Location:</label>
-        <div>
-          <label class="leer">Datum</label>
+    <div id = "right-side">
+      <div id="right-side-info">
+        <label id="info-headline">Infos hinzufügen:</label>
+        <div class = "infos">
+          <label class="info-subheadline">Location:</label>
+          <div>
+            <div id="add-location">
+              <img src="../assets/addlocation.jpg" alt="Bild hochladen" id ="add-location-icon" />
+            </div>
+          </div>
+        </div>
+        <div class = "infos">
+          <label class="info-subheadline">Datum:</label>
+          <input class="input" type="text" placeholder="z.B. 17.08.2024">
+        </div>
+        <div class = "infos">
+          <label class="info-subheadline">Zeit:</label>
+          <div class="time"> 
+            <input class="time-value-left" placeholder="z.B. 17Uhr"> - <input class="time-value-right" placeholder="z.B. 20Uhr">
+          </div>
+        </div>
+        <div class = "infos">
+          <label class="info-subheadline">Datum:</label>
+          <input class="input" type="text" placeholder="z.B. 50 Personen">
+        </div>
+        <div class = "infos">
+          <label class="info-subheadline">Preis:</label>
+          <input class="input" type="text" placeholder="z.B. 50€">
+        </div>
+        <div class = "infos">
+          <label class="info-subheadline">Datum:</label>
+          <input class="input" type="text" placeholder="z.B. 18 Jahre">
+        </div>
+        <div id = "open-air">
+          <label class="info-subheadline">Open Air:</label>
+          <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
         </div>
       </div>
-      <div class = "infos">
-        <label class="info-subheadline">Datum:</label>
-        <input class="input" type="text" placeholder="z.B. 17.08.2024">
-      </div>
-      <div class = "infos">
-        <label class="info-subheadline">Zeit:</label>
-        <div class="time"> 
-          <input class="time-value" type="number" min="0" placeholder="z.B. 17Uhr"> - <input class="time-value" type="number" min="0" placeholder="z.B. 20Uhr">
+      <div id="buttons">
+        <div id="break">
+          abbrechen
+        </div>
+        <div id="continue">
+          anlegen
         </div>
       </div>
-      <div class = "infos">
-        <label class="info-subheadline">Datum:</label>
-        <input class="input" type="text" placeholder="z.B. 50 Personen">
-      </div>
-      <div class = "infos">
-        <label class="info-subheadline">Preis:</label>
-        <input class="input" type="text" placeholder="z.B. 50€">
-      </div>
-      <div class = "infos">
-        <label class="info-subheadline">Datum:</label>
-        <input class="input" type="text" placeholder="z.B. 18 Jahre">
-      </div>
-      <div class = "infos">
-        <label class="info-subheadline">Open Air:</label>
-        <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
-      </div>
-    </div>
-
-    <div>
     </div>
   </div>
 </template>
@@ -158,7 +167,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: -260px;
+  margin-left: -225px;
 }
 
 #file-upload {
@@ -206,12 +215,14 @@ html, body {
     display: inline-block;
     width: 40px; /* Angepasst an die neue Höhe */
     height: 20px;
+    margin-left: 20px;
 }
 
 .switch input { 
     opacity: 0;
     width: 0;
     height: 0;
+    margin-left: 70px;
 }
 
 .slider {
@@ -241,11 +252,11 @@ html, body {
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: rgb(0, 217, 217);
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px rgb(0, 217, 217);
 }
 
 input:checked + .slider:before {
@@ -272,7 +283,7 @@ input:checked + .slider:before {
   justify-content: left;
 }
 
-#right-side {
+#right-side-info {
   border-radius: 10px;
   background-color: white;
   padding: 10px;
@@ -280,18 +291,26 @@ input:checked + .slider:before {
 
 .infos {
   display: grid;
-  grid-template-columns: 231px;
+  grid-template-columns: 180px;
   margin-top: 20px;
 }
 
-#time-value {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  justify-content: space-between;
+.time-value-left {
+  width: 71.9px;
+  text-align: center;
+  border: 1px solid #000000; /* Rahmenstil */
+  border-radius: 5px; /* Abgerundete Ecken */
+  height: 25px;
+  margin-right: 5px;
 }
 
-.time-value {
-  width: 100px;
+.time-value-right {
+  width: 71.9px;
+  text-align: center;
+  border: 1px solid #000000; /* Rahmenstil */
+  border-radius: 5px; /* Abgerundete Ecken */
+  height: 25px;
+  margin-left: 5px;
 }
 
 .info-subheadline {
@@ -301,16 +320,78 @@ input:checked + .slider:before {
 
 .input {
   text-align: center;
+  border: 1px solid #000000; /* Rahmenstil */
+  border-radius: 5px; /* Abgerundete Ecken */
+  height: 25px;
 }
 
 #long-description-input {
   width: 558px;
-  height: 370px;
+  height: 398px;
   font-family: Arial, sans-serif;
   font-size: 12px;
   padding: 10px;
   border: 1px solid #000000; 
-  border-radius: 4px;
+  border-radius: 8px;
   resize: none;
+}
+
+#add-location-icon {
+  width: 25px;
+  height: 25px;
+  margin-top: 4px;
+}
+
+#add-location {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: white;
+}
+
+#info-headline {
+  display: block; /* Als Block-Element anzeigen */
+  text-align: left; /* Text links ausrichten */
+  font-family: Arial, sans-serif; /* Schriftart festlegen */
+  font-size: 14px; /* Schriftgröße festlegen */
+}
+
+#open-air {
+  display: block;
+  text-align: left;
+  margin-top: 20px;
+}
+
+#buttons {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+#break {
+  background-color: rgb(254, 68, 77);
+  width: 88px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 12px;
+  display: flex; /* Flexbox-Modell verwenden */
+  justify-content: center; /* Horizontales Zentrieren */
+  align-items: center; /* Vertikales Zentrieren */
+}
+
+#continue {
+  background-color: rgb(146, 208, 80);
+  width: 88px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 12px;
+  display: flex; /* Flexbox-Modell verwenden */
+  justify-content: center; /* Horizontales Zentrieren */
+  align-items: center; /* Vertikales Zentrieren */
 }
 </style>
