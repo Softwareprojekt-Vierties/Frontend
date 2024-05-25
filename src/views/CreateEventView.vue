@@ -3,7 +3,6 @@
     <div id="icon-div">
       <img alt="Filer" class="icon" src="../assets/home.jpg">
     </div>
-
     <div id="picture-name">
       <div id="file-div">
         <div id="file-upload">
@@ -17,26 +16,62 @@
       <div id="name-description">
         <div class="name-description-input">
           <label class="description">Eventnamen hinzufügen:</label>
-          <input class="header-input" type="text" id="event-name" name="event-name" placeholder="z.B. UNI PARTY"><br>
+          <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
         </div>
         <div class="name-description-input">
           <label class="description">Kurze Beschreibung hinzufügen:</label>
-          <input class="header-input" type="text" id="event-description" name="event-description" placeholder="z.B. Minden">
+          <input class="header-input" type="text" placeholder="z.B. Minden">
         </div>
       </div>
     </div>
   </div>
 
-  <div>
-    <div id="right-side">
+  <div id = "main">
+    <div id="left-side">
       <div class="long-description">
-        <label class="description">Eventnamen hinzufügen:</label><br>
-        <input class="long-description-input" type="text" id="event-name" name="event-name" placeholder="Hier einfügen…">
+        <label class="description">Beschreibung hinzufügen:</label>
+        <textarea id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
       </div>
-      <diV>
-        <label class="description">Dienstleister hinzufügen:</label><br>
-        <input class="creator-input" type="text" id="event-name" name="event-name" placeholder="Hier einfügen…">
+      <br>
+      <div class="long-description">
+        <label class="description">Dienstleister hinzufügen:</label>
+        <input class="creator-input" type="text" placeholder="Hier einfügen…">
       </diV>
+    </div>
+    <div id="right-side">
+      <label class="info-headline">Infos hinzufügen:</label>
+      <div class = "infos">
+        <label class="info-subheadline">Location:</label>
+        <div>
+          <label class="leer">Datum</label>
+        </div>
+      </div>
+      <div class = "infos">
+        <label class="info-subheadline">Datum:</label>
+        <input class="input" type="text" placeholder="z.B. 17.08.2024">
+      </div>
+      <div class = "infos">
+        <label class="info-subheadline">Zeit:</label>
+        <div class="time"> 
+          <input class="time-value" type="number" min="0" placeholder="z.B. 17Uhr"> - <input class="time-value" type="number" min="0" placeholder="z.B. 20Uhr">
+        </div>
+      </div>
+      <div class = "infos">
+        <label class="info-subheadline">Datum:</label>
+        <input class="input" type="text" placeholder="z.B. 50 Personen">
+      </div>
+      <div class = "infos">
+        <label class="info-subheadline">Preis:</label>
+        <input class="input" type="text" placeholder="z.B. 50€">
+      </div>
+      <div class = "infos">
+        <label class="info-subheadline">Datum:</label>
+        <input class="input" type="text" placeholder="z.B. 18 Jahre">
+      </div>
+      <div class = "infos">
+        <label class="info-subheadline">Open Air:</label>
+        <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
+      </div>
     </div>
 
     <div>
@@ -60,7 +95,7 @@ html, body {
 
 #header {
   background-color: rgb(213, 213, 213);
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   padding-top: 10px;
 }
 
@@ -123,6 +158,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: -260px;
 }
 
 #file-upload {
@@ -163,5 +199,118 @@ html, body {
 #upload-text {
   color: #999999;
   margin-top: 0; /* Remove any top margin to bring it closer to the image */
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Angepasst an die neue Höhe */
+    height: 20px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 20px; /* Angepasst an die neue Höhe */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px; /* Angepasst an die neue Höhe */
+    width: 16px; /* Angepasst an die neue Höhe */
+    left: 2px; /* Angepasst an die neue Höhe */
+    bottom: 2px; /* Angepasst an die neue Höhe */
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
+    -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
+    transform: translateX(20px); /* Angepasst an die neue Höhe */
+}
+
+#main {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  background-color: rgb(242, 242, 242);
+  padding-top: 30px;;
+  gap: 20px;
+}
+
+.long-description {
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 580px;
+  justify-content: left;
+}
+
+#right-side {
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px;
+}
+
+.infos {
+  display: grid;
+  grid-template-columns: 231px;
+  margin-top: 20px;
+}
+
+#time-value {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: space-between;
+}
+
+.time-value {
+  width: 100px;
+}
+
+.info-subheadline {
+  text-align: left;
+  font-size: 12px;
+}
+
+.input {
+  text-align: center;
+}
+
+#long-description-input {
+  width: 558px;
+  height: 370px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  padding: 10px;
+  border: 1px solid #000000; 
+  border-radius: 4px;
+  resize: none;
 }
 </style>
