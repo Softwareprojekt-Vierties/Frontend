@@ -68,7 +68,7 @@
           <input class="input" type="text" placeholder="z.B. 50€">
         </div>
         <div class = "infos">
-          <label class="info-subheadline">Datum:</label>
+          <label class="info-subheadline">Alter:</label>
           <input class="input" type="text" placeholder="z.B. 18 Jahre">
         </div>
         <div id = "open-air">
