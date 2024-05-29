@@ -35,7 +35,14 @@
       <br>
       <div class="long-description">
         <label class="description">Dienstleister hinzufügen:</label>
-        <input class="creator-input" type="text" placeholder="Hier einfügen…">
+        <div id="addcreator" ref="addCreator" class="scroll-container">
+          <div class="dish-container">
+            <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+              <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+            </div>
+            <div class="add-dish-button" @click="addDish"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id ="add-icon" /></div>
+          </div>
+        </div>
       </diV>
     </div>
     <div id = "right-side">
@@ -60,7 +67,7 @@
           </div>
         </div>
         <div class = "infos">
-          <label class="info-subheadline">Datum:</label>
+          <label class="info-subheadline">Eventgröße:</label>
           <input class="input" type="text" placeholder="z.B. 50 Personen">
         </div>
         <div class = "infos">
@@ -89,9 +96,32 @@
 </template>
 
 <script>
+import DishForm from '../components/DishForm.vue';
+
 export default {
-  name: 'CreateEvent'
-};
+  components: {
+    DishForm
+  },
+  data() {
+    return {
+      dishes: [
+        { name: '', ingredients: [] }
+      ]
+    };
+  },
+  methods: {
+    addDish() {
+      this.dishes.push({ name: '', ingredients: [] });
+      this.$nextTick(() => {
+      const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
+      container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+    });
+    },
+    removeDish(index) {
+      this.dishes.splice(index, 1);
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -393,5 +423,41 @@ input:checked + .slider:before {
   display: flex; /* Flexbox-Modell verwenden */
   justify-content: center; /* Horizontales Zentrieren */
   align-items: center; /* Vertikales Zentrieren */
+}
+
+#addcreator {
+  display: flex; /* Verwendet Flexbox für das Layout */
+  overflow-x: auto; /* Ermöglicht horizontales Scrollen, wenn der Inhalt breiter als der Container ist */
+  white-space: nowrap; /* Verhindert, dass die Inhalte in eine neue Zeile umgebrochen werden */
+  align-items: center; /* Zentriert die Elemente vertikal innerhalb des Containers */
+  padding: 20px 0; /* Fügt oben und unten Padding hinzu */
+}
+
+.dish-item {
+  display: inline-block; /* Jedes Gericht wird als Block-Element behandelt, das in einer Zeile bleibt */
+  margin-right: 10px; /* Fügt zwischen den Gerichten einen rechten Abstand hinzu */
+  flex: 0 0 auto; /* Verhindert, dass Flexbox die Größe der Elemente ändert */
+}
+
+.add-dish-button {
+  display: inline-flex; /* Stellt sicher, dass der Button in der gleichen Zeile bleibt und Flex-Eigenschaften nutzt */
+  align-items: center; /* Zentriert den Inhalt des Buttons vertikal */
+  justify-content: center; /* Zentriert den Inhalt des Buttons horizontal */
+  cursor: pointer; /* Ändert den Cursor beim Hover über den Button */
+  width: 50px; /* Setzt eine feste Breite für den Button */
+  height: 50px; /* Setzt eine feste Höhe für den Button */
+}
+
+#add-icon {
+  width: 24px; /* Setzt eine feste Breite für das Icon */
+  height: 24px; /* Setzt eine feste Höhe für das Icon */
+}
+
+#addcreator {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  align-items: center;
+  padding: 20px 0;
 }
 </style>
