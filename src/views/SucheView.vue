@@ -76,7 +76,11 @@
         </div>
         <div v-else>
             <div v-if="hasSearchResults" class="events">
-                <EventCardComponent v-for="result in searchResults" :name="result.name" :locationName="result.locationname" :date="result.datum.slice(0, 10)" :startTime="result.uhrzeit" :endTime="result.uhrzeit" :imagePath="result.bild" :key="result.id"/>
+                <EventCardComponent v-for="result in searchResults.events" :name="result.name" :locationName="result.locationname" :date="result.datum.slice(0, 10)" :startTime="result.uhrzeit" :endTime="result.uhrzeit" :imagePath="result.bild" :key="result.id"/>
+                <LocationCardComponent v-for="result in searchResults.location" :name="result.name" :region="result.region" :price="result.preis" :capacity="result.kapazitaet" :area="result.flaeche" :imagePath="result.bild" :key="result.id"/>
+                <ArtistCardComponent v-for="result in searchResults.artist" :name="result.name" :region="result.region" :price="result.preis" :experience="result.erfahrung" :category="result.kategorie" :imagePath="result.bild" :key="result.id"/>
+                <CatererCardComponent v-for="result in searchResults.artist" :name="result.name" :region="result.region" :price="result.preis" :experience="result.erfahrung" :category="result.kategorie" :imagePath="result.bild" :key="result.id"/>
+                <UserCardComponent v-for="result in searchResults.artist" :name="result.name" :region="result.region" :age="result.alter" :gender="result.geschlecht" :imagePath="result.bild" :key="result.id"/>
             </div>
             <div v-else>
                 <p>We couldn't find anything to suit you.<br>Maybe be less picky? ¯\_(ツ)_/¯</p>
@@ -88,12 +92,20 @@
 <script>
     import LoginComponent from "@/components/LoginComponent";
     import EventCardComponent from "@/components/EventCardComponent";
+    import LocationCardComponent from "@/components/LocationCardComponent";
+    import ArtistCardComponent from "@/components/ArtistCardComponent";
+    import CatererCardComponent from "@/components/CatererCardComponent";
+    import UserCardComponent from "@/components/UserCardComponent";
     import axios from 'axios'
 
     export default {
         components: {
             LoginComponent,
             EventCardComponent,
+            LocationCardComponent,
+            ArtistCardComponent,
+            CatererCardComponent,
+            UserCardComponent,
         },
         data() {
             return {
@@ -112,7 +124,7 @@
                 },
                 searchInput: "",
                 searchType: "0",
-                searchResults: "",
+                searchResults: [],
                 searchError: false,
                 hasSearchResults: false
             };
@@ -242,7 +254,7 @@
                 // Hier können Sie die Filterdaten weiterverarbeiten
                 return filterValues;
             },
-            search() {
+            searchEvent() {
                 let filterResults = this.submitFilters();
                 axios.post("/searchEvent", {
                     openair: filterResults.openAir,
@@ -256,7 +268,7 @@
                 })
                     .then(response => {
                         console.log("Successful search:", response.data.rows);
-                        this.searchResults = response.data.rows;
+                        this.searchResults.events = response.data.rows;
                         this.hasSearchResults = response.data.rows.length;
                         this.searchError = false;
                     })
@@ -265,8 +277,213 @@
                         this.searchError = true;
                         this.hasSearchResults = false;
                     });
-            }
-        },
+            },
+            searchLocation() {
+                let filterResults = this.submitFilters();
+                axios.post("/searchLocation", {
+                    openair: filterResults.openAir,
+                    search: this.searchInput,
+                    kapazitaet: filterResults.capacity,
+                    preis: filterResults.price,
+                    // location and distance still have to go
+                    // Datum?
+                    // Dauer?
+                    // Startzeit?
+                    // Bewertung
+                })
+                    .then(response => {
+                        console.log("Successful search:", response.data.rows);
+                        this.searchResults.location = response.data.rows;
+                        this.hasSearchResults = response.data.rows.length;
+                        this.searchError = false;
+                    })
+                    .catch(error => {
+                        console.error("Unsuccessful search:", error);
+                        this.searchError = true;
+                        this.hasSearchResults = false;
+                    });
+            },
+            searchArtist() {
+                let filterResults = this.submitFilters();
+                axios.post("/searchArtist", {
+                    search: this.searchInput,
+                    preis: filterResults.price,
+                    kategorie: filterResults.category,
+                    erfahrung: filterResults.experience,
+                    // location and distance still have to go
+                    // Datum?
+                    // Dauer?
+                    // Startzeit?
+                    // Bewertung
+                })
+                    .then(response => {
+                        console.log("Successful search:", response.data.rows);
+                        this.searchResults.artist = response.data.rows;
+                        this.hasSearchResults = response.data.rows.length;
+                        this.searchError = false;
+                    })
+                    .catch(error => {
+                        console.error("Unsuccessful search:", error);
+                        this.searchError = true;
+                        this.hasSearchResults = false;
+                    });
+            },
+            searchCaterer() {
+                let filterResults = this.submitFilters();
+                axios.post("/searchArtist", {
+                    search: this.searchInput,
+                    preis: filterResults.price,
+                    kategorie: filterResults.category,
+                    erfahrung: filterResults.experience,
+                    // location and distance still have to go
+                    // Datum?
+                    // Dauer?
+                    // Startzeit?
+                    // Bewertung
+                })
+                    .then(response => {
+                        console.log("Successful search:", response.data.rows);
+                        this.searchResults.caterer = response.data.rows;
+                        this.hasSearchResults = response.data.rows.length;
+                        this.searchError = false;
+                    })
+                    .catch(error => {
+                        console.error("Unsuccessful search:", error);
+                        this.searchError = true;
+                        this.hasSearchResults = false;
+                    });
+            },
+            searchPerson() {
+                let filterResults = this.submitFilters();
+                axios.post("/searchPerson", {
+                    search: this.searchInput,
+                    geschlecht: filterResults.gender,
+                    alter: filterResults.age,
+                    // location and distance still have to go
+                    // Datum?
+                    // Dauer?
+                    // Startzeit?
+                    // Bewertung
+                })
+                    .then(response => {
+                        console.log("Successful search:", response.data.rows);
+                        this.searchResults.person = response.data.rows;
+                        this.hasSearchResults = response.data.rows.length;
+                        this.searchError = false;
+                    })
+                    .catch(error => {
+                        console.error("Unsuccessful search:", error);
+                        this.searchError = true;
+                        this.hasSearchResults = false;
+                    });
+            },
+            searchTickets() {
+                // let filterResults = this.submitFilters();
+                axios.post("/searchTickets", {
+                    search: this.searchInput,
+                    // location and distance still have to go
+                    // Datum
+                    // Dauer?
+                    // Startzeit?
+                    // Bewertung
+                    // Eventgröße
+                    // Preis
+                    // Alter?
+                    // openair
+                })
+                    .then(response => {
+                        console.log("Successful search:", response.data.rows);
+                        this.searchResults.tickets = response.data.rows;
+                        this.hasSearchResults = response.data.rows.length;
+                        this.searchError = false;
+                    })
+                    .catch(error => {
+                        console.error("Unsuccessful search:", error);
+                        this.searchError = true;
+                        this.hasSearchResults = false;
+                    });
+            },
+            search() {
+                this.searchResults = []
+                let gotResult = false;
+                let gotError = false;
+                switch (this.searchType) {
+                    case 1:
+                        this.searchLocation();
+                        break;
+                    case 2:
+                        this.searchArtist();
+                        break;
+                    case 3:
+                        this.searchCaterer();
+                        break;
+                    case 4:
+                        this.searchEvent();
+                        break;
+                    case 5:
+                        this.searchPerson();
+                        break;
+                    case 6:
+                        this.searchEvent();
+                        break;
+                    case 7:
+                        this.searchTickets();
+                        break;
+                    case 8:
+                        this.searchPerson();
+                        break;
+                    case 9:
+                        this.searchLocation();
+                        break;
+
+                    default:
+                        this.searchLocation();
+                        if (this.searchError) {
+                            gotError = true;
+                        }
+                        if (this.hasSearchResults) {
+                            gotResult = true;
+                        }
+                        this.searchArtist();
+                        if (this.searchError) {
+                            gotError = true;
+                        }
+                        if (this.hasSearchResults) {
+                            gotResult = true;
+                        }
+                        this.searchCaterer();
+                        if (this.searchError) {
+                            gotError = true;
+                        }
+                        if (this.hasSearchResults) {
+                            gotResult = true;
+                        }
+                        this.searchEvent();
+                        if (this.searchError) {
+                            gotError = true;
+                        }
+                        if (this.hasSearchResults) {
+                            gotResult = true;
+                        }
+                        this.searchPerson();
+                        if (this.searchError) {
+                            gotError = true;
+                        }
+                        if (this.hasSearchResults) {
+                            gotResult = true;
+                        }
+                        this.searchTickets();
+                        if (this.searchError) {
+                            gotError = true;
+                        }
+                        if (this.hasSearchResults) {
+                            gotResult = true;
+                        }
+                        this.searchError = gotError;
+                        this.hasSearchResults = gotResult;
+                        break;
+                }
+            },       },
         created() {
             this.search();
         }
