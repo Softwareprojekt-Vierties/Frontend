@@ -76,11 +76,12 @@
         </div>
         <div v-else>
             <div v-if="hasSearchResults" class="events">
-                <EventCardComponent v-for="result in searchResults.events" :name="result.name" :locationName="result.locationname" :date="result.datum.slice(0, 10)" :startTime="result.uhrzeit" :endTime="result.uhrzeit" :imagePath="result.bild" :key="result.id"/>
-                <LocationCardComponent v-for="result in searchResults.location" :name="result.name" :region="result.region" :price="result.preis" :capacity="result.kapazitaet" :area="result.flaeche" :imagePath="result.bild" :key="result.id"/>
-                <ArtistCardComponent v-for="result in searchResults.artist" :name="result.name" :region="result.region" :price="result.preis" :experience="result.erfahrung" :category="result.kategorie" :imagePath="result.bild" :key="result.id"/>
-                <CatererCardComponent v-for="result in searchResults.artist" :name="result.name" :region="result.region" :price="result.preis" :experience="result.erfahrung" :category="result.kategorie" :imagePath="result.bild" :key="result.id"/>
-                <UserCardComponent v-for="result in searchResults.artist" :name="result.name" :region="result.region" :age="result.alter" :gender="result.geschlecht" :imagePath="result.bild" :key="result.id"/>
+                <CardComponent v-for="result in searchResults.events" :name="result.name" :line1="`Location: ${result.locationid}`" :line2="`Datum: ${result.datum.slice(0, 10)}`" :line3="`Zeit: ${result.uhrzeit[0]}Uhr - ${result.uhrzeit[1]}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :key="result.id"/>
+                <CardComponent v-for="result in searchResults.location" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kapazität: ${result.capacity}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :key="result.id"/>
+                <CardComponent v-for="result in searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :key="result.id"/>
+                <CardComponent v-for="result in searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :key="result.id"/>
+                <CardComponent v-for="result in searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :key="result.id"/>
+                <CardComponent v-for="result in searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${result.datum.slice(0, 10)}`" :line3="`Zeit: ${result.uhrzeit[0]}Uhr - ${result.uhrzeit[1]}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :key="result.id"/>
             </div>
             <div v-else>
                 <p>We couldn't find anything to suit you.<br>Maybe be less picky? ¯\_(ツ)_/¯</p>
@@ -91,21 +92,13 @@
 
 <script>
     import LoginComponent from "@/components/LoginComponent";
-    import EventCardComponent from "@/components/EventCardComponent";
-    import LocationCardComponent from "@/components/LocationCardComponent";
-    import ArtistCardComponent from "@/components/ArtistCardComponent";
-    import CatererCardComponent from "@/components/CatererCardComponent";
-    import UserCardComponent from "@/components/UserCardComponent";
+    import CardComponent from "@/components/CardComponent";
     import axios from 'axios'
 
     export default {
         components: {
             LoginComponent,
-            EventCardComponent,
-            LocationCardComponent,
-            ArtistCardComponent,
-            CatererCardComponent,
-            UserCardComponent,
+            CardComponent,
         },
         data() {
             return {
@@ -404,39 +397,44 @@
                     });
             },
             search() {
-                this.searchResults = []
+                this.searchResults.events = []
+                this.searchResults.location = []
+                this.searchResults.artist = []
+                this.searchResults.caterer = []
+                this.searchResults.person = []
+                this.searchResults.tickets = []
                 let gotResult = false;
                 let gotError = false;
                 switch (this.searchType) {
-                    case 1:
+                    case "1":
                         this.searchLocation();
                         break;
-                    case 2:
+                    case "2":
                         this.searchArtist();
                         break;
-                    case 3:
+                    case "3":
                         this.searchCaterer();
                         break;
-                    case 4:
+                    case "4":
                         this.searchEvent();
                         break;
-                    case 5:
+                    case "5":
                         this.searchPerson();
                         break;
-                    case 6:
+                    case "6":
                         this.searchEvent();
                         break;
-                    case 7:
+                    case "7":
                         this.searchTickets();
                         break;
-                    case 8:
+                    case "8":
                         this.searchPerson();
                         break;
-                    case 9:
+                    case "9":
                         this.searchLocation();
                         break;
 
-                    default:
+                    case "0":
                         this.searchLocation();
                         if (this.searchError) {
                             gotError = true;
@@ -482,6 +480,8 @@
                         this.searchError = gotError;
                         this.hasSearchResults = gotResult;
                         break;
+
+                    default: break;
                 }
             },       },
         created() {

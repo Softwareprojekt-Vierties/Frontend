@@ -1,15 +1,14 @@
 <template>
-    <div class="location-card">
-        <div class="location-image-container">
-            <img :alt="name" :src="computedImagePath" class="location-image">
+    <div class="card">
+        <div class="image-container">
+            <img :alt="name" :src="computedImagePath" class="image">
         </div>
-        <div class="location-details">
+        <div class="details">
             <h3>{{name}}</h3>
-            <p>Region: {{region}}</p>
-            <p>Preis: {{price}}</p>
-            <p>Kapazitaet: {{capacity}}</p>
-            <p>Flaeche: {{area}}</p>
-            <button>Location buchen</button>
+            <p>{{line1}}</p>
+            <p>{{line2}}</p>
+            <p>{{line3}}</p>
+            <button>{{buttonText}}</button>
         </div>
     </div>
 </template>
@@ -19,23 +18,23 @@
         props: {
             name: {
                 type: String,
-                default: "Campus Minden"
+                default: "-"
             }, 
-            region: {
+            line1: {
                 type: String,
-                default: "Minden"
+                default: "-"
             },
-            price: {
+            line2: {
                 type: String,
-                default: "free"
+                default: "-"
             },
-            capacity: {
+            line3: {
                 type: String,
-                default: "unbegrenzt"
+                default: "-"
             },
-            area: {
+            buttonText: {
                 type: String,
-                default: "-",
+                default: "-"
             },
             imagePath: {
                 type: String,
@@ -54,7 +53,7 @@
 </script>
 
 <style scoped>
-.location-card {
+.card {
     display: flex;
     background: rgb(239, 242, 240);
     margin: 21px;
@@ -63,20 +62,20 @@
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
 }
-  .location-image-container {
+  .image-container {
       flex: 5;
       display: flex;
       justify-content: center;
       align-items: center;
   }
 
-  .location-image {
+  .image {
       max-width: 80%;
       max-height: 80%;
       border-radius: 10%;
   }
 
-  .location-details {
+  .details {
       flex: 2;
       background-color: #fff; 
       padding: 15px; 
@@ -86,12 +85,12 @@
       font-size: 9;
   }
 
-  .location-details h3, .location-details p, .location-details button {
+  .details h3, .details p, .details button {
       color: #333;
       margin-top: 0;
       font-size: 9px;
   }
-  .location-details button {
+  .details button {
       background-color: #4CAF50; 
       color: white;
       border: none; 
