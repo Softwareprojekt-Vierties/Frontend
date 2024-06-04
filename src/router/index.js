@@ -15,7 +15,7 @@ const routes = [
         path: '/',
         name: 'anmeldung',
         component: isMobile() ? AnmeldungView : AnmeldungView // Corrigido para usar AnmeldungView
-    },  {
+    },  { //                    󱞩 MobileView    󱞩 DesktopView
         path: '/signup',
         name: 'signupSeite',
         component: isMobile() ? SignupView  : SignupView 
