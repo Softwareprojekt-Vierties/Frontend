@@ -4,7 +4,7 @@
   </div>
 
   <div>
-   <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
+   <input v-model="benutzername" class="textFeld" type="text" placeholder="Email" name="benutzername" />
   </div>
   <div>
    <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
@@ -57,7 +57,7 @@ export default {
         // Speichere das Token im Local Storage
         const token = response.data;
         localStorage.setItem('authToken', token);
-
+        this.$router.push('/search');
       })
       .catch(error => {
         console.error('Fehler beim Login:', error.response.data.message);
