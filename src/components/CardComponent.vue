@@ -54,55 +54,72 @@
 
 <style scoped>
 .card {
-    display: flex;
-    background: rgb(239, 242, 240);
-    margin: 21px;
-    width: 320px;
-    height: 130px;
+    display: grid;
+    grid-template-columns: auto auto auto; 
+    background: white;
+    width: 400px;
+    height: 200px;
+    border: black solid 1px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
 }
-  .image-container {
-      flex: 5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
 
-  .image {
-      max-width: 80%;
-      max-height: 80%;
-      border-radius: 10%;
-  }
+.image-container {
+    justify-self: center;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+}
 
-  .details {
-      flex: 2;
-      background-color: #fff; 
-      padding: 15px; 
-      border-top-right-radius: 10px; 
-      border-bottom-right-radius: 10px; 
-      font-family: Arial, sans-serif; 
-      font-size: 9;
-  }
+.image {
+    width: 80%;
+    height: 80%;
+    border-radius: 2%;
+    object-fit: cover;
+    margin: 10%;
+}
 
-  .details h3, .details p, .details button {
-      color: #333;
-      margin-top: 0;
-      font-size: 9px;
-  }
-  .details button {
-      background-color: #4CAF50; 
-      color: white;
-      border: none; 
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 10px;
-      cursor: pointer;
-      border-radius: 5px; 
-      width: 100px;
-      height: 20px;
-      margin: 4px 2px;
-  }
+.details {
+    background-color: white; 
+    color: black;
+    padding: 15px; 
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px; 
+    font-family: Arial, sans-serif; 
+}
+
+.details h3 {
+    margin-top: 0;
+    font-size: 14;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5); 
+}
+
+.details p {
+    color: black;
+    margin-top: 0;
+    font-size: 8;
+}
+
+.details button {
+    color: black;
+    margin-top: 0;
+    font-size: 7;
+}
+
+.details button {
+    background-color: #92D050; 
+    color: black;
+    border: none; 
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    cursor: pointer;
+    border: black solid 1px;
+    border-radius: 5px; 
+    width: 100px;
+    height: 20px;
+    margin: 4px 2px;
+}
 </style>
 

@@ -513,11 +513,11 @@
 }
 
 .events{
-    display:flex;
-    flex:5;
-    border-radius:10px; 
+    display: grid;
+    grid-template: auto auto auto;
+    gap: 10px;
+    border-radius: 10px; 
     flex-wrap: wrap;
-    justify-content:flex-start;
 }
 
 .filter-container {
