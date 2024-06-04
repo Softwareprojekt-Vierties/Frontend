@@ -5,34 +5,39 @@ import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
 import SucheView from '@/views/SucheView.vue'
 
+function isMobile() {
+    const MAX_MOBILE_WIDTH = 800;
+    return window.innerWidth < MAX_MOBILE_WIDTH;
+}
+
 const routes = [
-  {
-    path: '/',
-    name: 'anmeldung',
-    component: AnmeldungView // Corrigido para usar AnmeldungView
-  },  {
-    path: '/signup',
-    name: 'signupSeite',
-    component: SignupView 
-  }
-  ,  {
-    path: '/usertype',
-    name: 'SelectingUserType',
-    component: NutzerUnterscheidungView 
-  },  {
-    path: '/servicetype',
-    name: 'SelectingServiceType',
-    component: ServiceTypeView 
-  },  {
-    path: '/search',
-    name: 'SucheViewType',
-    component: SucheView 
-  }
+    {
+        path: '/',
+        name: 'anmeldung',
+        component: isMobile() ? AnmeldungView : AnmeldungView // Corrigido para usar AnmeldungView
+    },  {
+        path: '/signup',
+        name: 'signupSeite',
+        component: isMobile() ? SignupView  : SignupView 
+    }
+    ,  {
+        path: '/usertype',
+        name: 'SelectingUserType',
+        component: isMobile() ? NutzerUnterscheidungView  : NutzerUnterscheidungView 
+    },  {
+        path: '/servicetype',
+        name: 'SelectingServiceType',
+        component: isMobile() ? ServiceTypeView  : ServiceTypeView 
+    },  {
+        path: '/search',
+        name: 'SucheViewType',
+        component: isMobile() ? SucheView  : SucheView 
+    }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 
 export default router
