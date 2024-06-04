@@ -68,7 +68,7 @@
                 </select>
             </div>
             <div class="bookmark-arrow-div">
-                <img alt="Normal Arrow" id="normal-arrow" src="../assets/normal-arrow.jpg" />
+                <img alt="Normal Arrow" id="normal-arrow" @click="sortContent" v-bind:src="[sortAscending ? require('@/assets/arrow-up.jpg') : require('@/assets/normal-arrow.jpg')]" />
             </div>
         </div>
         <div v-if="searchError">
@@ -119,7 +119,8 @@
                 searchType: "0",
                 searchResults: [],
                 searchError: false,
-                hasSearchResults: false
+                hasSearchResults: false,
+                sortAscending: false,
             };
         },
         methods: {
@@ -298,7 +299,7 @@
             },
             searchArtist() {
                 let filterResults = this.submitFilters();
-                axios.post("/searchArtist", {
+                axios.post("/search.artist", {
                     search: this.searchInput,
                     preis: filterResults.price,
                     kategorie: filterResults.category,
@@ -323,7 +324,7 @@
             },
             searchCaterer() {
                 let filterResults = this.submitFilters();
-                axios.post("/searchArtist", {
+                axios.post("/search.caterer", {
                     search: this.searchInput,
                     preis: filterResults.price,
                     kategorie: filterResults.category,
@@ -483,7 +484,55 @@
 
                     default: break;
                 }
-            },       },
+            },
+            sortContent() {
+                this.sortAscending = !this.sortAscending;
+                if (this.sortAscending) {
+                    this.searchResults.events.sort((a, b) => { 
+                        console.log(this.searchType);
+                        console.log(this.filterOptions[this.searchType]);
+                        console.log(this.filterOptions[this.searchType]?.filters);
+                        console.log(this.filterOptions[this.searchType]?.filters["0"]);
+                        return a.name.localeCompare(b.name);
+                    });
+                    this.searchResults.location.sort((a, b) => { 
+                        return a.name.localeCompare(b.name);
+                    });
+                    this.searchResults.artist.sort((a, b) => { 
+                        return a.name.localeCompare(b.name);
+                    });
+                    this.searchResults.caterer.sort((a, b) => { 
+                        return a.name.localeCompare(b.name);
+                    });
+                    this.searchResults.person.sort((a, b) => { 
+                        return a.name.localeCompare(b.name);
+                    });
+                    this.searchResults.tickets.sort((a, b) => { 
+                        return a.name.localeCompare(b.name);
+                    });
+                } else {
+                    this.searchResults.events.sort((a, b) => { 
+                        return b.name.localeCompare(a.name);
+                    });
+                    this.searchResults.location.sort((a, b) => { 
+                        return b.name.localeCompare(a.name);
+                    });
+                    this.searchResults.artist.sort((a, b) => { 
+                        return b.name.localeCompare(a.name);
+                    });
+                    this.searchResults.caterer.sort((a, b) => { 
+                        return b.name.localeCompare(a.name);
+                    });
+                    this.searchResults.person.sort((a, b) => { 
+                        return b.name.localeCompare(a.name);
+                    });
+                    this.searchResults.tickets.sort((a, b) => { 
+                        return b.name.localeCompare(a.name);
+                    });
+                }
+                this.$forceUpdate();
+            }
+        },
         created() {
             this.search();
         }

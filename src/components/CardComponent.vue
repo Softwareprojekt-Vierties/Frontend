@@ -39,7 +39,7 @@
             imagePath: {
                 type: String,
                 default : require("@/assets/bild-hsbi.jpg")
-            }
+            },
         },
         computed: {
             computedImagePath() {
@@ -47,9 +47,9 @@
                     return require("@/assets/bild-hsbi.jpg");
                 }
                 return this.imagePath;
-            }
+            },
         },
-    }
+    };
 </script>
 
 <style scoped>
@@ -57,8 +57,8 @@
     display: grid;
     grid-template-columns: auto auto auto; 
     background: white;
-    width: 400px;
-    height: 200px;
+    width: 25%;
+    height: auto;
     border: black solid 1px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
