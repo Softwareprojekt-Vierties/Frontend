@@ -32,7 +32,7 @@ export default {
 <style scoped>
 
   .image{
-    margin-top: -100px;
+    margin-top: 100px;
     margin-bottom: 150px;
   }
 

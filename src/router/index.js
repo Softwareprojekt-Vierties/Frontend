@@ -4,6 +4,7 @@ import SignupView from '../views/SignupView.vue'
 import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
 import CreateEvent from '../views/CreateEventView.vue'
+import SucheView from '@/views/SucheView.vue'
 
 const routes = [
   {
@@ -27,6 +28,10 @@ const routes = [
     path: '/createevent',
     name: 'CreateEventType',
     component: CreateEvent 
+  },  {
+    path: '/search',
+    name: 'SucheViewType',
+    component: SucheView 
   }
 ]
 

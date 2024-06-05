@@ -4,14 +4,14 @@
   </div>
 
   <div>
-   <input v-model="benutzername" class="textFeld" type="text" placeholder="Benutzername" name="benutzername" />
+   <input v-model="benutzername" class="textFeld" type="text" placeholder="Email" name="benutzername" />
   </div>
   <div>
    <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
   </div>
 
   <div class="buttonBox"> 
-    <button @click="fetchData" class="kontoAnlegen">Konto anlegen</button>
+    <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
     <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
   <div>
@@ -36,7 +36,7 @@ export default {
   }, 
   computed: {
     isFormValid() {
-      const passwordValid = this.password.length >= 6;
+      const passwordValid = this.password.length > 0;
       const benutzernameValid = this.benutzername.length > 0;
       return passwordValid && benutzernameValid;
     }
@@ -57,7 +57,7 @@ export default {
         // Speichere das Token im Local Storage
         const token = response.data;
         localStorage.setItem('authToken', token);
-
+        this.$router.push('/search');
       })
       .catch(error => {
         console.error('Fehler beim Login:', error.response.data.message);
@@ -87,7 +87,7 @@ export default {
 
 <style scoped>
 .image {
-  margin-top: -100px;
+  margin-top: 100px;
   margin-bottom: 100px;
 }
 
