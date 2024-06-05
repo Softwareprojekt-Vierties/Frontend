@@ -19,7 +19,7 @@
 
     <div id="selct-filter-searchbar">
         <div id="select-filter">
-            <select v-model="searchType" class="options" @change="updateFilterContent">
+            <select v-model="searchType" class="options" @change="toggleSearchType">
                 <option value="0">Kategorie wählen</option>
                 <option value="1">Location</option>
                 <option value="2">DJ/Band</option>
@@ -54,21 +54,13 @@
             <div class="bookmark-arrow-div">
                 <img alt="Bookmark White" id="bookmark-white" src="../assets/bookmark-white.jpg" />
             </div>
-            <div id="select-sort">
-                <select class="options">
-                    <option value="1">Location</option>
-                    <option value="2">DJ/Band</option>
-                    <option value="3">Caterer</option>
-                    <option value="4">Event</option>
-                    <option value="5">Person</option>
-                    <option value="6">Meine Events</option>
-                    <option value="7">Meine Tickets</option>
-                    <option value="8">Meine Freunde</option>
-                    <option value="9">Meine Locations</option>
+            <div id="select-sort" @change="sortContent">
+                <select v-model="sortType" class="options">
+                    <option v-for="option in sortingOptions[searchType]['filters']" :value="option" v-bind:key="option">{{translations[option]}}</option>
                 </select>
             </div>
             <div class="bookmark-arrow-div">
-                <img alt="Normal Arrow" id="normal-arrow" @click="sortContent" v-bind:src="[sortAscending ? require('@/assets/arrow-up.jpg') : require('@/assets/normal-arrow.jpg')]" />
+                <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-bind:src="[sortAscending ? require('@/assets/arrow-up.jpg') : require('@/assets/normal-arrow.jpg')]" />
             </div>
         </div>
         <div v-if="searchError">
@@ -103,6 +95,7 @@
         data() {
             return {
                 filterContent: "",
+                filterSelection: "",
                 selectedFilters: [],
                 filterOptions: {
                     '1': { name: 'location', filters: ['region', 'date', 'distance', 'capacity', 'rating', 'startTime', 'duration', 'openAir', 'price'] },
@@ -115,8 +108,37 @@
                     '8': { name: 'myFriends', filters: ['region', 'age', 'gender'] },
                     '9': { name: 'myLocation', filters: ['region', 'date', 'distance', 'capacity', 'rating', 'startTime', 'duration', 'openAir', 'price'] },
                 },
+                sortingOptions: {
+                    "0": { name: "none", filters: ["name"] },
+                    "1": { name: "location", filters: ["name", "region", "datum", "distance", "capacity", "rating", "uhrzeit", "duration", "preis"] },
+                    "2": { name: "djBand", filters: ["name", "region", "datum", "distance", "category", "rating", "uhrzeit", "duration", "experience", "preis"] },
+                    "3": { name: "caterer", filters: ["name", "region", "datum", "distance", "category", "rating", "uhrzeit", "duration", "experience", "preis"] },
+                    "4": { name: "event", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
+                    "5": { name: "person", filters: ["name", "region", "altersfreigabe", "gender"] },
+                    "6": { name: "myEvents", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
+                    "7": { name: "myTickets", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
+                    "8": { name: "myFriends", filters: ["name", "region", "altersfreigabe", "gender"] },
+                    "9": { name: "myLocation", filters: ["name", "region", "datum", "distance", "capacity", "rating", "uhrzeit", "duration", "preis"] },
+                },
+                translations: {
+                    name: "Name",
+                    region: "Region",
+                    datum: "Datum",
+                    distance: "Entfernung",
+                    capacity: "Kapazität",
+                    rating: "Bewertung",
+                    uhrzeit: "Startzeit",
+                    duration: "Dauer",
+                    experience: "Erfahrung",
+                    category: "Kategorie",
+                    altersfreigabe: "Alter",
+                    gender: "Geschlecht",
+                    eventgroesse: "Eventgröße",
+                    preis: "Preis",
+                },
                 searchInput: "",
                 searchType: "0",
+                sortType: "name",
                 searchResults: [],
                 searchError: false,
                 hasSearchResults: false,
@@ -127,6 +149,11 @@
             toggleTooltip() {
                 const tooltip = document.getElementById("dynamic-tooltip");
                 tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
+            },
+            toggleSearchType(event) {
+                this.updateFilterContent(event);
+                this.sortType = "name";
+                this.search();
             },
             updateFilterContent(event) {
                 const selectedValue = event.target.value;
@@ -185,66 +212,65 @@
                 this.selectedFilters.forEach((filter) => {
                     switch (filter) {
                         case "region":
-                            filterValues.region = filtersContainer.querySelector(".filter-region").value;
+                            filterValues.region = filtersContainer.querySelector(".filter-region")?.value ?? "";
                             break;
                         case "date":
-                            filterValues.date = filtersContainer.querySelector(".filter-date").value;
+                            filterValues.date = filtersContainer.querySelector(".filter-date")?.value ?? "";
                             break;
                         case "distance":
-                            filterValues.distance = filtersContainer.querySelector(".filter-distance").value;
+                            filterValues.distance = filtersContainer.querySelector(".filter-distance")?.value ?? "";
                             break;
                         case "capacity":
                             filterValues.capacity = [
-                                filtersContainer.querySelectorAll(".filter-capacity")[0].value,
-                                filtersContainer.querySelectorAll(".filter-capacity")[1].value,
+                                filtersContainer.querySelectorAll(".filter-capacity")[0]?.value ?? "",
+                                filtersContainer.querySelectorAll(".filter-capacity")[1]?.value ?? "",
                             ];
                             break;
                         case "rating":
-                            filterValues.rating = filtersContainer.querySelector(".filter-rating").value;
+                            filterValues.rating = filtersContainer.querySelector(".filter-rating")?.value ?? "";
                             break;
                         case "startTime":
                             filterValues.startTime = [
-                                filtersContainer.querySelectorAll(".filter-time")[0].value,
-                                filtersContainer.querySelectorAll(".filter-time")[1].value,
+                                filtersContainer.querySelectorAll(".filter-time")[0]?.value ?? "",
+                                filtersContainer.querySelectorAll(".filter-time")[1]?.value ?? "",
                             ];
                             break;
                         case "duration":
                             filterValues.duration = [
-                                filtersContainer.querySelectorAll(".filter-duration")[0].value,
-                                filtersContainer.querySelectorAll(".filter-duration")[1].value,
+                                filtersContainer.querySelectorAll(".filter-duration")[0]?.value ?? "",
+                                filtersContainer.querySelectorAll(".filter-duration")[1]?.value ?? "",
                             ];
                             break;
                         case "openAir":
-                            filterValues.openAir = filtersContainer.querySelector('input[type="checkbox"]').checked;
+                            filterValues.openAir = filtersContainer.querySelector('input[type="checkbox"]')?.checked ?? false;
                             break;
                         case "price":
                             filterValues.price = [
-                                filtersContainer.querySelectorAll(".filter-price")[0].value,
-                                filtersContainer.querySelectorAll(".filter-price")[1].value,
+                                filtersContainer.querySelectorAll(".filter-price")[0]?.value ?? "",
+                                filtersContainer.querySelectorAll(".filter-price")[1]?.value ?? "",
                             ];
                             break;
                         case "category":
-                            filterValues.category = filtersContainer.querySelector(".filter-category").value;
+                            filterValues.category = filtersContainer.querySelector(".filter-category")?.value ?? "";
                             break;
                         case "experience":
-                            filterValues.experience = filtersContainer.querySelector(".filter-experience").value;
+                            filterValues.experience = filtersContainer.querySelector(".filter-experience")?.value ?? "";
                             break;
                         case "eventSize":
-                            filterValues.eventSize = filtersContainer.querySelector(".filter-event-size").value;
+                            filterValues.eventSize = filtersContainer.querySelector(".filter-event-size")?.value ?? "";
                             break;
                         case "ticketPrice":
-                            filterValues.ticketPrice = filtersContainer.querySelector(".filter-ticket-price").value;
+                            filterValues.ticketPrice = filtersContainer.querySelector(".filter-ticket-price")?.value ?? "";
                             break;
                         case "age":
-                            filterValues.age = filtersContainer.querySelector(".filter-age").value;
+                            filterValues.age = filtersContainer.querySelector(".filter-age")?.value ?? "";
                             break;
                         case "gender":
-                            filterValues.gender = filtersContainer.querySelector(".filter-gender").value;
+                            filterValues.gender = filtersContainer.querySelector(".filter-gender")?.value ?? "";
                             break;
                     }
                 });
 
-                // console.log(filterValues);
                 // Hier können Sie die Filterdaten weiterverarbeiten
                 return filterValues;
             },
@@ -485,50 +511,35 @@
                     default: break;
                 }
             },
-            sortContent() {
+            sortArrowClick() {
                 this.sortAscending = !this.sortAscending;
+                this.sortContent();
+            },
+            sortContent() {
+                let sortType = this.sortType;
+                function sortCriteria(a, b) {
+                    if (a[sortType] > b[sortType]) {
+                        return 1;
+                    } else if (a[sortType] < b[sortType]) {
+                        return -1;
+                    }
+                    return 0;
+                }
+
                 if (this.sortAscending) {
-                    this.searchResults.events.sort((a, b) => { 
-                        console.log(this.searchType);
-                        console.log(this.filterOptions[this.searchType]);
-                        console.log(this.filterOptions[this.searchType]?.filters);
-                        console.log(this.filterOptions[this.searchType]?.filters["0"]);
-                        return a.name.localeCompare(b.name);
-                    });
-                    this.searchResults.location.sort((a, b) => { 
-                        return a.name.localeCompare(b.name);
-                    });
-                    this.searchResults.artist.sort((a, b) => { 
-                        return a.name.localeCompare(b.name);
-                    });
-                    this.searchResults.caterer.sort((a, b) => { 
-                        return a.name.localeCompare(b.name);
-                    });
-                    this.searchResults.person.sort((a, b) => { 
-                        return a.name.localeCompare(b.name);
-                    });
-                    this.searchResults.tickets.sort((a, b) => { 
-                        return a.name.localeCompare(b.name);
-                    });
+                    this.searchResults.events.sort((a, b) => sortCriteria(a, b));
+                    this.searchResults.location.sort((a, b) => sortCriteria(a, b));
+                    this.searchResults.artist.sort((a, b) => sortCriteria(a, b));
+                    this.searchResults.caterer.sort((a, b) => sortCriteria(a, b));
+                    this.searchResults.person.sort((a, b) => sortCriteria(a, b));
+                    this.searchResults.tickets.sort((a, b) => sortCriteria(a, b));
                 } else {
-                    this.searchResults.events.sort((a, b) => { 
-                        return b.name.localeCompare(a.name);
-                    });
-                    this.searchResults.location.sort((a, b) => { 
-                        return b.name.localeCompare(a.name);
-                    });
-                    this.searchResults.artist.sort((a, b) => { 
-                        return b.name.localeCompare(a.name);
-                    });
-                    this.searchResults.caterer.sort((a, b) => { 
-                        return b.name.localeCompare(a.name);
-                    });
-                    this.searchResults.person.sort((a, b) => { 
-                        return b.name.localeCompare(a.name);
-                    });
-                    this.searchResults.tickets.sort((a, b) => { 
-                        return b.name.localeCompare(a.name);
-                    });
+                    this.searchResults.events.sort((a, b) => -sortCriteria(a, b));
+                    this.searchResults.location.sort((a, b) => -sortCriteria(a, b));
+                    this.searchResults.artist.sort((a, b) => -sortCriteria(a, b));
+                    this.searchResults.caterer.sort((a, b) => -sortCriteria(a, b));
+                    this.searchResults.person.sort((a, b) => -sortCriteria(a, b));
+                    this.searchResults.tickets.sort((a, b) => -sortCriteria(a, b));
                 }
                 this.$forceUpdate();
             }
