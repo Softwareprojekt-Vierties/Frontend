@@ -19,9 +19,10 @@
 .dish-form {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    margin-left: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     padding: 10px;
+    border-radius: 10px;
 }
 
 input[type="text"] {
@@ -36,7 +37,11 @@ input[type="text"] {
 #add-location-icon {
     border-radius: 5px;
     background-color: white;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 70px;
+    margin-left: 70px;
 }
 </style>

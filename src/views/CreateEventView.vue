@@ -1,132 +1,144 @@
 <template>
-  <div id="header">
-    <div id="icon-div">
-      <img alt="Filer" class="icon" src="../assets/home.jpg">
-    </div>
-    <div id="picture-name">
-      <div id="file-div">
-        <div id="file-upload">
-          <label id="image-text" for="fileToUpload">
-            <img src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-            <span id="upload-text">Bild hochladen</span>
-          </label>
-          <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
+  <div id="app">
+    <div id="header">
+      <div id="icon-div">
+        <img alt="Filer" class="icon" src="../assets/home.jpg">
+      </div>
+      <div id="picture-name">
+        <div id="file-div">
+          <div id="file-upload">
+            <label id="image-text" for="fileToUpload">
+              <img src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+              <span id="upload-text">Bild hochladen</span>
+            </label>
+            <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
+          </div>
+        </div>
+        <div id="name-description">
+          <div class="name-description-input">
+            <label class="description">Eventnamen hinzufügen:</label>
+            <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
+          </div>
+          <div class="name-description-input">
+            <label class="description">Kurze Beschreibung hinzufügen:</label>
+            <input class="header-input" type="text" placeholder="z.B. Minden">
+          </div>
         </div>
       </div>
-      <div id="name-description">
-        <div class="name-description-input">
-          <label class="description">Eventnamen hinzufügen:</label>
-          <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
-        </div>
-        <div class="name-description-input">
-          <label class="description">Kurze Beschreibung hinzufügen:</label>
-          <input class="header-input" type="text" placeholder="z.B. Minden">
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div id = "main">
-    <div id="left-side">
-      <div class="long-description">
-        <label class="description">Beschreibung hinzufügen:</label>
-        <textarea id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
-      </div>
-      <br>
-      <div class="long-description">
-        <label class="description">Dienstleister hinzufügen:</label>
-        <div id="addcreator" ref="addCreator" class="scroll-container">
-          <div class="dish-container">
-            <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-              <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
-            </div>
-            <div class="add-dish-button" @click="addDish"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id ="add-icon" /></div>
-          </div>
+    <div id="main">
+      <div id="left-side">
+        <div class="long-description">
+          <label class="description">Beschreibung hinzufügen:</label>
+          <textarea id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
         </div>
-      </diV>
-    </div>
-    <div id = "right-side">
-      <div id="right-side-info">
-        <label id="info-headline">Infos hinzufügen:</label>
-        <div class = "infos">
-          <label class="info-subheadline">Location:</label>
-          <div>
-            <div id="add-location">
-              <img src="../assets/addlocation.jpg" alt="Bild hochladen" id ="add-location-icon" />
+        <br>
+        <div class="long-description">
+          <label class="description">Dienstleister hinzufügen:</label>
+          <div id="addcreator" ref="addCreator" class="scroll-container">
+            <div class="dish-container">
+              <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+                <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+              </div>
+              <div class="add-dish-button" @click="addDish"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
             </div>
           </div>
         </div>
-        <div class = "infos">
-          <label class="info-subheadline">Datum:</label>
-          <input class="input" type="text" placeholder="z.B. 17.08.2024">
-        </div>
-        <div class = "infos">
-          <label class="info-subheadline">Zeit:</label>
-          <div class="time"> 
-            <input class="time-value-left" placeholder="z.B. 17Uhr"> - <input class="time-value-right" placeholder="z.B. 20Uhr">
+      </div>
+      <div id="right-side">
+        <div id="right-side-info">
+          <label id="info-headline">Infos hinzufügen:</label>
+          <div class="infos">
+            <label class="info-subheadline">Location:</label>
+            <div>
+              <div id="add-location">
+                <img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
+              </div>
+            </div>
+          </div>
+          <div class="infos">
+            <label class="info-subheadline">Datum:</label>
+            <input class="input" type="text" placeholder="z.B. 17.08.2024">
+          </div>
+          <div class="infos">
+            <label class="info-subheadline">Zeit:</label>
+            <div class="time">
+              <input class="time-value-left" placeholder="z.B. 17Uhr"> - <input class="time-value-right" placeholder="z.B. 20Uhr">
+            </div>
+          </div>
+          <div class="infos">
+            <label class="info-subheadline">Eventgröße:</label>
+            <input class="input" type="text" placeholder="z.B. 50 Personen">
+          </div>
+          <div class="infos">
+            <label class="info-subheadline">Preis:</label>
+            <input class="input" type="text" placeholder="z.B. 50€">
+          </div>
+          <div class="infos">
+            <label class="info-subheadline">Alter:</label>
+            <input class="input" type="text" placeholder="z.B. 18 Jahre">
+          </div>
+          <div id="open-air">
+            <label class="info-subheadline">Open Air:</label>
+            <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
           </div>
         </div>
-        <div class = "infos">
-          <label class="info-subheadline">Eventgröße:</label>
-          <input class="input" type="text" placeholder="z.B. 50 Personen">
-        </div>
-        <div class = "infos">
-          <label class="info-subheadline">Preis:</label>
-          <input class="input" type="text" placeholder="z.B. 50€">
-        </div>
-        <div class = "infos">
-          <label class="info-subheadline">Alter:</label>
-          <input class="input" type="text" placeholder="z.B. 18 Jahre">
-        </div>
-        <div id = "open-air">
-          <label class="info-subheadline">Open Air:</label>
-          <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
-        </div>
-      </div>
-      <div id="buttons">
-        <div id="break">
-          abbrechen
-        </div>
-        <div id="continue">
-          anlegen
+        <div id="buttons">
+          <div id="break">
+            abbrechen
+          </div>
+          <div id="continue" @click="openModal">
+            anlegen
+          </div>
         </div>
       </div>
     </div>
+
+    <PopupModal :show="isModalVisible" @close="closeModal"/>
   </div>
 </template>
 
 <script>
 import DishForm from '../components/DishForm.vue';
+import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
 
 export default {
   components: {
-    DishForm
+    DishForm,
+    PopupModal
   },
   data() {
     return {
       dishes: [
         { name: '', ingredients: [] }
-      ]
+      ],
+      isModalVisible: false
     };
   },
   methods: {
     addDish() {
       this.dishes.push({ name: '', ingredients: [] });
       this.$nextTick(() => {
-      const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-      container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
-    });
+        const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
+        container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+      });
     },
     removeDish(index) {
       this.dishes.splice(index, 1);
+    },
+    openModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     }
   }
 }
 </script>
 
 <style scoped>
-
-html, body {
+:root html, body {
   width: 100%;
   height: 100%;
   background-color: rgb(242, 242, 242);
@@ -241,58 +253,58 @@ html, body {
 }
 
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 40px; /* Angepasst an die neue Höhe */
-    height: 20px;
-    margin-left: 20px;
+  position: relative;
+  display: inline-block;
+  width: 40px; /* Angepasst an die neue Höhe */
+  height: 20px;
+  margin-left: 20px;
 }
 
-.switch input { 
-    opacity: 0;
-    width: 0;
-    height: 0;
-    margin-left: 70px;
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin-left: 70px;
 }
 
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 20px; /* Angepasst an die neue Höhe */
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 20px; /* Angepasst an die neue Höhe */
 }
 
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 16px; /* Angepasst an die neue Höhe */
-    width: 16px; /* Angepasst an die neue Höhe */
-    left: 2px; /* Angepasst an die neue Höhe */
-    bottom: 2px; /* Angepasst an die neue Höhe */
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 50%;
+  position: absolute;
+  content: "";
+  height: 16px; /* Angepasst an die neue Höhe */
+  width: 16px; /* Angepasst an die neue Höhe */
+  left: 2px; /* Angepasst an die neue Höhe */
+  bottom: 2px; /* Angepasst an die neue Höhe */
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
 }
 
 input:checked + .slider {
-    background-color: rgb(0, 217, 217);
+  background-color: rgb(0, 217, 217);
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px rgb(0, 217, 217);
+  box-shadow: 0 0 1px rgb(0, 217, 217);
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
-    -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
-    transform: translateX(20px); /* Angepasst an die neue Höhe */
+  -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
+  -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
+  transform: translateX(20px); /* Angepasst an die neue Höhe */
 }
 
 #main {
@@ -311,6 +323,7 @@ input:checked + .slider:before {
   display: grid;
   grid-template-columns: 580px;
   justify-content: left;
+  font-weight: bold;
 }
 
 #right-side-info {
@@ -361,7 +374,7 @@ input:checked + .slider:before {
   font-family: Arial, sans-serif;
   font-size: 12px;
   padding: 10px;
-  border: 1px solid #000000; 
+  border: 1px solid #000000;
   border-radius: 8px;
   resize: none;
 }
@@ -384,6 +397,7 @@ input:checked + .slider:before {
   text-align: left; /* Text links ausrichten */
   font-family: Arial, sans-serif; /* Schriftart festlegen */
   font-size: 14px; /* Schriftgröße festlegen */
+  font-weight: bold;
 }
 
 #open-air {
@@ -408,9 +422,10 @@ input:checked + .slider:before {
   border-radius: 5px;
   border: 1px solid #000000;
   font-size: 12px;
-  display: flex; /* Flexbox-Modell verwenden */
-  justify-content: center; /* Horizontales Zentrieren */
-  align-items: center; /* Vertikales Zentrieren */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 #continue {
@@ -420,37 +435,10 @@ input:checked + .slider:before {
   border-radius: 5px;
   border: 1px solid #000000;
   font-size: 12px;
-  display: flex; /* Flexbox-Modell verwenden */
-  justify-content: center; /* Horizontales Zentrieren */
-  align-items: center; /* Vertikales Zentrieren */
-}
-
-#addcreator {
-  display: flex; /* Verwendet Flexbox für das Layout */
-  overflow-x: auto; /* Ermöglicht horizontales Scrollen, wenn der Inhalt breiter als der Container ist */
-  white-space: nowrap; /* Verhindert, dass die Inhalte in eine neue Zeile umgebrochen werden */
-  align-items: center; /* Zentriert die Elemente vertikal innerhalb des Containers */
-  padding: 20px 0; /* Fügt oben und unten Padding hinzu */
-}
-
-.dish-item {
-  display: inline-block; /* Jedes Gericht wird als Block-Element behandelt, das in einer Zeile bleibt */
-  margin-right: 10px; /* Fügt zwischen den Gerichten einen rechten Abstand hinzu */
-  flex: 0 0 auto; /* Verhindert, dass Flexbox die Größe der Elemente ändert */
-}
-
-.add-dish-button {
-  display: inline-flex; /* Stellt sicher, dass der Button in der gleichen Zeile bleibt und Flex-Eigenschaften nutzt */
-  align-items: center; /* Zentriert den Inhalt des Buttons vertikal */
-  justify-content: center; /* Zentriert den Inhalt des Buttons horizontal */
-  cursor: pointer; /* Ändert den Cursor beim Hover über den Button */
-  width: 50px; /* Setzt eine feste Breite für den Button */
-  height: 50px; /* Setzt eine feste Höhe für den Button */
-}
-
-#add-icon {
-  width: 24px; /* Setzt eine feste Breite für das Icon */
-  height: 24px; /* Setzt eine feste Höhe für das Icon */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 #addcreator {
@@ -459,5 +447,35 @@ input:checked + .slider:before {
   white-space: nowrap;
   align-items: center;
   padding: 20px 0;
+}
+
+.dish-item {
+  display: inline-block;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+.add-dish-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+#add-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.dish-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer {
+  background-color: rgb(242, 242, 242);
 }
 </style>
