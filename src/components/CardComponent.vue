@@ -54,7 +54,7 @@
 
 <style scoped>
 .card {
-    display: grid;
+    display: inline-grid;
     grid-template-columns: auto auto auto; 
     background: white;
     width: 25%;
