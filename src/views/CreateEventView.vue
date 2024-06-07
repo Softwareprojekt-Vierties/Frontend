@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import DishForm from '../components/DishForm.vue';
+import DishForm from '../components/ArtistComponent.vue';
 import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
 
 export default {
