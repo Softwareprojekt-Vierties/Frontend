@@ -5,6 +5,7 @@ import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
 import CreateEvent from '../views/CreateEventView.vue'
 import SucheView from '@/views/SucheView.vue'
+import CreateCatererView from '@/views/CreateCatererView.vue'
 
 const routes = [
   {
@@ -32,6 +33,10 @@ const routes = [
     path: '/search',
     name: 'SucheViewType',
     component: SucheView 
+  },  {
+    path: '/createcaterer',
+    name: 'CreateCatererType',
+    component: CreateCatererView 
   }
 ]
 
