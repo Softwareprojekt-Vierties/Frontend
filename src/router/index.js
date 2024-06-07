@@ -6,6 +6,7 @@ import ServiceTypeView from '../views/ServiceTypeView.vue'
 import CreateEvent from '../views/CreateEventView.vue'
 import SucheView from '@/views/SucheView.vue'
 import CreateCatererView from '@/views/CreateCatererView.vue'
+import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
 
 const routes = [
@@ -39,9 +40,14 @@ const routes = [
     name: 'CreateCatererType',
     component: CreateCatererView 
   },  {
+    path: '/createlocation',
+    name: 'CreateLocationType',
+    component: CreateLocationView 
+  },  {
     path: '/createdj',
     name: 'CreateDjType',
     component: CreateDjView 
+
   }
 ]
 
