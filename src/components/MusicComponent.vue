@@ -1,23 +1,44 @@
 <template>
-    <div id="dish-form">
-      <div id="right">
-        <div id="text">
-          Lied1:
-        </div>
-        <input id="input" placeholder="z.B. Party-Song">
-        <div id="ingredients">
-          Infos:
-        </div>
-        <input id="input" placeholder="z.B. Länge: 3,41 min">
-        <input id="input" placeholder="z.B. Jahr: 2024">
+  <div id="dish-form">
+    <div id="right">
+      <div id="text">
+        Lied:
       </div>
+      <input v-model="songName" id="input" placeholder="z.B. Party-Song">
+      <div id="ingredients">
+        Infos:
+      </div>
+      <input v-model="songLength" id="input" placeholder="z.B. Länge: 3,41 min">
+      <input v-model="songYear" id="input" placeholder="z.B. Jahr: 2024">
     </div>
-  </template>
-  
-  <script>
-  export default {
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      songName: '',
+      songLength: '',
+      songYear: ''
+    };
+  },
+  methods: {
+    getData() {
+      return {
+        songName: this.songName,
+        songLength: this.songLength,
+        songYear: this.songYear
+      };
+    },
+    clearFields() {
+      this.songName = '';
+      this.songLength = '';
+      this.songYear = '';
+    }
   }
-  </script>
+}
+</script>
   
   <style scoped>
   #dish-form {
