@@ -65,7 +65,7 @@
           </div>
           <div id="buttons">
             <div id="break" @click="reset">
-              abbrechen
+              zurücksetzen
             </div>
             <div id="continue" @click="createLocation">
               anlegen
@@ -137,43 +137,34 @@
         this.$router.push("/search");
       },
 
-      async createLocation(){
-
+      async createLocation() {
         if (!this.locationName || !this.smallDescription || !this.longDescription || !this.region || !this.address 
             || !this.quantityPersons || !this.price || !this.size || !this.eventImage) {
-          
-        alert('Please fill in all required fields.');
-        return;
-
+          alert('Please fill in all required fields.');
+          return;
         }
-        const formData = new FormData();
-        formData.append('locationName',this.locationName);
-        formData.append('smallDescription',this.smallDescription);
-        formData.append('longDescription',this.longDescription);
-        formData.append('region',this.region);
-        formData.append('address',this.address);
-        formData.append('quantityPersons',this.quantityPersons);
-        formData.append('price',this.price);
-        formData.append('size',this.size);
-        formData.append('openAir',this.openAir);
-        formData.append('eventImage',this.eventImage);
 
-        const token = localStorage.getItem('authToken'); 
+        let formData = new FormData();
+        formData.append('name', this.locationName);
+        formData.append('kurzbeschreibung', this.smallDescription);
+        formData.append('beschreibung', this.longDescription);
+        formData.append('region', this.region);
+        formData.append('addresse', this.address);
+        formData.append('kapazitaet', this.quantityPersons);
+        formData.append('preis', this.price);
+        formData.append('flaeche', this.size);
+        formData.append('openair', this.openAir);
+        formData.append('bild', this.eventImage);
+        console.log('FormData:', Array.from(formData.entries())); 
 
         try {
-          const response = await axios.post('/createLocation', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'auth': token
-            }
-          });
-          console.log('Location created :', response.data);
+          const response = await axios.post('/createLocation', formData);
+          console.log('Location created:', response.data);
           alert('Location created successfully!');
           this.reset();
-        } 
-        catch (error) {
-        console.error('Error with Location creation:', error);
-        alert('Error creating location. Please try again.');
+        } catch (error) {
+          console.error('Error with Location creation:', error);
+          alert('Error creating location. Please try again.');
         }
       }
     }
