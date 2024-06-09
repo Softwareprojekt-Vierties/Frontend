@@ -1,14 +1,27 @@
 <template>
-    <div class="card">
+    <div id="card">
         <div class="image-container">
             <img :alt="name" :src="computedImagePath" class="image">
         </div>
-        <div class="details">
-            <h3>{{name}}</h3>
-            <p>{{line1}}</p>
-            <p>{{line2}}</p>
-            <p>{{line3}}</p>
-            <button>{{buttonText}}</button>
+        <div id="details">
+            <div id="name-bookmark">
+                <div id="headline">
+                    UNI PARTY
+                </div>
+                <img :alt="name" :src="computedImagePath" class="bookmark">
+            </div>
+            <div class="line-div">
+                Location: Campus Minden
+            </div>
+            <div class="line-div">
+                Datum: 17.8.2024
+            </div>
+            <div class="line-div">
+                Zeit: 19 Uhr – 2Uhr
+            </div>
+            <div id="button">
+                Ticket buchen (20/50)
+            </div>
         </div>
     </div>
 </template>
@@ -53,73 +66,67 @@
 </script>
 
 <style scoped>
-.card {
-    display: inline-grid;
-    grid-template-columns: auto auto auto; 
-    background: white;
-    width: 25%;
-    height: auto;
-    border: black solid 1px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-}
-
-.image-container {
-    justify-self: center;
+#card {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: top;
     justify-content: center;
-    align-self: center;
-    align-items: center;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    gap: 15px;
+    width: 380px;
 }
 
 .image {
-    width: 80%;
-    height: 80%;
-    border-radius: 2%;
-    object-fit: cover;
-    margin: 10%;
+    width: 170px;
+    height: 135px;
+    border-radius: 5px;
 }
 
-.details {
-    background-color: white; 
-    color: black;
-    padding: 15px; 
-    border-top-right-radius: 10px; 
-    border-bottom-right-radius: 10px; 
-    font-family: Arial, sans-serif; 
+.bookmark {
+    width: 20px;
+    height: 30px;
 }
 
-.details h3 {
-    margin-top: 0;
-    font-size: 14;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.5); 
-}
-
-.details p {
-    color: black;
-    margin-top: 0;
-    font-size: 8;
-}
-
-.details button {
-    color: black;
-    margin-top: 0;
-    font-size: 7;
-}
-
-.details button {
-    background-color: #92D050; 
-    color: black;
-    border: none; 
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+.line-div {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-content: left;
+    text-align: left;
+    margin-bottom: 11px;
     font-size: 10px;
-    cursor: pointer;
-    border: black solid 1px;
-    border-radius: 5px; 
-    width: 100px;
-    height: 20px;
-    margin: 4px 2px;
+}
+
+#name-bookmark {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+}
+
+#details {
+}
+
+#name-bookmark {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: black;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#button {
+    font-size: 11px;
+    background-color: rgb(146, 208, 80);
+    padding: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 180px;
+    height: 15px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
 }
 </style>
-
