@@ -67,7 +67,7 @@
             </div>
         </div>
         <div v-if="hasSearchResults" id="results">
-            <CardComponent v-for="result in searchResults.events" :name="result.name" :line1="`Location: ${result.locationid}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+            <CardComponent v-for="result in searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
             <CardComponent v-for="result in searchResults.location" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kapazität: ${result.capacity}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
             <CardComponent v-for="result in searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
             <CardComponent v-for="result in searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
@@ -286,13 +286,14 @@
                     uhrzeit: filterResults.startTime,
                     eventgroesse: filterResults.eventSize,
                     preis: filterResults.price,
-                    altersfreigabe: filterResults.age
-                    // location and distance still have to go
+                    altersfreigabe: filterResults.age,
+                    region: filterResults.region,
+                    distanz: filterResults.distance,
                 })
                     .then(response => {
-                        console.log("Successful search:", response.data.rows);
-                        this.searchResults.events = response.data.rows;
-                        this.hasSearchResults |= response.data.rows.length > 0;
+                        console.log("Successful search:", response);
+                        this.searchResults.events = response.data;
+                        this.hasSearchResults |= response.data.length > 0;
                     })
                     .catch(error => {
                         console.error("Unsuccessful search:", error);
@@ -306,11 +307,9 @@
                     search: this.searchInput,
                     kapazitaet: filterResults.capacity,
                     preis: filterResults.price,
-                    // location and distance still have to go
-                    // Datum?
-                    // Dauer?
-                    // Startzeit?
-                    // Bewertung
+                    region: filterResults.region,
+                    distanz: filterResults.distance,
+                    bewertung: filterResults.rating,
                 })
                     .then(response => {
                         console.log("Successful search:", response.data.rows);
@@ -329,11 +328,9 @@
                     preis: filterResults.price,
                     kategorie: filterResults.category,
                     erfahrung: filterResults.experience,
-                    // location and distance still have to go
-                    // Datum?
-                    // Dauer?
-                    // Startzeit?
-                    // Bewertung
+                    distanz: filterResults.distance,
+                    region: filterResults.region,
+                    bewertung: filterResults.rating,
                 })
                     .then(response => {
                         console.log("Successful search:", response.data.rows);
@@ -352,11 +349,9 @@
                     preis: filterResults.price,
                     kategorie: filterResults.category,
                     erfahrung: filterResults.experience,
-                    // location and distance still have to go
-                    // Datum?
-                    // Dauer?
-                    // Startzeit?
-                    // Bewertung
+                    distanz: filterResults.distance,
+                    region: filterResults.region,
+                    bewertung: filterResults.rating,
                 })
                     .then(response => {
                         console.log("Successful search:", response.data.rows);
@@ -374,11 +369,7 @@
                     search: this.searchInput,
                     geschlecht: filterResults.gender,
                     alter: filterResults.age,
-                    // location and distance still have to go
-                    // Datum?
-                    // Dauer?
-                    // Startzeit?
-                    // Bewertung
+                    region: filterResults.region,
                 })
                     .then(response => {
                         console.log("Successful search:", response.data.rows);
@@ -467,7 +458,6 @@
                     }
                     return 0;
                 }
-                console.log(this.searchResults);
 
                 if (this.sortAscending) {
                     Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => sortCriteria(a, b)));
