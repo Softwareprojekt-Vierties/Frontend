@@ -6,21 +6,21 @@
         <div id="details">
             <div id="name-bookmark">
                 <div id="headline">
-                    UNI PARTY
+                    {{name}}
                 </div>
-                <img :alt="name" :src="computedImagePath" class="bookmark">
+                <img :alt="name" :src="require(isBookmarked ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
             </div>
             <div class="line-div">
-                Location: Campus Minden
+                {{line1}}
             </div>
             <div class="line-div">
-                Datum: 17.8.2024
+                {{line2}}
             </div>
             <div class="line-div">
-                Zeit: 19 Uhr – 2Uhr
+                {{line3}}
             </div>
-            <div id="button">
-                Ticket buchen (20/50)
+            <div id="button" @click="clickFuntion">
+                {{buttonText}}
             </div>
         </div>
     </div>
@@ -53,6 +53,14 @@
                 type: String,
                 default : require("@/assets/bild-hsbi.jpg")
             },
+            isBookmarked: {
+                type: Boolean,
+                default: false
+            },
+            clickFuntion: {
+                type: Function,
+                default: function () { console.log("No function"); }
+            }
         },
         computed: {
             computedImagePath() {
