@@ -455,7 +455,7 @@
             },
             toggleBookmark() {
                 this.bookmarked = !this.bookmarked;
-                // filter for bookmarked elements
+                // TODO: filter for bookmarked elements
             },
         },
         created() {
