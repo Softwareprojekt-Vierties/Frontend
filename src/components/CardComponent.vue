@@ -8,7 +8,7 @@
                 <div id="headline">
                     {{name}}
                 </div>
-                <img :alt="name" :src="require(isBookmarked ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
             </div>
             <div class="line-div">
                 {{line1}}
@@ -60,6 +60,11 @@
             clickFuntion: {
                 type: Function,
                 default: function () { console.log("No function"); }
+            },
+        },
+        data() {
+            return {
+                hasBookmark: false,
             }
         },
         computed: {
@@ -70,6 +75,15 @@
                 return this.imagePath;
             },
         },
+        methods: {
+            changeBookmark() {
+                this.hasBookmark = !this.hasBookmark;
+                // send switch to server
+            }
+        },
+        created() {
+            this.hasBookmark = this.isBookmarked;
+        }
     };
 </script>
 
@@ -120,6 +134,7 @@
 
 #name-bookmark {
     margin-bottom: 10px;
+    cursor: pointer;
     font-size: 18px;
     color: black;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -127,6 +142,7 @@
 
 #button {
     font-size: 11px;
+    cursor: pointer;
     background-color: rgb(146, 208, 80);
     padding: 5px;
     border: 1px solid #000;
