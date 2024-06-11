@@ -8,6 +8,7 @@ import SucheView from '@/views/SucheView.vue'
 import CreateCatererView from '@/views/CreateCatererView.vue'
 import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
+import EditLocationView from '@/views/EditLocationView.vue'
 
 const routes = [
   {
@@ -47,6 +48,11 @@ const routes = [
     path: '/createdj',
     name: 'CreateDjType',
     component: CreateDjView 
+
+  },  {
+    path: '/editLocation',
+    name: 'EditLocationType',
+    component: EditLocationView 
 
   }
 ]
