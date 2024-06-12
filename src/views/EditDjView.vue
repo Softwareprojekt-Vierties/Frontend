@@ -181,7 +181,7 @@
             formData.append('category', this.category);
             formData.append('experience', this.experience);
             formData.append('price', this.price);
-            formData.append('uploadedImage', this.uploadedImage);
+            formData.append('uploadedImage', this.imagePreview);
             formData.append('songs', JSON.stringify(this.songs));
 
             const token = localStorage.getItem('authToken'); 
