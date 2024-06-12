@@ -150,6 +150,8 @@
             this.imagePreview = e.target.result;
           };
           reader.readAsDataURL(file);
+            let urlString = `data:${this.bild.type};base64,${btoa(this.imagePreview.data)}`;
+            console.log(urlString);
         }
       },
       reset(){
