@@ -149,7 +149,7 @@
         formData.append('kurzbeschreibung', this.smallDescription);
         formData.append('beschreibung', this.longDescription);
         formData.append('region', this.region);
-        formData.append('addresse', this.address);
+        formData.append('adresse', this.address);
         formData.append('kapazitaet', this.quantityPersons);
         formData.append('preis', this.price);
         formData.append('flaeche', this.size);
