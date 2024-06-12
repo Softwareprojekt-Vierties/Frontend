@@ -154,7 +154,7 @@
         formData.append('preis', this.price);
         formData.append('flaeche', this.size);
         formData.append('openair', this.openAir);
-        formData.append('bild', this.eventImage);
+        formData.append('bild', this.imagePreview);
         console.log('FormData:', Array.from(formData.entries())); 
 
         try {
