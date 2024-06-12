@@ -753,6 +753,8 @@
       width: 35px;
       height: 35px;
       cursor: pointer;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      font-weight: 600;
   }
 
   #selct-filter-searchbar {

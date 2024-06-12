@@ -3,10 +3,10 @@
         <div id="header">
             <div id="profile-mail">
                 <div class="icon-div">
-                    <img @click="gotoProfilePage" alt="Filer" class="icon" src="../assets/profile-icon.png" />
+                    <img @click="gotoProfilePage" alt="Dein Profil" class="icon" src="../assets/profile-icon.png" />
                 </div>
                 <div class="icon-div">
-                    <img @click="gotoMailPage" alt="Filer" class="icon" src="../assets/mail-icon.png" />
+                    <img @click="gotoMailPage" alt="Dein Postfach" class="icon" src="../assets/mail-icon.png" />
                 </div>
             </div>
             <div id="new-event">
@@ -78,6 +78,8 @@
       width: 35px;
       height: 35px;
       cursor: pointer;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      font-weight: 600;
   }
 
   #new-event-button {
