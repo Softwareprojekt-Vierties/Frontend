@@ -150,8 +150,6 @@
             this.imagePreview = e.target.result;
           };
           reader.readAsDataURL(file);
-            let urlString = `data:${this.bild.type};base64,${btoa(this.imagePreview.data)}`;
-            console.log(urlString);
         }
       },
       reset(){
@@ -179,7 +177,7 @@
         formData.append('preis', this.preis);
         formData.append('flaeche', this.flaeche);
         formData.append('openair', this.openair);
-        formData.append('bild', this.bild);
+        formData.append('bild', this.imagePreview);
         console.log('FormData:', Array.from(formData.entries())); 
 
         try {
