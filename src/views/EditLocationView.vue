@@ -109,10 +109,10 @@
           console.log(dbLocation);
           this.originalData = { ...dbLocation };
           this.setFormData(dbLocation);
-
           console.log('Location data received:', response.data);
         } catch (error) {
           console.error('Error with sending location ID to DB :', error);
+
         }
     },
 
