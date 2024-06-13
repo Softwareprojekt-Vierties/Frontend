@@ -103,6 +103,7 @@
         price: '',
         imagePreview: null,
         uploadedImage: null,
+        email:'',
         songs: [
           { songName: '', songLength: '', songYear: '' }
         ],
@@ -110,40 +111,46 @@
 
       };
     },
+
+    async created(){
+        let id = 3;
+          try {
+              const response = await axios.get(`/getArtistById/${id}`);
+              const dbDj = response.data.rows[0];
+              console.log(dbDj);
+              this.originalData = { ...dbDj };
+              this.setFormData(dbDj);
+              console.log('dj data received:', response.data);
+          } catch (error) {
+              console.error('Error with sending dj ID to DB :', error);
+            }
+        },
+
+
     computed: {
       fileDivStyle() {
         return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
       }
     },
-    methods: {
 
-        async created(){
-        let id = 1;
-        try {
-            const response = await axios.get(`/getdj/${id}`);
-            const dbDj = response.data.rows[0];
-            console.log(dbDj);
-            this.originalData = { ...dbDj };
-            this.setFormData(dbDj);
-            console.log('dj data received:', response.data);
-            } catch (error) {
-            console.error('Error with sending dj ID to DB :', error);
-
-            }
-        },
-
+  
+      methods: {
         setFormData(data) {
-          this.djName = data.djName;
-          this.shortDescription = data.shortDescription;
-          this.longDescription = data.longDescription ;
+          this.djName = data.benutzername;
+          this.shortDescription = data.kurzbeschreibung;
+          this.longDescription = data.beschreibung ;
           this.region = data.region;
-          this.category = data.category;
-          this.experience =  data.experience;
-          this.price = data.price;
-          this.imagePreview = data.bild;
-          this.uploadedImage = data.bild;
-          this.songs = data.songs;
+          this.category = data.kategorie;
+          this.experience =  data.erfahrung;
+          this.price = data.preis;
+          this.imagePreview = data.profilbild;
+          this.uploadedImage = data.profilbild;
+          this.email = data.emailfk;
+          console.log("email");
+          console.log(data.emailfk);
+          //this.songs = data.songs;
         },
+
 
         onFileChange(event) {
           const file = event.target.files[0];
@@ -173,35 +180,35 @@
                 alert('Please fill in all required fields.');
                 return;
             }
-            const formData = new FormData();
-            formData.append('benutzername', this.djName);
-            formData.append('shortDescription', this.shortDescription);
-            formData.append('longDescription', this.longDescription);
-            formData.append('region', this.region);
-            formData.append('category', this.category);
-            formData.append('experience', this.experience);
-            formData.append('price', this.price);
-            formData.append('uploadedImage', this.imagePreview);
-            formData.append('songs', JSON.stringify(this.songs));
 
-            const token = localStorage.getItem('authToken'); 
+            let formData = {};
+            formData.profilname = this.djName;
+            formData.kurzbeschreibung = this.shortDescription;
+            formData.beschreibung = this.longDescription;
+            formData.region = this.region;
+            formData.kategorie = this.category;
+            formData.erfahrung = this.experience;
+            formData.preis = this.price;
+            formData.email = this.email;
+            formData.bild = this.imagePreview;
 
-            try {
-                const response = await axios.post('/updateArtist', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'auth': token
-                }
-                });
-                console.log('DJ updated :', response.data);
-                alert('DJ updated successfully!');
-                this.reset();
+            //formData.songs = JSON.stringify(this.songs)
+
+
+            console.log('FormData:', formData); 
+
+            //const token = localStorage.getItem('authToken'); 
+
+          try {
+              const response = await axios.post('/updateArtist', formData);
+              console.log('Artist updated:', response.data);
+              alert('Artist updated successfully!');
             } catch (error) {
-                console.error('Error with DJ update:', error);
-                alert('Error with updating DJ. Please try again.');
+              console.error('Error with Artist update:', error);
+              alert('Error with Artist update. Please try again.');
             }
         }
-    }
+      }
 }
   </script>
   
