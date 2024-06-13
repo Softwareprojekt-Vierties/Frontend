@@ -167,33 +167,34 @@ export default {
         alert('Please fill in all required fields.');
         return;
       }
-      const formData = new FormData();
-      formData.append('catererName', this.catererName);
-      formData.append('shortDescription', this.shortDescription);
-      formData.append('longDescription', this.longDescription);
-      formData.append('region', this.region);
-      formData.append('category', this.category);
-      formData.append('experience', this.experience);
-      formData.append('price', this.price);
-      formData.append('uploadedImage', this.uploadedImage);
-      formData.append('dishes', JSON.stringify(this.dishes));
 
-      const token = localStorage.getItem('authToken'); 
+      let formData = {};
+        formData.benutzername = this.catererName;
+        formData.profilname = this.catererName;
+        formData.email = this.catererName;
+        formData.password = this.catererName;
+        formData.profilbild = this.imagePreview;
+        formData.kurzbeschreibung = this.shortDescription;
+        formData.beschreibung = this.longDescription;
+        formData.region = this.region;
+        formData.preis = this.price;
+        formData.kategorie = this.category;
+        formData.erfahrung = this.experience;
+
+        console.log('FormData:', formData); 
+
+
+      //const token = localStorage.getItem('authToken'); 
 
       try {
-        const response = await axios.post('/createCaterer', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'auth': token
-          }
-        });
-        console.log('Caterer created :', response.data);
-        alert('Caterer created successfully!');
-        this.default_values();
-      } catch (error) {
-        console.error('Error with Caterer creation:', error);
-        alert('Error creating Caterer. Please try again.');
-      }
+          const response = await axios.post('/createCaterer', formData);
+          console.log('Caterer created:', response.data);
+          alert('Caterer created successfully!');
+          this.reset();
+        } catch (error) {
+          console.error('Error with Caterer creation:', error);
+          alert('Error creating Caterer. Please try again.');
+        }
     }
   }
 }

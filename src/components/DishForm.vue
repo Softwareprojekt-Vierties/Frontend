@@ -63,7 +63,6 @@ export default {
       this.info2 = '';
       this.uploadedImage = null;
       this.imagePreview = null;
-      this.$emit('reset'); 
     }
    }
 }
