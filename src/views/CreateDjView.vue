@@ -39,7 +39,6 @@
           <div id="addcreator" ref="addCreator" class="scroll-container">
             <div class="dish-container">
               <div v-for="(song, index) in songs" :key="index" class="dish-item">
-                <!-- Aqui colocamos o formulário de música -->
                 <div id="dish-form">
                   <div id="right">
                     <div id="text">Lied:</div>
@@ -77,7 +76,7 @@
         </div>
         <div id="buttons">
           <div id="break" @click="reset">
-            abbrechen
+            zurücksetzen
           </div>
           <div id="continue" @click="createDJ" >
             anlegen
@@ -116,12 +115,16 @@ export default {
   },
   methods: {
     onFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.imagePreview = URL.createObjectURL(file);
-        this.uploadedImage = file;
-      }
-    },
+        const file = event.target.files[0];
+        if (file) {
+          this.uploadedImage = file;
+          const reader = new FileReader();
+          reader.onload = e => {
+            this.imagePreview = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      },
     addSong() {
       this.songs.push({ songName: '', songLength: '', songYear: '' });
     },
@@ -148,34 +151,37 @@ export default {
         alert('Please fill in all required fields.');
         return;
       }
-      const formData = new FormData();
-      formData.append('djName', this.djName);
-      formData.append('shortDescription', this.shortDescription);
-      formData.append('longDescription', this.longDescription);
-      formData.append('region', this.region);
-      formData.append('category', this.category);
-      formData.append('experience', this.experience);
-      formData.append('price', this.price);
-      formData.append('uploadedImage', this.uploadedImage);
-      formData.append('songs', JSON.stringify(this.songs));
 
-      const token = localStorage.getItem('authToken'); 
+
+      let formData = {};
+        formData.benutzername = this.djName;
+        formData.profilname = this.djName;
+        formData.email = this.djName;
+        formData.password = this.djName;
+        formData.profilbild = this.imagePreview;
+        formData.kurzbeschreibung = this.shortDescription;
+        formData.beschreibung = this.longDescription;
+        formData.region = this.region;
+        formData.preis = this.price;
+        formData.kategorie = this.category;
+        formData.erfahrung = this.experience;
+
+        console.log('FormData:', formData); 
+
+
+      //const token = localStorage.getItem('authToken'); 
 
       try {
-        const response = await axios.post('/createDJ', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'auth': token
-          }
-        });
-        console.log('DJ created :', response.data);
-        alert('DJ created successfully!');
-        this.reset();
-      } catch (error) {
-        console.error('Error with DJ creation:', error);
-        alert('Error creating DJ. Please try again.');
-      }
+          const response = await axios.post('/createArtist', formData);
+          console.log('Artist created:', response.data);
+          alert('Artist created successfully!');
+          this.reset();
+        } catch (error) {
+          console.error('Error with Artist creation:', error);
+          alert('Error creating Artist. Please try again.');
+        }
     }
+
   }
 }
 </script>

@@ -54,42 +54,7 @@ export default {
       padding-right: 12px;
       margin-left: 5px;
   }
-  
-  #file-div {
-      width: 120px;
-      height: 108px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-      border-radius: 5px;
-      background-color: white;
-  }
-  
-  #file-upload {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
-  
-  #file-upload label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-  }
-  
-  #file-upload input[type="file"] {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-  }
-  
+
   .upload-icon {
       max-width: 50%;
       max-height: 50%;
