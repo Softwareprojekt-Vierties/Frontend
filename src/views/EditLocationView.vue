@@ -102,7 +102,7 @@
     },
 
     async created(){
-      let id = 27;
+      let id = 59;
       try {
           const response = await axios.get(`/getLocation/${id}`);
           const dbLocation = response.data.rows[0];
