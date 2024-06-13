@@ -119,6 +119,8 @@
     text-align: left;
     margin-bottom: 11px;
     font-size: 10px;
+    height: 10px;
+    overflow: hidden;
 }
 
 #name-bookmark {

@@ -52,9 +52,9 @@
         <div>
             <div v-if="hasSearchResults" id="results">
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.location" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kapazität: ${result.capacity}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.price}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
             </div>
@@ -89,8 +89,8 @@
                 selectedFilters: [],
                 filterOptions: {
                     '1': { name: 'location', filters: ['region', 'date', 'distance', 'capacity', 'rating', 'startTime', 'duration', 'openAir', 'price'] },
-                    '2': { name: 'djBand', filters: ['region', 'date', 'distance', 'category', 'rating', 'startTime', 'duration', 'experience', 'price'] },
-                    '3': { name: 'caterer', filters: ['region', 'date', 'distance', 'category', 'rating', 'startTime', 'duration', 'experience', 'price'] },
+                    '2': { name: 'djBand', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
+                    '3': { name: 'caterer', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
                     '4': { name: 'event', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
                     '5': { name: 'person', filters: ['region', 'age', 'gender'] },
                     '6': { name: 'myEvents', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
@@ -100,9 +100,9 @@
                 },
                 sortingOptions: {
                     "0": { name: "none", filters: ["name"] },
-                    "1": { name: "location", filters: ["name", "region", "datum", "distance", "capacity", "rating", "uhrzeit", "duration", "preis"] },
-                    "2": { name: "djBand", filters: ["name", "region", "datum", "distance", "category", "rating", "uhrzeit", "duration", "experience", "preis"] },
-                    "3": { name: "caterer", filters: ["name", "region", "datum", "distance", "category", "rating", "uhrzeit", "duration", "experience", "preis"] },
+                    "1": { name: "location", filters: ["name", "adresse", "datum", "distance", "capacity", "rating", "uhrzeit", "duration", "preis"] },
+                    "2": { name: "djBand", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
+                    "3": { name: "caterer", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
                     "4": { name: "event", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
                     "5": { name: "person", filters: ["name", "region", "altersfreigabe", "gender"] },
                     "6": { name: "myEvents", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
@@ -113,6 +113,7 @@
                 translations: {
                     name: "Name",
                     region: "Region",
+                    adresse: "Addresse",
                     datum: "Datum",
                     distance: "Entfernung",
                     capacity: "Kapazität",
@@ -265,133 +266,72 @@
 
                 return filterValues;
             },
-            searchEvent() {
+            packageFilters() {
                 let filterResults = this.submitFilters();
-                axios.post("/searchEvent", {
-                    openair: filterResults.openAir,
-                    search: this.searchInput,
-                    datum: filterResults.date,
-                    uhrzeit: filterResults.startTime,
-                    eventgroesse: filterResults.eventSize,
-                    preis: filterResults.price,
-                    altersfreigabe: filterResults.age,
-                    region: filterResults.region,
-                    distanz: filterResults.distance,
-                })
+                let packet = {};
+
+                if (filterResults.openAir) {
+                    packet.openair = true;
+                }
+                if (this.searchInput != null && this.searchInput != 0) {
+                    packet.search = this.searchInput;
+                } 
+                if (filterResults.date != null && filterResults.date != 0) {
+                    packet.datum = filterResults.date;
+                } 
+                if ((filterResults.startTime != null && filterResults.startTime != 0) && (filterResults.startTime[0] != null && filterResults.startTime[0] != 0) && (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
+                    packet.uhrzeit = filterResults.startTime;
+                } 
+                if ((filterResults.duration != null && filterResults.duration != 0) && (filterResults.duration[0] != null && filterResults.duration[0] != 0) && (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
+                    packet.dauer = filterResults.duration;
+                } 
+                if ((filterResults.price != null && filterResults.price != 0) && (filterResults.price[0] != null && filterResults.price[0] != 0) && (filterResults.price[1] != null && filterResults.price[1] != 0)) {
+                    packet.preis = filterResults.price;
+                } 
+                if ((filterResults.capacity != null && filterResults.capacity != 0) && (filterResults.capacity[0] != null && filterResults.capacity[0] != 0) && (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
+                    packet.kapazitaet = filterResults.capacity;
+                } 
+                if (filterResults.eventSize != null && filterResults.eventSize != 0) {
+                    packet.eventgroesse = filterResults.eventSize;
+                } 
+                if (filterResults.region != null && filterResults.region != 0) {
+                    packet.region = filterResults.region;
+                } 
+                if (filterResults.distance != null && filterResults.distance != 0) {
+                    packet.distanz = filterResults.distance;
+                }
+                if (filterResults.rating != null && filterResults.rating != 0) {
+                    packet.bewertung = filterResults.rating;
+                }
+                if (filterResults.category != null && filterResults.category != 0) {
+                    packet.kategorie = filterResults.category;
+                }
+                if (filterResults.experience != null && filterResults.experience != 0) {
+                    packet.erfahrung = filterResults.experience;
+                }
+                if (filterResults.ticketPrice != null && filterResults.ticketPrice != 0) {
+                    packet.preis = filterResults.ticketPrice;
+                }
+                if (this.searchType === 5 || this.searchType === 8) {
+                    if (filterResults.age != null && filterResults.age != 0) {
+                        packet.alter = filterResults.age;
+                    }
+                } else {
+                    if (filterResults.age != null && filterResults.age != 0) {
+                        packet.altersfreigabe = filterResults.age;
+                    }
+                }
+                if (filterResults.gender != null && filterResults.gender != 0) {
+                    packet.geschlecht = filterResults.gender;
+                }
+                return packet;
+            },
+            searchSpecific(destination, field) {
+                axios.post(destination, this.packageFilters())
                     .then(response => {
                         console.log("Successful search:", response);
-                        this.searchResults.events = response.data;
-                        this.filteredSearchResults.events = response.data.filter(item => item.istfavorit === true);
-                        this.hasSearchResults |= response.data.length > 0;
-                    })
-                    .catch(error => {
-                        console.error("Unsuccessful search:", error);
-                        this.searchError = true;
-                    });
-            },
-            searchLocation() {
-                let filterResults = this.submitFilters();
-                axios.post("/searchLocation", {
-                    openair: filterResults.openAir,
-                    search: this.searchInput,
-                    kapazitaet: filterResults.capacity,
-                    preis: filterResults.price,
-                    region: filterResults.region,
-                    distanz: filterResults.distance,
-                    bewertung: filterResults.rating,
-                })
-                    .then(response => {
-                        console.log("Successful search:", response.data.rows);
-                        this.searchResults.location = response.data.rows;
-                        this.filteredSearchResults.location = response.data.filter(item => item.istfavorit === true);
-                        this.hasSearchResults |= response.data.rows.length > 0;
-                    })
-                    .catch(error => {
-                        console.error("Unsuccessful search:", error);
-                        this.searchError = true;
-                    });
-            },
-            searchArtist() {
-                let filterResults = this.submitFilters();
-                axios.post("/search.artist", {
-                    search: this.searchInput,
-                    preis: filterResults.price,
-                    kategorie: filterResults.category,
-                    erfahrung: filterResults.experience,
-                    distanz: filterResults.distance,
-                    region: filterResults.region,
-                    bewertung: filterResults.rating,
-                })
-                    .then(response => {
-                        console.log("Successful search:", response.data.rows);
-                        this.searchResults.artist = response.data.rows;
-                        this.filteredSearchResults.artist = response.data.filter(item => item.istfavorit === true);
-                        this.hasSearchResults |= response.data.rows.length > 0;
-                    })
-                    .catch(error => {
-                        console.error("Unsuccessful search:", error);
-                        this.searchError = true;
-                    });
-            },
-            searchCaterer() {
-                let filterResults = this.submitFilters();
-                axios.post("/search.caterer", {
-                    search: this.searchInput,
-                    preis: filterResults.price,
-                    kategorie: filterResults.category,
-                    erfahrung: filterResults.experience,
-                    distanz: filterResults.distance,
-                    region: filterResults.region,
-                    bewertung: filterResults.rating,
-                })
-                    .then(response => {
-                        console.log("Successful search:", response.data.rows);
-                        this.searchResults.caterer = response.data.rows;
-                        this.filteredSearchResults.caterer = response.data.filter(item => item.istfavorit === true);
-                        this.hasSearchResults |= response.data.rows.length > 0;
-                    })
-                    .catch(error => {
-                        console.error("Unsuccessful search:", error);
-                        this.searchError = true;
-                    });
-            },
-            searchPerson() {
-                let filterResults = this.submitFilters();
-                axios.post("/searchPerson", {
-                    search: this.searchInput,
-                    geschlecht: filterResults.gender,
-                    alter: filterResults.age,
-                    region: filterResults.region,
-                })
-                    .then(response => {
-                        console.log("Successful search:", response.data.rows);
-                        this.searchResults.person = response.data.rows;
-                        this.filteredSearchResults.person = response.data.filter(item => item.istfavorit === true);
-                        this.hasSearchResults |= response.data.rows.length > 0;
-                    })
-                    .catch(error => {
-                        console.error("Unsuccessful search:", error);
-                        this.searchError = true;
-                    });
-            },
-            searchTickets() {
-                // let filterResults = this.submitFilters();
-                axios.post("/searchTickets", {
-                    search: this.searchInput,
-                    // location and distance still have to go
-                    // Datum
-                    // Dauer?
-                    // Startzeit?
-                    // Bewertung
-                    // Eventgröße
-                    // Preis
-                    // Alter?
-                    // openair
-                })
-                    .then(response => {
-                        console.log("Successful search:", response.data.rows);
-                        this.searchResults.tickets = response.data.rows;
-                        this.filteredSearchResults.tickets = response.data.filter(item => item.istfavorit === true);
+                        this.searchResults[field] = response.data.rows;
+                        this.filteredSearchResults[field] = response.data.rows.filter(item => item.istfavorit === true);
                         this.hasSearchResults |= response.data.rows.length > 0;
                     })
                     .catch(error => {
@@ -406,33 +346,33 @@
                 switch (this.searchType) {
                     case "1":
                     case "9":
-                        this.searchLocation();
+                        this.searchSpecific("/searchLoacation", "location")
                         break;
                     case "2":
-                        this.searchArtist();
+                        this.searchSpecific("/searchArtist", "artist")
                         break;
                     case "3":
-                        this.searchCaterer();
+                        this.searchSpecific("/searchCaterer", "caterer")
                         break;
                     case "4":
                     case "6":
-                        this.searchEvent();
+                        this.searchSpecific("/searchEvent", "events")
                         break;
                     case "5":
                     case "8":
-                        this.searchPerson();
+                        this.searchSpecific("/searchPerson", "person")
                         break;
                     case "7":
-                        this.searchTickets();
+                        this.searchSpecific("/searchTickets", "tickets")
                         break;
 
                     case "0":
-                        this.searchLocation();
-                        this.searchArtist();
-                        this.searchCaterer();
-                        this.searchEvent();
-                        this.searchPerson();
-                        this.searchTickets();
+                        this.searchSpecific("/searchLoacation", "location")
+                        this.searchSpecific("/searchArtist", "artist")
+                        this.searchSpecific("/searchCaterer", "caterer")
+                        this.searchSpecific("/searchEvent", "events")
+                        this.searchSpecific("/searchPerson", "person")
+                        this.searchSpecific("/searchTickets", "tickets")
                         break;
 
                     default: break;
