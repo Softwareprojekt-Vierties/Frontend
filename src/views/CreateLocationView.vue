@@ -144,18 +144,18 @@
           return;
         }
 
-        let formData = new FormData();
-        formData.append('name', this.locationName);
-        formData.append('kurzbeschreibung', this.smallDescription);
-        formData.append('beschreibung', this.longDescription);
-        formData.append('region', this.region);
-        formData.append('adresse', this.address);
-        formData.append('kapazitaet', this.quantityPersons);
-        formData.append('preis', this.price);
-        formData.append('flaeche', this.size);
-        formData.append('openair', this.openAir);
-        formData.append('bild', this.imagePreview);
-        console.log('FormData:', Array.from(formData.entries())); 
+          let formData = {};
+        formData.name = this.locationName;
+        formData.kurzbeschreibung = this.smallDescription;
+        formData.beschreibung = this.longDescription;
+        formData.region = this.region;
+        formData.adresse = this.address;
+        formData.kapazitaet = this.quantityPersons;
+        formData.preis = this.price;
+        formData.flaeche = this.size;
+        formData.openair = this.openAir;
+        formData.bild = this.imagePreview;
+        console.log('FormData:', formData); 
 
         try {
           const response = await axios.post('/createLocation', formData);
