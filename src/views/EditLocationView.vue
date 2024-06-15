@@ -167,21 +167,23 @@
           return;
         }
 
-        let formData = new FormData();
-        formData.append('name', this.name);
-        formData.append('kurzbeschreibung', this.kurzbeschreibung);
-        formData.append('beschreibung', this.beschreibung);
-        formData.append('region', this.region);
-        formData.append('addresse', this.addresse);
-        formData.append('kapazitaet', this.kapazitaet);
-        formData.append('preis', this.preis);
-        formData.append('flaeche', this.flaeche);
-        formData.append('openair', this.openair);
-        formData.append('bild', this.bild);
-        console.log('FormData:', Array.from(formData.entries())); 
+        let formData = {};
+            formData.name = this.name;
+            formData.kurzbeschreibung = this.kurzbeschreibung;
+            formData.beschreibung = this.beschreibung;
+            formData.adresse =this.addresse + ',' + this.region;
+            formData.kapazitaet = this.kapazitaet;
+            formData.preis = this.preis;
+            formData.flaeche = this.flaeche;
+            formData.openair = this.openair;
+            formData.bild = this.imagePreview;
+            formData.locationid = this.originalData.id;
+            formData.privat = true;
+            console.log(formData);
+            console.log("this ist sent to db");
 
         try {
-          const response = await axios.post('/updateLocation', formData);
+          const response = await axios.post('/updateLoacation', formData);
           console.log('Location edited:', response.data);
           alert('Location edited successfully!');
           //this.reset();
