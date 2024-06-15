@@ -8,12 +8,13 @@ import SucheView from '@/views/SucheView.vue'
 import CreateCatererView from '@/views/CreateCatererView.vue'
 import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
+import EditCatererView from '@/views/EditCatererView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'anmeldung',
-    component: AnmeldungView // Corrigido para usar AnmeldungView
+    component: AnmeldungView 
   },  {
     path: '/signup',
     name: 'signupSeite',
@@ -48,6 +49,10 @@ const routes = [
     name: 'CreateDjType',
     component: CreateDjView 
 
+  }, {
+    path: '/editcaterer',
+    name: 'EditCatererType',
+    component: EditCatererView 
   }
 ]
 
