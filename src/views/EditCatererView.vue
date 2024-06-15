@@ -101,6 +101,7 @@
         price : '',
         imagePreview: null,
         uploadedImage: null,
+        street : null,
         dishes: [
             { name: '', ingredients: [] }
         ],
@@ -110,11 +111,12 @@
     },
   
     async created(){
-        let id = 3;
+        let id = 6;
         try {
             const response = await axios.get(`/getCatererById/${id}`);
             const dbCaterer = response.data.rows[0];
             console.log(dbCaterer);
+            console.log("mein Objekt oben")
             this.originalData = { ...dbCaterer };
             this.setFormData(dbCaterer);
             console.log('Caterer data received:', response.data);
@@ -182,7 +184,7 @@
           formData.profilbild = this.imagePreview;
           formData.kurzbeschreibung = this.shortDescription;
           formData.beschreibung = this.longDescription;
-          formData.region = this.region;
+          formData.region = this.street +','+ this.region; 
           formData.preis = this.price;
           formData.kategorie = this.category;
           formData.erfahrung = this.experience;
@@ -203,7 +205,8 @@
       },
 
       setFormData(data) {
-        const myVar = data.adresse.split(',');
+        const myVar = data.region.split(',');
+        console.log(myVar);
         console.log(myVar[0]);
         console.log(myVar[1]);
 
@@ -212,6 +215,7 @@
         this.shortDescription = data.kurzbeschreibung;
         this.longDescription = data.beschreibung;
         this.region = myVar[1];
+        this.street = myVar[0];
         this.category = data.kategorie;
         this.experience = data.erfahrung;
         this.price = data.preis;
