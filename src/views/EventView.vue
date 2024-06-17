@@ -298,7 +298,7 @@
   }
   
   #long-description-text {
-    width: 558px;
+    width: 580px;
     font-family: Arial, sans-serif;
     font-size: 12px;
     border-radius: 8px;
