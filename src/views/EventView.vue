@@ -24,6 +24,7 @@
             <label class="description">Beschreibung hinzufügen:</label>
             <div id="long-description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</div>
           </div>
+          <br>
           <div class="long-description">
           <label class="description">Dienstleister hinzufügen:</label>
           <div id="addcreator" ref="addCreator" class="scroll-container">
@@ -31,15 +32,17 @@
               <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
                 <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
               </div>
-              <div class="add-dish-button" @click="addDish"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
             </div>
           </div>
+        </div>
+        <div id="maps-div">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         </div>
         <div id="right-side">
           <div id="right-side-info">
             <div id="info-bookmark">
-                <label id="info-headline">Infos:</label>
+                <label id="info-headline">Infos</label>
                 <div id="div-bookmark">
                   <img src="../assets/bookmark-white.jpg" id="bookmark">
                 </div>
@@ -75,7 +78,7 @@
   </template>
   
   <script>
-  import DishForm from '../components/ArtistComponent.vue';
+  import DishForm from '../components/EventComponenet.vue';
 
   export default {
     components: {
@@ -191,21 +194,6 @@
     margin-left: -225px;
   }
   
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 40px; /* Angepasst an die neue Höhe */
-    height: 20px;
-    margin-left: 20px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    margin-left: 70px;
-  }
-  
   #main {
     display: grid;
     grid-template-columns: auto auto;
@@ -213,6 +201,10 @@
     background-color: rgb(242, 242, 242);
     padding-top: 30px;
     gap: 20px;
+  }
+
+  #left-side {
+    margin-left: -20px;
   }
   
   .long-description {
@@ -287,14 +279,14 @@
     display: block; /* Als Block-Element anzeigen */
     text-align: left; /* Text links ausrichten */
     font-family: Arial, sans-serif; /* Schriftart festlegen */
-    font-size: 14px; /* Schriftgröße festlegen */
+    font-size: 18px; /* Schriftgröße festlegen */
     font-weight: bold;
   }
   
   #ticket {
     background-color: rgb(146, 208, 80);
-    height: 25px;
-    border-radius: 5px;
+    height: 30px;
+    border-radius: 7px;
     border: 1px solid #000000;
     font-size: 12px;
     display: flex;
@@ -331,21 +323,14 @@
   white-space: nowrap;
   align-items: center;
   padding: 20px 0;
+  margin-top: -25px;
 }
 
 .dish-item {
   display: inline-block;
   margin-right: 10px;
   flex: 0 0 auto;
-}
-
-.add-dish-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
+  margin-left: 10px;
 }
 
 #add-icon {
@@ -367,6 +352,16 @@
   grid-template-columns: 580px;
   justify-content: left;
   font-weight: bold;
+}
+
+#maps {
+  border-radius: 8px;
+}
+
+#maps-div {
+  border: 1px solid #000000;
+  border-radius: 8px;
+  margin-top: 15px;
 }
   </style>
   
