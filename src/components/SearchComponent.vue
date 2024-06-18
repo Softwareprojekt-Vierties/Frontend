@@ -50,13 +50,18 @@
         </div>
 
         <div>
-            <div v-if="hasSearchResults" id="results">
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+            <div v-if="hasSearchResults">
+                <div v-if="searchType==0" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults?.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :key="result.key"/>
+                </div>
+                <div v-else id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                </div>
             </div>
             <div v-else>
                 <div v-if="searchError" class="events">
@@ -88,7 +93,7 @@
                 filterSelection: "",
                 selectedFilters: [],
                 filterOptions: {
-                    '1': { name: 'location', filters: ['region', 'date', 'distance', 'capacity', 'rating', 'startTime', 'duration', 'openAir', 'price'] },
+                    '1': { name: 'location', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
                     '2': { name: 'djBand', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
                     '3': { name: 'caterer', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
                     '4': { name: 'event', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
@@ -96,11 +101,11 @@
                     '6': { name: 'myEvents', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
                     '7': { name: 'myTickets', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
                     '8': { name: 'myFriends', filters: ['region', 'age', 'gender'] },
-                    '9': { name: 'myLocation', filters: ['region', 'date', 'distance', 'capacity', 'rating', 'startTime', 'duration', 'openAir', 'price'] },
+                    '9': { name: 'myLocation', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
                 },
                 sortingOptions: {
                     "0": { name: "none", filters: ["name"] },
-                    "1": { name: "location", filters: ["name", "adresse", "datum", "distance", "capacity", "rating", "uhrzeit", "duration", "preis"] },
+                    "1": { name: "location", filters: ["name", "adresse", "distance", "capacity", "rating", "preis"] },
                     "2": { name: "djBand", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
                     "3": { name: "caterer", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
                     "4": { name: "event", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
@@ -108,7 +113,7 @@
                     "6": { name: "myEvents", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
                     "7": { name: "myTickets", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
                     "8": { name: "myFriends", filters: ["name", "region", "altersfreigabe", "gender"] },
-                    "9": { name: "myLocation", filters: ["name", "region", "datum", "distance", "capacity", "rating", "uhrzeit", "duration", "preis"] },
+                    "9": { name: "myLocation", filters: ["name", "region", "distance", "capacity", "rating", "preis"] },
                 },
                 translations: {
                     name: "Name",
@@ -169,9 +174,9 @@
                             case "distance":
                                 return `<div class="filter-item">Entfernung: <input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
                             case "capacity":
-                                return `<div class="filter-item">Kapazität: <div class="kapazitaet"> <input class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
+                                return `<div class="filter-item">Kapazität: <div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
                             case "rating":
-                                return `<div class="filter-item">Bewertung: <input class="filter-rating" type="number" min="0" max="5" placeholder="3" step="1"></div>`;
+                                return `<div class="filter-item">Bewertung: <fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" value="3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
                             case "startTime":
                                 return `<div class="filter-item">Startzeit: <div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
                             case "duration":
@@ -220,7 +225,7 @@
                                 ];
                             break;
                         case "rating":
-                                filterValues.rating = filtersContainer.querySelector(".filter-rating")?.value ?? "";
+                                filterValues.rating = filtersContainer.querySelector(".filter-rating input:checked")?.value ?? "";
                             break;
                         case "startTime":
                                 filterValues.startTime = [
@@ -270,68 +275,83 @@
                 let filterResults = this.submitFilters();
                 let packet = {};
 
-                if (filterResults.openAir) {
-                    packet.openair = true;
-                }
                 if (this.searchInput != null && this.searchInput != 0) {
                     packet.search = this.searchInput;
                 } 
-                if (filterResults.date != null && filterResults.date != 0) {
-                    packet.datum = filterResults.date;
-                } 
-                if (filterResults.startTime != null && filterResults.startTime != 0){
-                    if ((filterResults.startTime[0] != null && filterResults.startTime[0] != 0) || (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
-                        packet.uhrzeit = filterResults.startTime;
-                    } 
-                }
-                if (filterResults.duration != null && filterResults.duration != 0){
-                    if ((filterResults.duration[0] != null && filterResults.duration[0] != 0) || (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
-                        packet.dauer = filterResults.duration;
-                    } 
-                }
-                if (filterResults.price != null && filterResults.price != 0){
-                    if ((filterResults.price[0] != null && filterResults.price[0] != 0) || (filterResults.price[1] != null && filterResults.price[1] != 0)) {
-                        packet.preis = filterResults.price;
-                    } 
-                }
-                if (filterResults.capacity != null && filterResults.capacity != 0){
-                    if ((filterResults.capacity[0] != null && filterResults.capacity[0] != 0) || (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
-                        packet.kapazitaet = filterResults.capacity;
-                    } 
-                }
-                if (filterResults.eventSize != null && filterResults.eventSize != 0) {
-                    packet.eventgroesse = filterResults.eventSize;
-                } 
-                if (filterResults.region != null && filterResults.region != 0) {
-                    packet.region = filterResults.region;
-                } 
-                if (filterResults.distance != null && filterResults.distance != 0) {
-                    packet.distanz = filterResults.distance;
-                }
-                if (filterResults.rating != null && filterResults.rating != 0) {
-                    packet.bewertung = filterResults.rating;
-                }
-                if (filterResults.category != null && filterResults.category != 0) {
-                    packet.kategorie = filterResults.category;
-                }
-                if (filterResults.experience != null && filterResults.experience != 0) {
-                    packet.erfahrung = filterResults.experience;
-                }
-                if (filterResults.ticketPrice != null && filterResults.ticketPrice != 0) {
-                    packet.preis = filterResults.ticketPrice;
-                }
-                if (this.searchType === 5 || this.searchType === 8) {
-                    if (filterResults.age != null && filterResults.age != 0) {
-                        packet.alter = filterResults.age;
+                if (this.searchType != 0) {
+                    if (filterResults.openAir) {
+                        packet.openair = true;
                     }
-                } else {
-                    if (filterResults.age != null && filterResults.age != 0) {
-                        packet.altersfreigabe = filterResults.age;
+                    if (filterResults.date != null && filterResults.date != 0) {
+                        packet.datum = filterResults.date;
+                    } 
+                    if (filterResults.startTime != null && filterResults.startTime != 0){
+                        if ((filterResults.startTime[0] != null && filterResults.startTime[0] != 0) || (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
+                            packet.uhrzeit = filterResults.startTime;
+                        } 
+                    }
+                    if (filterResults.duration != null && filterResults.duration != 0){
+                        if ((filterResults.duration[0] != null && filterResults.duration[0] != 0) || (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
+                            packet.dauer = filterResults.duration;
+                        } 
+                    }
+                    if (filterResults.price != null && filterResults.price != 0){
+                        if ((filterResults.price[0] != null && filterResults.price[0] != 0) || (filterResults.price[1] != null && filterResults.price[1] != 0)) {
+                            packet.preis = filterResults.price;
+                        } 
+                    }
+                    if (filterResults.capacity != null && filterResults.capacity != 0){
+                        if ((filterResults.capacity[0] != null && filterResults.capacity[0] != 0) || (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
+                            packet.kapazitaet = filterResults.capacity;
+                        } 
+                    }
+                    if (filterResults.eventSize != null && filterResults.eventSize != 0) {
+                        packet.eventgroesse = filterResults.eventSize;
+                    } 
+                    if (filterResults.region != null && filterResults.region != 0) {
+                        packet.region = filterResults.region;
+                    } 
+                    if (filterResults.distance != null && filterResults.distance != 0) {
+                        packet.distanz = filterResults.distance;
+                    }
+                    if (filterResults.rating != null && filterResults.rating != 0) {
+                        packet.bewertung = filterResults.rating;
+                    }
+                    if (filterResults.category != null && filterResults.category != 0) {
+                        packet.kategorie = filterResults.category;
+                    }
+                    if (filterResults.experience != null && filterResults.experience != 0) {
+                        packet.erfahrung = filterResults.experience;
+                    }
+                    if (filterResults.ticketPrice != null && filterResults.ticketPrice != 0) {
+                        packet.preis = filterResults.ticketPrice;
+                    }
+                    if (this.searchType === 5 || this.searchType === 8) {
+                        if (filterResults.age != null && filterResults.age != 0) {
+                            packet.alter = filterResults.age;
+                        }
+                    } else {
+                        if (filterResults.age != null && filterResults.age != 0) {
+                            packet.altersfreigabe = filterResults.age;
+                        }
+                    }
+                    if (filterResults.gender != null && filterResults.gender != 0) {
+                        packet.geschlecht = filterResults.gender;
+                    }
+                    if (this.searchType == 6) {
+                        packet.istbesitzer = true;
+                    }
+                    if (this.searchType == 7) {
+                        packet.hatticket = true;
+                    }
+                    if (this.searchType == 8) {
+                        packet.istfreund = true;
+                    }
+                    if (this.searchType == 9) {
+                        packet.istbesitzer = true;
                     }
                 }
-                if (filterResults.gender != null && filterResults.gender != 0) {
-                    packet.geschlecht = filterResults.gender;
-                }
+                packet.headers = { "auth": localStorage.getItem("authToken")};
                 return packet;
             },
             searchSpecific(destination, field) {
@@ -339,8 +359,57 @@
                     .then(response => {
                         console.log("Successful search:", response);
                         this.searchResults[field] = response.data.rows;
-                        this.filteredSearchResults[field] = response.data.rows.filter(item => item.istfavorit === true);
+                        this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true);
                         this.hasSearchResults |= response.data.rows.length > 0;
+                        if (this.searchType == 0) {
+                            this.searchResults[field].forEach(item => {
+                                switch (field) {
+                                    case "location":
+                                        this.searchResults.combined.push({
+                                            "name": item.name,
+                                            "line1": "Addresse: " + item.adresse,
+                                            "line2": "Kapazität: " + item.kapazitaet,
+                                            "line3": "Preis: " + item.preis,
+                                            "buttonText": "Event erstellen",
+                                            "imagePath": item.bild,
+                                            "isBookmarked": item.favorit ?? 0,
+                                            "key": item.id,
+                                        });
+                                        break
+                                    case "artist":
+                                    case "caterer":
+                                        this.searchResults.combined.push({
+                                            "name": item.name,
+                                            "line1": "Stadt: " + item.adresse,
+                                            "line2": "Kategorie: " + item.kategorie,
+                                            "line3": "Preis: " + item.preis,
+                                            "buttonText": "Event erstellen",
+                                            "imagePath": item.bild,
+                                            "isBookmarked": item.favorit ?? 0,
+                                            "key": item.id,
+                                        });
+                                        break
+                                    case "events":
+                                    case "tickets":
+                                        this.searchResults.combined.push({
+                                            "name": item.name,
+                                            "line1": "Location: " + item.locationname,
+                                            "line2": "Datum: " + new Date(item.datum).toDateString(),
+                                            "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
+                                            "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
+                                            "imagePath": item.bild,
+                                            "isBookmarked": item.favorit ?? 0,
+                                            "key": item.id,
+                                        });
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            })
+                            this.filteredSearchResults.combined = this.searchResults.combined.filter(item => item.isBookmarked);
+                            console.log(this.searchResults.combined);
+                        } 
                     })
                     .catch(error => {
                         console.error("Unsuccessful search:", error);
@@ -349,6 +418,7 @@
             },
             search() {
                 this.searchResults = []
+                this.searchResults.combined = []
                 this.hasSearchResults = false;
                 this.searchError = false;
                 switch (this.searchType) {
@@ -371,7 +441,7 @@
                         this.searchSpecific("/searchPerson", "person")
                         break;
                     case "7":
-                        this.searchSpecific("/searchTickets", "tickets")
+                        this.searchSpecific("/searchEvent", "tickets")
                         break;
 
                     case "0":
@@ -380,7 +450,6 @@
                         this.searchSpecific("/searchCaterer", "caterer")
                         this.searchSpecific("/searchEvent", "events")
                         this.searchSpecific("/searchPerson", "person")
-                        this.searchSpecific("/searchTickets", "tickets")
                         break;
 
                     default: break;
@@ -563,12 +632,30 @@
   }
 
   ::v-deep .filter-rating {
+      display: flex;
+      flex-direction: row-reverse;
       margin-left: 10%;
-      width: 300px;
+      width: 280px;
       height: 20px;
       border-radius: 5px;
       border: 1px solid #ccc;
       text-align: center;
+  }
+
+  ::v-deep .filter-rating > input {
+      flex: 1 1 0%;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+  }
+
+  ::v-deep .filter-rating > input::before {
+      content: url("../assets/empty_star3.jpg");
+  }
+
+  ::v-deep .filter-rating > input:checked::before,
+  ::v-deep .filter-rating > input:checked~input::before {
+        content: url("../assets/yellow_star3.jpg");
   }
 
   ::v-deep .filter-duration {
@@ -618,7 +705,8 @@
       grid-template-columns: auto auto auto;
       gird-columns: 1;
       margin-left: 10.2%;
-      width: 300px;
+      margin-right: 10px;
+      width: 250px;
       height: 20px;
       border: 1px solid #ccc;
       text-align: center;
