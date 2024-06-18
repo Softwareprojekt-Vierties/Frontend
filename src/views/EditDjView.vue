@@ -105,7 +105,7 @@
         uploadedImage: null,
         email:'',
         songs: [
-          { songName: '', songLength: '', songYear: '' }
+          { id: '', songName: '', songLength: '', songYear: '' }
         ],
         originalData : {}
 
@@ -117,10 +117,8 @@
           try {
               const response = await axios.get(`/getArtistById/${id}`);
               console.log(response);
-              const dbDj = response.data["artist"].rows[0];
-              console.log(dbDj);
-              this.originalData = { ...dbDj };
-              this.setFormData(dbDj);
+              this.originalData = { ...response.data["artist"].rows[0] };
+              this.setFormData(response.data);
               console.log('dj data received:', response.data);
           } catch (error) {
               console.error('Error with sending dj ID to DB :', error);
@@ -137,23 +135,24 @@
   
       methods: {
         setFormData(data) {
-          this.djName = data.benutzername;
-          this.shortDescription = data.kurzbeschreibung;
-          this.longDescription = data.beschreibung ;
-          this.region = data.region;
-          this.category = data.kategorie;
-          this.experience =  data.erfahrung;
-          this.price = data.preis;
-          this.imagePreview = data.profilbild;
-          this.uploadedImage = data.profilbild;
-          this.email = data.emailfk;
-          console.log("email");
-          console.log(data.emailfk);
-          this.songs = data["lieder"];
-          data["lieder"].rows.forEach(lied => {this.song.push(
-            {songName : lied[0], songLength: lied[1], songYear:lied[2]} 
-          ) } )
-
+          this.djName = data['artist'].rows[0].benutzername;
+          this.shortDescription = data['artist'].rows[0].kurzbeschreibung;
+          this.longDescription = data['artist'].rows[0].beschreibung ;
+          this.region = data['artist'].rows[0].region;
+          this.category = data['artist'].rows[0].kategorie;
+          this.experience =  data['artist'].rows[0].erfahrung;
+          this.price = data['artist'].rows[0].preis;
+          this.imagePreview = data['artist'].rows[0].profilbild;
+          this.uploadedImage = data['artist'].rows[0].profilbild;
+          this.email = data['artist'].rows[0].emailfk;
+          data['lieder'].rows.forEach(lied => {
+            this.songs.push({
+              id: lied['id'],
+              songName: lied['name'], 
+              songLength: lied['laenge'], 
+              songYear: lied['erscheinung'].substring(0, 10)
+            })
+          });
         },
 
 
