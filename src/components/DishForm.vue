@@ -44,8 +44,12 @@ export default {
     onFileChangeComponent(event) {
         const file = event.target.files[0];
         if (file) {
-          this.imagePreview = URL.createObjectURL(file);
           this.uploadedImage = file;
+          const reader = new FileReader();
+          reader.onload = e => {
+            this.imagePreview = e.target.result;
+          };
+          reader.readAsDataURL(file);
         }
     },
 
@@ -54,7 +58,7 @@ export default {
         dishName: this.dishName,
         info1: this.info1,
         info2: this.info2,
-        uploadedImage : this.uploadedImage
+        imagePreview : this.imagePreview
       };
     },
     clearFields() {

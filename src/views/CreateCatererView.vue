@@ -102,8 +102,8 @@ export default {
       imagePreview: null,
       uploadedImage: null,
       dishes: [
-          { name: '', ingredients: [] }
-      ],
+      { dishName: '', info1: '', info2: '', imagePreview: null }
+      ]
 
       };
   },
@@ -122,11 +122,15 @@ export default {
     },
 
     onFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.imagePreview = URL.createObjectURL(file);
-        this.uploadedImage = file;
-      }
+        const file = event.target.files[0];
+        if (file) {
+          this.uploadedImage = file;
+          const reader = new FileReader();
+          reader.onload = e => {
+            this.imagePreview = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
     },
 
     addDish() {
@@ -155,7 +159,7 @@ export default {
     this.imagePreview = null;
     this.uploadedImage = null;
 
-    this.dishes = [{ name: '', ingredients: [] }];
+    this.dishes = [{ dishName: '',  info1: '', info2: '', imagePreview: null }];
     this.$nextTick(() => {
         if (this.$refs.dishForm && this.$refs.dishForm[0]) {
           this.$refs.dishForm[0].clearFields();
@@ -163,10 +167,13 @@ export default {
       });
     },
     async createCaterer(){
-      if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+      if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price) {
         alert('Please fill in all required fields.');
         return;
       }
+
+      const dishForms = this.$refs.dishForm;
+      this.dishes = dishForms.map(form => form.getData());
 
       let formData = {};
         formData.benutzername = this.catererName;
@@ -180,6 +187,7 @@ export default {
         formData.preis = this.price;
         formData.kategorie = this.category;
         formData.erfahrung = this.experience;
+        formData.gerichte = this.dishes;
 
         console.log('FormData:', formData); 
 
@@ -190,7 +198,7 @@ export default {
           const response = await axios.post('/createCaterer', formData);
           console.log('Caterer created:', response.data);
           alert('Caterer created successfully!');
-          this.reset();
+          this.default_values();
         } catch (error) {
           console.error('Error with Caterer creation:', error);
           alert('Error creating Caterer. Please try again.');
