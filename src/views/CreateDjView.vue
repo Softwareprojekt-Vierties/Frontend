@@ -165,6 +165,7 @@ export default {
         formData.preis = this.price;
         formData.kategorie = this.category;
         formData.erfahrung = this.experience;
+        formData.songs = this.songs;
 
         console.log('FormData:', formData); 
 
