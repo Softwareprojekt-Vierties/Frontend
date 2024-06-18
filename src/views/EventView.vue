@@ -24,13 +24,25 @@
             <label class="description">Beschreibung hinzufügen:</label>
             <div id="long-description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</div>
           </div>
-          <br>
+          <div class="long-description">
+          <label class="description">Dienstleister hinzufügen:</label>
+          <div id="addcreator" ref="addCreator" class="scroll-container">
+            <div class="dish-container">
+              <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+                <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+              </div>
+              <div class="add-dish-button" @click="addDish"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+            </div>
+          </div>
+        </div>
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <div>
-              <label id="info-headline">Infos:</label>
-              <img src="../assets/event-bookmark-black.jpg">
+            <div id="info-bookmark">
+                <label id="info-headline">Infos:</label>
+                <div id="div-bookmark">
+                  <img src="../assets/bookmark-white.jpg" id="bookmark">
+                </div>
             </div>
             <div class="infos">
               <label class="info-subheadline"><strong>Location:</strong> Campus Minden</label>
@@ -54,13 +66,8 @@
               <label class="info-subheadline"><strong>Open Air:</strong> Nein</label>
             </div>
           </div>
-          <div id="buttons">
-            <div id="break">
-              abbrechen
-            </div>
-            <div id="continue">
-              anlegen
-            </div>
+          <div id="ticket">
+            Ticket buchen (20/50)
           </div>
         </div>
       </div>
@@ -68,9 +75,11 @@
   </template>
   
   <script>
-  
+  import DishForm from '../components/ArtistComponent.vue';
+
   export default {
     components: {
+      DishForm
     },
     data() {
       return {
@@ -202,7 +211,7 @@
     grid-template-columns: auto auto;
     justify-content: center;
     background-color: rgb(242, 242, 242);
-    padding-top: 30px;;
+    padding-top: 30px;
     gap: 20px;
   }
   
@@ -223,8 +232,8 @@
   
   .infos {
     display: grid;
-    grid-template-columns: 180px;
     margin-top: 20px;
+    margin-right: 10px;
   }
   
   .time-value-left {
@@ -282,39 +291,82 @@
     font-weight: bold;
   }
   
-  #buttons {
+  #ticket {
+    background-color: rgb(146, 208, 80);
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  #info-bookmark {
     display: grid;
     grid-template-columns: auto auto;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    margin-top: 15px;
   }
-  
-  #break {
-    background-color: rgb(254, 68, 77);
-    width: 88px;
-    height: 25px;
-    border-radius: 5px;
-    border: 1px solid #000000;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+
+  #div-bookmark {
+    border-radius: 30px;
+    padding: 2px;
+    width: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding-left: 1px;
+    padding-top: 5px;
   }
-  
-  #continue {
-    background-color: rgb(146, 208, 80);
-    width: 88px;
-    height: 25px;
-    border-radius: 5px;
-    border: 1px solid #000000;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+
+  #bookmark {
+    width: 10px;
+    height: 17px;
   }
+
+  #addcreator {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.dish-item {
+  display: inline-block;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+.add-dish-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+#add-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.dish-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.long-description {
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 580px;
+  justify-content: left;
+  font-weight: bold;
+}
   </style>
   
