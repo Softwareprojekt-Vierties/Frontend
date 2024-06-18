@@ -53,8 +53,8 @@
             <div v-if="hasSearchResults" id="results">
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
-                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.category}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
+                <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
                 <CardComponent v-for="result in bookmarked ? filteredSearchResults : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.leesezeichen ?? 0" :key="result.id"/>
             </div>
@@ -279,18 +279,26 @@
                 if (filterResults.date != null && filterResults.date != 0) {
                     packet.datum = filterResults.date;
                 } 
-                if ((filterResults.startTime != null && filterResults.startTime != 0) && (filterResults.startTime[0] != null && filterResults.startTime[0] != 0) && (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
-                    packet.uhrzeit = filterResults.startTime;
-                } 
-                if ((filterResults.duration != null && filterResults.duration != 0) && (filterResults.duration[0] != null && filterResults.duration[0] != 0) && (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
-                    packet.dauer = filterResults.duration;
-                } 
-                if ((filterResults.price != null && filterResults.price != 0) && (filterResults.price[0] != null && filterResults.price[0] != 0) && (filterResults.price[1] != null && filterResults.price[1] != 0)) {
-                    packet.preis = filterResults.price;
-                } 
-                if ((filterResults.capacity != null && filterResults.capacity != 0) && (filterResults.capacity[0] != null && filterResults.capacity[0] != 0) && (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
-                    packet.kapazitaet = filterResults.capacity;
-                } 
+                if (filterResults.startTime != null && filterResults.startTime != 0){
+                    if ((filterResults.startTime[0] != null && filterResults.startTime[0] != 0) || (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
+                        packet.uhrzeit = filterResults.startTime;
+                    } 
+                }
+                if (filterResults.duration != null && filterResults.duration != 0){
+                    if ((filterResults.duration[0] != null && filterResults.duration[0] != 0) || (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
+                        packet.dauer = filterResults.duration;
+                    } 
+                }
+                if (filterResults.price != null && filterResults.price != 0){
+                    if ((filterResults.price[0] != null && filterResults.price[0] != 0) || (filterResults.price[1] != null && filterResults.price[1] != 0)) {
+                        packet.preis = filterResults.price;
+                    } 
+                }
+                if (filterResults.capacity != null && filterResults.capacity != 0){
+                    if ((filterResults.capacity[0] != null && filterResults.capacity[0] != 0) || (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
+                        packet.kapazitaet = filterResults.capacity;
+                    } 
+                }
                 if (filterResults.eventSize != null && filterResults.eventSize != 0) {
                     packet.eventgroesse = filterResults.eventSize;
                 } 
