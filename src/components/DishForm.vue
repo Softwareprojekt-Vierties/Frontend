@@ -10,7 +10,7 @@
       </div>
     </div>
     <div id="right">
-      <div id="text">
+      <div id="text-component">
         Gericht 
       </div>
       <input class="input-comp"  v-model="dishName" id="input" placeholder="z.B. Kuchen">
@@ -54,7 +54,7 @@ export default {
         dishName: this.dishName,
         info1: this.info1,
         info2: this.info2,
-        uploadedImage : this.uploadedImage
+        imagePreview : this.imagePreview
       };
     },
     clearFields() {
@@ -140,7 +140,7 @@ export default {
     grid-template-columns: auto;
 }
 
-#text {
+#text-component {
   text-align: left;
   font-size: 11px;
   margin-top: 5px;
