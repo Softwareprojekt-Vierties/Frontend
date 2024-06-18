@@ -28,30 +28,30 @@
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <label id="info-headline">Infos hinzufügen:</label>
-            <div class="infos">
-              <label class="info-subheadline">Stadt:</label>
-              <input class="input" type="text" placeholder="z.B. 32427 Minden">
+            <div>
+              <label id="info-headline">Infos:</label>
+              <img src="../assets/event-bookmark-black.jpg">
             </div>
             <div class="infos">
-              <label class="info-subheadline">Straße:</label>
-              <input class="input" type="text" placeholder="z.B. Artilleriestraße 9">
+              <label class="info-subheadline"><strong>Location:</strong> Campus Minden</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline">Kapazität:</label>
-              <input class="input" type="text" placeholder="z.B. 50 Personen">
+              <label class="info-subheadline"><strong>Datum:</strong> 17.08.2024</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline">Preis:</label>
-              <input class="input" type="text" placeholder="z.B. 50€">
+              <label class="info-subheadline"><strong>Zeit:</strong> 19Uhr - 2Uhr</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline">Größe:</label>
-              <input class="input" type="text" placeholder="z.B. 50 ha">
+              <label class="info-subheadline"><strong>Eventgröße:</strong> 50 Personen</label>
             </div>
-            <div id="open-air">
-              <label class="info-subheadline">Open Air:</label>
-              <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Preis:</strong> 10€</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Altersfreigabe:</strong> 18+</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Open Air:</strong> Nein</label>
             </div>
           </div>
           <div id="buttons">
@@ -197,46 +197,6 @@
     margin-left: 70px;
   }
   
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 20px; /* Angepasst an die neue Höhe */
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 16px; /* Angepasst an die neue Höhe */
-    width: 16px; /* Angepasst an die neue Höhe */
-    left: 2px; /* Angepasst an die neue Höhe */
-    bottom: 2px; /* Angepasst an die neue Höhe */
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 50%;
-  }
-  
-  input:checked + .slider {
-    background-color: rgb(0, 217, 217);
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px rgb(0, 217, 217);
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
-    -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
-    transform: translateX(20px); /* Angepasst an die neue Höhe */
-  }
-  
   #main {
     display: grid;
     grid-template-columns: auto auto;
@@ -290,13 +250,6 @@
     font-size: 12px;
   }
   
-  .input {
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-  }
-  
   #long-description-text {
     width: 580px;
     font-family: Arial, sans-serif;
@@ -327,12 +280,6 @@
     font-family: Arial, sans-serif; /* Schriftart festlegen */
     font-size: 14px; /* Schriftgröße festlegen */
     font-weight: bold;
-  }
-  
-  #open-air {
-    display: block;
-    text-align: left;
-    margin-top: 20px;
   }
   
   #buttons {
