@@ -145,6 +145,7 @@
           this.imagePreview = data['artist'].rows[0].profilbild;
           this.uploadedImage = data['artist'].rows[0].profilbild;
           this.email = data['artist'].rows[0].emailfk;
+          this.songs = [];
           data['lieder'].rows.forEach(lied => {
             this.songs.push({
               id: lied['id'],
