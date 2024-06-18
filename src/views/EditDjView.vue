@@ -113,10 +113,11 @@
     },
 
     async created(){
-        let id = 3;
+        let id = 8;
           try {
               const response = await axios.get(`/getArtistById/${id}`);
-              const dbDj = response.data.rows[0];
+              console.log(response);
+              const dbDj = response.data["artist"].rows[0];
               console.log(dbDj);
               this.originalData = { ...dbDj };
               this.setFormData(dbDj);
@@ -148,7 +149,11 @@
           this.email = data.emailfk;
           console.log("email");
           console.log(data.emailfk);
-          //this.songs = data.songs;
+          this.songs = data["lieder"];
+          data["lieder"].rows.forEach(lied => {this.song.push(
+            {songName : lied[0], songLength: lied[1], songYear:lied[2]} 
+          ) } )
+
         },
 
 
@@ -191,8 +196,7 @@
             formData.preis = this.price;
             formData.email = this.email;
             formData.bild = this.imagePreview;
-
-            //formData.songs = JSON.stringify(this.songs)
+            formData.songs = this.songs;
 
 
             console.log('FormData:', formData); 
