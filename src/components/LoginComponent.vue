@@ -1,6 +1,6 @@
 <template>
   <div id="Eventure-Logo-Text">
-    <img alt="Eventure Logo" id="logo" src="../assets/logo.png">
+      <img alt="Eventure Logo" id="logo" :src="isDarkMode ? require('../assets/dark_logo_test.png') : require('../assets/logo.png')">
     <t1 id="Überschrift">Eventure</t1>
   </div>
 </template>
@@ -10,7 +10,12 @@ export default {
   name: 'LoginComponent',
   props: {
     msg: String
-  }
+  },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    },
 }
 </script>
 
@@ -30,6 +35,11 @@ export default {
 
 #Überschrift {
   font-size: 80px; /* Legt die Schriftgröße für die Überschrift fest */
-  color: #333; /* Dunkelgraue Textfarbe */
+    @media (prefers-color-scheme: dark) {
+        color: #ddd; /* Dunkelgraue Textfarbe */
+    }
+    @media (prefers-color-scheme: light) {
+        color: #333; /* Dunkelgraue Textfarbe */
+    }
 }
 </style>

@@ -13,7 +13,6 @@
                 <button @click="gotoEventCreation" id="new-event-button">Event erstellen</button>
             </div>
         </div>
-
         <div id="login-component">
             <LoginComponent />
         </div>

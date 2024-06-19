@@ -81,7 +81,7 @@ export default {
 .textFeld {
   width: 240px;
   height: 25px;
-  border: 2px solid #cccccc;
+  border: 2px solid var(--border-color);
   border-radius: 20px; 
   margin-bottom: 40px;
   font-size: 13px; 
@@ -98,7 +98,7 @@ export default {
   width: 110px;
   height: 30px;
   border-radius: 20px;
-  border: 1px solid #ecf5ec; 
+  border: 1px solid var(--border-color); 
   background-color: #1fda29; 
   cursor: pointer; 
   transition: background-color 0.3s; 
@@ -108,7 +108,7 @@ export default {
   margin-right: 15px;
   width: 110px;
   height: 30px;
-  border: 1px solid #ecf5ec; 
+  border: 1px solid var(--border-color); 
   border-radius: 20px; 
   background-color: #f81111; 
   cursor: pointer; 
