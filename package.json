@@ -13,7 +13,8 @@
     "core-js": "^3.8.3",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vue-slick-carousel": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -25,11 +26,11 @@
     "@vue/cli-plugin-unit-jest": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/test-utils": "^2.0.0-0",
-    "@vue/vue3-jest": "^27.0.0-alpha.1",
+    "@vue/vue3-jest": "^27.0.0",
     "babel-jest": "^27.0.6",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "jest": "^27.0.5",
+    "jest": "^27.5.1",
     "vue-svg-loader": "^0.16.0"
   }
 }

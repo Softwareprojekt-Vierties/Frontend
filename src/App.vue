@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+    <router-view></router-view>
 </template>
 
 <style>
@@ -24,6 +24,7 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
 
 html, body {
   height: 100%;
