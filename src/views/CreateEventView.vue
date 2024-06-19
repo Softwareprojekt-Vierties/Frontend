@@ -2,13 +2,15 @@
   <div id="app">
     <div id="header">
       <div id="icon-div">
-        <img alt="Filer" class="icon" src="../assets/home.jpg">
+        <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
+        <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
       </div>
       <div id="picture-name">
         <div id="file-div">
           <div id="file-upload">
             <label id="image-text" for="fileToUpload">
-              <img src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+              <img v-if="isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
+              <img v-else src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
               <span id="upload-text">Bild hochladen</span>
             </label>
             <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
@@ -41,7 +43,7 @@
               <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
                 <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
               </div>
-              <div class="add-dish-button" @click="addDish"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+              <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
             </div>
           </div>
         </div>
@@ -53,7 +55,8 @@
             <label class="info-subheadline">Location:</label>
             <div>
               <div id="add-location">
-                <img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
+                <img v-if=isDarkMode src="../assets/addlocation.png" alt="Bild hochladen" id="add-location-icon" />
+                <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
               </div>
             </div>
           </div>
@@ -133,7 +136,12 @@ export default {
     closeModal() {
       this.isModalVisible = false;
     }
-  }
+  },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    }
 }
 </script>
 
