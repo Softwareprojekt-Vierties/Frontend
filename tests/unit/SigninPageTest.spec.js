@@ -61,4 +61,25 @@ describe('AnmeldungView.vue', () => {
     expect(localStorage.setItem).toHaveBeenCalledWith('authToken', 'mockToken');
   });
 
+  it('login method handles errors correctly', async () => {
+    wrapper.setData({ benutzername: 'user', password: '123456' });
+    const error = {
+      response: {
+        data: {
+          message: 'Invalid credentials'
+        }
+      }
+    };
+    axios.post.mockRejectedValue(error);
+  
+    await wrapper.vm.login();  
+  
+    expect(axios.post).toHaveBeenCalledWith('/login', {
+      email: 'user',
+      pass: '123456'
+    });
+    
+    
+  });
+
 });
