@@ -46,24 +46,27 @@ export default {
       this.$router.push('/signup');
     },
 
-    login() {
-      axios.post('/login', {
-        email: this.benutzername,
-        pass: this.password
-      })
-      .then(response => {
+    async login() {
+      if (!this.isFormValid) {
+        alert('Bitte füllen Sie beide Felder aus.');
+        return;
+      }
+      try {
+        const response = await axios.post('/login', {
+          email: this.benutzername,
+          pass: this.password
+        });
         console.log('Login erfolgreich:', response);
         
         // Speichere das Token im Local Storage
-        const token = response.data;
-        localStorage.setItem('authToken', token);
+        localStorage.setItem('authToken', response.data);
         this.$router.push('/search');
-      })
-      .catch(error => {
-        console.error('Fehler beim Login:', error.response.data.message);
-        alert(`Login fehlgeschlagen: ${error.response.data.message}`);
-      });
+      } catch (error) {
+        console.error('Fehler beim Login:', error.response ? error.response.data.message : error.message);
+        alert(`Login fehlgeschlagen: ${error.response ? error.response.data.message : error.message}`);
+      }
     },
+    
     fetchData() {
       // Hole den Token aus dem Local Storage
       const token = localStorage.getItem('authToken');
