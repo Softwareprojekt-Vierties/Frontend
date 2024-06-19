@@ -1,8 +1,8 @@
 <template>
     <div id="main_div">
         <div id="selct-filter-searchbar">
-            <div id="select-filter">
-                <select v-model="searchType" class="options" @change="toggleSearchType">
+            <div id="select_filter">
+                <select v-model="searchType" class="options" @change="toggleSearchType" :disabled="!mutable">
                     <option value="0">Kategorie wählen</option>
                     <option value="1">Location</option>
                     <option value="2">DJ/Band</option>
@@ -82,7 +82,15 @@
     export default {
         name: 'SearchComponent',
         props: {
-            msg: String
+            msg: String,
+            startValue: {
+                type: String,
+                default: "0",
+            },
+            mutable: {
+                type: Boolean,
+                default: true,
+            }
         },
         components: {
             CardComponent,
@@ -408,7 +416,6 @@
                                 }
                             })
                             this.filteredSearchResults.combined = this.searchResults.combined.filter(item => item.isBookmarked);
-                            console.log(this.searchResults.combined);
                         } 
                     })
                     .catch(error => {
@@ -483,6 +490,7 @@
             },
         },
         created() {
+            this.searchType = this.startValue;
             this.search();
         },
     }
@@ -804,7 +812,7 @@
       margin-right: 0px;
   }
 
-  #select-filter {
+  #select_filter {
       display: grid;
       grid-template-columns: auto;
       align-items: center;

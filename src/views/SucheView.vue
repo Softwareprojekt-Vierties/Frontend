@@ -18,7 +18,7 @@
             <LoginComponent />
         </div>
 
-        <SearchComponent></SearchComponent>
+        <SearchComponent />
 
     </div>
 </template>
