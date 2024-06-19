@@ -16,33 +16,41 @@ import EditLocationView from '@/views/EditLocationView.vue'
 
 import EventView from '@/views/EventView.vue'
 
+function isMobile() {
+    const MAX_MOBILE_WIDTH = 800;
+    return window.innerWidth < MAX_MOBILE_WIDTH;
+}
+
 const routes = [
-  {
-    path: '/',
-    name: 'anmeldung',
-    component: AnmeldungView 
-  },  {
-    path: '/signup',
-    name: 'signupSeite',
-    component: SignupView 
-  }
-  ,  {
-    path: '/usertype',
-    name: 'SelectingUserType',
-    component: NutzerUnterscheidungView 
-  },  {
-    path: '/servicetype',
-    name: 'SelectingServiceType',
-    component: ServiceTypeView 
-  },  {
+
+    {
+        path: '/',
+        name: 'anmeldung',
+        component: isMobile() ? AnmeldungView : AnmeldungView // Corrigido para usar AnmeldungView
+    },  { //                    󱞩 MobileView    󱞩 DesktopView
+        path: '/signup',
+        name: 'signupSeite',
+        component: isMobile() ? SignupView  : SignupView 
+    }
+    ,  {
+        path: '/usertype',
+        name: 'SelectingUserType',
+        component: isMobile() ? NutzerUnterscheidungView  : NutzerUnterscheidungView 
+    },  {
+        path: '/servicetype',
+        name: 'SelectingServiceType',
+        component: isMobile() ? ServiceTypeView  : ServiceTypeView 
+    },  {
+        path: '/search',
+        name: 'SucheViewType',
+        component: isMobile() ? SucheView  : SucheView 
+    },
+    {
     path: '/createevent',
     name: 'CreateEventType',
     component: CreateEvent 
-  },  {
-    path: '/search',
-    name: 'SucheViewType',
-    component: SucheView 
-  },  {
+  },
+  {
     path: '/createcaterer',
     name: 'CreateCatererType',
     component: CreateCatererView 
@@ -82,11 +90,12 @@ const routes = [
 
 
   }
+
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 
 export default router
