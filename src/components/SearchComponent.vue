@@ -57,8 +57,8 @@
                 <div v-else id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                 </div>
@@ -113,28 +113,27 @@
                 },
                 sortingOptions: {
                     "0": { name: "none", filters: ["name"] },
-                    "1": { name: "location", filters: ["name", "adresse", "distance", "capacity", "rating", "preis"] },
-                    "2": { name: "djBand", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
-                    "3": { name: "caterer", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
-                    "4": { name: "event", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
-                    "5": { name: "person", filters: ["name", "region", "altersfreigabe", "gender"] },
-                    "6": { name: "myEvents", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
-                    "7": { name: "myTickets", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
-                    "8": { name: "myFriends", filters: ["name", "region", "altersfreigabe", "gender"] },
-                    "9": { name: "myLocation", filters: ["name", "region", "distance", "capacity", "rating", "preis"] },
+                    "1": { name: "location", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                    "2": { name: "djBand", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                    "3": { name: "caterer", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                    "4": { name: "event", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "5": { name: "person", filters: ["name", "adresse", "altersfreigabe", "gender"] },
+                    "6": { name: "myEvents", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "7": { name: "myTickets", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "8": { name: "myFriends", filters: ["name", "adresse", "altersfreigabe", "gender"] },
+                    "9": { name: "myLocation", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
                 },
                 translations: {
                     name: "Name",
-                    region: "Region",
                     adresse: "Addresse",
                     datum: "Datum",
-                    distance: "Entfernung",
-                    capacity: "Kapazität",
-                    rating: "Bewertung",
+                    entfernung: "Entfernung",
+                    kapazitaet: "Kapazität",
+                    sterne: "Bewertung",
                     uhrzeit: "Startzeit",
-                    duration: "Dauer",
+                    dauer: "Dauer",
                     experience: "Erfahrung",
-                    category: "Kategorie",
+                    kategorie: "Kategorie",
                     altersfreigabe: "Alter",
                     gender: "Geschlecht",
                     eventgroesse: "Eventgröße",
@@ -156,13 +155,13 @@
                 const tooltip = document.getElementById("dynamic-tooltip");
                 tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
             },
-            toggleSearchType(event) {
-                this.updateFilterContent(event);
+            toggleSearchType() {
+                this.updateFilterContent();
                 this.sortType = "name";
                 this.search();
             },
-            updateFilterContent(event) {
-                const selectedValue = event.target.value;
+            updateFilterContent() {
+                const selectedValue = this.searchType;
                 if (selectedValue === "0") {
                     this.filterContent = "Wählen Sie eine Suchmodalität";
                 } else {
@@ -215,6 +214,9 @@
                 const filtersContainer = this.$refs.filterContainer;
                 const filterValues = {};
 
+                if (filtersContainer == null) {
+                    return filterValues;
+                }
                 this.selectedFilters.forEach((filter) => {
                     switch (filter) {
                         case "region":
@@ -429,6 +431,13 @@
                 this.hasSearchResults = false;
                 this.searchError = false;
                 switch (this.searchType) {
+                    case "0":
+                        this.searchSpecific("/searchLoacation", "location")
+                        this.searchSpecific("/searchArtist", "artist")
+                        this.searchSpecific("/searchCaterer", "caterer")
+                        this.searchSpecific("/searchEvent", "events")
+                        this.searchSpecific("/searchPerson", "person")
+                        break;
                     case "1":
                     case "9":
                         this.searchSpecific("/searchLoacation", "location")
@@ -449,14 +458,6 @@
                         break;
                     case "7":
                         this.searchSpecific("/searchEvent", "tickets")
-                        break;
-
-                    case "0":
-                        this.searchSpecific("/searchLoacation", "location")
-                        this.searchSpecific("/searchArtist", "artist")
-                        this.searchSpecific("/searchCaterer", "caterer")
-                        this.searchSpecific("/searchEvent", "events")
-                        this.searchSpecific("/searchPerson", "person")
                         break;
 
                     default: break;
@@ -491,6 +492,7 @@
         },
         created() {
             this.searchType = this.startValue;
+            this.toggleSearchType();
             this.search();
         },
     }
