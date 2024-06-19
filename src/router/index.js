@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'anmeldung',
-    component: AnmeldungView // Corrigido para usar AnmeldungView
+    component: AnmeldungView 
   },  {
     path: '/signup',
     name: 'signupSeite',

@@ -55,7 +55,7 @@
             <label class="info-subheadline">Location:</label>
             <div>
               <div id="add-location">
-                <img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
+                <img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" @click="openModalLocation" />
               </div>
             </div>
           </div>
@@ -117,6 +117,24 @@
         </div>
       </div>
     </div>
+
+    <div v-if = "isLocationModalVisible" id ="modal-overlay">
+      <div id="modal-content-location">
+        <div id="headline">
+            <label>Location Auswählen</label>
+        </div>
+        <!--  Auflistung der Events--> 
+        <div id="event-div">
+          <SearchComponent :mutable="false" startValue="1"/>
+        </div>
+        <div id="action-buttons">
+          <button id="cancel-button" @click="closeModalLocation">abbrechen</button>
+          <button id="create-button" >Location auswählen</button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -124,10 +142,12 @@
 <script>
 import axios from 'axios';
 import DishForm from '../components/DishForm.vue';
+import SearchComponent from '../components/SearchComponent.vue';
 
 export default {
   components: {
     DishForm,
+    SearchComponent
   },
   data() {
     return {
@@ -147,6 +167,7 @@ export default {
         { name: '', details: [] }
       ],
       isModalVisible: false,
+      isLocationModalVisible : false,
       selectedEventType: null 
 
     };
@@ -183,6 +204,12 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    openModalLocation() {
+      this.isLocationModalVisible = true;
+    },
+    closeModalLocation() {
+      this.isLocationModalVisible = false;
     },
     selectEventType(type) { 
       this.selectedEventType = type;
@@ -608,8 +635,22 @@ footer {
   padding-bottom: 12.5px;
   border-radius: 20px;
   text-align: center;
-  width: 300px;
+  width: 800px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+#modal-content-location{
+  background: white;
+  padding: 30px;
+  padding-top: 20px;
+  padding-bottom: 12.5px;
+  border-radius: 20px;
+  text-align: center;
+  width: 800px;
+  max-height: 800px;
+  min-height: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+
 }
 
 #headline {
@@ -672,7 +713,13 @@ footer {
 }
 
 #modal-content #event-buttons #event-button.selected {
-  background-color: blue; /* Tonalidade azul */
-  color: white; /* Ajuste a cor do texto se necessário */
+  background-color: blue; 
+  color: white; 
+}
+
+#event-div{
+  max-height: 600px;
+  min-height:400px;
+  overflow-y: scroll;
 }
 </style>
