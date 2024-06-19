@@ -9,16 +9,17 @@ import CreateCatererView from '@/views/CreateCatererView.vue'
 import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
 
+import EditDjView from '@/views/EditDjView.vue'
+
 import EditLocationView from '@/views/EditLocationView.vue'
 
 import EventView from '@/views/EventView.vue'
-
 
 const routes = [
   {
     path: '/',
     name: 'anmeldung',
-    component: AnmeldungView // Corrigido para usar AnmeldungView
+    component: AnmeldungView 
   },  {
     path: '/signup',
     name: 'signupSeite',
@@ -54,6 +55,12 @@ const routes = [
     component: CreateDjView 
 
 
+  }, {
+    path: '/editdj',
+    name: 'EditDjType',
+    component: EditDjView 
+
+
   },  {
     path: '/editLocation',
     name: 'EditLocationType',
@@ -64,6 +71,7 @@ const routes = [
     path: '/event',
     name: 'EventType',
     component: EventView
+
 
   }
 ]
