@@ -18,7 +18,8 @@
 
             <div id="searchbar-and-icons">
                 <div class="filter-container">
-                    <img alt="Filter" id="filter" src="../assets/filter.jpg" @click="toggleTooltip" />
+                    <img alt="Filter" id="filter" v-if="isDarkMode" src="../assets/filter.png" @click="toggleTooltip" />
+                    <img alt="Filter" id="filter" v-else src="../assets/filter.jpg" @click="toggleTooltip" />
                     <span class="filter-tooltip" id="dynamic-tooltip" v-html="filterContent" ref="filterContainer"></span>
                 </div>
                 <div>
@@ -26,7 +27,8 @@
                 </div>
                 <div>
                     <button @click="search" class="searchButton">
-                        <img alt="Magnifying Glass" id="magnifying-glass" src="../assets/magnifying-glass.jpg">
+                        <img alt="Magnifying Glass" id="magnifying-glass" v-if="isDarkMode" src="../assets/magnifying-glass.png">
+                        <img alt="Magnifying Glass" id="magnifying-glass" v-else src="../assets/magnifying-glass.jpg">
                     </button>
                 </div>
             </div>
@@ -35,7 +37,9 @@
         <div class="events-outside-div">
             <div id="bookmark-arrow">
                 <div @click="toggleBookmark" class="bookmark-arrow-div">
-                    <img v-if="bookmarked" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-gray.jpg" />
+                    <img v-if="bookmarked && isDarkMode" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-filled.png" />
+                    <img v-else-if="isDarkMode" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-empty.png" />
+                    <img v-else-if="bookmarked" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-gray.jpg" />
                     <img v-else alt="Bookmark White" id="bookmark-white" src="../assets/bookmark-white.jpg" />
                 </div>
                 <div id="select-sort" @change="sortContent">
@@ -44,7 +48,10 @@
                     </select>
                 </div>
                 <div class="bookmark-arrow-div">
-                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-bind:src="[sortAscending ? require('@/assets/arrow-up.jpg') : require('@/assets/normal-arrow.jpg')]" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-if="sortAscending && isDarkMode" src="../assets/arrow-up-dark.png" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else-if="isDarkMode" src="../assets/arrow-down-dark.png" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else-if="sortAscending" src="../assets/arrow-up.jpg" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else src="../assets/normal-arrow.jpg" />
                 </div>
             </div>
         </div>
@@ -496,6 +503,11 @@
             this.toggleSearchType();
             this.search();
         },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    }
     }
 </script>
 
@@ -851,6 +863,8 @@
       width: 510px;
       height: 30px;
       border: 0px;
+      background-color: var(--background);
+      color: var(--textfield-font-color);
   }
 
   #searchbar:focus {
@@ -862,7 +876,7 @@
       grid-template-columns: auto auto auto;
       justify-content: left;
       gap: 10px;
-      background-color: white;
+      background-color: var(--background);
   }
 
   .bookmark-arrow-div {
@@ -877,7 +891,8 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-      background-color: white;
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
   }
 
   #bookmark-white {
@@ -893,7 +908,7 @@
   .searchButton {
       display: inline-flex;
       border: none;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
 
   #results {

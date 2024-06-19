@@ -3,10 +3,12 @@
         <div id="header">
             <div id="profile-mail">
                 <div class="icon-div">
-                    <img @click="gotoProfilePage" alt="Dein Profil" class="icon" src="../assets/profile-icon.png" />
+                    <img @click="gotoProfilePage" alt="Dein Profil" class="icon" v-if="isDarkMode" src="../assets/profile-icon-dark.png" />
+                    <img @click="gotoProfilePage" alt="Dein Profil" class="icon" v-else src="../assets/profile-icon.png" />
                 </div>
                 <div class="icon-div">
-                    <img @click="gotoMailPage" alt="Dein Postfach" class="icon" src="../assets/mail-icon.png" />
+                    <img @click="gotoMailPage" alt="Dein Postfach" class="icon" v-if="isDarkMode" src="../assets/mail-icon-dark.png" />
+                    <img @click="gotoMailPage" alt="Dein Postfach" class="icon" v-else src="../assets/mail-icon.png" />
                 </div>
             </div>
             <div id="new-event">
@@ -45,6 +47,11 @@
                 // go to the event creation page
             },
         },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    }
     };
 </script>
 
