@@ -78,7 +78,7 @@
           <div id="break" @click="reset">
             zurücksetzen
           </div>
-          <div id="continue" @click="createDJ" >
+          <div id="continue" @click="updateDJ" >
             anlegen
           </div>
         </div>
@@ -87,7 +87,7 @@
     
   </div>
 </template>
-
+  
 <script>
 import axios from 'axios'; 
 
@@ -103,90 +103,113 @@ export default {
       price: '',
       imagePreview: null,
       uploadedImage: null,
+      email:'',
       songs: [
-        { songName: '', songLength: '', songYear: '' }
-      ]
+        { id: '', songName: '', songLength: '', songYear: '' }
+      ],
+      originalData : {}
     };
   },
+
+  async created(){
+    let id = 8;
+      try {
+          const response = await axios.get(`/getArtistById/${id}`);
+          console.log(response);
+          this.originalData = { ...response.data["artist"].rows[0] };
+          this.setFormData(response.data);
+          console.log('dj data received:', response.data);
+      } catch (error) {
+          console.error('Error with sending dj ID to DB :', error);
+        }
+    },
+
   computed: {
     fileDivStyle() {
       return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
     }
   },
+
   methods: {
-    onFileChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-          this.uploadedImage = file;
-          const reader = new FileReader();
-          reader.onload = e => {
-            this.imagePreview = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      },
-    addSong() {
-      this.songs.push({ songName: '', songLength: '', songYear: '' });
+    setFormData(data) {
+      this.djName = data['artist'].rows[0].benutzername;
+      this.shortDescription = data['artist'].rows[0].kurzbeschreibung;
+      this.longDescription = data['artist'].rows[0].beschreibung ;
+      this.region = data['artist'].rows[0].region;
+      this.category = data['artist'].rows[0].kategorie;
+      this.experience =  data['artist'].rows[0].erfahrung;
+      this.price = data['artist'].rows[0].preis;
+      this.imagePreview = data['artist'].rows[0].profilbild;
+      this.uploadedImage = data['artist'].rows[0].profilbild;
+      this.email = data['artist'].rows[0].emailfk;
+      this.songs = []; // use empty Array to remove example container
+      data['lieder'].rows.forEach(lied => {
+        this.songs.push({
+          id: lied['id'],
+          songName: lied['name'], 
+          songLength: lied['laenge'], 
+          songYear: lied['erscheinung'].substring(0, 10)
+        })
+      });
     },
-    removeSong(index) {
-      this.songs.splice(index, 1);
-    },
-    reset() {
-      this.djName = '';
-      this.shortDescription = '';
-      this.longDescription = '';
-      this.region = '';
-      this.category = '';
-      this.experience = '';
-      this.price = '';
-      this.imagePreview = null;
-      this.uploadedImage = null;
-      this.songs = [{ songName: '', songLength: '', songYear: '' }];
-    },
-    goToHomePage() {
-      this.$router.push('/search');
-    },
-    async createDJ() {
+
+    async updateDJ() {
       if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
-        alert('Please fill in all required fields.');
-        return;
+          alert('Please fill in all required fields.');
+          return;
       }
 
-
       let formData = {};
-        formData.benutzername = this.djName;
-        formData.profilname = this.djName;
-        formData.email = this.djName;
-        formData.password = this.djName;
-        formData.profilbild = this.imagePreview;
-        formData.kurzbeschreibung = this.shortDescription;
-        formData.beschreibung = this.longDescription;
-        formData.region = this.region;
-        formData.preis = this.price;
-        formData.kategorie = this.category;
-        formData.erfahrung = this.experience;
-        formData.songs = this.songs;
-
-        console.log('FormData:', formData); 
-
+      formData.profilname = this.djName;
+      formData.kurzbeschreibung = this.shortDescription;
+      formData.beschreibung = this.longDescription;
+      formData.region = this.region;
+      formData.kategorie = this.category;
+      formData.erfahrung = this.experience;
+      formData.preis = this.price;
+      formData.email = this.email;
+      formData.bild = this.imagePreview;
+      formData.songs = this.songs;
+      console.log('FormData:', formData); 
 
       //const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createArtist', formData);
-          console.log('Artist created:', response.data);
-          alert('Artist created successfully!');
-          this.reset();
-        } catch (error) {
-          console.error('Error with Artist creation:', error);
-          alert('Error creating Artist. Please try again.');
-        }
-    }
+        const response = await axios.post('/updateArtist', formData);
+        console.log('Artist updated:', response.data);
+        alert('Artist updated successfully!');
+      } catch (error) {
+        console.error('Error with Artist update:', error);
+        alert('Error with Artist update. Please try again.');
+      }
+    },
 
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.uploadedImage = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.imagePreview = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    addSong() {
+        this.songs.push({ songName: '', songLength: '', songYear: '' });
+    },
+    removeSong(index) {
+        this.songs.splice(index, 1);
+    },
+    reset() {
+      this.setFormData(this.originalData);
+    },
+    goToHomePage() {
+        this.$router.push('/search');
+    }
   }
 }
 </script>
-
 
 <style scoped>
 :root html, body {

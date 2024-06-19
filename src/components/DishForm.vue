@@ -144,7 +144,7 @@ export default {
     grid-template-columns: auto;
 }
 
-#text {
+#text-component {
   text-align: left;
   font-size: 11px;
   margin-top: 5px;
