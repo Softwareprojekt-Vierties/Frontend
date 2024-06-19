@@ -121,14 +121,16 @@ export default {
   height: 30px;
   border-radius: 20px;
   border: 1px solid var(--border-color);
-    @media (prefers-color-scheme: dark) {
-        background-color: #0faa19;
-    }
-    @media (prefers-color-scheme: light) {
-        background-color: #1fda29;
-    }
+  background-color: var(--green);
+  color: var(--simple-font-color);
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.weiter:disabled {
+    color: #aaaaaa;
+    @media (prefers-color-scheme: dark) {
+    }
 }
 
 .kontoAnlegen {
@@ -137,12 +139,8 @@ export default {
   height: 30px;
   border: 1px solid var(--border-color);
   border-radius: 20px;
-    @media (prefers-color-scheme: dark) {
-        background-color: #8533c9;
-    }
-    @media (prefers-color-scheme: light) {
-        background-color: #9543f9;
-    }
+  background-color: var(--blue);
+  color: var(--simple-font-color);
   cursor: pointer;
 }
 </style>

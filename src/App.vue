@@ -25,7 +25,19 @@ export default {
         --textfield-font-color: #cccccc;
         --placeholder-color: #acacac;
         --border-color: #7e8e7e;
+        --dark-border-color: #9e9e9e;
         --eventure_logo_font_color: #eee;
+        --create-page-background: #303030;
+        --create-page-header-background: #252525;
+        --simple-font-color: #dcdcdc;
+        --simple-font-color-disabled: #aaaaaa;
+        --upload-text-color: #cccccc;
+        --slider-background-color: #aaaaaa;
+
+        --red: #c80101;
+        --green: #0faa19;
+        --blue: #8533c9;
+        --cyan: #00adad;
     }
 }
 
@@ -37,7 +49,19 @@ export default {
         --textfield-font-color: black;
         --placeholder-color: #888888;
         --border-color: #ecf5ec;
+        --dark-border-color: #0a0a0a;
         --eventure_logo_font_color: #333333;
+        --create-page-background: #f2f2f2;
+        --create-page-header-background: #d5d5d5;
+        --simple-font-color: black;
+        --simple-font-color-disabled: #101010;
+        --upload-text-color: #999999;
+        --slider-background-color: #cccccc;
+
+        --red: #f81111;
+        --green: #1fda29;
+        --blue: #9543f9;
+        --cyan: #00d9d9;
     }
 }
 

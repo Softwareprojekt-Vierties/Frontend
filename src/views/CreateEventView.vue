@@ -141,11 +141,11 @@ export default {
 :root html, body {
   width: 100%;
   height: 100%;
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
 }
 
 #header {
-  background-color: rgb(213, 213, 213);
+  background-color: var(--create-page-header-background);
   padding-bottom: 40px;
   padding-top: 10px;
 }
@@ -165,7 +165,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--create-page-background);
   margin-left: 10px;
 }
 
@@ -177,7 +177,7 @@ export default {
 
 #name-description {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--create-page-background);
   padding: 10px;
 }
 
@@ -192,6 +192,12 @@ export default {
   border-radius: 5px;
   border: 1px solid #000000;
   text-align: center;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.header-input::placeholder {
+    color: var(--placeholder-color);
 }
 
 .description {
@@ -205,7 +211,7 @@ export default {
   height: 180px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--create-page-background);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -248,7 +254,7 @@ export default {
 }
 
 #upload-text {
-  color: #999999;
+  color: var(--upload-text-color);
   margin-top: 0; /* Remove any top margin to bring it closer to the image */
 }
 
@@ -274,7 +280,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--slider-background-color);
   -webkit-transition: .4s;
   transition: .4s;
   border-radius: 20px; /* Angepasst an die neue Höhe */
@@ -287,18 +293,18 @@ export default {
   width: 16px; /* Angepasst an die neue Höhe */
   left: 2px; /* Angepasst an die neue Höhe */
   bottom: 2px; /* Angepasst an die neue Höhe */
-  background-color: white;
+  background-color: var(--create-page-background);
   -webkit-transition: .4s;
   transition: .4s;
   border-radius: 50%;
 }
 
 input:checked + .slider {
-  background-color: rgb(0, 217, 217);
+  background-color: var(--cyan);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px rgb(0, 217, 217);
+  box-shadow: 0 0 1px var(--cyan);
 }
 
 input:checked + .slider:before {
@@ -311,14 +317,15 @@ input:checked + .slider:before {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: center;
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
   padding-top: 30px;;
   gap: 20px;
 }
 
 .long-description {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
   padding: 10px;
   display: grid;
   grid-template-columns: 580px;
@@ -326,10 +333,19 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 
+.long-description::placeholder {
+    color: var(--placeholder-color);
+}
+
 #right-side-info {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
   padding: 10px;
+}
+
+#right-side-info::placeholder {
+    color: var(--placeholder-color);
 }
 
 .infos {
@@ -345,6 +361,12 @@ input:checked + .slider:before {
   border-radius: 5px; /* Abgerundete Ecken */
   height: 25px;
   margin-right: 5px;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.time-value-left::placeholder {
+    color: var(--placeholder-color);
 }
 
 .time-value-right {
@@ -354,6 +376,12 @@ input:checked + .slider:before {
   border-radius: 5px; /* Abgerundete Ecken */
   height: 25px;
   margin-left: 5px;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.time-value-right::placeholder {
+    color: var(--placeholder-color);
 }
 
 .info-subheadline {
@@ -366,6 +394,12 @@ input:checked + .slider:before {
   border: 1px solid #000000; /* Rahmenstil */
   border-radius: 5px; /* Abgerundete Ecken */
   height: 25px;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.input::placeholder {
+    color: var(--placeholder-color);
 }
 
 #long-description-input {
@@ -377,6 +411,12 @@ input:checked + .slider:before {
   border: 1px solid #000000;
   border-radius: 8px;
   resize: none;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+#long-description-input::placeholder {
+    color: var(--placeholder-color);
 }
 
 #add-location-icon {
@@ -389,7 +429,12 @@ input:checked + .slider:before {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   border-radius: 5px;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+#add-location::placeholder {
+    color: var(--placeholder-color);
 }
 
 #info-headline {
@@ -413,10 +458,11 @@ input:checked + .slider:before {
   align-items: center;
   gap: 20px;
   margin-top: 15px;
+  color: var(--simple-font-color);
 }
 
 #break {
-  background-color: rgb(254, 68, 77);
+  background-color: var(--red);
   width: 88px;
   height: 25px;
   border-radius: 5px;
@@ -429,7 +475,7 @@ input:checked + .slider:before {
 }
 
 #continue {
-  background-color: rgb(146, 208, 80);
+  background-color: var(--green);
   width: 88px;
   height: 25px;
   border-radius: 5px;
@@ -476,6 +522,6 @@ input:checked + .slider:before {
 }
 
 footer {
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
 }
 </style>
