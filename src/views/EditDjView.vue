@@ -45,7 +45,7 @@
                     <input v-model="song.songName" id="input" placeholder="z.B. Party-Song">
                     <div id="ingredients">Infos:</div>
                     <input v-model="song.songLength" id="input" placeholder="z.B. Länge: 3,41 min">
-                    <input v-model="song.songYear" id="input" placeholder="z.B. Jahr: 2024">
+                    <input v-model="song.songYear" id="input" placeholder="z.B. Jahr: 06-12-2024">
                   </div>
                 </div>
               </div>
@@ -112,7 +112,7 @@ export default {
   },
 
   async created(){
-    let id = 8;
+    let id = 11;
       try {
           const response = await axios.get(`/getArtistById/${id}`);
           console.log(response);
