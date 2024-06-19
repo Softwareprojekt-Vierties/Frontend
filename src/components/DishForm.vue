@@ -1,31 +1,73 @@
 <template>
   <div id="dish-form">
-    <div id="file-div">
+    <div id="file-div-comp" :style="fileDivStyleComponent">
       <div id="file-upload">
         <label id="image-text" for="fileToUpload">
-          <img src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-          <span id="upload-text">Bild hochladen</span>
+          <img v-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon-comp" />
+          <span id="upload-text-comp" v-if="!imagePreview">Bild hochladen</span>
         </label>
-        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
+        <input class="input-comp" type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChangeComponent">
       </div>
     </div>
     <div id="right">
-      <div id="text">
-        Gericht 1
+      <div id="text-component">
+        Gericht 
       </div>
-      <input id="input" placeholder="z.B. Kuchen">
+      <input class="input-comp"  v-model="dishName" id="input" placeholder="z.B. Kuchen">
       <div id="ingredients">
         Hauptzutaten:
       </div>
-      <input id="input" placeholder="z.B. Erdbeeren">
-      <input id="input" placeholder="z.B. Sahne">
+      <input class="input-comp" v-model="info1" id="input" placeholder="z.B. Erdbeeren">
+      <input class="input-comp" v-model="info2" id="input" placeholder="z.B. Sahne">
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return { 
+      dishName : '',
+      info1 : '',
+      info2: '',
+      imagePreview : null,
+      uploadedImage : null
+
+    };
+  },
+  computed: {
+    fileDivStyleComponent() {
+      return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+    }
+  },
+  methods: {
+    onFileChangeComponent(event) {
+        const file = event.target.files[0];
+        if (file) {
+          this.imagePreview = URL.createObjectURL(file);
+          this.uploadedImage = file;
+        }
+    },
+
+    getData() {
+      return {
+        dishName: this.dishName,
+        info1: this.info1,
+        info2: this.info2,
+        imagePreview : this.imagePreview
+      };
+    },
+    clearFields() {
+      this.dishName = '';
+      this.info1 = '';
+      this.info2 = '';
+      this.uploadedImage = null;
+      this.imagePreview = null;
+    }
+   }
 }
+
+
 </script>
 
 <style scoped>
@@ -44,7 +86,7 @@ export default {
     margin-left: 5px;
 }
 
-#file-div {
+#file-div-comp {
     width: 120px;
     height: 108px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
@@ -79,7 +121,7 @@ export default {
     cursor: pointer;
 }
 
-.upload-icon {
+.upload-icon-comp {
     max-width: 50%;
     max-height: 50%;
     margin-bottom: -10px; /* Adjust margin to bring the text closer */
@@ -87,7 +129,7 @@ export default {
     margin-top: -5px;
 }
 
-#upload-text {
+#upload-text-comp {
     color: rgb(209, 209, 209);
     padding-top: 5px;
     font-size: 7px;
@@ -98,13 +140,13 @@ export default {
     grid-template-columns: auto;
 }
 
-#text {
+#text-component {
   text-align: left;
   font-size: 11px;
   margin-top: 5px;
 }
 
-#input {
+.input-comp {
   width: 130px;
   border-radius: 5px;
   border: 1px solid #000;

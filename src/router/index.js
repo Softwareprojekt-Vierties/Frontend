@@ -8,6 +8,7 @@ import SucheView from '@/views/SucheView.vue'
 import CreateCatererView from '@/views/CreateCatererView.vue'
 import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
+import EditCatererView from '@/views/EditCatererView.vue'
 
 import EditDjView from '@/views/EditDjView.vue'
 
@@ -56,6 +57,12 @@ const routes = [
 
 
   }, {
+    path: '/editcaterer',
+    name: 'EditCatererType',
+    component: EditCatererView 
+
+
+  }, {
     path: '/editdj',
     name: 'EditDjType',
     component: EditDjView 
@@ -71,6 +78,7 @@ const routes = [
     path: '/event',
     name: 'EventType',
     component: EventView
+
 
 
   }
