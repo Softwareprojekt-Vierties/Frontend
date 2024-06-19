@@ -8,6 +8,12 @@ import SucheView from '@/views/SucheView.vue'
 import CreateCatererView from '@/views/CreateCatererView.vue'
 import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
+import EditCatererView from '@/views/EditCatererView.vue'
+
+import EditDjView from '@/views/EditDjView.vue'
+
+import EditLocationView from '@/views/EditLocationView.vue'
+
 import EventView from '@/views/EventView.vue'
 
 function isMobile() {
@@ -16,6 +22,7 @@ function isMobile() {
 }
 
 const routes = [
+
     {
         path: '/',
         name: 'anmeldung',
@@ -37,27 +44,53 @@ const routes = [
         path: '/search',
         name: 'SucheViewType',
         component: isMobile() ? SucheView  : SucheView 
-    },  {
-        path: '/createevent',
-        name: 'CreateEventType',
-        component: CreateEvent 
-    },  {
-        path: '/createcaterer',
-        name: 'CreateCatererType',
-        component: CreateCatererView 
-    },  {
-        path: '/createlocation',
-        name: 'CreateLocationType',
-        component: CreateLocationView 
-    },  {
-        path: '/createdj',
-        name: 'CreateDjType',
-        component: CreateDjView 
-    },  {
-        path: '/event',
-        name: 'EventType',
-        component: EventView
-      }
+    },
+    {
+    path: '/createevent',
+    name: 'CreateEventType',
+    component: CreateEvent 
+  },
+  {
+    path: '/createcaterer',
+    name: 'CreateCatererType',
+    component: CreateCatererView 
+  },  {
+    path: '/createlocation',
+    name: 'CreateLocationType',
+    component: CreateLocationView 
+  },  {
+    path: '/createdj',
+    name: 'CreateDjType',
+    component: CreateDjView 
+
+
+  }, {
+    path: '/editcaterer',
+    name: 'EditCatererType',
+    component: EditCatererView 
+
+
+  }, {
+    path: '/editdj',
+    name: 'EditDjType',
+    component: EditDjView 
+
+
+  },  {
+    path: '/editLocation',
+    name: 'EditLocationType',
+    component: EditLocationView 
+
+
+  },  {
+    path: '/event',
+    name: 'EventType',
+    component: EventView
+
+
+
+  }
+
 ]
 
 const router = createRouter({
