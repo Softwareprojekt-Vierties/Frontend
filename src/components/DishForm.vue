@@ -10,7 +10,7 @@
       </div>
     </div>
     <div id="right">
-      <div id="text-component">
+      <div id="text">
         Gericht 
       </div>
       <input class="input-comp"  v-model="dishName" id="input" placeholder="z.B. Kuchen">
@@ -44,8 +44,12 @@ export default {
     onFileChangeComponent(event) {
         const file = event.target.files[0];
         if (file) {
-          this.imagePreview = URL.createObjectURL(file);
           this.uploadedImage = file;
+          const reader = new FileReader();
+          reader.onload = e => {
+            this.imagePreview = e.target.result;
+          };
+          reader.readAsDataURL(file);
         }
     },
 
