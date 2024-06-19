@@ -3,7 +3,12 @@ import AnmeldungView from '../views/AnmeldungView.vue'
 import SignupView from '../views/SignupView.vue'
 import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
+import CreateEvent from '../views/CreateEventView.vue'
 import SucheView from '@/views/SucheView.vue'
+import CreateCatererView from '@/views/CreateCatererView.vue'
+import CreateLocationView from '@/views/CreateLocationView.vue'
+import CreateDjView from '@/views/CreateDjView.vue'
+import EventView from '@/views/EventView.vue'
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -32,7 +37,27 @@ const routes = [
         path: '/search',
         name: 'SucheViewType',
         component: isMobile() ? SucheView  : SucheView 
-    }
+    },  {
+        path: '/createevent',
+        name: 'CreateEventType',
+        component: CreateEvent 
+    },  {
+        path: '/createcaterer',
+        name: 'CreateCatererType',
+        component: CreateCatererView 
+    },  {
+        path: '/createlocation',
+        name: 'CreateLocationType',
+        component: CreateLocationView 
+    },  {
+        path: '/createdj',
+        name: 'CreateDjType',
+        component: CreateDjView 
+    },  {
+        path: '/event',
+        name: 'EventType',
+        component: EventView
+      }
 ]
 
 const router = createRouter({
