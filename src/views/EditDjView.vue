@@ -79,7 +79,7 @@
             zurücksetzen
           </div>
           <div id="continue" @click="updateDJ" >
-            anlegen
+            aktualisieren
           </div>
         </div>
       </div>
@@ -112,11 +112,11 @@ export default {
   },
 
   async created(){
-    let id = 11;
+    let id = 13;
       try {
           const response = await axios.get(`/getArtistById/${id}`);
           console.log(response);
-          this.originalData = { ...response.data["artist"].rows[0] };
+          this.originalData = { ...response.data };
           this.setFormData(response.data);
           console.log('dj data received:', response.data);
       } catch (error) {
@@ -168,7 +168,7 @@ export default {
       formData.erfahrung = this.experience;
       formData.preis = this.price;
       formData.email = this.email;
-      formData.bild = this.imagePreview;
+      formData.profilbild = this.imagePreview;
       formData.songs = this.songs;
       console.log('FormData:', formData); 
 
@@ -202,7 +202,25 @@ export default {
         this.songs.splice(index, 1);
     },
     reset() {
-      this.setFormData(this.originalData);
+      this.djName = this.originalData["artist"].rows[0]["benutzername"];
+      this.shortDescription =this.originalData["artist"].rows[0]["kurzbeschreibung"];
+      this.longDescription = this.originalData["artist"].rows[0]["beschreibung"] ;
+      this.region = this.originalData["artist"].rows[0]["region"];
+      this.category = this.originalData["artist"].rows[0]["kategorie"];
+      this.experience =  this.originalData["artist"].rows[0]["erfahrung"];
+      this.price = this.originalData["artist"].rows[0]["preis"];
+      this.imagePreview = this.originalData["artist"].rows[0]["profilbild"];
+      this.uploadedImage = this.originalData["artist"].rows[0]["profilbild"];
+      this.email = this.originalData["artist"].rows[0]["emailfk"];
+      this.songs  =[];
+      this.originalData["lieder"].rows.forEach(lied => {
+        this.songs.push({
+          id: lied['id'],
+          songName: lied['name'], 
+          songLength: lied['laenge'], 
+          songYear: lied['erscheinung'].substring(0, 10)
+        })
+      });
     },
     goToHomePage() {
         this.$router.push('/search');

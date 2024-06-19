@@ -133,11 +133,10 @@
         let id = 14;
         try {
             const response = await axios.get(`/getCatererById/${id}`);
-
             console.log(response);
-            this.originalData = { ...response.data["caterer"].rows[0] };
+            this.originalData = { ...response.data };
             this.setFormData(response.data);
-            console.log('Caterer data received:', this.dishes);
+            console.log('Caterer data received:', response.data);
         } 
         catch (error) {
             console.error('Error with sending Caterer ID to DB :', error);
@@ -198,7 +197,28 @@
       },
   
       default_values() {
-        this.setFormData(this.originalData);
+        this.catererName = this.originalData["caterer"].rows[0]["profilname"] ;
+        this.shortDescription = this.originalData["caterer"].rows[0]["kurzbeschreibung"];
+        this.longDescription = this.originalData["caterer"].rows[0]["beschreibung"];
+        const myVar = this.originalData["caterer"].rows[0].region.split(',');
+        this.region = myVar[1];
+        this.category = this.originalData["caterer"].rows[0]["kategorie"];
+        this.experience = this.originalData["caterer"].rows[0]["erfahrung"];
+        this.price = this.originalData["caterer"].rows[0]["preis"];
+        this.imagePreview = this.originalData["caterer"].rows[0]["profilbild"];
+        this.uploadedImage = this.originalData["caterer"].rows[0]["profilbild"];
+        this.street = myVar[0];
+        this.dishes = [];
+        this.originalData['gerichte'].rows.forEach(gericht => {
+            this.dishes.push({
+              id: gericht['id'],
+              dishName: gericht['name'], 
+              info1: gericht['beschreibung'].split(", ")[0],
+              info2: gericht['beschreibung'].split(", ")[1],  
+              imagePreview: gericht['bild']
+            })
+        });
+  
       },
       async createCaterer(){
         if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
