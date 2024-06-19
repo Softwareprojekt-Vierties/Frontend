@@ -52,14 +52,14 @@
         <div>
             <div v-if="hasSearchResults">
                 <div v-if="searchType==0" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults?.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :key="result.key"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :key="result.key"/>
                 </div>
                 <div v-else id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                 </div>
             </div>
@@ -394,7 +394,7 @@
                                             "line2": "Kategorie: " + item.kategorie,
                                             "line3": "Preis: " + item.preis,
                                             "buttonText": "Event erstellen",
-                                            "imagePath": item.bild,
+                                            "imagePath": item.profilbild,
                                             "isBookmarked": item.favorit ?? 0,
                                             "key": item.id,
                                         });
@@ -427,7 +427,9 @@
             },
             search() {
                 this.searchResults = []
+                this.filteredSearchResults = []
                 this.searchResults.combined = []
+                this.filteredSearchResults.combined = []
                 this.hasSearchResults = false;
                 this.searchError = false;
                 switch (this.searchType) {
@@ -436,7 +438,7 @@
                         this.searchSpecific("/searchArtist", "artist")
                         this.searchSpecific("/searchCaterer", "caterer")
                         this.searchSpecific("/searchEvent", "events")
-                        this.searchSpecific("/searchPerson", "person")
+                        this.searchSpecific("/searchEndnutzer", "person")
                         break;
                     case "1":
                     case "9":
@@ -454,7 +456,7 @@
                         break;
                     case "5":
                     case "8":
-                        this.searchSpecific("/searchPerson", "person")
+                        this.searchSpecific("/searchEndnutzer", "person")
                         break;
                     case "7":
                         this.searchSpecific("/searchEvent", "tickets")
