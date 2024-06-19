@@ -361,11 +361,10 @@
                         packet.istbesitzer = true;
                     }
                 }
-                packet.headers = { "auth": localStorage.getItem("authToken")};
                 return packet;
             },
             searchSpecific(destination, field) {
-                axios.post(destination, this.packageFilters())
+                axios.post(destination, this.packageFilters(), { "auth": localStorage.getItem("authToken")})
                     .then(response => {
                         console.log("Successful search:", response);
                         this.searchResults[field] = response.data.rows;
