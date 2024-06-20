@@ -1,10 +1,10 @@
 <template>
-    <div class="wrapper">
-  <div class="image">
+    <div id="wrapper">
+  <div id="image">
     <LoginComponent />
   </div>
 
-  <div class="content">
+  <div id="content">
   <div>
     <input v-model="benutzername" class="textFeld" type="text" placeholder=" Benutzername" name="benutzername" />
   </div>
@@ -18,7 +18,7 @@
   </div>
   </div>
 
-  <div class="buttonBox"> 
+  <div> 
     <button @click="zuruck" class="abbrechen">abbrechen</button>
     <button @click="isFormValid" class="weiter">weiter</button>
   </div>

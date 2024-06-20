@@ -1,10 +1,10 @@
 <template>
-    <div class="wrapper">
-  <div class="image">
+    <div id="wrapper">
+  <div id="image">
     <LoginComponent />
   </div>
 
-  <div class="content">
+  <div id="content">
   <div>
    <input v-model="benutzername" class="textFeld" type="text" placeholder="Email" name="benutzername" />
   </div>
@@ -12,7 +12,7 @@
    <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
   </div>
 
-  <div class="buttonBox"> 
+  <div> 
     <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
     <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
