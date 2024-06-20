@@ -55,7 +55,7 @@
     };
 </script>
 
-<style scope>
+<style scoped>
 
 #app {
     height: 100%;
