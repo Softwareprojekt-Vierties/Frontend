@@ -62,6 +62,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
+      background-color: var(--background);
 }
 
   #header {
@@ -70,6 +71,7 @@
       align-items: center;
       justify-content: space-between;
       margin-top: 30px;
+      background-color: var(--background);
   }
 
   .icon-div {
@@ -98,7 +100,8 @@
       text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       font-weight: 600;
       margin-right: 100px;
-      backround-color: var(--backround);
+      background-color: var(--backround);
+      color: var(--font-color);
   }
 
   #profile-mail {

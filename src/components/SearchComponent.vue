@@ -856,6 +856,7 @@
       height: 35px;
       width: 600px;
       padding-left: 10px;
+      background-color: var(--background);
   }
 
   .options {
@@ -920,7 +921,7 @@
   .searchButton {
       display: inline-flex;
       border: none;
-      background-color: var(--textfield-background);
+      background-color: var(--background);
   }
 
   #results {

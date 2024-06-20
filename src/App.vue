@@ -72,6 +72,7 @@ export default {
   text-align: center;
   height: 100%;
   color: var(--font-color);
+    background-color: var(--background);
 }
 
 nav {
