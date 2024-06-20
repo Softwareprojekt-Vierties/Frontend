@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import SearchPage from '@/views/SucheView.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
+import SearchComponent from '@/components/SearchComponent.vue';
 
 
 describe('SucheView.vue', () => {
