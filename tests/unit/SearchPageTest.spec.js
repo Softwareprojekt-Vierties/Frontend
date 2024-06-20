@@ -19,9 +19,8 @@ describe('SucheView.vue', () => {
   });
 
   it('renders profile and mail icons', () => {
-    const profileIcon = wrapper.find('img[alt="Filer"]');
-    const mailIcon = wrapper.find('img[alt="Filer"]');
-      console.log(profileIcon);
+    const profileIcon = wrapper.find('img[alt="Dein Profil"]');
+    const mailIcon = wrapper.find('img[alt="Dein Postfach"]');
     expect(profileIcon.exists()).toBe(true);
     expect(mailIcon.exists()).toBe(true);
   });
