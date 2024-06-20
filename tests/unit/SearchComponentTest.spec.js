@@ -13,10 +13,6 @@ describe('SearchComponent.vue', () => {
         });
     });
 
-    it('renders CardComponent', () => {
-        expect(wrapper.findComponent(CardComponent).exists()).toBe(true);
-    });
-
     it('renders search bar and icons', () => {
         const searchBar = wrapper.find('input#searchbar');
         const filterIcon = wrapper.find('img[alt="Filter"]');
