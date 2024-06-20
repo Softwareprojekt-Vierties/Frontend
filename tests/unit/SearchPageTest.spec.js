@@ -10,13 +10,17 @@ describe('SucheView.vue', () => {
   beforeEach(() => {
     wrapper = shallowMount(SearchPage, {
       stubs: {
-        LoginComponent: true
+        LoginComponent: true,
+        SearchComponent: true,
       }
     });
   });
 
   it('renders LoginComponent', () => {
     expect(wrapper.findComponent(LoginComponent).exists()).toBe(true);
+  });
+  it('renders SearchComponent', () => {
+    expect(wrapper.findComponent(SearchComponent).exists()).toBe(true);
   });
 
   it('renders profile and mail icons', () => {
@@ -30,14 +34,5 @@ describe('SucheView.vue', () => {
     const button = wrapper.find('button#new-event-button');
     expect(button.exists()).toBe(true);
     expect(button.text()).toBe('Event erstellen');
-  });
-
-  it('renders search bar and icons', () => {
-    const searchBar = wrapper.find('input#searchbar');
-    const filterIcon = wrapper.find('img[alt="Filter"]');
-    const magnifyingGlassIcon = wrapper.find('img[alt="Magnifying Glass"]');
-    expect(searchBar.exists()).toBe(true);
-    expect(filterIcon.exists()).toBe(true);
-    expect(magnifyingGlassIcon.exists()).toBe(true);
   });
 });
