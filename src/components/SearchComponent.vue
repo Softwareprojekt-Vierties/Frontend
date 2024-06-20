@@ -365,8 +365,8 @@
                 packet.headers = { "auth": localStorage.getItem("authToken")};
                 return packet;
             },
-            searchSpecific(destination, field) {
-                axios.post(destination, this.packageFilters())
+            searchSpecific(destination,  field ) {
+                axios.post(destination, this.packageFilters(), { headers: { auth: localStorage.getItem("authToken")}})
                     .then(response => {
                         console.log("Successful search:", response);
                         this.searchResults[field] = response.data.rows;

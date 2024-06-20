@@ -2,7 +2,7 @@
   <div id="app">
     <div id="header">
       <div id="icon-div">
-        <img alt="Filer" class="icon" src="../assets/home.jpg">
+        <img alt="Filer" class="icon" src="../assets/home.jpg" @click="goToHomePage">
       </div>
       <div id="picture-name">
         <div id="file-div" :style="fileDivStyle">
@@ -267,6 +267,9 @@ export default {
       } catch (error) {
         console.error('Error with Event creation:', error);
       }
+    },
+    goToHomePage() {
+      this.$router.push('/search');
     }
   }
 }
