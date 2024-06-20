@@ -8,7 +8,10 @@
                 <div id="headline">
                     {{name}}
                 </div>
-                <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else-if="isDarkMode" :src="require('@/assets/bookmark-empty.png')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else-if="hasBookmark" :src="require('@/assets/bookmark-gray.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else :src="require('@/assets/bookmark-white.jpg')" class="bookmark">
             </div>
             <div class="line-div">
                 {{line1}}
@@ -74,6 +77,9 @@
                 }
                 return this.imagePath;
             },
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
         },
         methods: {
             changeBookmark() {

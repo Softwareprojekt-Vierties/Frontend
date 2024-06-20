@@ -55,7 +55,7 @@
     };
 </script>
 
-<style scoped>
+<style scope>
 
 #app {
     height: 100%;
@@ -98,6 +98,7 @@
       text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       font-weight: 600;
       margin-right: 100px;
+      backround-color: var(--backround);
   }
 
   #profile-mail {

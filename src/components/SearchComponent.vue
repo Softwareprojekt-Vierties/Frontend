@@ -516,7 +516,7 @@
 .events-outside-div {
     margin-left: 45px;
     margin-top: 50px;
-    background-color: #e3e2e2;
+    background-color: var(--background);
     border: 0px solid #bebdbd;
 }
 
@@ -554,7 +554,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+    background-color: var(--slider-background-color);
       -webkit-transition: .4s;
       transition: .4s;
       border-radius: 20px; /* Angepasst an die neue Höhe */
@@ -574,7 +574,7 @@
   }
 
   ::v-deep input:checked + .slider {
-      background-color: #2196F3;
+      background-color: var(--blue);
   }
 
   ::v-deep input:focus + .slider {
@@ -673,12 +673,12 @@
   }
 
   ::v-deep .filter-rating > input::before {
-      content: url("../assets/empty_star3.jpg");
+        content: url("../assets/empty_star.png");
   }
 
   ::v-deep .filter-rating > input:checked::before,
   ::v-deep .filter-rating > input:checked~input::before {
-        content: url("../assets/yellow_star3.jpg");
+        content: url("../assets/yellow_star.png");
   }
 
   ::v-deep .filter-duration {
@@ -740,12 +740,13 @@
       position: absolute;
       top: 120%;
       transform: translateX(-1%);
-      background-color: white;
+      background-color: var(--textfield-background);
       border-radius: 10px;
       padding: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       width: 555px;
       padding-left: 40px;
+      color: var(--textfield-font-color);
   }
 
   ::v-deep .filter-item {
@@ -753,6 +754,15 @@
       justify-content: start; 
       align-items: center;
       margin-bottom: 8px; 
+  }
+
+  ::v-deep .filter-item input {
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
+  }
+
+  ::v-deep .filter-item input::placeholder {
+      color: var(--placeholder-color);
   }
 
   ::v-deep .kapazitaet {
@@ -857,6 +867,8 @@
       height: 37px;
       border-radius: 45px;
       text-align: center;
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
   }
 
   #searchbar {
