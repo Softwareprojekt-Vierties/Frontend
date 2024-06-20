@@ -672,13 +672,24 @@
       cursor: pointer;
   }
 
-  ::v-deep .filter-rating > input::before {
-        content: url("../assets/empty_star.png");
+  @media (prefers-color-scheme: dark) {
+      ::v-deep .filter-rating > input::before {
+          content: url("../assets/empty_star_dark.png");
+      }
+      ::v-deep .filter-rating > input:checked::before,
+      ::v-deep .filter-rating > input:checked~input::before {
+          content: url("../assets/yellow_star_dark.png");
+      }
   }
 
-  ::v-deep .filter-rating > input:checked::before,
-  ::v-deep .filter-rating > input:checked~input::before {
-        content: url("../assets/yellow_star.png");
+  @media (prefers-color-scheme: light) {
+      ::v-deep .filter-rating > input::before {
+          content: url("../assets/empty_star.png");
+      }
+      ::v-deep .filter-rating > input:checked::before,
+      ::v-deep .filter-rating > input:checked~input::before {
+          content: url("../assets/yellow_star.png");
+      }
   }
 
   ::v-deep .filter-duration {
