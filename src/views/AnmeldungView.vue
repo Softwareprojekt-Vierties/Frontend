@@ -1,8 +1,10 @@
 <template>
+    <div class="wrapper">
   <div class="image">
     <LoginComponent />
   </div>
 
+  <div class="content">
   <div>
    <input v-model="benutzername" class="textFeld" type="text" placeholder="Email" name="benutzername" />
   </div>
@@ -14,8 +16,10 @@
     <button @click="goToSignup" class="kontoAnlegen">Konto anlegen</button>
     <button @click="login" class="weiter" :disabled="!isFormValid">weiter</button>
   </div>
-  <div>
+  </div>
+  <div id="policy-note">
     <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
+  </div>
   </div>
 </template>
 
@@ -89,59 +93,5 @@ export default {
 </script>
 
 <style scoped>
-
-.image {
-  margin-top: 100px;
-  margin-bottom: 100px;
-}
-
-.textFeld {
-  width: 240px;
-  height: 25px;
-  border: 2px solid var(--border-color);
-  border-radius: 20px;
-  margin-bottom: 40px;
-  font-size: 13px;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-  outline: none;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.textFeld::placeholder {
-    color: var(--placeholder-color);
-}
-
-.buttonBox {
-  margin-bottom: 220px;
-}
-
-.weiter {
-  margin-left: 15px;
-  width: 110px;
-  height: 30px;
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
-  background-color: var(--green);
-  color: var(--simple-font-color);
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.weiter:disabled {
-    color: #aaaaaa;
-    @media (prefers-color-scheme: dark) {
-    }
-}
-
-.kontoAnlegen {
-  margin-right: 15px;
-  width: 110px;
-  height: 30px;
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  background-color: var(--blue);
-  color: var(--simple-font-color);
-  cursor: pointer;
-}
+@import "../css/loginSignupPages.css"
 </style>
