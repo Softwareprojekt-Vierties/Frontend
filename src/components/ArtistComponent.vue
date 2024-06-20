@@ -1,6 +1,7 @@
 <template>
     <div class="dish-form">
-        <img src="../assets/addlocation.jpg" alt="Bild hochladen" id ="add-location-icon" />
+        <img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id ="add-location-icon" />
+        <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id ="add-location-icon" />
     </div>
   </template>
   
@@ -11,7 +12,12 @@
         // Öffnen Sie einen Datei-Dialog, um das Bild zu wählen (erfordert zusätzliche Logik)
         console.log("Bild wird hochgeladen...");
       }
-    }
+    },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    },
   }
   </script>
   
@@ -36,7 +42,7 @@ input[type="text"] {
 
 #add-location-icon {
     border-radius: 5px;
-    background-color: white;
+    background-color: var(--textfield-background);
     width: 40px;
     height: 40px;
     margin-top: 20px;
