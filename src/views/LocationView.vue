@@ -7,11 +7,8 @@
         <div id="picture-name">
           <div id="file-div" :style="fileDivStyle">
             <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                <img v-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
+              <label id="image-text">
               </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
             </div>
           </div>
           <div id="name-description">
@@ -125,10 +122,12 @@
       fileDivStyle() {
         return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
       }, 
-     mapUrl() {
-      const addressEncoded = encodeURIComponent(`${this.addresse}, ${this.region}`);
-      return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s${addressEncoded}!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde`;
-    }
+      mapUrl() {
+        // Endereço estático da Torre Eiffel, Paris
+        const addressEncoded = encodeURIComponent("Eiffel Tower, Paris, France");
+        return `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${addressEncoded}`;
+      }
+
     },
 
     methods: {
