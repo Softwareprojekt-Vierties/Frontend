@@ -1,8 +1,10 @@
 <template>
-  <div class="image">
+    <div id="wrapper">
+  <div id="image">
     <LoginComponent />
   </div>
 
+  <div id="content">
   <div>
     <input v-model="benutzername" class="textFeld" type="text" placeholder=" Benutzername" name="benutzername" />
   </div>
@@ -14,13 +16,15 @@
   <div>
     <input v-model="password" class="textFeld" type="password" placeholder=" Password" name="password" />
   </div>
+  </div>
 
-  <div class="buttonBox"> 
+  <div> 
     <button @click="zuruck" class="abbrechen">abbrechen</button>
     <button @click="isFormValid" class="weiter">weiter</button>
   </div>
-  <div>
+  <div id="policy-note">
     <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
+  </div>
   </div>
 </template>
 
@@ -73,44 +77,5 @@ export default {
 </script>
 
 <style scoped>
-.image {
-  margin-top: 100px;
-  margin-bottom: 60px;
-}
-
-.textFeld {
-  width: 240px;
-  height: 25px;
-  border: 2px solid #cccccc;
-  border-radius: 20px; 
-  margin-bottom: 40px;
-  font-size: 13px; 
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1); 
-  outline: none; 
-}
-
-.buttonBox {
-  margin-bottom: 180px;
-}
-
-.weiter {
-  margin-left: 15px;
-  width: 110px;
-  height: 30px;
-  border-radius: 20px;
-  border: 1px solid #ecf5ec; 
-  background-color: #1fda29; 
-  cursor: pointer; 
-  transition: background-color 0.3s; 
-}
-
-.abbrechen {
-  margin-right: 15px;
-  width: 110px;
-  height: 30px;
-  border: 1px solid #ecf5ec; 
-  border-radius: 20px; 
-  background-color: #f81111; 
-  cursor: pointer; 
-}
+@import "../css/loginSignupPages.css"
 </style>

@@ -1,15 +1,78 @@
 <template>
-    <router-view></router-view>
+    <router-view />
 </template>
 
+<script>
+export default {
+    data() {
+        return {
+            theme: "",
+        };
+    },
+    created() {
+        console.log(window.matchMedia?.("(prefers-color-scheme: dark)").matches);
+    }
+}
+</script>
+
 <style>
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #222222;
+        --font-color: #84BABA;
+        --textfield-background: #5e5e5e;
+        --textfield-font-color: #cccccc;
+        --placeholder-color: #acacac;
+        --border-color: #7e8e7e;
+        --dark-border-color: #9e9e9e;
+        --eventure_logo_font_color: #eee;
+        --create-page-background: #303030;
+        --create-page-header-background: #252525;
+        --simple-font-color: #dcdcdc;
+        --simple-font-color-disabled: #aaaaaa;
+        --upload-text-color: #cccccc;
+        --slider-background-color: #aaaaaa;
+
+        --red: #c80101;
+        --green: #0faa19;
+        --blue: #8533c9;
+        --cyan: #00adad;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: white;
+        --font-color: #2c3e50;
+        --textfield-background: white;
+        --textfield-font-color: black;
+        --placeholder-color: #888888;
+        --border-color: #ecf5ec;
+        --dark-border-color: #0a0a0a;
+        --eventure_logo_font_color: #333333;
+        --create-page-background: #f2f2f2;
+        --create-page-header-background: #d5d5d5;
+        --simple-font-color: black;
+        --simple-font-color-disabled: #101010;
+        --upload-text-color: #999999;
+        --slider-background-color: #cccccc;
+
+        --red: #f81111;
+        --green: #1fda29;
+        --blue: #9543f9;
+        --cyan: #00d9d9;
+    }
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   height: 100%;
+  color: var(--font-color);
+    background-color: var(--background);
 }
 
 nav {
@@ -18,17 +81,17 @@ nav {
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--font-color);
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
 }
 
-
 html, body {
   height: 100%;
   margin: 0px;
   padding: 0px;
+  background-color: var(--background);
 }
 </style>
