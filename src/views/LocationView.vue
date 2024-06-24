@@ -2,22 +2,30 @@
     <div id="app">
       <div id="header">
         <div id="icon-div">
-          <img alt="Filer" class="icon" src="../assets/home.jpg">
+          <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">        
         </div>
         <div id="picture-name">
-          <div id="file-div">
+          <div id="file-div" :style="fileDivStyle">
+            <div id="file-upload">
+              <label id="image-text" for="fileToUpload">
+                <img v-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+                <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
+              </label>
+              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
+            </div>
           </div>
           <div id="name-description">
             <div class="name-description-input">
                 <div id="name-stars">
-                    <label id="name">Uni Party</label>
+                    <label id="name">{{name}}</label>
                     <div class="stars">
                         <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': 3 <= 5 }">★</span>
+                        <!-- todo bewertung aus der DB lesen-->
                     </div>
                 </div>
             </div>
             <div class="name-description-input">
-              <label id="description-short">Minden</label>
+              <label id="description-short">{{ kurzbeschreibung }}</label>
             </div>
           </div>
         </div>
@@ -27,10 +35,10 @@
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung:</label>
-            <div id="long-description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</div>
+            <div id="long-description-text">{{ beschreibung }}</div>
           </div>
         <div id="maps-div">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <iframe :src="mapUrl" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <br>
           <div class="long-description">
@@ -47,22 +55,22 @@
                 </div>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Stadt:</strong> 32427 Minden</label>
+              <label class="info-subheadline"><strong>Stadt:</strong> {{region}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Straße:</strong> Artilleriestraße 9</label>
+              <label class="info-subheadline"><strong>Straße:</strong> {{ addresse }}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Kapazität:</strong> 200 Personen</label>
+              <label class="info-subheadline"><strong>Kapazität:</strong> {{ kapazitaet }} Personen</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> 1000 €/h</label>
+              <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Größe:</strong> 2 ha</label>
+              <label class="info-subheadline"><strong>Größe:</strong> {{ flaeche }} ha</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Open Air:</strong> Ja</label>
+              <label class="info-subheadline"><strong>Open Air:</strong> {{openair}}</label>
             </div>
           </div>
           <div id="ticket">
@@ -75,6 +83,7 @@
   
   <script>
   import DishForm from '../components/ReviewComponent.vue';
+  import axios from 'axios'; 
 
   export default {
     components: {
@@ -82,29 +91,86 @@
     },
     data() {
       return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-        isModalVisible: false
+      name: '',
+      kurzbeschreibung: '',
+      beschreibung: '',
+      region: '',
+      addresse: '',
+      kapazitaet: '',
+      preis: '',
+      flaeche: '',
+      openair: false,
+      imagePreview: null,
+      bild:null
       };
+
     },
+
+    async created(){
+      let id = 59;
+      try {
+          const response = await axios.get(`/getLocation/${id}`);
+          const dbLocation = response.data.rows[0];
+          console.log(dbLocation);
+          this.originalData = { ...dbLocation };
+          this.setFormData(dbLocation);
+          console.log('Location data received:', response.data);
+        } catch (error) {
+          console.error('Error with sending location ID to DB :', error);
+
+        }
+    },
+
+    computed: {
+      fileDivStyle() {
+        return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+      }, 
+     mapUrl() {
+      const addressEncoded = encodeURIComponent(`${this.addresse}, ${this.region}`);
+      return `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s${addressEncoded}!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde`;
+    }
+    },
+
     methods: {
-      addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
-        this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
-        });
+      onFileChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+          //this.bild = file;
+          const reader = new FileReader();
+          reader.onload = e => {
+            this.imagePreview = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
       },
-      removeDish(index) {
-        this.dishes.splice(index, 1);
-      },
-      openModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      }
+
+      setFormData(data) {
+        const myVar = data.adresse.split(',');
+        console.log(myVar[0]);
+        console.log(myVar[1]);
+
+        this.name = data.name;
+        this.kurzbeschreibung = data.kurzbeschreibung;
+        this.beschreibung = data.beschreibung;
+        this.region = myVar[1];
+        this.addresse = myVar[0];
+        this.kapazitaet = data.kapazitaet;
+        this.preis = data.preis;
+        this.flaeche = data.flaeche;
+        if(data.openair == true){
+          this.openair = "Ja";
+        } else{
+          this.openair = "Nein";
+        }
+
+        this.imagePreview = data.bild;
+        this.bild = data.bild;
+     },
+
+     goToAnotherPage() {
+        this.$router.push("/search");
+     }
+
     }
   }
   </script>
@@ -188,6 +254,24 @@
     align-items: center;
     justify-content: center;
     margin-left: -225px;
+  }
+
+  #file-upload label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  #file-upload input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
   }
   
   #main {
@@ -360,5 +444,13 @@
     align-items: center;
     gap: 10px;
 }
+
+.upload-icon {
+    max-width: 50%;
+    max-height: 50%;
+    margin-bottom: -10px; /* Adjust margin to bring the text closer */
+    margin-left: 10px;
+    margin-top: -10px;
+  }
   </style>
   
