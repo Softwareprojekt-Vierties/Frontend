@@ -9,12 +9,10 @@ import CreateCatererView from '@/views/CreateCatererView.vue'
 import CreateLocationView from '@/views/CreateLocationView.vue'
 import CreateDjView from '@/views/CreateDjView.vue'
 import EditCatererView from '@/views/EditCatererView.vue'
-
 import EditDjView from '@/views/EditDjView.vue'
-
 import EditLocationView from '@/views/EditLocationView.vue'
-
 import EventView from '@/views/EventView.vue'
+import LocationView from '@/views/LocationView.vue'
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -86,9 +84,10 @@ const routes = [
     path: '/event',
     name: 'EventType',
     component: EventView
-
-
-
+  } , {
+    path :'/location',
+    name : 'LocationPage',
+    component : LocationView
   }
 
 ]
