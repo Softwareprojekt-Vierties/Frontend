@@ -26,8 +26,10 @@
 
 
 <script>
+
+import axios from 'axios'; 
 export default {
-  props: {
+  /*props: {
     userName: {
       type: String,
       default: "Peter Müller"
@@ -44,6 +46,41 @@ export default {
         type: String,
         default: "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm" 
     }
+  }*/ 
+
+   data(){
+     return {
+        userName : '',
+        rating : '',
+        totalStars : 5,
+        reviewText : '',
+        dbLocationReviews : []
+     };
+   },
+
+    async created(){
+        let id = 24;
+        try {
+            const response = await axios.get(`/getLocationReview/${id}`);
+            this.dbLocationReviews = response.data.rows;
+            
+
+            console.log(this.dbLocationReviews);
+            this.setFormData(this.dbLocationReviews);
+            console.log('Location data of location received:', response.data);
+        } catch (error) {
+            console.error('Error with sending location ID for review to DB :', error);
+
+        }
+    },
+    methods: {
+
+    setFormData(data) {
+        this.userName = data[1]["profilname"] ;
+        this.rating = data[1]["sterne"]   ;
+        this.reviewText = data[1]["inhalt"] ;
+     },
+
   }
 }
 

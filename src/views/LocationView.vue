@@ -16,7 +16,7 @@
                 <div id="name-stars">
                     <label id="name">{{name}}</label>
                     <div class="stars">
-                        <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': 3 <= 5 }">★</span>
+                        <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
                         <!-- todo bewertung aus der DB lesen-->
                     </div>
                 </div>
@@ -98,13 +98,14 @@
       flaeche: '',
       openair: false,
       imagePreview: null,
-      bild:null
+      bild:null,
+      sterne : ''
       };
 
     },
 
     async created(){
-      let id = 59;
+      let id = 24;
       try {
           const response = await axios.get(`/getLocation/${id}`);
           const dbLocation = response.data.rows[0];
@@ -142,7 +143,7 @@
           reader.readAsDataURL(file);
         }
       },
-
+      //sterne
       setFormData(data) {
         const myVar = data.adresse.split(',');
         console.log(myVar[0]);
@@ -164,6 +165,8 @@
 
         this.imagePreview = data.bild;
         this.bild = data.bild;
+        this.sterne = data.sterne;
+        console.log("quantity of stars",this.sterne);
      },
 
      goToAnotherPage() {
