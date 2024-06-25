@@ -38,6 +38,7 @@ export default {
         --green: #0faa19;
         --blue: #8533c9;
         --cyan: #00adad;
+        --white: #dddddd;
     }
 }
 
@@ -62,6 +63,7 @@ export default {
         --green: #1fda29;
         --blue: #9543f9;
         --cyan: #00d9d9;
+        --white: #ffffff;
     }
 }
 
