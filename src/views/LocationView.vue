@@ -130,7 +130,7 @@
       headerStyle(){
         return {
           backgroundImage: `url(${this.imagePreview})`,
-          backgroundSize: '150%',
+          backgroundSize: '400%',
           backgroundPosition: 'center center',
          // filter: 'blur(8px)'
         };
@@ -226,6 +226,7 @@
     background-color: transparent;
     padding-bottom: 40px;
     padding-top: 10px;
+
   }
   
   #picture-name {
@@ -469,11 +470,11 @@
 
 .star {
     color: #ccc; 
-    font-size: 27px; 
+    font-size: 36px; 
 }
 
 .star.filled {
-    color: #f5d130; 
+    color: #f3c809; 
 
 }
 
