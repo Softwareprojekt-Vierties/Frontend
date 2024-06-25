@@ -58,8 +58,13 @@
             <label class="info-subheadline">Location:</label>
             <div>
               <div id="add-location" @click="openModalLocation">
+                  <div v-if="locationId == -1">
                 <img v-if=isDarkMode src="../assets/addlocation.png" alt="Bild hochladen" id="add-location-icon" />
                 <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
+                </div>
+                <div v-else>
+                    {{locationId}}
+                </div>
               </div>
             </div>
           </div>
@@ -129,11 +134,11 @@
         </div>
         <!--  Auflistung der Events--> 
         <div id="event-div">
-          <SearchComponent :mutable="false" startValue="1" locationButtonText="Zum Event hinzufügen"/>
+            <SearchComponent :mutable="false" startValue="1" locationButtonText="Zum Event hinzufügen" :locationButtonFunction="setTmpLocationId" :locationTitleFunction="(id) => {}"/>
         </div>
         <div id="action-buttons">
           <button id="cancel-button" @click="closeModalLocation">abbrechen</button>
-          <button id="create-button" >Location auswählen</button>
+          <button id="create-button" @click="selectLocation" >Location auswählen</button>
         </div>
 
       </div>
@@ -174,6 +179,7 @@ export default {
       isLocationModalVisible : false,
       selectedEventType: null,
         locationId: -1,
+        tmpLocationId: -1,
 
     };
   },
@@ -278,6 +284,13 @@ export default {
     },
     goToHomePage() {
       this.$router.push('/search');
+    },
+    setTmpLocationId(id) {
+        this.tmpLocationId = id;
+    },
+    selectLocation() {
+        this.locationId = this.tmpLocationId;
+        this.closeModalLocation();
     }
   },
 }
