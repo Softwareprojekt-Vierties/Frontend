@@ -1,6 +1,6 @@
 <template>
     <div id="comment-div">
-        <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
+        <img class="other-review" src="../assets/left.jpg" width="20px" height="20px" @click="previousReview" >
         <div class="review">
             <div class="user-info">
                 <div class="user-info-details">
@@ -19,76 +19,75 @@
                 {{ reviewText }}
             </div>
         </div>
-        <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
+        <img class="other-review" src="../assets/right.jpg" width="20px" height="20px" @click="nextReview">
     </div>
 </template>
 
 
-
 <script>
+    import axios from 'axios'; 
+    export default {
 
-import axios from 'axios'; 
-export default {
-  /*props: {
-    userName: {
-      type: String,
-      default: "Peter Müller"
-    },
-    rating: {
-      type: Number,
-      default: 3
-    },
-    totalStars: {
-      type: Number,
-      default: 5
-    },
-    reviewText:{
-        type: String,
-        default: "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm" 
-    }
-  }*/ 
+        data(){
+            return {
+                userName : '',
+                rating : '',
+                totalStars : 5,
+                reviewText : '',
+                dbLocationReviews : [],
+                reviewSize : '',
+                reviewIndex : 0
+            };
+        },
 
-   data(){
-     return {
-        userName : '',
-        rating : '',
-        totalStars : 5,
-        reviewText : '',
-        dbLocationReviews : []
-     };
-   },
+        async created(){
+            let id = 24;
+            try {
+                const response = await axios.get(`/getLocationReview/${id}`);
+                this.dbLocationReviews = response.data.rows;
+                this.reviewSize = this.dbLocationReviews.length;
 
-    async created(){
-        let id = 24;
-        try {
-            const response = await axios.get(`/getLocationReview/${id}`);
-            this.dbLocationReviews = response.data.rows;
-            
+                console.log(this.dbLocationReviews);
+                this.setFormData(this.dbLocationReviews);
+                console.log('Location data of location received:', response.data);
+            } catch (error) {
+                console.error('Error with sending location ID for review to DB :', error);
 
-            console.log(this.dbLocationReviews);
-            this.setFormData(this.dbLocationReviews);
-            console.log('Location data of location received:', response.data);
-        } catch (error) {
-            console.error('Error with sending location ID for review to DB :', error);
+            }
+        },
+
+        methods: {
+
+            setFormData(data) {
+                this.userName = data[this.reviewIndex]["profilname"] ;
+                this.rating = data[this.reviewIndex]["sterne"]   ;
+                this.reviewText = data[this.reviewIndex]["inhalt"] ;
+            },
+
+            previousReview(){
+                if(this.reviewIndex>0){
+                    this.reviewIndex -= 1;
+                } else{
+                    this.reviewIndex = 0;
+                } 
+                this.setFormData(this.dbLocationReviews);
+            },
+
+            nextReview(){
+                if(this.reviewIndex >=0 && this.reviewIndex < this.reviewSize -1){
+                    this.reviewIndex += 1;
+                } else{
+                    this.reviewIndex = this.reviewSize - 1;
+                }
+                this.setFormData(this.dbLocationReviews);
+            }
 
         }
-    },
-    methods: {
-
-    setFormData(data) {
-        this.userName = data[1]["profilname"] ;
-        this.rating = data[1]["sterne"]   ;
-        this.reviewText = data[1]["inhalt"] ;
-     },
-
-  }
-}
-
+    }
 </script>
 
 
 <style scoped>
-
 
 .review{
     display:flex;
@@ -107,6 +106,10 @@ export default {
     margin-left: -5px;
 }
 
+.other-review{
+    cursor:pointer;
+}
+
 .user-info-details{
     display: flex;
     flex-direction: row;
@@ -117,7 +120,6 @@ export default {
     margin:10px;
     margin-bottom: 0px;
     gap:7.5px;
-
 }
 
 .user-logo{
@@ -138,7 +140,6 @@ export default {
     font-size: 13px; 
     font-weight: bold;
     margin-top:5px;
-
 }
 
 .comment{
@@ -154,10 +155,6 @@ export default {
     margin-bottom: 10px;
 }
 
-
-
-
-
 .star {
     color: #ccc; 
     font-size: 22px; 
@@ -165,7 +162,6 @@ export default {
 
 .star.filled {
     color: #f5d130; 
-
 }
 
 #comment-div {
@@ -175,4 +171,5 @@ export default {
     align-items: center;
     margin-top: 10px;
 }
+
 </style>

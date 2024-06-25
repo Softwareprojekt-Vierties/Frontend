@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <div id="header">
+      <div id="header" :style="headerStyle">
         <div id="icon-div">
           <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">        
         </div>
@@ -17,7 +17,6 @@
                     <label id="name">{{name}}</label>
                     <div class="stars">
                         <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
-                        <!-- todo bewertung aus der DB lesen-->
                     </div>
                 </div>
             </div>
@@ -34,8 +33,8 @@
             <label class="description">Beschreibung:</label>
             <div id="long-description-text">{{ beschreibung }}</div>
           </div>
-        <div id="maps-div">
-          <iframe :src="mapUrl" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div id="maps-div" style="height: 400px;">
+          <!-- use openstreetmap here -->
         </div>
         <br>
           <div class="long-description">
@@ -71,7 +70,7 @@
             </div>
           </div>
           <div id="ticket">
-            Ticket buchen (20/50)
+            Location buchen
           </div>
         </div>
       </div>
@@ -81,6 +80,8 @@
   <script>
   import DishForm from '../components/ReviewComponent.vue';
   import axios from 'axios'; 
+  import Leaflet from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
 
   export default {
     components: {
@@ -99,19 +100,22 @@
       openair: false,
       imagePreview: null,
       bild:null,
-      sterne : ''
+      sterne : '',
+      map : null,
+      marker : null
       };
 
     },
 
     async created(){
-      let id = 24;
+      let id = 23;
       try {
           const response = await axios.get(`/getLocation/${id}`);
           const dbLocation = response.data.rows[0];
           console.log(dbLocation);
           this.originalData = { ...dbLocation };
           this.setFormData(dbLocation);
+          this.geocodeAddress();
           console.log('Location data received:', response.data);
         } catch (error) {
           console.error('Error with sending location ID to DB :', error);
@@ -122,11 +126,14 @@
     computed: {
       fileDivStyle() {
         return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-      }, 
-      mapUrl() {
-        // Endereço estático da Torre Eiffel, Paris
-        const addressEncoded = encodeURIComponent("Eiffel Tower, Paris, France");
-        return `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${addressEncoded}`;
+      } ,
+      headerStyle(){
+        return {
+          backgroundImage: `url(${this.imagePreview})`,
+          backgroundSize: '150%',
+          backgroundPosition: 'center center',
+         // filter: 'blur(8px)'
+        };
       }
 
     },
@@ -143,7 +150,7 @@
           reader.readAsDataURL(file);
         }
       },
-      //sterne
+
       setFormData(data) {
         const myVar = data.adresse.split(',');
         console.log(myVar[0]);
@@ -166,12 +173,43 @@
         this.imagePreview = data.bild;
         this.bild = data.bild;
         this.sterne = data.sterne;
-        console.log("quantity of stars",this.sterne);
      },
 
-     goToAnotherPage() {
-        this.$router.push("/search");
-     }
+      goToAnotherPage() {
+          this.$router.push("/search");
+      },
+      async geocodeAddress() {
+          const address = `${this.addresse}, ${this.region}`;
+          console.log("Geocoding address:", address);  
+          const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+
+          try {
+              const response = await axios.get(url);
+              console.log("Geocode response:", response.data);  
+              if (response.data.length > 0) {
+                  const location = response.data[0];
+                  this.showMap(location.lat, location.lon);
+              } else {
+                  console.error('No location found for this address');
+              }
+          } catch (error) {
+              console.error('Failed to fetch coordinates:', error);
+          }
+      },
+
+      showMap(lat, lon) {
+          console.log("Lat:", lat, "Lon:", lon); 
+          if (this.map) this.map.remove();
+          this.map = Leaflet.map('maps-div').setView([lat, lon], 16);
+          Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+          var customIcon = Leaflet.icon({
+          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Map_pin_icon.svg',
+          iconSize: [30, 30], 
+          iconAnchor: [15, 30], 
+          popupAnchor: [0, -30] 
+          });
+          this.marker = Leaflet.marker([lat, lon], {icon: customIcon}).addTo(this.map);
+      }
 
     }
   }
@@ -185,7 +223,7 @@
   }
   
   #header {
-    background-color: rgb(213, 213, 213);
+    background-color: transparent;
     padding-bottom: 40px;
     padding-top: 10px;
   }
