@@ -42,8 +42,10 @@ export default {
     height: 30px;
     margin-bottom: 40px;
     border-radius: 20px; 
-    border: 1px solid #0a0a0a; 
+    border: 1px solid var(--dark-border-color); 
     cursor: pointer; 
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
   }
 
   .buttonDienst{
@@ -51,8 +53,10 @@ export default {
     height: 30px;
     margin-bottom: 200px;
     border-radius: 20px;
-    border: 1px solid #0a0a0a; 
+    border: 1px solid var(--dark-border-color); 
     cursor: pointer; 
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
   }
 
 </style>

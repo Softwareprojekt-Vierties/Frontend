@@ -8,7 +8,10 @@
                 <div id="headline">
                     {{name}}
                 </div>
-                <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else-if="isDarkMode" :src="require('@/assets/bookmark-empty.png')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else-if="hasBookmark" :src="require('@/assets/bookmark-gray.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else :src="require('@/assets/bookmark-white.jpg')" class="bookmark">
             </div>
             <div class="line-div">
                 {{line1}}
@@ -74,6 +77,9 @@
                 }
                 return this.imagePath;
             },
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
         },
         methods: {
             changeBookmark() {
@@ -98,6 +104,13 @@
     border-radius: 5px;
     gap: 15px;
     width: 380px;
+    background-color: var(--textfield-background);
+}
+
+@media (prefers-color-scheme: dark) {
+    #headline {
+        color: var(--textfield-font-color);
+    }
 }
 
 .image {
@@ -121,6 +134,7 @@
     font-size: 10px;
     height: 10px;
     overflow: hidden;
+    color: var(--textfield-font-color);
 }
 
 #name-bookmark {
@@ -145,7 +159,8 @@
 #button {
     font-size: 11px;
     cursor: pointer;
-    background-color: rgb(146, 208, 80);
+    background-color: var(--green);
+    color: var(--simple-font-color);
     padding: 5px;
     border: 1px solid #000;
     border-radius: 5px;

@@ -1,14 +1,16 @@
 <template>
   <div id="app">
     <div id="header">
-      <div id="icon-div">
-        <img alt="Filer" class="icon" src="../assets/home.jpg" @click="goToHomePage">
+      <div id="icon-div" @click="goToHomePage">
+        <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
+        <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
       </div>
       <div id="picture-name">
         <div id="file-div" :style="fileDivStyle">
           <div id="file-upload">
             <label id="image-text" for="fileToUpload">
-              <img v-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+              <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
+              <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
               <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
             </label>
             <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
@@ -42,7 +44,8 @@
                 <dish-form :serviceProvider="serviceProvider" @remove="removeProvider(index)"></dish-form>
               </div>
               <div class="add-dish-button" @click="addProvider">
-                <img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" />
+                  <img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" />
+                  <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" />
               </div>
             </div>
           </div>
@@ -54,8 +57,9 @@
           <div class="infos">
             <label class="info-subheadline">Location:</label>
             <div>
-              <div id="add-location">
-                <img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" @click="openModalLocation" />
+              <div id="add-location" @click="openModalLocation">
+                <img v-if=isDarkMode src="../assets/addlocation.png" alt="Bild hochladen" id="add-location-icon" />
+                <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
               </div>
             </div>
           </div>
@@ -141,8 +145,8 @@
 
 <script>
 import axios from 'axios';
-import DishForm from '../components/DishForm.vue';
 import SearchComponent from '../components/SearchComponent.vue';
+import DishForm from '../components/ArtistComponent.vue';
 
 export default {
   components: {
@@ -271,7 +275,12 @@ export default {
     goToHomePage() {
       this.$router.push('/search');
     }
-  }
+  },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    }
 }
 </script>
 
@@ -725,4 +734,5 @@ footer {
   min-height:400px;
   overflow-y: scroll;
 }
+@import "../css/createPages.css"
 </style>

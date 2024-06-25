@@ -18,7 +18,8 @@
 
             <div id="searchbar-and-icons">
                 <div class="filter-container">
-                    <img alt="Filter" id="filter" src="../assets/filter.jpg" @click="toggleTooltip" />
+                    <img alt="Filter" id="filter" v-if="isDarkMode" src="../assets/filter.png" @click="toggleTooltip" />
+                    <img alt="Filter" id="filter" v-else src="../assets/filter.jpg" @click="toggleTooltip" />
                     <span class="filter-tooltip" id="dynamic-tooltip" v-html="filterContent" ref="filterContainer"></span>
                 </div>
                 <div>
@@ -26,7 +27,8 @@
                 </div>
                 <div>
                     <button @click="search" class="searchButton">
-                        <img alt="Magnifying Glass" id="magnifying-glass" src="../assets/magnifying-glass.jpg">
+                        <img alt="Magnifying Glass" id="magnifying-glass" v-if="isDarkMode" src="../assets/magnifying-glass.png">
+                        <img alt="Magnifying Glass" id="magnifying-glass" v-else src="../assets/magnifying-glass.jpg">
                     </button>
                 </div>
             </div>
@@ -35,7 +37,9 @@
         <div class="events-outside-div">
             <div id="bookmark-arrow">
                 <div @click="toggleBookmark" class="bookmark-arrow-div">
-                    <img v-if="bookmarked" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-gray.jpg" />
+                    <img v-if="bookmarked && isDarkMode" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-filled.png" />
+                    <img v-else-if="isDarkMode" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-empty.png" />
+                    <img v-else-if="bookmarked" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-gray.jpg" />
                     <img v-else alt="Bookmark White" id="bookmark-white" src="../assets/bookmark-white.jpg" />
                 </div>
                 <div id="select-sort" @change="sortContent">
@@ -44,7 +48,10 @@
                     </select>
                 </div>
                 <div class="bookmark-arrow-div">
-                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-bind:src="[sortAscending ? require('@/assets/arrow-up.jpg') : require('@/assets/normal-arrow.jpg')]" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-if="sortAscending && isDarkMode" src="../assets/arrow-up-dark.png" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else-if="isDarkMode" src="../assets/arrow-down-dark.png" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else-if="sortAscending" src="../assets/arrow-up.jpg" />
+                    <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else src="../assets/normal-arrow.jpg" />
                 </div>
             </div>
         </div>
@@ -52,14 +59,14 @@
         <div>
             <div v-if="hasSearchResults">
                 <div v-if="searchType==0" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults?.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :key="result.key"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :key="result.key"/>
                 </div>
                 <div v-else id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.age}`" :line3="`Geschlecht: ${result.gender}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
                 </div>
             </div>
@@ -113,28 +120,27 @@
                 },
                 sortingOptions: {
                     "0": { name: "none", filters: ["name"] },
-                    "1": { name: "location", filters: ["name", "adresse", "distance", "capacity", "rating", "preis"] },
-                    "2": { name: "djBand", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
-                    "3": { name: "caterer", filters: ["name", "region", "distance", "category", "rating", "experience", "preis"] },
-                    "4": { name: "event", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
-                    "5": { name: "person", filters: ["name", "region", "altersfreigabe", "gender"] },
-                    "6": { name: "myEvents", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
-                    "7": { name: "myTickets", filters: ["name", "region", "eventgroesse", "preis", "distance", "altersfreigabe", "datum", "uhrzeit", "duration"] },
-                    "8": { name: "myFriends", filters: ["name", "region", "altersfreigabe", "gender"] },
-                    "9": { name: "myLocation", filters: ["name", "region", "distance", "capacity", "rating", "preis"] },
+                    "1": { name: "location", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                    "2": { name: "djBand", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                    "3": { name: "caterer", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                    "4": { name: "event", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "5": { name: "person", filters: ["name", "adresse", "altersfreigabe", "gender"] },
+                    "6": { name: "myEvents", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "7": { name: "myTickets", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "8": { name: "myFriends", filters: ["name", "adresse", "altersfreigabe", "gender"] },
+                    "9": { name: "myLocation", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
                 },
                 translations: {
                     name: "Name",
-                    region: "Region",
                     adresse: "Addresse",
                     datum: "Datum",
-                    distance: "Entfernung",
-                    capacity: "Kapazität",
-                    rating: "Bewertung",
+                    entfernung: "Entfernung",
+                    kapazitaet: "Kapazität",
+                    sterne: "Bewertung",
                     uhrzeit: "Startzeit",
-                    duration: "Dauer",
+                    dauer: "Dauer",
                     experience: "Erfahrung",
-                    category: "Kategorie",
+                    kategorie: "Kategorie",
                     altersfreigabe: "Alter",
                     gender: "Geschlecht",
                     eventgroesse: "Eventgröße",
@@ -362,11 +368,10 @@
                         packet.istbesitzer = true;
                     }
                 }
-                packet.headers = { "auth": localStorage.getItem("authToken")};
                 return packet;
             },
-            searchSpecific(destination,  field ) {
-                axios.post(destination, this.packageFilters(), { headers: { auth: localStorage.getItem("authToken")}})
+            searchSpecific(destination, field) {
+                axios.post(destination, this.packageFilters(), { headers: { "auth": localStorage.getItem("authToken")}})
                     .then(response => {
                         console.log("Successful search:", response);
                         this.searchResults[field] = response.data.rows;
@@ -395,7 +400,7 @@
                                             "line2": "Kategorie: " + item.kategorie,
                                             "line3": "Preis: " + item.preis,
                                             "buttonText": "Event erstellen",
-                                            "imagePath": item.bild,
+                                            "imagePath": item.profilbild,
                                             "isBookmarked": item.favorit ?? 0,
                                             "key": item.id,
                                         });
@@ -428,7 +433,9 @@
             },
             search() {
                 this.searchResults = []
+                this.filteredSearchResults = []
                 this.searchResults.combined = []
+                this.filteredSearchResults.combined = []
                 this.hasSearchResults = false;
                 this.searchError = false;
                 switch (this.searchType) {
@@ -437,7 +444,7 @@
                         this.searchSpecific("/searchArtist", "artist")
                         this.searchSpecific("/searchCaterer", "caterer")
                         this.searchSpecific("/searchEvent", "events")
-                        this.searchSpecific("/searchPerson", "person")
+                        this.searchSpecific("/searchEndnutzer", "person")
                         break;
                     case "1":
                     case "9":
@@ -455,7 +462,7 @@
                         break;
                     case "5":
                     case "8":
-                        this.searchSpecific("/searchPerson", "person")
+                        this.searchSpecific("/searchEndnutzer", "person")
                         break;
                     case "7":
                         this.searchSpecific("/searchEvent", "tickets")
@@ -496,6 +503,11 @@
             this.toggleSearchType();
             this.search();
         },
+    computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+    }
     }
 </script>
 
@@ -504,7 +516,7 @@
 .events-outside-div {
     margin-left: 45px;
     margin-top: 50px;
-    background-color: #e3e2e2;
+    background-color: var(--background);
     border: 0px solid #bebdbd;
 }
 
@@ -542,7 +554,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+    background-color: var(--slider-background-color);
       -webkit-transition: .4s;
       transition: .4s;
       border-radius: 20px; /* Angepasst an die neue Höhe */
@@ -562,7 +574,7 @@
   }
 
   ::v-deep input:checked + .slider {
-      background-color: #2196F3;
+      background-color: var(--blue);
   }
 
   ::v-deep input:focus + .slider {
@@ -660,13 +672,24 @@
       cursor: pointer;
   }
 
-  ::v-deep .filter-rating > input::before {
-      content: url("../assets/empty_star3.jpg");
+  @media (prefers-color-scheme: dark) {
+      ::v-deep .filter-rating > input::before {
+          content: url("../assets/empty_star_dark.png");
+      }
+      ::v-deep .filter-rating > input:checked::before,
+      ::v-deep .filter-rating > input:checked~input::before {
+          content: url("../assets/yellow_star_dark.png");
+      }
   }
 
-  ::v-deep .filter-rating > input:checked::before,
-  ::v-deep .filter-rating > input:checked~input::before {
-        content: url("../assets/yellow_star3.jpg");
+  @media (prefers-color-scheme: light) {
+      ::v-deep .filter-rating > input::before {
+          content: url("../assets/empty_star.png");
+      }
+      ::v-deep .filter-rating > input:checked::before,
+      ::v-deep .filter-rating > input:checked~input::before {
+          content: url("../assets/yellow_star.png");
+      }
   }
 
   ::v-deep .filter-duration {
@@ -728,12 +751,13 @@
       position: absolute;
       top: 120%;
       transform: translateX(-1%);
-      background-color: white;
+      background-color: var(--textfield-background);
       border-radius: 10px;
       padding: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       width: 555px;
       padding-left: 40px;
+      color: var(--textfield-font-color);
   }
 
   ::v-deep .filter-item {
@@ -741,6 +765,15 @@
       justify-content: start; 
       align-items: center;
       margin-bottom: 8px; 
+  }
+
+  ::v-deep .filter-item input {
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
+  }
+
+  ::v-deep .filter-item input::placeholder {
+      color: var(--placeholder-color);
   }
 
   ::v-deep .kapazitaet {
@@ -834,6 +867,7 @@
       height: 35px;
       width: 600px;
       padding-left: 10px;
+      background-color: var(--background);
   }
 
   .options {
@@ -845,12 +879,16 @@
       height: 37px;
       border-radius: 45px;
       text-align: center;
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
   }
 
   #searchbar {
       width: 510px;
       height: 30px;
       border: 0px;
+      background-color: var(--background);
+      color: var(--textfield-font-color);
   }
 
   #searchbar:focus {
@@ -862,7 +900,7 @@
       grid-template-columns: auto auto auto;
       justify-content: left;
       gap: 10px;
-      background-color: white;
+      background-color: var(--background);
   }
 
   .bookmark-arrow-div {
@@ -877,7 +915,8 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-      background-color: white;
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
   }
 
   #bookmark-white {
@@ -893,7 +932,7 @@
   .searchButton {
       display: inline-flex;
       border: none;
-      background-color: white;
+      background-color: var(--background);
   }
 
   #results {
