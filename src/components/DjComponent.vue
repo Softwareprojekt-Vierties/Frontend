@@ -2,7 +2,7 @@
     <div id="artist-div">
         <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
         <div id="dish-form">
-            <img :alt="name" src="../assets/music.jpg" id="image">
+            <img :alt="name" src="../assets/music.jpg" id="music-image">
             <div id="right">
                 <div id="text">Party-Song</div>
                 <div id="ingredients">Infos:</div>
@@ -85,7 +85,7 @@
       font-weight: bolder;
     }
 
-    #image {
+    #music-image {
         width: 80px;
         height: 80px;
     }
