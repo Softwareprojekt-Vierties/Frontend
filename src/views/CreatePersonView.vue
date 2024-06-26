@@ -62,7 +62,7 @@
               <input class="input" type="text" placeholder="z.B. 32427 Minden">
             </div>
             <div class="infos">
-              <label class="info-subheadline">Zeit:</label>
+              <label class="info-subheadline">Alter:</label>
               <div id="age">
                 <img src="../assets/minus.png"/>
                 <label id="age-input" type="text">0</label>
@@ -480,7 +480,6 @@ input:checked + .slider:before {
   cursor: pointer;
   width: 50px;
   height: 50px;
-  margin-top: 10px;
 }
 
 #add-icon {

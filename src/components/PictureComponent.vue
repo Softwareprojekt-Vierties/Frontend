@@ -38,7 +38,8 @@
   border-radius: 20px;
   border: 2px solid #000;
   padding: 7px;
-  margin-top: 10px;
+  width: 80px;
+  height: 80px;
 }
 
 #file-upload label {
@@ -47,7 +48,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-top: 15px;
 }
 
 #file-upload input[type="file"] {
@@ -57,9 +57,11 @@
 }
 
 .upload-icon {
-  max-width: 59.5px;
-  max-height: 59.5px;
+  width: 60px;
+  height: 60px;
   margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: -5px;
 }
 
 #upload-text {
