@@ -766,5 +766,10 @@ footer {
     border-top: 1px solid rgb(200, 200, 200);
     padding-top: 5px;
 }
+
+#app {
+    min-height: 100vh;
+    background-color: var(--create-page-background);
+}
   </style>
   

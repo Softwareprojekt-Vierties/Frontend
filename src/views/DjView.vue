@@ -413,5 +413,10 @@
     justify-content: left;
     font-weight: bold;
 }
+
+#app {
+    min-height: 100vh;
+    background-color: var(--create-page-background);
+}
   </style>
   

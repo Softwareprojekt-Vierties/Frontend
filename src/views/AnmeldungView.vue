@@ -1,4 +1,5 @@
 <template>
+    <div id="AnmeldungView">
     <div id="wrapper">
   <div id="image">
     <LoginComponent />
@@ -19,6 +20,7 @@
   </div>
   <div id="policy-note">
     <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
+  </div>
   </div>
   </div>
 </template>
@@ -169,5 +171,10 @@ export default {
 #policy-note p {
     margin: 0;
     padding: 0;
+}
+
+#AnmeldungView {
+    min-height: 100vh;
+    background: var(--background);
 }
 </style>

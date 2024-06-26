@@ -37,7 +37,7 @@
 
 #name-description {
   border-radius: 10px;
-  background-color: var(--create-page-background);
+  background-color: var(--textfield-background);
   padding: 10px;
 }
 
