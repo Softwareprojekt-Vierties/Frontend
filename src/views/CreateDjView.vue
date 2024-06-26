@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="CreateDjView">
     <div id="header">
       <div id="icon-div">
         <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png" @click="goToHomePage">
@@ -630,4 +630,9 @@ footer {
     border-top: 1px solid rgb(200, 200, 200);
     padding-top: 5px;
   }
+
+#CreateDjView, {
+    min-height: 100vh;
+    background-color: var(--create-page-background);
+}
 </style>

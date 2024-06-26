@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="CreateEventView">
     <div id="header">
       <div id="icon-div">
         <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
@@ -583,4 +583,9 @@ footer {
     border-top: 1px solid rgb(200, 200, 200);
     padding-top: 5px;
   }
+
+#CreateEventView {
+    min-height: 100vh;
+    background-color: var(--create-page-background);
+}
 </style>

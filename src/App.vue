@@ -16,7 +16,6 @@ export default {
 </script>
 
 <style>
-
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #222222;

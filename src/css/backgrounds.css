@@ -1,0 +1,9 @@
+#AnmeldungView {
+    min-height: 100vh;
+    background: var(--background);
+}
+
+#CreateCatererView, #CreateDjView, {
+    min-height: 100vh;
+    background-color: var(--create-page-background);
+}
