@@ -13,7 +13,8 @@ import EditDjView from '@/views/EditDjView.vue'
 import EditLocationView from '@/views/EditLocationView.vue'
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
-import DjView from'@/views/DjView.vue'
+import DjView from '@/views/DjView.vue'
+import CreatePersonView from '@/views/CreatePersonView.vue'
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -93,6 +94,10 @@ const routes = [
     path: '/dj',
     name: 'DjType',
     component: DjView
+  },  {
+    path: '/createPerson',
+    name: 'CreatePersonType',
+    component: CreatePersonView
   }
 
 ]
