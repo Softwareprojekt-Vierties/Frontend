@@ -18,7 +18,7 @@
           </div>
           <div id="name-description">
             <div class="name-description-input">
-              <label class="description">Eventnamen hinzufügen:</label>
+              <label class="description">Name:</label>
               <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
             </div>
             <div class="name-description-input">
