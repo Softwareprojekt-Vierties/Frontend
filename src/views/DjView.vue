@@ -10,7 +10,7 @@
           <div id="name-description">
             <div class="name-description-input">
                 <div id="name-stars">
-                    <label id="name">Uni Party</label>
+                    <label id="name">DJ BLACK</label>
                     <div class="stars">
                         <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': 3 <= 5 }">★</span>
                     </div>
@@ -31,10 +31,12 @@
           </div>
         <div id="event-dish">
             <div id="event">
-                <ArtistCard></ArtistCard>
+              <label class="description">Nächste Events:</label>
+              <ArtistCard></ArtistCard>
             </div>
             <div id="dish">
-                <ArtistCard></ArtistCard>
+              <label class="description">Aktuelle Playlist:</label>
+              <Dj></Dj>
             </div>
         </div>
         <br>
@@ -52,22 +54,16 @@
                 </div>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Stadt:</strong> 32427 Minden</label>
+              <label class="info-subheadline"><strong>Region:</strong> 32427 Minden</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Straße:</strong> Artilleriestraße 9</label>
+              <label class="info-subheadline"><strong>Kategorie:</strong> Techno</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Kapazität:</strong> 200 Personen</label>
+              <label class="info-subheadline"><strong>Erfahrung:</strong> 10 Jahre</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> 1000 €/h</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Größe:</strong> 2 ha</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Open Air:</strong> Ja</label>
+              <label class="info-subheadline"><strong>Preis:</strong> 100 €/h</label>
             </div>
           </div>
           <div id="ticket">
@@ -81,11 +77,13 @@
   <script>
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
+  import Dj from '../components/DjComponent.vue';
 
   export default {
     components: {
       DishForm,
-      ArtistCard
+      ArtistCard,
+      Dj
     },
     data() {
       return {
@@ -346,6 +344,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    margin-top: 15px;
 }
 
 .stars{
@@ -368,6 +367,24 @@
     justify-content: left;
     align-items: center;
     gap: 10px;
+}
+
+#event {
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    display: grid;
+    justify-content: left;
+    font-weight: bold;
+}
+
+#dish {
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    display: grid;
+    justify-content: left;
+    font-weight: bold;
 }
   </style>
   
