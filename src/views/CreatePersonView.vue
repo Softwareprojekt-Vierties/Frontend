@@ -492,6 +492,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   gap: 30px;
+  margin-left: 10px;
 }
 
 footer {
