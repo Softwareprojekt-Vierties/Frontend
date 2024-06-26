@@ -6,8 +6,8 @@
             <div id="right">
                 <div id="text">Party-Song</div>
                 <div id="ingredients">Infos:</div>
-                <div id="input">Länge: 3,41 min</div>
-                <div id="input">Jahr: 2024</div>
+                <div id="info">Länge: 3,41 min</div>
+                <div id="info">Jahr: 2024</div>
             </div>
         </div>
         <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
@@ -67,7 +67,7 @@
       font-weight: bolder;
     }
     
-    #input {
+    #info {
       width: 100px;
       margin-top: 5px;
       font-size: 10px;
