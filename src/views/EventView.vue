@@ -31,7 +31,7 @@
           <div id="addcreator" ref="addCreator" class="scroll-container">
             <div class="dish-container">
               <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+                <dish-form :dish="dish" label="DJ Black" @remove="removeDish(index)"></dish-form>
               </div>
             </div>
           </div>

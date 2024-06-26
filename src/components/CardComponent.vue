@@ -5,7 +5,7 @@
         </div>
         <div id="details">
             <div id="name-bookmark">
-                <div id="headline" @click="titleClickFunction(id)">
+                <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
                 <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
@@ -22,7 +22,7 @@
             <div class="line-div">
                 {{line3}}
             </div>
-            <div id="button" @click="buttonClickFunction(id)">
+            <div id="button" @click="buttonClickFunction(info)">
                 {{buttonText}}
             </div>
         </div>
@@ -68,9 +68,9 @@
                 type: Function,
                 default: function () { console.log("No function"); }
             },
-            id: {
-                type: Number,
-                default: -1,
+            info: {
+                type: Object,
+                default: null,
             }
         },
         data() {

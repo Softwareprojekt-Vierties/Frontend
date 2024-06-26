@@ -1,7 +1,7 @@
 <template>
     <div id="event-card">
         <img :alt="name" :src="computedImagePath" id="event-image">
-        <label>DJ Black</label>
+        <label>{{label}}</label>
     </div>
 </template>
 
@@ -11,11 +11,16 @@
             imagePath: {
                 type: String,
                 default : require("@/assets/bild-hsbi.jpg")
-            }
+            },
+            label: {
+                type: String,
+                default: "-",
+            },
         },
         computed: {
             computedImagePath() {
-                if (this.imagePath === null) {
+                console.log(this.label);
+                if (this.imagePath == null) {
                     return require("@/assets/bild-hsbi.jpg");
                 }
                 return this.imagePath;
