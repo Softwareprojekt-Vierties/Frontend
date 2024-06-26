@@ -476,7 +476,7 @@ input:checked + .slider:before {
 .add-dish-button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   cursor: pointer;
   width: 50px;
   height: 50px;
@@ -491,7 +491,7 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 30px;
 }
 
 footer {

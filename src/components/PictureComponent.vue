@@ -71,5 +71,10 @@
   color: rgb(180, 180, 180);
   margin-bottom: 15px;
 }
+
+#fileToUpload {
+  width: 80px;
+  height: 80px;
+}
 </style>
 
