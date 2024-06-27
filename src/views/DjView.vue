@@ -1,23 +1,23 @@
 <template>
     <div id="app">
-      <div id="header">
+      <div id="header" :style="headerStyle">
         <div id="icon-div">
-          <img alt="Filer" class="icon" src="../assets/home.jpg">
+          <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">
         </div>
         <div id="picture-name">
-          <div id="file-div">
+          <div id="file-div" :style="fileDivStyle">
           </div>
           <div id="name-description">
             <div class="name-description-input">
                 <div id="name-stars">
-                    <label id="name">DJ BLACK</label>
+                    <label id="name">{{ name }}</label>
                     <div class="stars">
-                        <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': 3 <= 5 }">★</span>
+                      <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
                     </div>
                 </div>
             </div>
             <div class="name-description-input">
-              <label id="description-short">Minden</label>
+              <label id="description-short">{{ kurzbeschreibung }}</label>
             </div>
           </div>
         </div>
@@ -27,22 +27,22 @@
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung:</label>
-            <div id="long-description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</div>
+            <div id="long-description-text">{{ beschreibung }}</div>
           </div>
         <div id="event-dish">
             <div id="event">
               <label class="description">Nächste Events:</label>
-              <ArtistCard></ArtistCard>
+              <ArtistCard v-if="events" :eventsFromFather="events"/>
             </div>
             <div id="dish">
               <label class="description">Aktuelle Playlist:</label>
-              <Dj></Dj>
+              <Dj ></Dj>
             </div>
         </div>
         <br>
           <div class="long-description">
           <label class="description">Bewertungen:</label>
-          <dish-form></dish-form>
+            <DishForm v-if="id" :idFromFather="id" :typeOfReview="reviewType"/>
         </div>
         </div>
         <div id="right-side">
@@ -54,20 +54,20 @@
                 </div>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Region:</strong> 32427 Minden</label>
+              <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Kategorie:</strong> Techno</label>
+              <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Erfahrung:</strong> 10 Jahre</label>
+              <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> 100 €/h</label>
+              <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
           </div>
           <div id="ticket">
-            Ticket buchen (20/50)
+            DJ buchen (20/50)
           </div>
         </div>
       </div>
@@ -78,6 +78,8 @@
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Dj from '../components/DjComponent.vue';
+  import axios from 'axios'; 
+
 
   export default {
     components: {
@@ -87,28 +89,72 @@
     },
     data() {
       return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-        isModalVisible: false
+        name : '',
+        sterne: '',
+        kurzbeschreibung:'',
+        beschreibung: '',
+        region: '',
+        kategorie : '',
+        erfahrung  :'',
+        preis : '',
+        imagePreview : null,
+        id:'',
+        reviewType :0
+        
       };
     },
+
+    computed: {
+      headerStyle() {
+        return {
+          backgroundImage: `url(${this.imagePreview})`,
+          backgroundSize: '340%',
+          backgroundPosition: 'center center'
+          //filter:flur(8px);
+        };
+      },
+      fileDivStyle() {
+        return this.imagePreview
+          ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+          : {};
+      }
+    },
+
+    async created(){
+    let id = 4;
+      try {
+          const response = await axios.get(`/getArtistById/${id}`);
+          console.log(response);
+          this.setFormData(response.data);
+          console.log('dj data received:', response.data);
+      } catch (error) {
+          console.error('Error with sending dj ID to DB :', error);
+        }
+    },
+
     methods: {
-      addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
-        this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
-        });
+
+      setFormData(data){
+
+        const myVar =data['artist'].rows[0].region.split(',');
+        console.log(myVar[0]);
+        console.log(myVar[1]);
+
+        this.name = data['artist'].rows[0].benutzername;
+        this.kurzbeschreibung = data['artist'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['artist'].rows[0].beschreibung ;
+        this.region =myVar[1] ;
+        this.kategorie = data['artist'].rows[0].kategorie;
+        this.erfahrung = data['artist'].rows[0].erfahrung;
+        this.preis = data['artist'].rows[0].preis;
+        this.imagePreview = data['artist'].rows[0].profilbild;
+        this.sterne = data['artist'].rows[0].sterne;
+        this.id = data['artist'].rows[0].userid;
+        this.events = data['events'].rows;
       },
-      removeDish(index) {
-        this.dishes.splice(index, 1);
-      },
-      openModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
+      
+      goToAnotherPage() {
+        this.$router.push('/search');
       }
     }
   }
@@ -154,6 +200,7 @@
   
   #name-description {
     padding: 10px;
+    background-color: transparent;
   }
 
   #name {
