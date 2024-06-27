@@ -59,7 +59,7 @@ export default {
 
         --red: rgb(254, 68, 77);
         --green: rgb(146, 208, 80);
-        --blue: rgb(0, 216, 176);
+        --blue: rgb(216, 110, 204);
         --cyan: rgb(0, 216, 176);
     }
 }

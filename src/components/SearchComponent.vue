@@ -574,7 +574,7 @@
   }
 
   ::v-deep input:checked + .slider {
-      background-color: var(--blue);
+      background-color: var(--cyan);
   }
 
   ::v-deep input:focus + .slider {

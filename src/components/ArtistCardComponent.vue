@@ -155,9 +155,6 @@
     justify-content: space-between;
 }
 
-#details {
-}
-
 #name-bookmark {
     margin-bottom: calc(10px * var(--scale-factor));
     cursor: pointer;
