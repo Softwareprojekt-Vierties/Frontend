@@ -349,15 +349,14 @@
 }
 
 #dish-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
 }
 
 #artist {
-  display: grid;
+  display: flex;
   grid-template-columns: auto auto auto;
   justify-content: center;
   align-items: center;
