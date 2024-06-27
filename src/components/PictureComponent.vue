@@ -35,11 +35,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 15px;
   border: 2px solid #000;
   padding: 7px;
-  width: 80px;
-  height: 80px;
+  min-width: 85px;
+  min-height: 85px;
+  max-width: 85px;
+  max-height: 85px;
 }
 
 #file-upload label {
@@ -48,33 +50,29 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin-top: 13px;
 }
 
 #file-upload input[type="file"] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
+  width: 80px;
 }
 
 .upload-icon {
-  width: 60px;
-  height: 60px;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: -5px;
+  max-width: 55px;
+  max-height: 55px;
+  margin-left: 8px;
 }
 
 #upload-text {
   color: var(--upload-text-color);
   margin-top: 0; /* Remove any top margin to bring it closer to the image */
-  font-size: 10px;
+  font-size: 9px;
   color: rgb(180, 180, 180);
   margin-bottom: 15px;
-}
-
-#fileToUpload {
-  width: 80px;
-  height: 80px;
+  margin-top: -5px;
 }
 </style>
 
