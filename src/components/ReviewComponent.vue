@@ -25,66 +25,91 @@
 
 
 <script>
-    import axios from 'axios'; 
-    export default {
+import axios from 'axios'; 
+export default {
+    data(){
+        return {
+            userName : '',
+            rating : '',
+            totalStars : 5,
+            reviewText : '',
+            reviews : [],
+            reviewSize : '',
+            reviewIndex : 0,
+            reviewToGet: ''
+        };
+    },
 
-        data(){
-            return {
-                userName : '',
-                rating : '',
-                totalStars : 5,
-                reviewText : '',
-                dbLocationReviews : [],
-                reviewSize : '',
-                reviewIndex : 0
-            };
+    watch: {
+        typeOfReview: 'updateReviewToGet'
+    },
+
+    props: {
+        idFromFather: {
+            type: String,
+            required: true   
         },
-
-        async created(){
-            let id = 24;
-            try {
-                const response = await axios.get(`/getLocationReview/${id}`);
-                this.dbLocationReviews = response.data.rows;
-                this.reviewSize = this.dbLocationReviews.length;
-
-                console.log(this.dbLocationReviews);
-                this.setFormData(this.dbLocationReviews);
-                console.log('Location data of location received:', response.data);
-            } catch (error) {
-                console.error('Error with sending location ID for review to DB :', error);
-
-            }
-        },
-
-        methods: {
-
-            setFormData(data) {
-                this.userName = data[this.reviewIndex]["profilname"] ;
-                this.rating = data[this.reviewIndex]["sterne"]   ;
-                this.reviewText = data[this.reviewIndex]["inhalt"] ;
-            },
-
-            previousReview(){
-                if(this.reviewIndex>0){
-                    this.reviewIndex -= 1;
-                } else{
-                    this.reviewIndex = 0;
-                } 
-                this.setFormData(this.dbLocationReviews);
-            },
-
-            nextReview(){
-                if(this.reviewIndex >=0 && this.reviewIndex < this.reviewSize -1){
-                    this.reviewIndex += 1;
-                } else{
-                    this.reviewIndex = this.reviewSize - 1;
-                }
-                this.setFormData(this.dbLocationReviews);
-            }
-
+        typeOfReview: {
+            type: Number,
+            required: true
         }
+    },
+
+    methods: {
+        async updateReviewToGet() {
+            if (this.typeOfReview === 0) {
+                this.reviewToGet = "getPersonReview";
+            } else if (this.typeOfReview === 1) {
+                this.reviewToGet = "getLocationReview";
+            }
+
+            if (this.reviewToGet) {
+                try {
+                    const response = await axios.get(`/${this.reviewToGet}/${this.idFromFather}`);
+                    this.reviews = response.data.rows;
+                    this.reviewSize = this.reviews.length;
+
+                    console.log("Review data received:", this.reviews);
+                    this.setFormData(this.reviews);
+                } catch (error) {
+                    console.error('Error with sending review ID to DB:', error);
+                }
+            }
+        },
+
+        setFormData(data) {
+            if (data.length > 0) {
+                this.userName = data[this.reviewIndex]["profilname"];
+                this.rating = data[this.reviewIndex]["sterne"];
+                this.reviewText = data[this.reviewIndex]["inhalt"];
+            }
+        },
+
+        previousReview() {
+            if (this.reviewIndex > 0) {
+                this.reviewIndex -= 1;
+            } else {
+                this.reviewIndex = 0;
+            }
+            this.setFormData(this.reviews);
+        },
+
+        nextReview() {
+            if (this.reviewIndex >= 0 && this.reviewIndex < this.reviewSize - 1) {
+                this.reviewIndex += 1;
+            } else {
+                this.reviewIndex = this.reviewSize - 1;
+            }
+            this.setFormData(this.reviews);
+        }
+    },
+
+    created() {
+        this.updateReviewToGet();
     }
+};
 </script>
+
 
 
 <style scoped>

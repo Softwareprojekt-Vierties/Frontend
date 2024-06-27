@@ -38,7 +38,7 @@
         <br>
         <div class="long-description">
           <label class="description">Bewertungen:</label>
-          <dish-form></dish-form>
+          <DishForm v-if="id" :idFromFather="id" :typeOfReview="reviewType"/>
         </div>
       </div>
       <div id="right-side">
@@ -101,7 +101,10 @@ export default {
       bild: null,
       sterne: '',
       map: null,
-      marker: null
+      marker: null,
+      id:'',
+      reviewType : 1
+
     };
   },
 
@@ -169,6 +172,7 @@ export default {
       this.imagePreview = data.bild;
       this.bild = data.bild;
       this.sterne = data.sterne;
+      this.id = data.id;
     },
 
     goToAnotherPage() {
