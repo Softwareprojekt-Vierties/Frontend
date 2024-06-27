@@ -117,10 +117,6 @@ export default {
     margin-bottom: 10px;
 }
 
-
-
-
-
 .star {
     color: #ccc; 
     font-size: 22px; 

@@ -28,13 +28,15 @@
           <br>
           <div class="long-description">
           <label class="description">Dienstleister:</label>
-          <div id="addcreator" ref="addCreator" class="scroll-container">
-            <div class="dish-container">
-              <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+            <div id="artist">
+              <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
+              <div id="dish-container">
+                <dish-form></dish-form>
+                <dish-form></dish-form>
+                <dish-form></dish-form>
               </div>
+              <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
             </div>
-          </div>
         </div>
         <div id="maps-div">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -346,10 +348,22 @@
   height: 24px;
 }
 
-.dish-container {
-  display: flex;
+#dish-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
   align-items: center;
   justify-content: center;
+  gap: 20px;
+}
+
+#artist {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .long-description {
