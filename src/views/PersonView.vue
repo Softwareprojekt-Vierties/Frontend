@@ -18,12 +18,10 @@
           </div>
           <div id="name-description">
             <div class="name-description-input">
-              <label class="description">Name:</label>
-              <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
+              <label id="name">Uni Party</label>
             </div>
             <div class="name-description-input">
-              <label class="description">Kurze Beschreibung hinzufügen:</label>
-              <input class="header-input" type="text" placeholder="z.B. Minden">
+              <label id="description-short">Minden</label>
             </div>
           </div>
         </div>
@@ -32,56 +30,55 @@
       <div id="main">
         <div id="left-side">
           <div class="long-description">
-            <label class="description">Beschreibung hinzufügen:</label>
-            <label id="long-description-input" type="text">asdadad ada da d asddddddddddddddddddddddddd  asddddddddddddddddddddddddddddddddddddddddddddddd</label>
-            <label class="description-info">Eventarten hinzufügen:</label>
-            <label class="description-info-input" type="text"></label>
+            <label class="description">Beschreibung:</label>
+            <label id="long-description-input" type="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</label>
+            <label class="description-info">Eventarten:</label>
+            <label id="long-description-input" type="text">Lorem ipsum dolo.</label>
             <label class="description-info">Lieblings Lied:</label>
-            <label class="description-info-input" type="text"></label>
-            <label class="description-info">Lieblings Gericht hinzufügen:</label>
-            <label class="description-info-input" type="text"></label>
+            <label id="long-description-input" type="text">Lorem ipsum</label>
+            <label class="description-info">Lieblings Gericht:</label>
+            <label id="long-description-input" type="text">Lorem ipsum</label>
           </div>          
           <br>
           <div class="long-description">
-            <label class="description">Bilder hinzufügen:</label>
+            <label class="description">Bilder:</label>
             <div id="addcreator" ref="addCreator" class="scroll-container">
               <div class="dish-container">
-                <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                  <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
-                </div>
-                <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
+                  <dish-form></dish-form>
               </div>
             </div>
           </div>
+          <div id="event-dish">
+            <div id="event">
+              <label class="description">Meine Events/Locations:</label>
+              <ArtistCard></ArtistCard>
+            </div>
+            <div id="dish">
+              <label class="description">Meine Interessen:</label>
+              <ArtistCard></ArtistCard>
+            </div>
+        </div>
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <label id="info-headline">Infos hinzufügen:</label>
-            <div class="infos">
-              <label class="info-subheadline">Region:</label>
-              <input class="input" type="text" placeholder="z.B. 32427 Minden">
+            <label id="info-headline">Infos</label><div class="infos">
+              <label class="info-subheadline"><strong>Region:</strong> 32427 Minden</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline">Zeit:</label>
-              <div id="age">
-                <img src="../assets/minus.png"/>
-                <label id="age-input" type="text">0</label>
-                <img src="../assets/plus.png"/>
-              </div>
+              <label class="info-subheadline"><strong>Alter:</strong> 30 Jahre</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline">Geschlecht:</label>
-              <input class="input" type="text" placeholder="z.B. M">
+              <label class="info-subheadline"><strong>Geschlecht:</strong> M</label>
             </div>
           </div>
-          <div id="buttons">
-            <div id="break">
-              abbrechen
-            </div>
-            <div id="continue" @click="openModal">
-              anlegen
-            </div>
-          </div>
+          <div id="continue" @click="openModal">Freundschaftsanfrage</div>
         </div>
       </div>
   
@@ -92,11 +89,13 @@
   <script>
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
+  import ArtistCard from '../components/ArtistCardComponent.vue';
   
   export default {
     components: {
       DishForm,
-      PopupModal
+      PopupModal,
+      ArtistCard
     },
     data() {
       return {
@@ -171,16 +170,28 @@
 }
 
 #name-description {
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  padding: 10px;
-  background-color: white;
-}
+    background-color: var(--create-page-header-background);
+    padding: 10px;
+  }
 
 .name-description-input {
   display: grid;
   grid-template-columns: 300px;
   justify-content: left;
+}
+
+#name {
+  text-align: left;
+  font-size: 35px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+#description-short {
+  text-align: left;
+  font-size: 18px;
+  color: white;
+  margin-bottom: -10px;
 }
 
 .header-input {
@@ -347,7 +358,7 @@ input:checked + .slider:before {
 
 .infos {
   display: grid;
-  grid-template-columns: 180px;
+  grid-template-columns: 150px;
   margin-top: 20px;
 }
 
@@ -384,7 +395,6 @@ input:checked + .slider:before {
 .info-subheadline {
   text-align: left;
   font-size: 12px;
-  font-weight: bold;
 }
 
 .input {
@@ -401,8 +411,7 @@ input:checked + .slider:before {
 }
 
 #long-description-input {
-  width: 558px;
-  height: 100px;
+  width: 580px;
   font-family: Arial, sans-serif;
   font-size: 12px;
   padding: 0px;
@@ -431,22 +440,9 @@ input:checked + .slider:before {
   color: var(--simple-font-color);
 }
 
-#break {
-  background-color: var(--red);
-  width: 88px;
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
 #continue {
   background-color: var(--green);
-  width: 88px;
+  width: 170px;
   height: 25px;
   border-radius: 5px;
   border: 1px solid #000000;
@@ -455,6 +451,7 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 #addcreator {
@@ -490,7 +487,36 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 38px;
+  margin-left: 30px;
+  margin-right: 25px;
+}
+
+#event-dish {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#event {
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    display: grid;
+    justify-content: left;
+    font-weight: bold;
+}
+
+#dish {
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    display: grid;
+    justify-content: left;
+    font-weight: bold;
 }
 
 footer {
@@ -558,27 +584,14 @@ footer {
     text-align: left;
     font-size: 12px;
     margin-bottom: 3px;
-    margin-top: 30px;
-  }
-  
-  .description-info-input {
-    width: 200px;
-    height: 8px;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    padding: 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    resize: none;
-    background-color: var(--textfield-background);
-    color: var(--textfield-font-color);
+    margin-top: 20px;
   }
 
   #info-headline {
   display: block; /* Als Block-Element anzeigen */
   text-align: left; /* Text links ausrichten */
   font-family: Arial, sans-serif; /* Schriftart festlegen */
-  font-size: 14px; /* Schriftgröße festlegen */
+  font-size: 18px; /* Schriftgröße festlegen */
   font-weight: bold;
 }
 

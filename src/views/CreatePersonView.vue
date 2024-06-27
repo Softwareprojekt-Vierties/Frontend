@@ -469,7 +469,6 @@ input:checked + .slider:before {
 
 .dish-item {
   display: inline-block;
-  margin-right: 10px;
   flex: 0 0 auto;
 }
 
@@ -491,8 +490,8 @@ input:checked + .slider:before {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  margin-left: 10px;
+  gap: 25px;
+  margin-left: 16px;
 }
 
 footer {
