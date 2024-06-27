@@ -36,13 +36,13 @@
             </div>
             <div id="dish">
               <label class="description">Aktuelle Playlist:</label>
-              <Dj ></Dj>
+              <Dj v-if="id" :idFromFather="id" />
             </div>
         </div>
         <br>
           <div class="long-description">
           <label class="description">Bewertungen:</label>
-            <DishForm v-if="id" :idFromFather="id" :typeOfReview="reviewType"/>
+            <DishForm v-if="userid" :idFromFather="userid" :typeOfReview="reviewType"/>
         </div>
         </div>
         <div id="right-side">
@@ -100,7 +100,8 @@
         imagePreview : null,
         id:'',
         reviewType :0,
-        events : []
+        events : [],
+        userid:''
         
       };
     },
@@ -150,7 +151,8 @@
         this.preis = data['artist'].rows[0].preis;
         this.imagePreview = data['artist'].rows[0].profilbild;
         this.sterne = data['artist'].rows[0].sterne;
-        this.id = data['artist'].rows[0].userid;
+        this.userid = data['artist'].rows[0].userid;
+        this.id = data['artist'].rows[0].id;
         this.events = data['events'].rows;
       },
       

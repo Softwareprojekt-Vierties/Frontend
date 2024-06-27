@@ -58,9 +58,9 @@ export default {
     methods: {
         async updateReviewToGet() {
             if (this.typeOfReview === 0) {
-                this.reviewToGet = "getPersonReview";
+                this.reviewToGet = "getPersonReview"; //dj
             } else if (this.typeOfReview === 1) {
-                this.reviewToGet = "getLocationReview";
+                this.reviewToGet = "getLocationReview"; // location
             }
 
             if (this.reviewToGet) {

@@ -36,13 +36,13 @@
             </div>
             <div id="dish">
               <label class="description">Aktuelle Gerichte:</label>
-              <Dj ></Dj>
+              <Caterer v-if="id" :idFromFather="id"/>
             </div>
         </div>
         <br>
           <div class="long-description">
           <label class="description">Bewertungen:</label>
-            <DishForm v-if="id" :idFromFather="id" :typeOfReview="reviewType"/>
+            <DishForm v-if="id" :idFromFather="userId" :typeOfReview="reviewType"/>
         </div>
         </div>
         <div id="right-side">
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div id="ticket">
-            Caterer buchen (20/50)
+            Caterer buchen
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@
   <script>
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
-  import Dj from '../components/CatererComponent.vue';
+  import Caterer from '../components/CatererComponent.vue';
   import axios from 'axios'; 
 
 
@@ -85,7 +85,7 @@
     components: {
       DishForm,
       ArtistCard,
-      Dj
+      Caterer
     },
     data() {
       return {
@@ -99,6 +99,7 @@
         preis : '',
         imagePreview : null,
         id:'',
+        userId:'',
         reviewType :0,
         events: []
         
@@ -150,7 +151,8 @@
         this.preis = data['caterer'].rows[0].preis;
         this.imagePreview = data['caterer'].rows[0].profilbild;
         this.sterne = data['caterer'].rows[0].sterne;
-        this.id = data['caterer'].rows[0].userid;
+        this.userId = data['caterer'].rows[0].userid;
+        this.id = data['caterer'].rows[0].id;
         this.events = data['events'].rows;
         console.log("my events",this.events);
       },

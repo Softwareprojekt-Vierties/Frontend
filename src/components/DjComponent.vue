@@ -18,6 +18,13 @@
 import axios from 'axios'; 
 
 export default {
+  
+  props:{
+        idFromFather:{
+            type:Number
+        }
+  },
+  
   data() {
     return {
       songs: [],
@@ -30,7 +37,7 @@ export default {
   },
 
   async created(){
-  let id = 4;
+  let id = this.idFromFather;
     try {
         const response = await axios.get(`/getArtistById/${id}`);
         console.log(response);

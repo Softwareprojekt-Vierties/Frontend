@@ -18,6 +18,13 @@
   import axios from 'axios'; 
   
   export default {
+
+    props:{
+        idFromFather:{
+            type:Number
+        }
+    },
+
     data() {
       return {
         dishes: [],
@@ -29,12 +36,13 @@
         dishDescription1: '',
         dishDescription2: '',
         beschreibung1:'',
-        beschreibung2:''
+        beschreibung2:'',
+        id:''
       };
     },
   
     async created(){
-    let id = 14;
+    let id = this.idFromFather;
       try {
           const response = await axios.get(`/getCatererById/${id}`);
           console.log(response);
