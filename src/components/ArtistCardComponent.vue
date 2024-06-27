@@ -58,7 +58,7 @@ export default {
         return {
             hasBookmark: false,
             events: [],
-            eventsIndex: 2,
+            eventsIndex: 0,
             eventName: '',
             eventLocation: '',
             eventDate: '',

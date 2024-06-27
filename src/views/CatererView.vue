@@ -35,7 +35,7 @@
               <ArtistCard v-if="events" :eventsFromFather="events"/>
             </div>
             <div id="dish">
-              <label class="description">Aktuelle Playlist:</label>
+              <label class="description">Aktuelle Gerichte:</label>
               <Dj ></Dj>
             </div>
         </div>
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div id="ticket">
-            DJ buchen (20/50)
+            Caterer buchen (20/50)
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@
   <script>
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
-  import Dj from '../components/DjComponent.vue';
+  import Dj from '../components/CatererComponent.vue';
   import axios from 'axios'; 
 
 
@@ -100,7 +100,7 @@
         imagePreview : null,
         id:'',
         reviewType :0,
-        events : []
+        events: []
         
       };
     },
@@ -122,14 +122,14 @@
     },
 
     async created(){
-    let id = 4;
+    let id = 14;
       try {
-          const response = await axios.get(`/getArtistById/${id}`);
+          const response = await axios.get(`/getCatererById/${id}`);
           console.log(response);
           this.setFormData(response.data);
           console.log('dj data received:', response.data);
       } catch (error) {
-          console.error('Error with sending dj ID to DB :', error);
+          console.error('Error with sending Caterer ID for caterer page to DB :', error);
         }
     },
 
@@ -137,21 +137,22 @@
 
       setFormData(data){
 
-        const myVar =data['artist'].rows[0].region.split(',');
+        const myVar =data['caterer'].rows[0].region.split(',');
         console.log(myVar[0]);
         console.log(myVar[1]);
 
-        this.name = data['artist'].rows[0].benutzername;
-        this.kurzbeschreibung = data['artist'].rows[0].kurzbeschreibung;
-        this.beschreibung = data['artist'].rows[0].beschreibung ;
+        this.name = data['caterer'].rows[0].profilname;
+        this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['caterer'].rows[0].beschreibung ;
         this.region =myVar[1] ;
-        this.kategorie = data['artist'].rows[0].kategorie;
-        this.erfahrung = data['artist'].rows[0].erfahrung;
-        this.preis = data['artist'].rows[0].preis;
-        this.imagePreview = data['artist'].rows[0].profilbild;
-        this.sterne = data['artist'].rows[0].sterne;
-        this.id = data['artist'].rows[0].userid;
+        this.kategorie = data['caterer'].rows[0].kategorie;
+        this.erfahrung = data['caterer'].rows[0].erfahrung;
+        this.preis = data['caterer'].rows[0].preis;
+        this.imagePreview = data['caterer'].rows[0].profilbild;
+        this.sterne = data['caterer'].rows[0].sterne;
+        this.id = data['caterer'].rows[0].userid;
         this.events = data['events'].rows;
+        console.log("my events",this.events);
       },
       
       goToAnotherPage() {
