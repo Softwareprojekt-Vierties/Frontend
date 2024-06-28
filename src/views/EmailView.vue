@@ -9,7 +9,7 @@
             <t1 id="Überschrift">Eventure-Postfach</t1>
         </div>
     <div>
-
+        
     </div>
 </template>
 
@@ -37,20 +37,20 @@
 }
 
 #Eventure-Logo-Text {
-  display: grid;
-  grid-template-columns: auto auto; /* Die Spaltenaufteilung wurde angepasst für bessere Darstellung */
-  align-items: center; /* Zentriert die Elemente vertikal */
-  justify-content: center; /* Zentriert die Elemente horizontal */
-  gap: 20px; /* Fügt einen Abstand zwischen den Spalten hinzu */
-  background-color: var(--background);
+    display: grid;
+    grid-template-columns: auto auto; /* Die Spaltenaufteilung wurde angepasst für bessere Darstellung */
+    align-items: center; /* Zentriert die Elemente vertikal */
+    justify-content: center; /* Zentriert die Elemente horizontal */
+    gap: 20px; /* Fügt einen Abstand zwischen den Spalten hinzu */
+    background-color: var(--background);
 }
 
 #logo {
-  width: 80px; /* Bestimmt eine feste Breite für das Logo */
+    width: 80px; /* Bestimmt eine feste Breite für das Logo */
 }
 
 #Überschrift {
-  font-size: 60px; /* Legt die Schriftgröße für die Überschrift fest */
+    font-size: 60px; /* Legt die Schriftgröße für die Überschrift fest */
     @media (prefers-color-scheme: dark) {
         color: #ddd; /* Dunkelgraue Textfarbe */
     }
