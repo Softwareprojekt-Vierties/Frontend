@@ -19,6 +19,7 @@ import PersonView from '@/views/PersonView.vue'
 import EmailView from '@/views/EmailView.vue'
 
 import MobileLoginView from '@/views/MobileLoginView.vue'
+import MobileSignupView from '@/views/MobileSignupView.vue'
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -33,7 +34,7 @@ const routes = [
     },  { //                    󱞩 MobileView    󱞩 DesktopView
         path: '/signup',
         name: 'signupSeite',
-        component: isMobile() ? SignupView  : SignupView 
+        component: isMobile() ? MobileSignupView  : SignupView 
     }
     ,  {
         path: '/usertype',
