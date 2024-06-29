@@ -6,14 +6,13 @@
           <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
         </div>
         <div id="picture-name">
-          <div id="file-div">
-          </div>
+          <div id="file-div"><img :src="imagePreview" alt="eventImage"> </div>
           <div id="name-description">
             <div class="name-description-input">
-              <label id="name">Uni Party</label>
+              <label id="name">{{ eventName }}</label>
             </div>
             <div class="name-description-input">
-              <label id="description-short">Minden</label>
+              <label id="description-short">{{kurzbeschreibung}}</label>
             </div>
           </div>
         </div>
@@ -23,23 +22,26 @@
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung:</label>
-            <div id="long-description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</div>
+            <div id="long-description-text">{{ beschreibung }}</div>
           </div>
           <br>
           <div class="long-description">
           <label class="description">Dienstleister:</label>
             <div id="artist">
-              <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
+              <img class="other-provider" src="../assets/left.jpg" width="20px" height="20px" @click="previousProvider">
               <div id="dish-container">
-                <dish-form></dish-form>
-                <dish-form></dish-form>
-                <dish-form></dish-form>
+                <DishForm
+                  v-for="(provider, index) in currentProviders"
+                  :key="index"
+                  :componentName="provider.nameCaterer || provider.nameArtist"
+                  :imagePath="provider.imageCaterer || provider.imageArtist"
+                />
+
               </div>
-              <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
+              <img class="other-provider" src="../assets/right.jpg" width="20px" height="20px" @click="nextProvider">
             </div>
         </div>
-        <div id="maps-div">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div id="maps-div" style="height: 400px;">
         </div>
         </div>
         <div id="right-side">
@@ -54,29 +56,29 @@
                 </div>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Location:</strong> Campus Minden</label>
+              <label class="info-subheadline"><strong>Location:</strong> {{ location }}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Datum:</strong> 17.08.2024</label>
+              <label class="info-subheadline"><strong>Datum:</strong> {{ formattedEventDate }}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Zeit:</strong> 19Uhr - 2Uhr</label>
+              <label class="info-subheadline"><strong>Zeit:</strong> {{ zeit }} Uhr</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Eventgröße:</strong> 50 Personen</label>
+              <label class="info-subheadline"><strong>Eventgröße:</strong> {{anzahlPersonen }} Personen</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> 10€</label>
+              <label class="info-subheadline"><strong>Preis:</strong> {{preis}}€</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Altersfreigabe:</strong> 18+</label>
+              <label class="info-subheadline"><strong>Altersfreigabe:</strong> {{alter}}+</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Open Air:</strong> Nein</label>
+              <label class="info-subheadline"><strong>Open Air:</strong> {{openAir}}</label>
             </div>
           </div>
           <div id="ticket">
-            Ticket buchen (20/50)
+            Event buchen 
           </div>
         </div>
       </div>
@@ -85,43 +87,171 @@
   
   <script>
   import DishForm from '../components/EventComponenet.vue';
+  import axios from 'axios';
+  import Leaflet from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
 
   export default {
     components: {
       DishForm
     },
-    data() {
-      return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-          isFavorit: false,
-        isModalVisible: false
-      };
+
+    data(){
+        return{
+          eventName:'',
+          kurzbeschreibung : '',
+          beschreibung : '',
+          location : '',
+          datum : '',
+          zeit : '',
+          anzahlPersonen : '',
+          preis : '',
+          alter : '',
+          openAir : '',
+          imagePreview : null,
+          artists: [],
+          caterers : [],
+          adresse : '',
+          map: null,
+          marker : null,
+          currentIndex: 0,
+          combinedProviders: []
+
+        
+        };
     },
+
+    async created(){
+
+      let id = 44;
+      const response = await axios.get(`/getEventById/${id}`)
+      console.log(response.data);
+      this.setFormData(response.data);
+      this.geocodeAddress();
+
+    },
+
+    computed: {
+      isDarkMode() {
+          return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+      }, 
+      formattedEventDate() {
+            return this.formatDate(this.datum);
+      }, 
+      currentProviders() {
+        return this.combinedProviders.slice(this.currentIndex, this.currentIndex + 3);
+      }
+    },
+
     methods: {
-      addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
-        this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+
+      setFormData(data){
+        this.eventName = data.event.rows[0].name;
+        this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
+        this.imagePreview = data.event.rows[0].bild;
+        this.beschreibung = data.event.rows[0].beschreibung;
+        this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
+        this.preis = data.event.rows[0].preis;
+        this.alter = data.event.rows[0].altersfreigabe;
+        this.zeit = data.event.rows[0].uhrzeit;
+        this.location = data.event.rows[0].locationname;
+        this.anzahlPersonen = data.event.rows[0].eventgroesse;
+        this.datum = data.event.rows[0].datum;
+        this.addresse = data.event.rows[0].adresse;
+        data['caterers'].rows.forEach(caterer =>{
+          this.caterers.push({
+            id: caterer.id,
+            nameCaterer: caterer.profilname,
+            imageCaterer : caterer.profilbild
+          })
         });
-      },
-      removeDish(index) {
-        this.dishes.splice(index, 1);
-      },
-      openModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      }
-    },
-      computed: {
-        isDarkMode() {
-            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        console.log("the caterer", this.caterers);
+
+        data['artists'].rows.forEach(artist =>{
+          this.artists.push({
+            id: artist.id,
+            nameArtist: artist.profilname,
+            imageArtist : artist.profilbild
+          })
+        });
+        console.log("the artists", this.artists);
+
+        this.combinedProviders = [...this.caterers, ...this.artists];
+
+
+
+
+
+
+        /* this.kurzbeschreibung : '',
+        this.beschreibung : '',
+        this.location : '',
+        this.datum : '',
+        this.zeit : '',
+        this.anzahlPersonen : '',
+        this.preis : '',
+        this.alter : '',
+        this.openAir : '',
+        this.imagePreview : null,  */
+      }, 
+
+      formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+      }, 
+
+      async geocodeAddress() {
+        const address = `${this.addresse}`;
+        console.log('Geocoding address:', address);
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+
+        try {
+          const response = await axios.get(url);
+          console.log('Geocode response:', response.data);
+          if (response.data.length > 0) {
+            const location = response.data[0];
+            this.showMap(location.lat, location.lon);
+          } else {
+            console.error('No location found for this address');
+          }
+        } catch (error) {
+          console.error('Failed to fetch coordinates:', error);
         }
-      }
+      },
+      showMap(lat, lon) {
+        console.log('Lat:', lat, 'Lon:', lon);
+        if (this.map) this.map.remove();
+        this.map = Leaflet.map('maps-div').setView([lat, lon], 16);
+        Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+        var customIcon = Leaflet.icon({
+          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Map_pin_icon.svg',
+          iconSize: [30, 30],
+          iconAnchor: [15, 30],
+          popupAnchor: [0, -30]
+        });
+        this.marker = Leaflet.marker([lat, lon], { icon: customIcon }).addTo(this.map);
+      },
+
+      nextProvider() {
+    // Muda o currentIndex para mostrar os próximos três providers, sem ultrapassar o tamanho do array
+    if (this.currentIndex + 3 < this.combinedProviders.length) {
+      this.currentIndex += 3;
+    }
+  },
+  previousProvider() {
+    // Muda o currentIndex para mostrar os três providers anteriores, sem ir abaixo de zero
+    if (this.currentIndex - 3 >= 0) {
+      this.currentIndex -= 3;
+    }
+  }
+
+
+
+    }
+
   }
   </script>
   
@@ -154,6 +284,10 @@
   .icon {
     width: 35px;
     height: 35px;
+    cursor: pointer;
+  } 
+
+  .other-provider{
     cursor: pointer;
   }
   
