@@ -118,6 +118,7 @@ export default {
     outline: none;
     background-color: var(--textfield-background);
     color: var(--textfield-font-color);
+    padding-left: 10px;
 }
 
 .textFeld::placeholder {
