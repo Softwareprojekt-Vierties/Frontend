@@ -84,7 +84,7 @@
   </template>
   
   <script>
-  import DishForm from '../components/EventComponenet.vue';
+  import DishForm from '../components/MailComponent.vue';
 
   export default {
     components: {
