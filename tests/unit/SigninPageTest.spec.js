@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import axios from 'axios';
-import AnmeldungView from '@/views/AnmeldungView.vue';
+import AnmeldungView from '@/views/Login.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
 
 
