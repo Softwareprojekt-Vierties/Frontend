@@ -4,7 +4,7 @@
             <img :alt="name" :src="computedImagePath" id="mail-image">
             <label id="name">Peter Müller</label>
         </div>
-        <label id="info">Auftrag: UNI PARTY</label>
+        <div id="info">Auftrag: UNI PARTY</div>
     </div>
 </template>
 
@@ -29,12 +29,13 @@
 
 <style scoped>
 #mail-div {
-    width: 185px;
+    width: 184px;
+    height: 50px;
     border: 1px solid rgb(100, 100, 100);
-    padding: 7px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 12px;
     margin-bottom: 10px;
-    background-color: rgb(242, 242, 242);
+    background-color: rgb(247, 247, 247);
 }
 
 #mail-card {
@@ -42,7 +43,7 @@
     grid-template-columns: auto auto;
     justify-content: left;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 #mail-image {
@@ -59,7 +60,7 @@
 
 #info {
     font-size: 12px;
-    margin-left: 10px;
+    margin-left: 8px;
+    margin-top: 7px;
 }
 </style>
-
