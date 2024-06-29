@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AnmeldungView from '../views/AnmeldungView.vue'
+import LoginView from '../views/Login.vue'
 import SignupView from '../views/SignupView.vue'
 import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
@@ -18,6 +18,8 @@ import CreatePersonView from '@/views/CreatePersonView.vue'
 import PersonView from '@/views/PersonView.vue'
 import EmailView from '@/views/EmailView.vue'
 
+import MobileLoginView from '@/views/MobileLoginView.vue'
+
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
     return window.innerWidth < MAX_MOBILE_WIDTH;
@@ -26,8 +28,8 @@ function isMobile() {
 const routes = [
     {
         path: '/',
-        name: 'anmeldung',
-        component: isMobile() ? AnmeldungView : AnmeldungView // Corrigido para usar AnmeldungView
+        name: 'login',
+        component: isMobile() ? MobileLoginView : LoginView // Corrigido para usar AnmeldungView
     },  { //                    󱞩 MobileView    󱞩 DesktopView
         path: '/signup',
         name: 'signupSeite',
