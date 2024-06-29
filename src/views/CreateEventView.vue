@@ -67,7 +67,7 @@
                                     <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
                                 </div>
                                 <div v-else>
-                                    <EventCard :label="location?.name" :imagePath="location?.bild" />
+                                    <LocationCard :label="location?.name" :imagePath="location?.bild" />
                                 </div>
                             </div>
                         </div>
@@ -159,13 +159,15 @@
     import axios from 'axios';
     import SearchComponent from '../components/SearchComponent.vue';
     import DishForm from '../components/ArtistComponent.vue';
-    import EventCard from '../components/EventComponenet.vue';
+    import LocationCard from '../components/EventComponenet.vue'
+    import EventCard from '../components/EventCardComponent.vue';
 
     export default {
         components: {
             DishForm,
             EventCard,
-            SearchComponent
+            SearchComponent,
+            LocationCard,
         },
         data() {
             return {
@@ -181,7 +183,7 @@
                 price: '',
                 ageLimit: '',
                 openAir: false,
-                serviceProvider: [], // { name: '', ingredients: [] }
+                serviceProvider: [{ name: '', ingredients: [] }],
                 isModalVisible: false,
                 isLocationModalVisible : false,
                 selectedEventType: null,
@@ -259,7 +261,7 @@
                 this.price = '';
                 this.ageLimit = '';
                 this.openAir = false;
-                this.serviceProviders = []; // { name: '', ingredients: [] }
+                this.serviceProviders = [{ name: '', ingredients: [] }];
                 this.selectedEventType= null; 
             },
             async createEvent() {
@@ -283,11 +285,16 @@
                 formData.openair = this.openAir;
                 formData.privat = this.selectedEventType === "private"; 
                 formData.locationid = this.location.id;
+                formData.serviceProviders = [];
+                this.serviceProvider.forEach(sp => {
+                    if (sp.name != "") {
+                        formData.serviceProviders.push(sp);
+                    }
+                });
+
                 if (this.imagePreview) {
                     formData.bild = this.imagePreview;
                 }
-
-                formData.serviceProviders = this.serviceProvider;
 
                 const token = localStorage.getItem('authToken');
 
