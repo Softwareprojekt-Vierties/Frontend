@@ -98,12 +98,6 @@ export default {
     min-height: 100dvh;
 }
 
-#image {
-    margin-top: 100px;
-    margin-bottom: 100px;
-    width: 100%;
-}
-
 .textFeld {
     width: 240px;
     height: 25px;
@@ -170,11 +164,6 @@ export default {
 #policy-note p {
     margin: 0;
     padding: 0;
-}
-
-#AnmeldungView {
-    min-height: 100vh;
-    background: var(--background);
 }
 
 #Eventure-Logo-Text {
