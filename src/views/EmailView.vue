@@ -13,28 +13,20 @@
         <div id="search">
           <div id="search-div">
             <div id="search-field">
-              <input placeholder="suchen">
+              <input placeholder="suchen" v-model="searchQuery">
               <img alt="Filer" id="magnifying-glass" src="../assets/magnifying-glass.jpg">
             </div>
           </div>
         </div>
         <div id="mails-info">
-          <dish-form @click="updateText('Text für Dish 1', 'Auftrag: Dish 1')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 2', 'Auftrag: Dish 2')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 3', 'Auftrag: Dish 3')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 4', 'Auftrag: Dish 4')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 5', 'Auftrag: Dish 5')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 6', 'Auftrag: Dish 6')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 7', 'Auftrag: Dish 7')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 8', 'Auftrag: Dish 8')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 9', 'Auftrag: Dish 9')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 10', 'Auftrag: Dish 10')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 11', 'Auftrag: Dish 11')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 12', 'Auftrag: Dish 12')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 13', 'Auftrag: Dish 13')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 14', 'Auftrag: Dish 14')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 15', 'Auftrag: Dish 15')"></dish-form>
-          <dish-form @click="updateText('Text für Dish 16', 'Auftrag: Dish 16')"></dish-form>
+          <DishForm
+                  v-for="(mail, index) in filteredMails"
+                  :key="index"
+                  :name="mail.sendername"
+                  :auftrag="mail.anfragetyp"
+                  :imagePath = "mail.senderprofilbild"
+                  @email-selected="updateFormattedText(mail)"
+                />
         </div>
       </div>
       <div id="right">
@@ -60,6 +52,7 @@
   
   <script>
   import DishForm from '../components/MailComponent.vue';
+  import axios from 'axios'; 
   
   export default {
     components: {
@@ -68,13 +61,99 @@
     data() {
       return {
         mailHeadline: '',
-        formattedText: ''
+        formattedText: '',
+        mailList : [],
+        searchQuery: '' 
       };
     },
+
+    async created(){
+
+      let id = 45; // id muss von eingeloggtem User sein
+      const response = await axios.get(`/getMails/${id}`);
+      console.log(response.data);
+      this.setFormData(response.data);
+
+    },
+
+    computed: {
+    filteredMails() {
+            if (!this.searchQuery) {
+                return this.mailList;
+            }
+            const query = this.searchQuery.toLowerCase();
+            return this.mailList.filter(mail => {
+                return (
+                    mail.sendername.toLowerCase().includes(query) ||
+                    mail.anfragetyp.toLowerCase().includes(query)
+                );
+            });
+        }
+    },
+
     methods: {
       updateText(newText, newHeadline) {
         this.formattedText = newText;
         this.mailHeadline = newHeadline;
+      }, 
+      updateFormattedText(mail) {
+          const formatDate = (dateString) => {
+              if (!dateString) return 'N/A';
+              const date = new Date(dateString);
+              const day = date.getDate().toString().padStart(2, '0');
+              const month = (date.getMonth() + 1).toString().padStart(2, '0');
+              const year = date.getFullYear();
+              return `${day}/${month}/${year}`;
+          };
+
+          const formattedDate = formatDate(mail.datum);
+
+          this.mailHeadline = mail.eventname;
+          this.formattedText = `
+          Hallo Herr Mustermann,
+          es liegt eine Anfrage des Events ${mail.eventname} vor.
+
+          
+
+          Infos:
+
+              Location: ${mail.locationname || 'N/A'}
+              Datum: ${formattedDate}
+              Zeit: ${mail.uhrzeit || 'N/A'}
+              Eventgröße: ${mail.locationkapazitaet || 'N/A'} Personen
+              Preis: ${mail.preis || 'N/A'}
+              Altersfreigabe: ${mail.altersfreigabe || 'N/A'}
+              Open Air: ${mail.locationopenair ? 'Ja' : 'Nein'}
+
+
+          Kontakt: 
+
+              ${mail.senderemail || 'N/A'}
+          `;
+      },
+
+      setFormData(data){
+        data.rows.forEach(details => 
+          {
+            this.mailList.push({
+            anfragetyp : details.anfragetyp,
+            datum : details.datum,
+            dauer : details.dauer,
+            eventname : details.eventname,
+            id : details.id,
+            locationadresse : details.locationadresse,
+            locationflaeche : details.locationflaeche,
+            locationkapazitaet : details.locationkapazitaet,
+            locationname : details.locationname,
+            locationopenair : details.locationopenair,
+            senderemail : details.senderemail,
+            sendername : details.sendername,
+            senderprofilbild : details.senderprofilbild,
+            uhrzeit : details.uhrzeit
+
+           })
+           console.log("maillist ->",this.mailList);
+          });
       }
     }
   }
