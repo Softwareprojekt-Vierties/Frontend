@@ -33,7 +33,7 @@
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung hinzufügen:</label>
-            <textarea id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
+            <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
             <label class="description-info">Eventarten hinzufügen:</label>
             <input v-model="favoriteEventTypes" class="description-info-input" type="text" placeholder="z.B. Party-Song">
             <label class="description-info">Lieblings Lied:</label>
@@ -87,13 +87,14 @@
         </div>
       </div>
   
-      <PopupModal :show="isModalVisible" @close="closeModal"/>
+      <PopupModal :onCreate="createPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
     </div>
   </template>
   
   <script>
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
+  import axios from 'axios';
   
   export default {
     components: {
@@ -105,6 +106,7 @@
         dishes: [null],
           personName: "",
           shortDescription: "",
+          longDescription: "",
           region: "",
           gender: "",
           favoriteEventTypes: "",
@@ -154,6 +156,49 @@
                   this.age++;
               }
           },
+            async createPerson(isPrivate) {
+                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
+                    || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                let formData = {};
+                formData.benutzername = this.personName;
+                formData.kurzbeschreibung = this.shortDescription;
+                formData.beschreibung = this.longDescription;
+                formData.region = this.region;
+                formData.alter = this.age;
+                formData.eventarten = this.favoriteEventTypes;
+                formData.lieblingslied = this.favoriteSong;
+                formData.lieblingsgericht = this.favoriteDish;
+                formData.geschlecht = this.gender;
+                formData.bilder = [];
+                formData.privat = isPrivate;
+                this.dishes.forEach(image => {
+                    if (image) {
+                        formData.bilder.push(image);
+                    }
+                });
+
+                if (this.imagePreview) {
+                    formData.bild = this.imagePreview;
+                }
+
+                const token = localStorage.getItem('authToken');
+
+                try {
+                    const response = await axios.post('/createPerson', formData, {
+                        headers: {
+                            "auth": token,
+                        }
+                    });
+                    console.log('Event created:', response.data);
+                    this.closeModal(); 
+                } catch (error) {
+                    console.error('Error with Event creation:', error);
+                }
+            },
     },
       computed: {
             fileDivStyle() {
