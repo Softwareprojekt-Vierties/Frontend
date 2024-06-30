@@ -6,22 +6,14 @@
           <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
         </div>
         <div id="picture-name">
-          <div id="file-div">
-            <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                <img v-if="isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                <img v-else src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                <span id="upload-text">Bild hochladen</span>
-              </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
-            </div>
+          <div id="file-div" :style="fileDivStyle">
           </div>
           <div id="name-description">
             <div class="name-description-input">
-              <label id="name">Uni Party</label>
+                <label id="name">{{userName}}</label>
             </div>
             <div class="name-description-input">
-              <label id="description-short">Minden</label>
+                <label id="description-short">{{shortDescription}}</label>
             </div>
           </div>
         </div>
@@ -31,27 +23,20 @@
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung:</label>
-            <label id="long-description-input" type="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</label>
+            <label id="long-description-input" type="text">{{longDescription}}</label>
             <label class="description-info">Eventarten:</label>
-            <label id="long-description-input" type="text">Lorem ipsum dolo.</label>
+            <label id="long-description-input" type="text">{{favoriteEventTypes}}</label>
             <label class="description-info">Lieblings Lied:</label>
-            <label id="long-description-input" type="text">Lorem ipsum</label>
+            <label id="long-description-input" type="text">{{favoriteSong}}</label>
             <label class="description-info">Lieblings Gericht:</label>
-            <label id="long-description-input" type="text">Lorem ipsum</label>
+            <label id="long-description-input" type="text">{{favoriteDish}}</label>
           </div>          
           <br>
           <div class="long-description">
             <label class="description">Bilder:</label>
             <div id="addcreator" ref="addCreator" class="scroll-container">
               <div class="dish-container">
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
+                  <dish-form v-for="picture in pictures" :key="picture" />
               </div>
             </div>
           </div>
@@ -69,16 +54,16 @@
         <div id="right-side">
           <div id="right-side-info">
             <label id="info-headline">Infos</label><div class="infos">
-              <label class="info-subheadline"><strong>Region:</strong> 32427 Minden</label>
+                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Alter:</strong> 30 Jahre</label>
+                <label class="info-subheadline"><strong>Alter:</strong> {{age}} Jahre</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Geschlecht:</strong> M</label>
+                <label class="info-subheadline"><strong>Geschlecht:</strong> {{gender}}</label>
             </div>
           </div>
-          <div id="continue" @click="openModal">Freundschaftsanfrage</div>
+          <div id="continue" @click="sendFriendRequest">Freundschaftsanfrage</div>
         </div>
       </div>
   
@@ -90,6 +75,7 @@
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
   import ArtistCard from '../components/ArtistCardComponent.vue';
+  import axios from 'axios';
   
   export default {
     components: {
@@ -99,10 +85,17 @@
     },
     data() {
       return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-        isModalVisible: false
+          userName: null,
+        isModalVisible: false,
+          profilePicture: null,
+          fileDivStyle: null,
+          favoriteEventTypes: null,
+          favoriteSong: null,
+          favoriteDish: null,
+          region: null,
+          age: null,
+          gender: null,
+          pictures: null,
       };
     },
     methods: {
@@ -121,13 +114,43 @@
       },
       closeModal() {
         this.isModalVisible = false;
-      }
+      },
+        sendFriendRequest() {
+            console.log(this.id);
+            axios.get("/friendrequest/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => console.log("Success: ", res))
+                .catch(err => console.log("Error: ", err));
+        },
+        getInfo() {
+              axios.get("/getPerson/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => console.log("Success: ", res))
+                .catch(err => console.log("Error: ", err));
+              this.profilePicture = "../assets/bild-hsbi.jpg";
+              this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+            this.userName = "User";
+            this.shortDescription = "short description";
+            this.longDescription = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.";
+            this.favoriteEventTypes = "Lorem ipsum dolor";
+            this.favoriteSong = "Lorem ipsum";
+            this.favoriteDish = "Lorem ipsum";
+            this.region = "32427 Minden";
+            this.age = 30;
+            this.gender = "M";
+            this.pictures = [1, 2, 3, 4, 5, 6, 7, 8];
+            console.log(this.fileDivStyle);
+        },
     },
       computed: {
           isDarkMode() {
               return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-          }
-      }
+          },
+          id() {
+              return this.$route.params.id;
+          },
+      },
+      created() {
+          this.getInfo();
+      },
   }
   </script>
   
