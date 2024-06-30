@@ -64,9 +64,11 @@
             <div class="infos">
               <label class="info-subheadline">Alter:</label>
               <div id="age">
-                <img src="../assets/minus.png"/>
-                <label id="age-input" type="text">0</label>
-                <img src="../assets/plus.png"/>
+                <img v-if="isDarkMode" @click="decreaseAge" src="../assets/minus_dark.png"/>
+                <img v-else @click="decreaseAge" src="../assets/minus.png"/>
+                <label id="age-input" type="text">{{this.age}}{{this.age == 99 ? "+" : ""}}</label>
+                <img v-if="isDarkMode" @click="increaseAge" src="../assets/plus_dark.png"/>
+                <img v-else @click="increaseAge" src="../assets/plus.png"/>
               </div>
             </div>
             <div class="infos">
@@ -109,6 +111,7 @@
           favoriteDish: "",
           favoriteSong: "",
           imagePreview: null,
+          age: 0,
         isModalVisible: false
       };
     },
@@ -140,7 +143,17 @@
       },
       closeModal() {
         this.isModalVisible = false;
-      }
+      },
+        decreaseAge() {
+            if (this.age > 0) {
+                this.age--;
+            }
+        },
+          increaseAge() {
+              if (this.age < 99) {
+                  this.age++;
+              }
+          },
     },
       computed: {
             fileDivStyle() {
@@ -622,5 +635,10 @@ footer {
     align-items: center;
     gap: 15px;
 }
+
+#age img {
+    cursor: pointer;
+}
+
   </style>
   
