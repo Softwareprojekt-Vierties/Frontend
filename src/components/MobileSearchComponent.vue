@@ -43,7 +43,7 @@
                 </div>
                 <div id="right-sort">
                     <div class="select-sort right">
-                        <div class="sort-text">Aufsteigend:</div>
+                        <div @click="sortArrowClick" class="sort-text">{{ order }}</div>
                         <div class="bookmark-arrow-div">
                             <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-if="sortAscending && isDarkMode" src="../assets/arrow-up-dark.png" />
                             <img alt="Normal Arrow" id="normal-arrow" @click="sortArrowClick" v-else-if="isDarkMode" src="../assets/arrow-down-dark.png" />
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="select-sort right">
-                        <div class="sort-text">Lesezeichen:</div>
+                        <div @click="toggleBookmark" class="sort-text">Lesezeichen:</div>
                         <div @click="toggleBookmark" class="bookmark-arrow-div">
                             <img v-if="bookmarked && isDarkMode" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-filled.png" />
                             <img v-else-if="isDarkMode" alt="Bookmark Black" id="bookmark-white" src="../assets/bookmark-empty.png" />
@@ -112,6 +112,7 @@
         },
         data() {
             return {
+                order:"Absteigend:",
                 filterContent: "",
                 filterSelection: "",
                 selectedFilters: [],
@@ -482,6 +483,11 @@
             sortArrowClick() {
                 this.sortAscending = !this.sortAscending;
                 this.sortContent();
+                if (this.order === "Aufsteigend:") {
+                    this.order = "Absteigend:"
+                    return;
+                }
+                this.order = "Aufsteigend:";
             },
             sortContent() {
                 let sortType = this.sortType;
