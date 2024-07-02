@@ -1,6 +1,6 @@
 <template>
     <div id="artist-div">
-        <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
+        <img class="left-right-button" src="../assets/left.jpg" width="20px" height="20px" @click="leftFunction">
         <div id="background">
             <div id="card">
                 <img :alt="name" :src="computedImagePath" class="image">
@@ -20,13 +20,13 @@
                     <div class="line-div">
                         {{line3}}
                     </div>
-                    <div id="button" @click="clickFuntion">
+                    <div id="button" @click="buttonClickFunction">
                         {{buttonText}}
                     </div>
                 </div>
             </div>
         </div>
-        <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
+        <img class="left-right-button" src="../assets/right.png" width="20px" height="20px" @click="rightFunction">
     </div>
 </template>
 
@@ -61,7 +61,15 @@
                 type: Boolean,
                 default: false
             },
-            clickFuntion: {
+            buttonClickFunction: {
+                type: Function,
+                default: function () { console.log("No function"); }
+            },
+            leftFunction: {
+                type: Function,
+                default: function () { console.log("No function"); }
+            },
+            rightFunction: {
                 type: Function,
                 default: function () { console.log("No function"); }
             },
@@ -185,4 +193,9 @@
     align-items: center;
     margin-top: 10px;
 }
+
+.left-right-button {
+    cursor: pointer;
+}
+
 </style>
