@@ -1,215 +1,185 @@
 <template>
     <div id="app">
-      <div id="header">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
-        <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-            <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                  <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                  <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                  <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
-              </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
+        <div id="header">
+            <div id="icon-div">
+                <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
+                <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
             </div>
-          </div>
-          <div id="name-description">
-            <div class="name-description-input">
-                <label class="description">Name:</label>
-                <input class="header-input" v-model="personName" type="text" placeholder="z.B. UNI PARTY"><br>
-            </div>
-            <div class="name-description-input">
-                <label class="description">Kurze Beschreibung hinzufügen:</label>
-                <input class="header-input" v-model="shortDescription" type="text" placeholder="z.B. Minden">
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <div id="main">
-        <div id="left-side">
-          <div class="long-description">
-            <label class="description">Beschreibung hinzufügen:</label>
-            <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
-            <label class="description-info">Eventarten hinzufügen:</label>
-            <input v-model="favoriteEventTypes" class="description-info-input" type="text" placeholder="z.B. Party-Song">
-            <label class="description-info">Lieblings Lied:</label>
-            <input v-model="favoriteSong" class="description-info-input" type="text" placeholder="z.B. Techno">
-            <label class="description-info">Lieblings Gericht hinzufügen:</label>
-            <input v-model="favoriteDish" class="description-info-input" type="text" placeholder="z.B. Kuchen">
-          </div>          
-          <br>
-          <div class="long-description">
-            <label class="description">Bilder hinzufügen:</label>
-            <div id="addcreator" ref="addCreator" class="scroll-container">
-              <div class="dish-container">
-                <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                    <dish-form :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
+            <div id="picture-name">
+                <div id="file-div" :style="fileDivStyle">
+                    <div id="file-upload">
+                        <label id="image-text" for="fileToUpload">
+                            <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
+                            <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+                            <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
+                        </label>
+                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
+                    </div>
                 </div>
-                <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
-              </div>
+                <div id="name-description">
+                    <div class="name-description-input">
+                        <label class="description">Name:</label>
+                        <input class="header-input" v-model="personName" type="text" placeholder="z.B. UNI PARTY"><br>
+                    </div>
+                    <div class="name-description-input">
+                        <label class="description">Kurze Beschreibung hinzufügen:</label>
+                        <input class="header-input" v-model="shortDescription" type="text" placeholder="z.B. Minden">
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div id="right-side">
-          <div id="right-side-info">
-            <label id="info-headline">Infos hinzufügen:</label>
-            <div class="infos">
-              <label class="info-subheadline">Region:</label>
-              <input v-model="region" class="input" type="text" placeholder="z.B. 32427 Minden">
+
+        <div id="main">
+            <div id="left-side">
+                <div class="long-description">
+                    <label class="description">Beschreibung hinzufügen:</label>
+                    <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
+                    <label class="description-info">Eventarten hinzufügen:</label>
+                    <input v-model="favoriteEventTypes" class="description-info-input" type="text" placeholder="z.B. Party-Song">
+                    <label class="description-info">Lieblings Lied:</label>
+                    <input v-model="favoriteSong" class="description-info-input" type="text" placeholder="z.B. Techno">
+                    <label class="description-info">Lieblings Gericht hinzufügen:</label>
+                    <input v-model="favoriteDish" class="description-info-input" type="text" placeholder="z.B. Kuchen">
+                </div>          
+                <br>
+                <div class="long-description">
+                    <label class="description">Bilder hinzufügen:</label>
+                    <div id="addcreator" ref="addCreator" class="scroll-container">
+                        <div class="dish-container">
+                            <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+                                <dish-form :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
+                            </div>
+                            <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="infos">
-              <label class="info-subheadline">Alter:</label>
-              <div id="age">
-                <img v-if="isDarkMode" @click="decreaseAge" src="../assets/minus_dark.png"/>
-                <img v-else @click="decreaseAge" src="../assets/minus.png"/>
-                <label id="age-input" type="text">{{this.age}}{{this.age == 99 ? "+" : ""}}</label>
-                <img v-if="isDarkMode" @click="increaseAge" src="../assets/plus_dark.png"/>
-                <img v-else @click="increaseAge" src="../assets/plus.png"/>
-              </div>
+            <div id="right-side">
+                <div id="right-side-info">
+                    <label id="info-headline">Infos hinzufügen:</label>
+                    <div class="infos">
+                        <label class="info-subheadline">Region:</label>
+                        <input v-model="region" class="input" type="text" placeholder="z.B. 32427 Minden">
+                    </div>
+                    <div class="infos">
+                        <label class="info-subheadline">Alter:</label>
+                        <div id="age">
+                            <img v-if="isDarkMode" @click="decreaseAge" src="../assets/minus_dark.png"/>
+                            <img v-else @click="decreaseAge" src="../assets/minus.png"/>
+                            <label id="age-input" type="text">{{this.age}}{{this.age == 99 ? "+" : ""}}</label>
+                            <img v-if="isDarkMode" @click="increaseAge" src="../assets/plus_dark.png"/>
+                            <img v-else @click="increaseAge" src="../assets/plus.png"/>
+                        </div>
+                    </div>
+                    <div class="infos">
+                        <label class="info-subheadline">Geschlecht:</label>
+                        <input v-model="gender" class="input" type="text" placeholder="z.B. M">
+                    </div>
+                </div>
+                <div id="buttons">
+                    <div @click="reset" id="break">
+                        zurücksetzen 
+                    </div>
+                    <div id="continue" @click="openModal">
+                        speichern
+                    </div>
+                </div>
             </div>
-            <div class="infos">
-              <label class="info-subheadline">Geschlecht:</label>
-              <input v-model="gender" class="input" type="text" placeholder="z.B. M">
-            </div>
-          </div>
-          <div id="buttons">
-            <div @click="reset" id="break">
-             zurücksetzen 
-            </div>
-            <div id="continue" @click="openModal">
-              speichern
-            </div>
-          </div>
         </div>
-      </div>
-  
-      <PopupModal :onCreate="createPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
+
+        <PopupModal :onCreate="createPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
     </div>
-  </template>
-  
-  <script>
-  import DishForm from '../components/PictureComponent.vue';
-  import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
-  import axios from 'axios';
-  
-  export default {
-    components: {
-      DishForm,
-      PopupModal
-    },
-    data() {
-      return {
-        dishes: [null],
-          personName: "",
-          shortDescription: "",
-          longDescription: "",
-          region: "",
-          gender: "",
-          favoriteEventTypes: "",
-          favoriteDish: "",
-          favoriteSong: "",
-          imagePreview: null,
-          age: 0,
-        isModalVisible: false,
-          originalInfo: {},
-      };
-    },
-      methods: {
-          onFileChange(event) {
-              const file = event.target.files[0];
-              if (file) {
-                  this.eventImage = file;
-                  const reader = new FileReader();
-                  reader.onload = e => {
-                      this.imagePreview = e.target.result;
-                  };
-                  reader.readAsDataURL(file);
-              }
-          },
-          addDish() {
-        this.dishes.push(null);
-        this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
-        });
-      },
-          getInfo() {
-              axios.get("/getPerson/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
-                  .then(res => console.log("Success: ", res))
-                  .catch(err => console.log("Error: ", err));
-              this.originalInfo.profilePicture = "../assets/bild-hsbi.jpg";
-              this.profilePicture = this.originalInfo.profilePicture;
-              this.originalInfo.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-              this.fileDivStyle = this.originalInfo.fileDivStyle;
-              this.originalInfo.personName = "User";
-              this.personName = this.originalInfo.personName;
-              this.originalInfo.shortDescription = "short description";
-              this.shortDescription = this.originalInfo.shortDescription;
-              this.originalInfo.longDescription = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.";
-              this.longDescription = this.originalInfo.longDescription;
-              this.originalInfo.favoriteEventTypes = "Lorem ipsum dolor";
-              this.favoriteEventTypes = this.originalInfo.favoriteEventTypes;
-              this.originalInfo.favoriteSong = "Lorem ipsum";
-              this.favoriteSong = this.originalInfo.favoriteSong;
-              this.originalInfo.favoriteDish = "Lorem ipsum";
-              this.favoriteDish = this.originalInfo.favoriteDish;
-              this.originalInfo.region = "32427 Minden";
-              this.region = this.originalInfo.region;
-              this.originalInfo.age = 30;
-              this.age = this.originalInfo.age;
-              this.originalInfo.gender = "M";
-              this.gender = this.originalInfo.gender;
-              this.originalInfo.pictures = [1, 2, 3, 4, 5, 6, 7, 8];
-              this.dishes = this.originalInfo.pictures;
-              this.originalInfo.myIntrests = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
-              this.myIntrests = this.originalInfo.myIntrests;
-              this.originalInfo.myEventsLocations = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
-              this.myEventsLocations = this.originalInfo.myEventsLocations;
-              this.originalInfo.isFriend = false;
-              this.isFriend = this.originalInfo.isFriend;
-              console.log(this.fileDivStyle);
+</template>
+
+<script>
+    import DishForm from '../components/PictureComponent.vue';
+    import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
+    import axios from 'axios';
+
+    export default {
+        components: {
+            DishForm,
+            PopupModal
         },
-          reset() {
-              this.profilePicture = this.originalInfo.profilePicture;
-              this.fileDivStyle = this.originalInfo.fileDivStyle;
-              this.personName = this.originalInfo.personName;
-              this.shortDescription = this.originalInfo.shortDescription;
-              this.longDescription = this.originalInfo.longDescription;
-              this.favoriteEventTypes = this.originalInfo.favoriteEventTypes;
-              this.favoriteSong = this.originalInfo.favoriteSong;
-              this.favoriteDish = this.originalInfo.favoriteDish;
-              this.region = this.originalInfo.region;
-              this.age = this.originalInfo.age;
-              this.gender = this.originalInfo.gender;
-              this.dishes = this.originalInfo.pictures;
-              this.myIntrests = this.originalInfo.myIntrests;
-              this.myEventsLocations = this.originalInfo.myEventsLocations;
-              this.isFriend = this.originalInfo.isFriend;
-          },
-      removeDish(index) {
-        this.dishes.splice(index, 1);
-      },
-      openModal() {
-        this.isModalVisible = true;
-          console.log(this.dishes);
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      },
-        decreaseAge() {
-            if (this.age > 0) {
-                this.age--;
-            }
+        data() {
+            return {
+                dishes: [null],
+                personName: "",
+                shortDescription: "",
+                longDescription: "",
+                region: "",
+                gender: "",
+                favoriteEventTypes: "",
+                favoriteDish: "",
+                favoriteSong: "",
+                imagePreview: null,
+                age: 0,
+                isModalVisible: false,
+            };
         },
-          increaseAge() {
-              if (this.age < 99) {
-                  this.age++;
-              }
-          },
+        methods: {
+            onFileChange(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    this.eventImage = file;
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        this.imagePreview = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            },
+            addDish() {
+                this.dishes.push(null);
+                this.$nextTick(() => {
+                    const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
+                    container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+                });
+            },
+            getInfo() {
+                axios.get("/getPerson/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                    .then(res => console.log("Success: ", res))
+                    .catch(err => console.log("Error: ", err));
+                this.profilePicture = "../assets/bild-hsbi.jpg";
+                this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+                this.personName = "User";
+                this.shortDescription = "short description";
+                this.longDescription = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.";
+                this.favoriteEventTypes = "Lorem ipsum dolor";
+                this.favoriteSong = "Lorem ipsum";
+                this.favoriteDish = "Lorem ipsum";
+                this.region = "32427 Minden";
+                this.age = 30;
+                this.gender = "M";
+                this.dishes = [1, 2, 3, 4, 5, 6, 7, 8];
+                this.myIntrests = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
+                this.myEventsLocations = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
+                this.isFriend = false;
+                console.log(this.fileDivStyle);
+            },
+            reset() {
+              this.$router.go();
+            },
+            removeDish(index) {
+                this.dishes.splice(index, 1);
+            },
+            openModal() {
+                this.isModalVisible = true;
+                console.log(this.dishes);
+            },
+            closeModal() {
+                this.isModalVisible = false;
+            },
+            decreaseAge() {
+                if (this.age > 0) {
+                    this.age--;
+                }
+            },
+            increaseAge() {
+                if (this.age < 99) {
+                    this.age++;
+                }
+            },
             async createPerson(isPrivate) {
                 if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
                     || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
@@ -253,79 +223,79 @@
                     console.error('Error with Event creation:', error);
                 }
             },
-    },
-      computed: {
+        },
+        computed: {
             fileDivStyle() {
                 return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
             },
-          isDarkMode() {
-              return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-          },
-      },
-      created() {
-          this.getInfo();
-      },
-  }
-  </script>
-  
-  <style scoped>
-  :root html, body {
-  width: 100%;
-  height: 100%;
-  background-color: var(--create-page-background);
+            isDarkMode() {
+                return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+            },
+        },
+        created() {
+            this.getInfo();
+        },
+    }
+</script>
+
+<style scoped>
+:root html, body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--create-page-background);
 }
 
 #header {
-  background-color: var(--create-page-header-background);
-  padding-bottom: 40px;
-  padding-top: 10px;
+    background-color: var(--create-page-header-background);
+    padding-bottom: 40px;
+    padding-top: 10px;
 }
 
 #picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: end;
+    gap: 20px;
 }
 
 #icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--create-page-background);
-  margin-left: 10px;
+    width: 40px;
+    padding: 15px;
+    padding-bottom: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--create-page-background);
+    margin-left: 10px;
 }
 
 .icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
 }
 
 #name-description {
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  padding: 10px;
-  background-color: white;
+    border-radius: 10px;
+    background-color: var(--create-page-background);
+    padding: 10px;
+    background-color: white;
 }
 
 .name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
+    display: grid;
+    grid-template-columns: 300px;
+    justify-content: left;
 }
 
 .header-input {
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  text-align: center;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    text-align: center;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
 }
 
 .header-input::placeholder {
@@ -333,137 +303,137 @@
 }
 
 .description {
-  text-align: left;
-  font-size: 12px;
-  margin-bottom: 3px;
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 3px;
 }
 
 #file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-  background-color: white;
+    width: 250px;
+    height: 180px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    background-color: var(--create-page-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -225px;
+    background-color: white;
 }
 
 #file-upload {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
 
 #file-upload input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
 }
 
 .upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
+    max-width: 50%;
+    max-height: 50%;
+    margin-bottom: -10px; /* Adjust margin to bring the text closer */
+    margin-left: 10px;
+    margin-top: -10px;
 }
 
 #upload-text {
-  color: var(--upload-text-color);
-  margin-top: 0; /* Remove any top margin to bring it closer to the image */
+    color: var(--upload-text-color);
+    margin-top: 0; /* Remove any top margin to bring it closer to the image */
 }
 
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 40px; /* Angepasst an die neue Höhe */
-  height: 20px;
-  margin-left: 20px;
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Angepasst an die neue Höhe */
+    height: 20px;
+    margin-left: 20px;
 }
 
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-  margin-left: 70px;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin-left: 70px;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--slider-background-color);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 20px; /* Angepasst an die neue Höhe */
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--slider-background-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 20px; /* Angepasst an die neue Höhe */
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px; /* Angepasst an die neue Höhe */
-  width: 16px; /* Angepasst an die neue Höhe */
-  left: 2px; /* Angepasst an die neue Höhe */
-  bottom: 2px; /* Angepasst an die neue Höhe */
-  background-color: var(--create-page-background);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%;
+    position: absolute;
+    content: "";
+    height: 16px; /* Angepasst an die neue Höhe */
+    width: 16px; /* Angepasst an die neue Höhe */
+    left: 2px; /* Angepasst an die neue Höhe */
+    bottom: 2px; /* Angepasst an die neue Höhe */
+    background-color: var(--create-page-background);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
 }
 
 input:checked + .slider {
-  background-color: var(--cyan);
+    background-color: var(--cyan);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px var(--cyan);
+    box-shadow: 0 0 1px var(--cyan);
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
-  -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
-  transform: translateX(20px); /* Angepasst an die neue Höhe */
+    -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
+    -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
+    transform: translateX(20px); /* Angepasst an die neue Höhe */
 }
 
 #main {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  background-color: var(--create-page-background);
-  padding-top: 30px;;
-  gap: 20px;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    background-color: var(--create-page-background);
+    padding-top: 30px;;
+    gap: 20px;
 }
 
 .long-description {
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 580px;
-  justify-content: left;
-  font-weight: bold;
+    border-radius: 10px;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 580px;
+    justify-content: left;
+    font-weight: bold;
 }
 
 .long-description::placeholder {
@@ -471,10 +441,10 @@ input:checked + .slider:before {
 }
 
 #right-side-info {
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-  padding: 10px;
+    border-radius: 10px;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
+    padding: 10px;
 }
 
 #right-side-info::placeholder {
@@ -482,20 +452,20 @@ input:checked + .slider:before {
 }
 
 .infos {
-  display: grid;
-  grid-template-columns: 180px;
-  margin-top: 20px;
+    display: grid;
+    grid-template-columns: 180px;
+    margin-top: 20px;
 }
 
 .time-value-left {
-  width: 71.9px;
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  margin-right: 5px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
+    width: 71.9px;
+    text-align: center;
+    border: 1px solid #000000; /* Rahmenstil */
+    border-radius: 5px; /* Abgerundete Ecken */
+    height: 25px;
+    margin-right: 5px;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
 }
 
 .time-value-left::placeholder {
@@ -503,14 +473,14 @@ input:checked + .slider:before {
 }
 
 .time-value-right {
-  width: 71.9px;
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  margin-left: 5px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
+    width: 71.9px;
+    text-align: center;
+    border: 1px solid #000000; /* Rahmenstil */
+    border-radius: 5px; /* Abgerundete Ecken */
+    height: 25px;
+    margin-left: 5px;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
 }
 
 .time-value-right::placeholder {
@@ -518,18 +488,18 @@ input:checked + .slider:before {
 }
 
 .info-subheadline {
-  text-align: left;
-  font-size: 12px;
-  font-weight: bold;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .input {
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
+    text-align: center;
+    border: 1px solid #000000; /* Rahmenstil */
+    border-radius: 5px; /* Abgerundete Ecken */
+    height: 25px;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
 }
 
 .input::placeholder {
@@ -537,16 +507,16 @@ input:checked + .slider:before {
 }
 
 #long-description-input {
-  width: 558px;
-  height: 100px;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  padding: 10px;
-  border: 1px solid #000000;
-  border-radius: 8px;
-  resize: none;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
+    width: 558px;
+    height: 100px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    resize: none;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
 }
 
 #long-description-input::placeholder {
@@ -554,99 +524,99 @@ input:checked + .slider:before {
 }
 
 #open-air {
-  display: block;
-  text-align: left;
-  margin-top: 20px;
+    display: block;
+    text-align: left;
+    margin-top: 20px;
 }
 
 #buttons {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-top: 15px;
-  color: var(--simple-font-color);
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+    color: var(--simple-font-color);
 }
 
 #break {
-  background-color: var(--red);
-  width: 88px;
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    background-color: var(--red);
+    width: 88px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 #continue {
-  background-color: var(--green);
-  width: 88px;
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    background-color: var(--green);
+    width: 88px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 #addcreator {
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
-  align-items: center;
-  padding: 20px 0;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    align-items: center;
+    padding: 20px 0;
 }
 
 .dish-item {
-  display: inline-block;
-  flex: 0 0 auto;
+    display: inline-block;
+    flex: 0 0 auto;
 }
 
 .add-dish-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: left;
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: left;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
 }
 
 #add-icon {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 }
 
 .dish-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  margin-left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    margin-left: 16px;
 }
 
 footer {
-  background-color: var(--create-page-background);
+    background-color: var(--create-page-background);
 }
 
 #dish-form {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-      padding-left: 12px;
-      padding-top: 7px;
-      padding-bottom: 10px;
-      padding-right: 12px;
-      margin-left: 5px;
-  }
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding-left: 12px;
+    padding-top: 7px;
+    padding-bottom: 10px;
+    padding-right: 12px;
+    margin-left: 5px;
+}
 
   .upload-icon {
       max-width: 50%;
@@ -655,92 +625,92 @@ footer {
       margin-left: 5px;
       margin-top: -5px;
   }
-  
+
   #right {
       display: grid;
       grid-template-columns: auto;
   }
-  
-  #text {
-    text-align: left;
-    font-size: 11px;
-    margin-top: 5px;
-  }
-  
-  #input {
-    width: 130px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    margin-top: 5px;
-    font-size: 10px;
-    padding: 3px;
-    padding-left: 10px;
-    background-color: var(--textfield-background);
-    color: var(--textfield-font-color);
-}
 
-#input::placeholder {
-    color: var(--placeholder-color);
-}
-  
+  #text {
+      text-align: left;
+      font-size: 11px;
+      margin-top: 5px;
+  }
+
+  #input {
+      width: 130px;
+      border-radius: 5px;
+      border: 1px solid #000;
+      margin-top: 5px;
+      font-size: 10px;
+      padding: 3px;
+      padding-left: 10px;
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
+  }
+
+  #input::placeholder {
+      color: var(--placeholder-color);
+  }
+
   #ingredients {
-    text-align: left;
-    font-size: 10px;
-    margin-top: 5px;
-    border-top: 1px solid rgb(200, 200, 200);
-    padding-top: 5px;
+      text-align: left;
+      font-size: 10px;
+      margin-top: 5px;
+      border-top: 1px solid rgb(200, 200, 200);
+      padding-top: 5px;
   }
 
   .description-info {
-    text-align: left;
-    font-size: 12px;
-    margin-bottom: 3px;
-    margin-top: 30px;
+      text-align: left;
+      font-size: 12px;
+      margin-bottom: 3px;
+      margin-top: 30px;
   }
-  
+
   .description-info-input {
-    width: 200px;
-    height: 8px;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    padding: 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    resize: none;
-    background-color: var(--textfield-background);
-    color: var(--textfield-font-color);
+      width: 200px;
+      height: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      padding: 10px;
+      border: 1px solid #000000;
+      border-radius: 5px;
+      resize: none;
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
   }
 
   #info-headline {
-  display: block; /* Als Block-Element anzeigen */
-  text-align: left; /* Text links ausrichten */
-  font-family: Arial, sans-serif; /* Schriftart festlegen */
-  font-size: 14px; /* Schriftgröße festlegen */
-  font-weight: bold;
-}
+      display: block; /* Als Block-Element anzeigen */
+      text-align: left; /* Text links ausrichten */
+      font-family: Arial, sans-serif; /* Schriftart festlegen */
+      font-size: 14px; /* Schriftgröße festlegen */
+      font-weight: bold;
+  }
 
-#age-input {
-    border: 1px solid #000000;
-    border-radius: 5px;
-    width: 50px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: gray;
-}
+  #age-input {
+      border: 1px solid #000000;
+      border-radius: 5px;
+      width: 50px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: gray;
+  }
 
-#age {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
+  #age {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+  }
 
-#age img {
-    cursor: pointer;
-}
+  #age img {
+      cursor: pointer;
+  }
 
-  </style>
-  
+</style>
+
