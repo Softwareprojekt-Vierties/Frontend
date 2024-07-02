@@ -25,6 +25,7 @@
                   :name="mail.sendername"
                   :auftrag="mail.anfragetyp"
                   :imagePath = "mail.senderprofilbild"
+                  @click="handleClick(mail)"
                   @email-selected="updateFormattedText(mail)"
                 />
         </div>
@@ -38,10 +39,10 @@
             </pre>
           </div>
           <div id="buttons">
-            <div id="ablehnen">
+            <div id="ablehnen" style="cursor:pointer">
               ablehnen
             </div>
-            <div id="annehmen">
+            <div id="annehmen" style="cursor:pointer" @click="akzeptieren">
               annehmen
             </div>
           </div>
@@ -51,7 +52,7 @@
   </template>
   
   <script>
-  import DishForm from '../components/MailComponent.vue';
+import DishForm from '../components/MailComponent.vue';
   import axios from 'axios'; 
   
   export default {
@@ -63,7 +64,8 @@
         mailHeadline: '',
         formattedText: '',
         mailList : [],
-        searchQuery: '' 
+        searchQuery: '',
+        mailId : '' 
       };
     },
 
@@ -96,6 +98,46 @@
         this.formattedText = newText;
         this.mailHeadline = newHeadline;
       }, 
+
+      async handleClick(mail){
+        console.log("email gelesen",mail);
+  
+          if(mail.gelesen == false){
+            await axios.post('/updateMail',{
+              id : mail.id,
+              gelesen : true,
+              angenommen : mail.angenommen
+            });
+            mail.gelesen = true;
+          }
+
+      },
+
+      async akzeptieren(){
+
+        for(let varId in this.mailList){
+          if(this.mailList[varId].id == this.mailId){
+            await axios.post('/updateMail',{
+            id : this.mailList[varId].id,
+            gelesen : true,
+            angenommen : true
+          });
+          }
+          this.mailList[varId].angenommen = true;
+        }
+  
+      },
+
+      
+      /*async reject(mail){
+        await axios.post('/updateMail',{
+          id : mail.id,
+          gelesen : true,
+          angenommen : false
+        });
+        mail.angenommen = false;
+      }*/
+
       updateFormattedText(mail) {
           const formatDate = (dateString) => {
               if (!dateString) return 'N/A';
@@ -130,6 +172,7 @@
 
               ${mail.senderemail || 'N/A'}
           `;
+          this.mailId = mail.id;
       },
 
       setFormData(data){
@@ -149,7 +192,9 @@
             senderemail : details.senderemail,
             sendername : details.sendername,
             senderprofilbild : details.senderprofilbild,
-            uhrzeit : details.uhrzeit
+            uhrzeit : details.uhrzeit,
+            gelesen : details.gelesen,
+            angenommen : details.angenommen
 
            })
            console.log("maillist ->",this.mailList);
