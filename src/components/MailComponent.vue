@@ -1,5 +1,5 @@
 <template>
-    <div id="mail-div" :class="{ read: isSelected }" @click="handleClick">
+        <div id="mail-div" :class="{ read: isSelected, gelesenMail: gelesen, unreadMail: !gelesen }" @click="handleClick">
             <div id="mail-card">
                 <img :alt="name" :src="computedImagePath" id="mail-image">
                 <label id="name">{{ name }}</label>
@@ -26,6 +26,10 @@
                 isSelected: {
                     type : Boolean,
                     default : false
+                },
+                gelesen:{
+                    type: Boolean,
+                    default :false
                 }
             },
             
@@ -45,7 +49,7 @@
                     });
                 }, 
                 handleClick() {
-                    this.notifyParent(); // Chame notifyParent dentro de handleClick
+                    this.notifyParent(); 
                     this.$emit('click');
                 }
             }
@@ -56,12 +60,21 @@
     #mail-div {
         width: 184px;
         height: 50px;
-        border: 1px solid rgb(100, 100, 100);
+        /*border: 1px solid rgb(100, 100, 100);*/
         padding: 10px;
         border-radius: 12px;
         margin-bottom: 10px;
         background-color: rgb(247, 247, 247);
         cursor:pointer;
+    }
+
+    .gelesenMail{
+        border: 1px solid rgb(0, 0, 0);
+    }
+
+    .unreadMail {
+        border:2px solid rgb(0, 0, 0);
+
     }
     
     #mail-card {

@@ -25,7 +25,8 @@
                 :name="mail.sendername"
                 :auftrag="mail.anfragetyp"
                 :imagePath = "mail.senderprofilbild"
-                :isSelected="selectedMailId === mail.id" 
+                :isSelected="selectedMailId === mail.id"
+                :gelesen ="mail.gelesen" 
                 @click="handleClick(mail)"
                 @email-selected="updateFormattedText(mail)"
               />
@@ -79,7 +80,7 @@ export default {
 
   async created(){
     //45, 56, 67
-    let id = 45; // id muss von eingeloggtem User sein
+    let id = 56; // id muss von eingeloggtem User sein
     const response = await axios.get(`/getMails/${id}`);
     console.log(response.data);
     this.setFormData(response.data);
