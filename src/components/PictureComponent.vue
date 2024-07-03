@@ -5,7 +5,7 @@
             <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
             <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
         </label>
-        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
+        <input v-if="mutable" type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
     </div>
 </template>
 
@@ -21,6 +21,14 @@
           imageGrabber: {
               type: Function,
               default: () => {},
+          },
+          imagePath: {
+              type: String,
+              default: null,
+          },
+          mutable: {
+              type: Boolean,
+              default: true,
           }
       },
       computed: {
@@ -47,6 +55,9 @@
           getImage() {
               return this.imagePreview;
           }
+      },
+      created() {
+          this.imagePreview = this.imagePath;
       },
   }
 </script>
