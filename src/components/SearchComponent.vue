@@ -501,7 +501,6 @@
         created() {
             this.searchType = this.startValue;
             this.toggleSearchType();
-            this.search();
         },
     computed: {
         isDarkMode() {
