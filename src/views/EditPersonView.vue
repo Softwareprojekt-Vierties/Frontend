@@ -47,7 +47,7 @@
                     <div id="addcreator" ref="addCreator" class="scroll-container">
                         <div class="dish-container">
                             <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                                <dish-form :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
+                                <dish-form @remove="removeDish(index)" :imagePath="dish" :imageGrabber="image => {dishes[index] = image;}" />
                             </div>
                             <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                         </div>
@@ -137,25 +137,29 @@
                 });
             },
             getInfo() {
-                axios.get("/getPerson/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
-                    .then(res => console.log("Success: ", res))
-                    .catch(err => console.log("Error: ", err));
-                this.profilePicture = "../assets/bild-hsbi.jpg";
-                this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-                this.personName = "User";
-                this.shortDescription = "short description";
-                this.longDescription = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.";
-                this.favoriteEventTypes = "Lorem ipsum dolor";
-                this.favoriteSong = "Lorem ipsum";
-                this.favoriteDish = "Lorem ipsum";
-                this.region = "32427 Minden";
-                this.age = 30;
-                this.gender = "M";
-                this.dishes = [1, 2, 3, 4, 5, 6, 7, 8];
-                this.myIntrests = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
-                this.myEventsLocations = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
-                this.isFriend = false;
-                console.log(this.fileDivStyle);
+              axios.get("/getUserById/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.userName = res.data.user.rows[0].profilname;
+                    this.shortDescription = res.data.user.rows[0].kurzbeschreibung;
+                    this.longDescription = res.data.user.rows[0].beschreibung;
+                    this.favoriteEventTypes = res.data.user.rows[0].arten;
+                    this.favoriteSong = res.data.user.rows[0].lied;
+                    this.favoriteDish = res.data.user.rows[0].gericht;
+                    this.region = res.data.user.rows[0].region;
+                    this.age = res.data.user.rows[0].alter;
+                    this.gender = res.data.user.rows[0].geschlecht;
+                    this.imagePreview = res.data.user.rows[0].profilbild;
+                    res.data.partybilder?.forEach(bild => {
+                        this.dishes.push(bild);
+                    })
+                    this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+                    this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+
+                    // to be implemented
+                    this.isFriend = false;
+                })
+                .catch(err => console.log("Error: ", err));
             },
             reset() {
               this.$router.go();
