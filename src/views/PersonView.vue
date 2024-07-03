@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-      <div id="header">
+      <div id="header" :style="fileHeaderStyle">
+          <div id="header-inner">
         <div id="icon-div">
           <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
           <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
@@ -16,6 +17,7 @@
                 <label id="description-short">{{shortDescription}}</label>
             </div>
           </div>
+        </div>
         </div>
       </div>
   
@@ -36,18 +38,18 @@
             <label class="description">Bilder:</label>
             <div id="addcreator" ref="addCreator" class="scroll-container">
               <div class="dish-container">
-                  <dish-form v-for="picture in pictures" :key="picture" />
+                  <dish-form v-for="picture in pictures" :imagePath="picture" :mutable="false" :key="picture" />
               </div>
             </div>
           </div>
           <div id="event-dish">
             <div id="event">
               <label class="description">Meine Events/Locations:</label>
-              <ArtistCard :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
+              <ArtistCard v-if="myEventsLocations.length" :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
             </div>
             <div id="dish">
               <label class="description">Meine Interessen:</label>
-              <ArtistCard :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
+              <ArtistCard v-if="myIntrests.length" :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
             </div>
         </div>
         </div>
@@ -90,6 +92,7 @@
         isModalVisible: false,
           profilePicture: null,
           fileDivStyle: null,
+          fileHeaderStyle: null,
           favoriteEventTypes: "",
           favoriteSong: "",
           favoriteDish: "",
@@ -101,7 +104,7 @@
           eventsLocationsIndex: 0,
           myIntrests: [],
           intrestsIndex: 0,
-          isFriend: true,
+          isFriend: false,
       };
     },
     methods: {
@@ -133,88 +136,43 @@
                 .catch(err => console.log("Error: ", err));
         },
         getInfo() {
-              axios.get("/getPerson/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
-                .then(res => console.log("Success: ", res))
+              axios.get("/getUserById/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.userName = res.data.user.rows[0].profilname;
+                    this.shortDescription = res.data.user.rows[0].kurzbeschreibung;
+                    this.longDescription = res.data.user.rows[0].beschreibung;
+                    this.favoriteEventTypes = res.data.user.rows[0].arten;
+                    this.favoriteSong = res.data.user.rows[0].lied;
+                    this.favoriteDish = res.data.user.rows[0].gericht;
+                    this.region = res.data.user.rows[0].region;
+                    this.age = res.data.user.rows[0].alter;
+                    this.gender = res.data.user.rows[0].geschlecht;
+                    this.profilePicture = res.data.user.rows[0].profilbild;
+                    res.data.owenevents.rows?.forEach(event => {
+                        this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                    });
+                    res.data.locations.rows?.forEach(event => {
+                        this.myEventsLocations.push({header: event.name, line1: "Addresse: " + event.addresse, line2: "Kapazität: " + event.kapazitaet, line3: "Preis: " + event.preis, id: event.id});
+                    });
+                    res.data.tickets.rows?.forEach(event => {
+                        this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                    });
+                    res.data.partybilder?.forEach(bild => {
+                        this.pictures.push(bild);
+                    })
+                    this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+                    this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+
+                    // to be implemented
+                    this.isFriend = false;
+                })
                 .catch(err => console.log("Error: ", err));
-              this.profilePicture = "../assets/bild-hsbi.jpg";
-              this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-            this.userName = "User";
-            this.shortDescription = "short description";
-            this.longDescription = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.";
-            this.favoriteEventTypes = "Lorem ipsum dolor";
-            this.favoriteSong = "Lorem ipsum";
-            this.favoriteDish = "Lorem ipsum";
-            this.region = "32427 Minden";
-            this.age = 30;
-            this.gender = "M";
-            this.pictures = [1, 2, 3, 4, 5, 6, 7, 8];
-            this.myIntrests = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
-            this.myEventsLocations = [{header: "Party1", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party2", line1: "line1", line2: "line2", line3: "line3"}, {header: "Party3", line1: "line1", line2: "line2", line3: "line3"}];
-            this.isFriend = false;
             console.log(this.fileDivStyle);
-            axios.post("/searchLoaction", { istbesitzer: true }, { headers: { "auth": localStorage.getItem("authToken")}})
-                .then(response => {
-                    console.log("Successful search:", response);
-                    const searchResults = response.data.rows;
-                    this.hasEventsLocations |= response.data.rows.length > 0;
-                    searchResults.forEach(item => {
-                        this.myEventsLocations.push({
-                            "name": item.name,
-                            "line1": "Addresse: " + item.adresse,
-                            "line2": "Kapazität: " + item.kapazitaet,
-                            "line3": "Preis: " + item.preis,
-                            "buttonText": "Event erstellen",
-                            "imagePath": item.bild,
-                            "isBookmarked": item.favorit ?? 0,
-                            "key": item.id,
-                        });
-                    })
-                })
-                .catch(error => {
-                    console.error("Unsuccessful search:", error);
-                });
-            axios.post("/searchEvent", { istbesitzer: true }, { headers: { "auth": localStorage.getItem("authToken")}})
-                .then(response => {
-                    console.log("Successful search:", response);
-                    const searchResults = response.data.rows;
-                    this.hasEventsLocations |= response.data.rows.length > 0;
-                    searchResults.forEach(item => {
-                        this.myEventsLocations.push({
-                            "name": item.name,
-                            "line1": "Location: " + item.locationname,
-                            "line2": "Datum: " + new Date(item.datum).toDateString(),
-                            "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
-                            "buttonText": "Eventinfo",
-                            "imagePath": item.bild,
-                            "isBookmarked": item.favorit ?? 0,
-                            "key": item.id,
-                        });
-                    })
-                })
-                .catch(error => {
-                    console.error("Unsuccessful search:", error);
-                });
-            axios.post("/searchEvent", { hatticket: true }, { headers: { "auth": localStorage.getItem("authToken")}})
-                .then(response => {
-                    console.log("Successful search:", response);
-                    const searchResults = response.data.rows;
-                    this.hasIntrests |= response.data.rows.length > 0;
-                    searchResults.forEach(item => {
-                        this.myIntrests.push({
-                            "name": item.name,
-                            "line1": "Location: " + item.locationname,
-                            "line2": "Datum: " + new Date(item.datum).toDateString(),
-                            "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
-                            "buttonText": "Eventinfo",
-                            "imagePath": item.bild,
-                            "isBookmarked": item.favorit ?? 0,
-                            "key": item.id,
-                        });
-                    })
-                })
-                .catch(error => {
-                    console.error("Unsuccessful search:", error);
-                });
+            //this.profilePicture = require("../assets/bild-hsbi.jpg");
+            // get persons events
+            // get persons Locations
+            // get persons booked tickets?
         },
         increaseEventLocationsIndex() {
             if (this.eventsLocationsIndex < this.myEventsLocations.length - 1) {
@@ -260,8 +218,15 @@
 
 #header {
   background-color: var(--create-page-header-background);
+}
+
+#header-inner {
+    width: 100%;
+    height: 100%;
   padding-bottom: 40px;
   padding-top: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 #picture-name {
@@ -290,7 +255,7 @@
 }
 
 #name-description {
-    background-color: var(--create-page-header-background);
+    background-color: none;
     padding: 10px;
   }
 
