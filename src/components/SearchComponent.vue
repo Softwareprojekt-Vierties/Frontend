@@ -670,7 +670,7 @@
       flex-direction: row-reverse;
       margin-left: 10%;
       width: 280px;
-      height: 20px;
+      height: 20px; /* Angepasst für flexible Höhe */
       border-radius: 5px;
       border: 1px solid #ccc;
       text-align: center;
@@ -681,26 +681,37 @@
       display: grid;
       place-content: center;
       cursor: pointer;
+      width: 20px; /* Angepasste Breite */
+      height: 20px; /* Angepasste Höhe */
+      appearance: none;
+      margin-top: 0;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      position: relative;
   }
 
-  @media (prefers-color-scheme: dark) {
-      ::v-deep .filter-rating > input::before {
-          content: url("../assets/empty_star_dark.png");
-      }
-      ::v-deep .filter-rating > input:checked::before,
-      ::v-deep .filter-rating > input:checked~input::before {
-          content: url("../assets/yellow_star_dark.png");
-      }
+  ::v-deep .filter-rating > input::before {
+      content: "☆"; /* Leeres Stern-Emoji */
+      font-size: 24px; /* Größe des Stern-Emojis */
+      color: var(--light-gray, #ccc);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
   }
 
-  @media (prefers-color-scheme: light) {
-      ::v-deep .filter-rating > input::before {
-          content: url("../assets/empty_star.png");
-      }
-      ::v-deep .filter-rating > input:checked::before,
-      ::v-deep .filter-rating > input:checked~input::before {
-          content: url("../assets/yellow_star.png");
-      }
+  ::v-deep .filter-rating > input:checked::before,
+  ::v-deep .filter-rating > input:checked~input::before {
+      content: "★"; /* Gefülltes Stern-Emoji */
+      color: var(--yellow, gold);
+  }
+
+  ::v-deep .filter-rating > input::before {
+      color: var(--light-gray, #666);
+  }
+  ::v-deep .filter-rating > input:checked::before,
+  ::v-deep .filter-rating > input:checked~input::before {
+      color: var(-yellow, gold);
   }
 
   ::v-deep .filter-duration {
