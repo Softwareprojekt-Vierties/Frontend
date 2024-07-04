@@ -389,7 +389,7 @@
                                             "buttonText": "Freundschftsanfrage",
                                             "imagePath": item.bild,
                                             "isBookmarked": item.favorit ?? 0,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break
                                     case "location":
@@ -401,7 +401,7 @@
                                             "buttonText": "Event erstellen",
                                             "imagePath": item.bild,
                                             "isBookmarked": item.favorit ?? 0,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break
                                     case "artist":
@@ -414,7 +414,7 @@
                                             "buttonText": "Event erstellen",
                                             "imagePath": item.profilbild,
                                             "isBookmarked": item.favorit ?? 0,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break
                                     case "events":
@@ -427,7 +427,7 @@
                                             "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
                                             "imagePath": item.bild,
                                             "isBookmarked": item.favorit ?? 0,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break;
 
@@ -501,7 +501,7 @@
                 if (this.sortAscending) {
                     Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => sortCriteria(a, b)));
                 } else {
-                    Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => -sortCriteria(a, b)));
+                    Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => sortCriteria(b, a)));
                 }
                 this.$forceUpdate();
             },
