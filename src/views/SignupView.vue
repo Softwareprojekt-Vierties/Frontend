@@ -1,8 +1,10 @@
 <template>
-  <div class="image">
+    <div id="wrapper">
+  <div id="image">
     <LoginComponent />
   </div>
 
+  <div id="content">
   <div>
     <input v-model="benutzername" class="textFeld" type="text" placeholder=" Benutzername" name="benutzername" />
   </div>
@@ -14,13 +16,15 @@
   <div>
     <input v-model="password" class="textFeld" type="password" placeholder=" Password" name="password" />
   </div>
+  </div>
 
-  <div class="buttonBox"> 
+  <div> 
     <button @click="zuruck" class="abbrechen">abbrechen</button>
     <button @click="isFormValid" class="weiter">weiter</button>
   </div>
-  <div>
+  <div id="policy-note">
     <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
+  </div>
   </div>
 </template>
 
@@ -73,44 +77,82 @@ export default {
 </script>
 
 <style scoped>
-.image {
-  margin-top: 100px;
-  margin-bottom: 60px;
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+
+#image {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    width: 100%;
 }
 
 .textFeld {
-  width: 240px;
-  height: 25px;
-  border: 2px solid #cccccc;
-  border-radius: 20px; 
-  margin-bottom: 40px;
-  font-size: 13px; 
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.1); 
-  outline: none; 
+    width: 240px;
+    height: 25px;
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    margin-bottom: 40px;
+    font-size: 13px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+    outline: none;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
+    padding-left: 10px;
 }
 
-.buttonBox {
-  margin-bottom: 180px;
+.textFeld::placeholder {
+    color: var(--placeholder-color);
 }
 
 .weiter {
-  margin-left: 15px;
-  width: 110px;
-  height: 30px;
-  border-radius: 20px;
-  border: 1px solid #ecf5ec; 
-  background-color: #1fda29; 
-  cursor: pointer; 
-  transition: background-color 0.3s; 
+    margin-left: 15px;
+    width: 110px;
+    height: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background-color: var(--green);
+    color: var(--simple-font-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.weiter:disabled {
+    color: #aaaaaa;
+}
+
+.kontoAnlegen {
+    margin-right: 15px;
+    width: 110px;
+    height: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background-color: var(--blue);
+    color: var(--simple-font-color);
+    cursor: pointer;
 }
 
 .abbrechen {
   margin-right: 15px;
   width: 110px;
   height: 30px;
-  border: 1px solid #ecf5ec; 
+  border: 1px solid var(--border-color); 
   border-radius: 20px; 
-  background-color: #f81111; 
+  background-color: var(--red);
+  color: var(--simple-font-color);
   cursor: pointer; 
+}
+
+#policy-note {
+    justify-content: center;
+    margin-top: auto;
+    height: fit-content;
+}
+
+#policy-note p {
+    margin: 0;
+    padding: 0;
 }
 </style>

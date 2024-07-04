@@ -1,14 +1,16 @@
 <template>
-  <div id="app">
+  <div id="CreateDjView">
     <div id="header">
       <div id="icon-div">
-        <img alt="Filer" class="icon" src="../assets/home.jpg" @click="goToHomePage">
+        <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png" @click="goToHomePage">
+        <img alt="Filer" class="icon" v-else src="../assets/home.jpg" @click="goToHomePage">
       </div>
       <div id="picture-name">
         <div id="file-div" :style="fileDivStyle">
           <div id="file-upload">
             <label id="image-text" for="fileToUpload">
-              <img v-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+              <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
+              <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
               <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
             </label>
             <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
@@ -49,7 +51,7 @@
                   </div>
                 </div>
               </div>
-              <div class="add-dish-button" @click="addSong"><img src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+              <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
             </div>
           </div>
         </div>
@@ -111,7 +113,10 @@ export default {
   computed: {
     fileDivStyle() {
       return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-    }
+    },
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
   },
   methods: {
     onFileChange(event) {
@@ -182,21 +187,14 @@ export default {
           alert('Error creating Artist. Please try again.');
         }
     }
-
   }
 }
 </script>
 
 
 <style scoped>
-:root html, body {
-  width: 100%;
-  height: 100%;
-  background-color: rgb(242, 242, 242);
-}
-
 #header {
-  background-color: rgb(213, 213, 213);
+  background-color: var(--create-page-header-background);
   padding-bottom: 40px;
   padding-top: 10px;
 }
@@ -216,7 +214,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--textfield-background);
   margin-left: 10px;
 }
 
@@ -228,7 +226,7 @@ export default {
 
 #name-description {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
   padding: 10px;
 }
 
@@ -243,6 +241,12 @@ export default {
   border-radius: 5px;
   border: 1px solid #000000;
   text-align: center;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.header-input::placeholder {
+    color: var(--placeholder-color);
 }
 
 .description {
@@ -256,7 +260,7 @@ export default {
   height: 180px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -299,22 +303,78 @@ export default {
 }
 
 #upload-text {
-  color: #999999;
+  color: var(--upload-text-color);
   margin-top: 0; /* Remove any top margin to bring it closer to the image */
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px; /* Angepasst an die neue Höhe */
+  height: 20px;
+  margin-left: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin-left: 70px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--slider-background-color);
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 20px; /* Angepasst an die neue Höhe */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px; /* Angepasst an die neue Höhe */
+  width: 16px; /* Angepasst an die neue Höhe */
+  left: 2px; /* Angepasst an die neue Höhe */
+  bottom: 2px; /* Angepasst an die neue Höhe */
+  background-color: var(--create-page-background);
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--cyan);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--cyan);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
+  -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
+  transform: translateX(20px); /* Angepasst an die neue Höhe */
 }
 
 #main {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: center;
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
   padding-top: 30px;;
   gap: 20px;
 }
 
 .long-description {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
   padding: 10px;
   display: grid;
   grid-template-columns: 580px;
@@ -322,16 +382,55 @@ export default {
   font-weight: bold;
 }
 
+.long-description::placeholder {
+    color: var(--placeholder-color);
+}
+
 #right-side-info {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
   padding: 10px;
+}
+
+#right-side-info::placeholder {
+    color: var(--placeholder-color);
 }
 
 .infos {
   display: grid;
   grid-template-columns: 180px;
   margin-top: 20px;
+}
+
+.time-value-left {
+  width: 71.9px;
+  text-align: center;
+  border: 1px solid #000000; /* Rahmenstil */
+  border-radius: 5px; /* Abgerundete Ecken */
+  height: 25px;
+  margin-right: 5px;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.time-value-left::placeholder {
+    color: var(--placeholder-color);
+}
+
+.time-value-right {
+  width: 71.9px;
+  text-align: center;
+  border: 1px solid #000000; /* Rahmenstil */
+  border-radius: 5px; /* Abgerundete Ecken */
+  height: 25px;
+  margin-left: 5px;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.time-value-right::placeholder {
+    color: var(--placeholder-color);
 }
 
 .info-subheadline {
@@ -344,6 +443,12 @@ export default {
   border: 1px solid #000000; /* Rahmenstil */
   border-radius: 5px; /* Abgerundete Ecken */
   height: 25px;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+.input::placeholder {
+    color: var(--placeholder-color);
 }
 
 #long-description-input {
@@ -355,6 +460,30 @@ export default {
   border: 1px solid #000000;
   border-radius: 8px;
   resize: none;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+#long-description-input::placeholder {
+    color: var(--placeholder-color);
+}
+
+#add-location-icon {
+  width: 25px;
+  height: 25px;
+  margin-top: 4px;
+}
+
+#add-location {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+#add-location::placeholder {
+    color: var(--placeholder-color);
 }
 
 #info-headline {
@@ -378,10 +507,11 @@ export default {
   align-items: center;
   gap: 20px;
   margin-top: 15px;
+  color: var(--simple-font-color);
 }
 
 #break {
-  background-color: rgb(254, 68, 77);
+  background-color: var(--red);
   width: 88px;
   height: 25px;
   border-radius: 5px;
@@ -394,7 +524,7 @@ export default {
 }
 
 #continue {
-  background-color: rgb(146, 208, 80);
+  background-color: var(--green);
   width: 88px;
   height: 25px;
   border-radius: 5px;
@@ -441,7 +571,7 @@ export default {
 }
 
 footer {
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
 }
 
 #dish-form {
@@ -466,12 +596,6 @@ footer {
       margin-top: -5px;
   }
   
-  #upload-text {
-      color: rgb(209, 209, 209);
-      padding-top: 5px;
-      font-size: 7px;
-  }
-  
   #right {
       display: grid;
       grid-template-columns: auto;
@@ -491,7 +615,13 @@ footer {
     font-size: 10px;
     padding: 3px;
     padding-left: 10px;
-  }
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
+}
+
+#input::placeholder {
+    color: var(--placeholder-color);
+}
   
   #ingredients {
     text-align: left;
@@ -501,4 +631,8 @@ footer {
     padding-top: 5px;
   }
 
+#CreateDjView, {
+    min-height: 100vh;
+    background-color: var(--create-page-background);
+}
 </style>

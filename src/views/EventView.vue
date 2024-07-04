@@ -2,7 +2,8 @@
     <div id="app">
       <div id="header">
         <div id="icon-div">
-          <img alt="Filer" class="icon" src="../assets/home.jpg">
+          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
+          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
         </div>
         <div id="picture-name">
           <div id="file-div">
@@ -30,10 +31,10 @@
           <div id="addcreator" ref="addCreator" class="scroll-container">
             <div class="dish-container">
               <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+                <dish-form :dish="dish" label="DJ Black" @remove="removeDish(index)"></dish-form>
               </div>
+              <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
             </div>
-          </div>
         </div>
         <div id="maps-div">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -44,7 +45,10 @@
             <div id="info-bookmark">
                 <label id="info-headline">Infos</label>
                 <div id="div-bookmark">
-                  <img src="../assets/bookmark-white.jpg" id="bookmark">
+                  <img v-if="isFavorit && isDarkMode" src="../assets/bookmark-filled.png" id="bookmark">
+                  <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
+                  <img v-else-if="isFavorit" src="../assets/bookmark-gray.jpg" id="bookmark">
+                  <img v-else src="../assets/bookmark-white.jpg" id="bookmark">
                 </div>
             </div>
             <div class="infos">
@@ -75,10 +79,11 @@
         </div>
       </div>
     </div>
+    </div>
   </template>
   
   <script>
-  import DishForm from '../components/EventComponenet.vue';
+  import DishForm from '../components/MailComponent.vue';
 
   export default {
     components: {
@@ -89,6 +94,7 @@
         dishes: [
           { name: '', ingredients: [] }
         ],
+          isFavorit: false,
         isModalVisible: false
       };
     },
@@ -109,19 +115,18 @@
       closeModal() {
         this.isModalVisible = false;
       }
-    }
+    },
+      computed: {
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
+      }
   }
   </script>
   
   <style scoped>
-  :root html, body {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(242, 242, 242);
-  }
-  
   #header {
-    background-color: rgb(213, 213, 213);
+    background-color: var(--create-page-header-background);
     padding-bottom: 40px;
     padding-top: 10px;
   }
@@ -141,7 +146,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     cursor: pointer;
-    background-color: white;
+    background-color: var(--textfield-background);
     margin-left: 10px;
   }
   
@@ -152,6 +157,7 @@
   }
   
   #name-description {
+    background-color: var(--create-page-header-background);
     padding: 10px;
   }
 
@@ -187,7 +193,7 @@
     height: 180px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,7 +204,7 @@
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
-    background-color: rgb(242, 242, 242);
+    background-color: var(--create-page-background);
     padding-top: 30px;
     gap: 20px;
   }
@@ -209,7 +215,7 @@
   
   .long-description {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
     padding: 10px;
     display: grid;
     justify-content: left;
@@ -218,7 +224,7 @@
   
   #right-side-info {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
     padding: 10px;
   }
   
@@ -260,6 +266,8 @@
     text-align: left;
     text-decoration: none;
     font-weight: lighter;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
   }
   
   #add-location-icon {
@@ -272,7 +280,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     border-radius: 5px;
     cursor: pointer;
-    background-color: white;
+    background-color: var(--textfield-background);
   }
   
   #info-headline {
@@ -284,7 +292,8 @@
   }
   
   #ticket {
-    background-color: rgb(146, 208, 80);
+    background-color: var(--green);
+    color: var(--simple-font-color);
     height: 30px;
     border-radius: 7px;
     border: 1px solid #000000;
@@ -338,15 +347,26 @@
   height: 24px;
 }
 
-.dish-container {
+#dish-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 20px;
+}
+
+#artist {
+  display: flex;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .long-description {
   border-radius: 10px;
-  background-color: white;
+    background-color: var(--textfield-background);
   padding: 10px;
   display: grid;
   grid-template-columns: 580px;

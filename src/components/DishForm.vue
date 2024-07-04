@@ -3,7 +3,8 @@
     <div id="file-div-comp" :style="fileDivStyleComponent">
       <div id="file-upload">
         <label id="image-text" for="fileToUpload">
-          <img v-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon-comp" />
+          <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon-comp" />
+          <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon-comp" />
           <span id="upload-text-comp" v-if="!imagePreview">Bild hochladen</span>
         </label>
         <input class="input-comp" type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChangeComponent">
@@ -38,7 +39,10 @@ export default {
   computed: {
     fileDivStyleComponent() {
       return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-    }
+    },
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
   },
   methods: {
     onFileChangeComponent(event) {
@@ -95,7 +99,7 @@ export default {
     height: 108px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     border-radius: 5px;
-    background-color: white;
+    background-color: var(--textfield-background);
 }
 
 #file-upload {

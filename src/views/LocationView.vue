@@ -485,6 +485,7 @@ body {
   margin-top: 15px;
 }
 
+
 .stars {
   margin-bottom: 10px;
 }
@@ -514,3 +515,4 @@ body {
   margin-top: -10px;
 }
 </style>
+

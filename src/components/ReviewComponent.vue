@@ -1,6 +1,8 @@
 <template>
     <div id="comment-div">
+
         <img class="other-review" src="../assets/left.jpg" width="20px" height="20px" @click="previousReview" >
+
         <div class="review">
             <div class="user-info">
                 <div class="user-info-details">
@@ -19,9 +21,12 @@
                 {{ reviewText }}
             </div>
         </div>
+
         <img class="other-review" src="../assets/right.jpg" width="20px" height="20px" @click="nextReview">
+
     </div>
 </template>
+
 
 
 <script>
@@ -112,29 +117,13 @@ export default {
 
 
 
+
 <style scoped>
 
-.review{
-    display:flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    background-color: white;
-    border-radius: 18px;
-    margin:2px;
-    max-height: 110px;
-    max-width: 530px;
-}
-
-.user-info{
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-    margin-left: -5px;
-}
 
 .other-review{
     cursor:pointer;
 }
-
 .user-info-details{
     display: flex;
     flex-direction: row;
@@ -187,6 +176,7 @@ export default {
 
 .star.filled {
     color: #f5d130; 
+
 }
 
 #comment-div {
