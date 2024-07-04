@@ -6,15 +6,15 @@
 
   <div id="content">
   <div>
-    <input v-model="benutzername" class="textFeld" type="text" placeholder=" Benutzername" name="benutzername" />
+    <input v-model="benutzername" ref="usernameInput" class="textFeld" type="text" @keyup.enter="placeCursorEmail" @focus="placeCursorUsername" placeholder=" Benutzername" name="benutzername" />
   </div>
 
   <div>
-    <input v-model="email" class="textFeld" type="email" placeholder=" E-Mail" name="email" />
+    <input v-model="email" ref="emailInput" class="textFeld" type="email" @keyup.enter="placeCursorPassword" @focus="placeCursorEmail" placeholder=" E-Mail" name="email" />
   </div>
 
   <div>
-    <input v-model="password" class="textFeld" type="password" placeholder=" Password" name="password" />
+    <input v-model="password" ref="passwordInput" class="textFeld" type="password" @keyup.enter="isFormValid" @focus="placeCursorPassword" placeholder=" Password" name="password" />
   </div>
   </div>
 
@@ -71,7 +71,18 @@ export default {
         alert('Bitte füllen Sie alle Felder korrekt aus.');
         console.log("asdad")
       }
-    }
+    },
+      placeCursorPassword() {
+          this.$refs.passwordInput.focus();
+          this.$refs.passwordInput.setSelectionRange(0, -1);
+      },
+      placeCursorUsername() {
+          this.$refs.usernameInput.focus();
+          this.$refs.usernameInput.setSelectionRange(0, -1);
+      },
+      placeCursorEmail() {
+          this.$refs.emailInput.focus();
+      },
   }
 };
 </script>
