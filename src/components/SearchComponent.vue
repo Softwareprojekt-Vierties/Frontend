@@ -62,12 +62,22 @@
                 <div v-if="searchType==0" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :buttonClickFunction="result.buttonClickFunction" :titleClickFunction="result.titleClickFunction" :info="result.info" :key="result.key"/>
                 </div>
-                <div v-else id="results">
+                <div v-else-if="searchType == 4 || searchType == 6" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 1 || searchType == 9" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 2" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.artist" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.artist" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 3" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 5 || searchType == 8" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 7" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
                 </div>
             </div>
