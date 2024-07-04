@@ -190,11 +190,11 @@
                             case "date":
                                 return `<div class="filter-item">Datum: <input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
                             case "distance":
-                                return `<div class="filter-item">Entfernung: <input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
+                                return `<div class="filter-item">Entfernung: <input class="filter-distance" type="range" min="0" max="100" value="100" oninput="rangeValue.innerText = this.value + (this.value == 100 ? '+' : '') + 'Km'"><p id="rangeValue">100+Km</p></div>`;
                             case "capacity":
                                 return `<div class="filter-item">Kapazität: <div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
                             case "rating":
-                                return `<div class="filter-item">Bewertung: <fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" value="3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
+                                return `<div class="filter-item">Bewertung: <fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" value="3" /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" checked /></input></fieldset></div>`;
                             case "startTime":
                                 return `<div class="filter-item">Startzeit: <div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
                             case "duration":
@@ -214,7 +214,7 @@
                             case "age":
                                 return `<div class="filter-item">Alter: <input class="filter-age" type="number" min="0" placeholder="Alter"></div>`;
                             case "gender":
-                                return `<div class="filter-item">Geschlecht: <select class="filter-gender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
+                                return `<div class="filter-item">Geschlecht: <select class="filter-gender"><option value="null">Nicht spezifizieren</option><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
                             default:
                                 return "";
                         }
