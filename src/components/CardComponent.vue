@@ -30,6 +30,8 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
         props: {
             name: {
@@ -93,6 +95,14 @@
             changeBookmark() {
                 this.hasBookmark = !this.hasBookmark;
                 // send switch to server
+                axios.post("/changeFavorite/", {
+                    id: this.info.id,
+                    type: this.info.type,
+                },{
+                    headers: { "auth": localStorage.getItem("authToken")}
+                })
+                    .then(res => console.log("Success: ", res))
+                    .catch(err => console.error("Error: ", err));
             }
         },
         created() {

@@ -469,6 +469,9 @@
                     .then(response => {
                         console.log("Successful search:", response);
                         this.searchResults[field] = response.data.rows;
+                        this.searchResults[field].forEach(result => {
+                            result.type = field;
+                        });
                         this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true);
                         this.hasSearchResults |= response.data.rows.length > 0;
                         if (this.searchType == 0) {
@@ -483,6 +486,9 @@
                                             "buttonText": "Freundschftsanfrage",
                                             "imagePath": item.bild,
                                             "isBookmarked": item.favorit ?? 0,
+                                            "info": item,
+                                            "buttonClickFunction": this.buttonClickFunctions.location,
+                                            "titleClickFunction": this.buttonClickFunctions.location,
                                             "key": item.id + field,
                                         });
                                         break
