@@ -191,35 +191,35 @@
             .map((filter) => {
                 switch (filter) {
                     case "region":
-                        return `<div class="filter-item">Region: <input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Region: </div><input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
                     case "date":
-                        return `<div class="filter-item">Datum: <input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
                     case "distance":
-                        return `<div class="filter-item">Entfernung: <input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
                     case "capacity":
-                        return `<div class="filter-item">Kapazität: <div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Kapazität: </div><div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
                     case "rating":
-                        return `<div class="filter-item">Bewertung: <fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Bewertung: </div><fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
                     case "startTime":
-                        return `<div class="filter-item">Startzeit: <div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Startzeit: </div><div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
                     case "duration":
-                        return `<div class="filter-item">Dauer: <div class="duration"> <input class="filter-duration" type="number" min="0" placeholder="5 Stunden"> - <input class="filter-duration" type="number" min="0" placeholder="7 Stunden"> </div></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Dauer: </div><div class="duration"> <input class="filter-duration" type="number" min="0" placeholder="5 Stunden"> - <input class="filter-duration" type="number" min="0" placeholder="7 Stunden"> </div></div>`;
                     case "openAir":
-                        return `<div class="filter-item">Open Air: <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label> </div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Open Air: </div><label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label> </div>`;
                     case "price":
-                        return `<div class="filter-item">Preis: <div class="price"> <input class="filter-price" type="number" min="0" placeholder="50 €"> - <input class="filter-price" type="number" min="0" placeholder="500 €"> </div> </div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Preis: </div><div class="price"> <input class="filter-price" type="number" min="0" placeholder="50 €"> - <input class="filter-price" type="number" min="0" placeholder="500 €"> </div> </div>`;
                     case "category":
-                        return `<div class="filter-item">Kategorie: <input class="filter-category" type="text" placeholder="Kategorie"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Kategorie: </div><input class="filter-category" type="text" placeholder="Kategorie"></div>`;
                     case "experience":
-                        return `<div class="filter-item">Erfahrung: <input class="filter-experience" type="number" min="0" placeholder="10 Jahren"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Erfahrung: </div><input class="filter-experience" type="number" min="0" placeholder="10 Jahren"></div>`;
                     case "eventSize":
-                        return `<div class="filter-item">Eventgröße: <input class="filter-event-size" type="number" min="0" placeholder="Nr. Personen"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Eventgröße: </div><input class="filter-event-size" type="number" min="0" placeholder="Nr. Personen"></div>`;
                     case "ticketPrice":
-                        return `<div class="filter-item">Ticketpreis: <input class="filter-ticket-price" type="number" min="0" placeholder="Ticketpreis"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Ticketpreis: </div><input class="filter-ticket-price" type="number" min="0" placeholder="Ticketpreis"></div>`;
                     case "age":
-                        return `<div class="filter-item">Alter: <input class="filter-age" type="number" min="0" placeholder="Alter"></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Alter: </div><input class="filter-age" type="number" min="0" placeholder="Alter"></div>`;
                     case "gender":
-                        return `<div class="filter-item">Geschlecht: <select class="filter-gender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
+                        return `<div class="filter-item"><div id="filter-item-text">Geschlecht: </div><select class="filter-gender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
                     default:
                         return "";
                 }
@@ -538,6 +538,7 @@
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
     }
+
 }
 </script>
 
@@ -567,7 +568,7 @@
     display: inline-block;
     width: 40px; /* Angepasst an die neue Höhe */
     height: 20px;
-    margin-left: 37%;
+    margin-left: 34%;
 }
 
 ::v-deep .switch input { 
@@ -617,7 +618,7 @@
 }
 
 ::v-deep .filter-region {
-    margin-left: 15%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -635,7 +636,7 @@
 }
 
 ::v-deep .filter-experience {
-    margin-left: 11.2%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -648,7 +649,7 @@
 }
 
 ::v-deep .filter-age {
-    margin-left: 18.3%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -657,7 +658,7 @@
 }
 
 ::v-deep .filter-event-size {
-    margin-left: 9.3%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -666,7 +667,7 @@
 }
 
 ::v-deep .filter-ticket-price {
-    margin-left: 10.5%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -675,50 +676,12 @@
 }
 
 ::v-deep .filter-category {
-    margin-left: 11.8%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
     border: 1px solid #ccc;
     text-align: center;
-}
-
-::v-deep .filter-rating {
-    display: flex;
-    flex-direction: row-reverse;
-    margin-left: 10%;
-    width: 280px;
-    height: 20px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-::v-deep .filter-rating > input {
-    flex: 1 1 0%;
-    display: grid;
-    place-content: center;
-    cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-    ::v-deep .filter-rating > input::before {
-        content: url("../assets/empty_star_dark.png");
-    }
-    ::v-deep .filter-rating > input:checked::before,
-    ::v-deep .filter-rating > input:checked~input::before {
-        content: url("../assets/yellow_star_dark.png");
-    }
-}
-
-@media (prefers-color-scheme: light) {
-    ::v-deep .filter-rating > input::before {
-        content: url("../assets/empty_star.png");
-    }
-    ::v-deep .filter-rating > input:checked::before,
-    ::v-deep .filter-rating > input:checked~input::before {
-        content: url("../assets/yellow_star.png");
-    }
 }
 
 ::v-deep .filter-duration {
@@ -754,7 +717,7 @@
 }
 
 ::v-deep .filter-date {
-    margin-left: 15.8%;
+    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -766,7 +729,7 @@
     display: inline-grid;
     grid-template-columns: auto auto auto;
     grid-columns: 1;
-    margin-left: 10.2%;
+    margin-left: 10%;
     margin-right: 10px;
     width: 250px;
     height: 20px;
@@ -784,7 +747,7 @@
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     width: 555px;
-    padding-left: 40px;
+    padding-left: 20px;
     color: var(--textfield-font-color);
 }
 
@@ -792,7 +755,7 @@
     display: flex;
     justify-content: start; 
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 8px; 
 }
 
 ::v-deep .filter-item input {
@@ -804,8 +767,14 @@
     color: var(--placeholder-color);
 }
 
+::v-deep #filter-item-text {
+    width: 100px;
+    text-align: start;
+}
+
+
 ::v-deep .kapazitaet {
-    margin-left: 12%;
+    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -814,7 +783,7 @@
 }
 
 ::v-deep .time {
-    margin-left: 13.2%;
+    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -823,7 +792,7 @@
 }
 
 ::v-deep .duration {
-    margin-left: 16%;
+    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -832,12 +801,73 @@
 }
 
 ::v-deep .price {
-    margin-left: 17.2%;
+    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
     justify-content: center;
     gap: 20px;
+}
+
+::v-deep .filter-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-left: 17.5%;
+    width: auto; /* Angepasst für flexible Breite */
+    height: auto; /* Angepasst für flexible Höhe */
+    border-radius: 5px;
+    border: 1px solid rgb(255, 255, 255);
+    text-align: center;
+}
+
+::v-deep .filter-rating > input {
+    flex: 1 1 0%;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    width: 30px; /* Angepasste Breite */
+    height: 30px; /* Angepasste Höhe */
+    margin: 5px; /* Abstand zwischen den Radio-Buttons */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+
+::v-deep .filter-rating > input::before {
+    content: "☆"; /* Leeres Stern-Emoji */
+    font-size: 40px; /* Größe des Stern-Emojis */
+    color: var(--empty-star-color, #ccc);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+::v-deep .filter-rating > input:checked::before,
+::v-deep .filter-rating > input:checked~input::before {
+    content: "★"; /* Gefülltes Stern-Emoji */
+    color: var(--filled-star-color, gold);
+}
+
+@media (prefers-color-scheme: dark) {
+    ::v-deep .filter-rating > input::before {
+        color: var(--empty-star-color-dark, #666);
+    }
+    ::v-deep .filter-rating > input:checked::before,
+    ::v-deep .filter-rating > input:checked~input::before {
+        color: var(--filled-star-color-dark, gold);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    ::v-deep .filter-rating > input::before {
+        color: var(--empty-star-color-light, #ccc);
+    }
+    ::v-deep .filter-rating > input:checked::before,
+    ::v-deep .filter-rating > input:checked~input::before {
+        color: var(--filled-star-color-light, gold);
+    }
 }
 
 .rangeValue {
