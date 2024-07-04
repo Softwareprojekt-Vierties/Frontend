@@ -166,6 +166,16 @@
                 const tooltipBackground = document.getElementById("filter-tooltip-background");
                 tooltipBackground.style.display = tooltipBackground.style.display === "block" ? "none" : "block";
             },
+            hideTooltip() {
+                const tooltip = document.getElementById("dynamic-tooltip");
+                if (tooltip) {
+                    tooltip.style.display = "none";
+                }
+                const tooltipBackground = document.getElementById("filter-tooltip-background");
+                if (tooltipBackground) {
+                    tooltipBackground.style.display = "none";
+                }
+            },
             toggleSearchType() {
                 this.updateFilterContent();
                 this.sortType = "unsortiert";
@@ -448,10 +458,11 @@
                     });
             },
             search() {
-                this.searchResults = []
-                this.filteredSearchResults = []
-                this.searchResults.combined = []
-                this.filteredSearchResults.combined = []
+                this.hideTooltip();
+                this.searchResults = [];
+                this.filteredSearchResults = [];
+                this.searchResults.combined = [];
+                this.filteredSearchResults.combined = [];
                 this.hasSearchResults = false;
                 this.searchError = false;
                 switch (this.searchType) {
