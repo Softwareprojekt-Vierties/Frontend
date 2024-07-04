@@ -96,7 +96,7 @@ const routes = [
         name: 'CreatePersonType',
         component: CreatePersonView
     },  {
-        path: '/editPerson/:id',
+        path: '/editPerson',
         name: 'EditPersonType',
         component: EditPersonView
     },  {

@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <PopupModal :onCreate="createPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
+        <PopupModal :onCreate="editPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
     </div>
 </template>
 
@@ -103,7 +103,7 @@
         },
         data() {
             return {
-                dishes: [null],
+                dishes: [],
                 personName: "",
                 shortDescription: "",
                 longDescription: "",
@@ -137,10 +137,10 @@
                 });
             },
             getInfo() {
-              axios.get("/getUserById/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+              axios.get("/getUserById/45", { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
                     console.log("Success: ", res);
-                    this.userName = res.data.user.rows[0].profilname;
+                    this.personName = res.data.user.rows[0].profilname;
                     this.shortDescription = res.data.user.rows[0].kurzbeschreibung;
                     this.longDescription = res.data.user.rows[0].beschreibung;
                     this.favoriteEventTypes = res.data.user.rows[0].arten;
@@ -150,9 +150,14 @@
                     this.age = res.data.user.rows[0].alter;
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.imagePreview = res.data.user.rows[0].profilbild;
+                    this.email = res.data.user.rows[0].emailfk;
                     res.data.partybilder?.forEach(bild => {
                         this.dishes.push(bild);
-                    })
+                    });
+                    console.log(res.data.partybilder);
+                    if ((res.data.partybilder?.length ?? 0) == 0) {
+                        this.dishes.push(null);
+                    }
                     this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
                     this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
 
@@ -184,7 +189,7 @@
                     this.age++;
                 }
             },
-            async createPerson(isPrivate) {
+            async editPerson(isPrivate) {
                 if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
                     || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
                     alert('Please fill in all required fields.');
@@ -192,31 +197,32 @@
                 }
 
                 let formData = {};
-                formData.benutzername = this.personName;
+                formData.profilname = this.personName;
                 formData.kurzbeschreibung = this.shortDescription;
                 formData.beschreibung = this.longDescription;
                 formData.region = this.region;
                 formData.alter = this.age;
-                formData.eventarten = this.favoriteEventTypes;
-                formData.lieblingslied = this.favoriteSong;
-                formData.lieblingsgericht = this.favoriteDish;
+                formData.arten = this.favoriteEventTypes;
+                formData.lied = this.favoriteSong;
+                formData.gericht = this.favoriteDish;
                 formData.geschlecht = this.gender;
-                formData.bilder = [];
+                formData.partybilder = [];
                 formData.privat = isPrivate;
+                formData.email = this.email;
                 this.dishes.forEach(image => {
                     if (image) {
-                        formData.bilder.push(image);
+                        formData.partybilder.push(image);
                     }
                 });
 
                 if (this.imagePreview) {
-                    formData.bild = this.imagePreview;
+                    formData.profilbild = this.imagePreview;
                 }
 
                 const token = localStorage.getItem('authToken');
 
                 try {
-                    const response = await axios.post('/editPerson', formData, {
+                    const response = await axios.post('/updateEndnutzer', formData, {
                         headers: {
                             "auth": token,
                         }
