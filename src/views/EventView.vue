@@ -28,12 +28,10 @@
           <br>
           <div class="long-description">
           <label class="description">Dienstleister:</label>
-            <div id="artist">
-              <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
-              <div id="dish-container">
-                <dish-form></dish-form>
-                <dish-form></dish-form>
-                <dish-form></dish-form>
+          <div id="addcreator" ref="addCreator" class="scroll-container">
+            <div class="dish-container">
+              <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+                <dish-form :dish="dish" label="DJ Black" @remove="removeDish(index)"></dish-form>
               </div>
               <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
             </div>
@@ -80,6 +78,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </template>
   
