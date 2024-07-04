@@ -23,6 +23,7 @@
   
 <style scoped>
 .dish-form {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     margin-left: 20px;

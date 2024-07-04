@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AnmeldungView from '../views/AnmeldungView.vue'
+import LoginView from '../views/Login.vue'
 import SignupView from '../views/SignupView.vue'
 import NutzerUnterscheidungView from '../views/NutzerUnterscheidungView.vue'
 import ServiceTypeView from '../views/ServiceTypeView.vue'
@@ -13,8 +13,20 @@ import EditDjView from '@/views/EditDjView.vue'
 import EditLocationView from '@/views/EditLocationView.vue'
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
+
 import DjView from'@/views/DjView.vue'
 import CatererView from '@/views/CatererView.vue'
+
+
+import DjView from '@/views/DjView.vue'
+import CreatePersonView from '@/views/CreatePersonView.vue'
+import PersonView from '@/views/PersonView.vue'
+import EmailView from '@/views/EmailView.vue'
+
+import MobileLoginView from '@/views/MobileLoginView.vue'
+import MobileSignupView from '@/views/MobileSignupView.vue'
+
+
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -22,15 +34,14 @@ function isMobile() {
 }
 
 const routes = [
-
     {
         path: '/',
-        name: 'anmeldung',
-        component: isMobile() ? AnmeldungView : AnmeldungView // Corrigido para usar AnmeldungView
+        name: 'login',
+        component: isMobile() ? MobileLoginView : LoginView // Corrigido para usar AnmeldungView
     },  { //                    󱞩 MobileView    󱞩 DesktopView
         path: '/signup',
         name: 'signupSeite',
-        component: isMobile() ? SignupView  : SignupView 
+        component: isMobile() ? MobileSignupView  : SignupView 
     }
     ,  {
         path: '/usertype',
@@ -45,52 +56,7 @@ const routes = [
         name: 'SucheViewType',
         component: isMobile() ? SucheView  : SucheView 
     },
-    {
-    path: '/createevent',
-    name: 'CreateEventType',
-    component: CreateEvent 
-  },
   {
-    path: '/createcaterer',
-    name: 'CreateCatererType',
-    component: CreateCatererView 
-  },  {
-    path: '/createlocation',
-    name: 'CreateLocationType',
-    component: CreateLocationView 
-  },  {
-    path: '/createdj',
-    name: 'CreateDjType',
-    component: CreateDjView 
-
-
-  }, {
-    path: '/editcaterer',
-    name: 'EditCatererType',
-    component: EditCatererView 
-
-
-  }, {
-    path: '/editdj',
-    name: 'EditDjType',
-    component: EditDjView 
-
-
-  },  {
-    path: '/editLocation',
-    name: 'EditLocationType',
-    component: EditLocationView 
-
-
-  },  {
-    path: '/event',
-    name: 'EventType',
-    component: EventView
-  },  {
-    path: '/location',
-    name: 'LocationType',
-    component: LocationView
-  },  {
     path: '/dj',
     name: 'DjType',
     component: DjView
@@ -99,6 +65,62 @@ const routes = [
     name : 'CatererType',
     component : CatererView
   }
+
+        {
+        path: '/createevent',
+        name: 'CreateEventType',
+        component: CreateEvent 
+    },
+        {
+        path: '/createcaterer',
+        name: 'CreateCatererType',
+        component: CreateCatererView 
+    },  {
+        path: '/createlocation',
+        name: 'CreateLocationType',
+        component: CreateLocationView 
+    },  {
+        path: '/createdj',
+        name: 'CreateDjType',
+        component: CreateDjView 
+    }, {
+        path: '/editcaterer',
+        name: 'EditCatererType',
+        component: EditCatererView 
+    }, {
+        path: '/editdj',
+        name: 'EditDjType',
+        component: EditDjView 
+    },  {
+        path: '/editLocation',
+        name: 'EditLocationType',
+        component: EditLocationView 
+    },  {
+        path: '/event',
+        name: 'EventType',
+        component: EventView
+    },  {
+        path: '/location',
+        name: 'LocationType',
+        component: LocationView
+    },  {
+        path: '/dj',
+        name: 'DjType',
+        component: DjView
+    },  {
+        path: '/createPerson',
+        name: 'CreatePersonType',
+        component: CreatePersonView
+    },  {
+        path: '/person/:id',
+        name: 'PersonType',
+        component: PersonView
+    },  {
+        path: '/email',
+        name: 'EmailType',
+        component: EmailView
+    }
+
 
 ]
 

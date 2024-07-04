@@ -1,4 +1,5 @@
 <template>
+
   <div id="artist-div">
       <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px" @click="previousMusic">
       <div id="dish-form">
@@ -93,6 +94,7 @@ export default {
     }
 
   }
+
 }
 </script>
   
@@ -101,6 +103,7 @@ export default {
   .user-avatar{
       cursor: pointer;
   }
+
 
   #dish-form {
       display: grid;

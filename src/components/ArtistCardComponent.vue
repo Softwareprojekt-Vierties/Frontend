@@ -1,6 +1,7 @@
 <template>
     <div id="artist-div">
         <img class="other-event" src="../assets/left.jpg" width="20px" height="20px" @click="previousEvent">
+
         <div id="background">
             <div id="card">
                 <img :alt="name" :src="computedImagePath" class="image">
@@ -20,22 +21,28 @@
                     <div class="line-div">
                         Uhrzeit: {{ eventTime }}
                     </div>
+
                     <div id="button" @click="clickFuntion">
                         {{ buttonText }}
+
                     </div>
                 </div>
             </div>
         </div>
+
         <img class="other-event" src="../assets/right.jpg" width="20px" height="20px" @click="nextEvent">
+
     </div>
 </template>
 
 <script>
+
 export default {
     props: {
         eventsFromFather: {
             type: Array,
             default: () => []
+
         },
         buttonText: {
             type: String,
@@ -217,9 +224,6 @@ export default {
     justify-content: space-between;
 }
 
-#details {
-}
-
 #name-bookmark {
     margin-bottom: calc(10px * var(--scale-factor));
     cursor: pointer;
@@ -250,4 +254,9 @@ export default {
     align-items: center;
     margin-top: 10px;
 }
+
+.left-right-button {
+    cursor: pointer;
+}
+
 </style>

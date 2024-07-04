@@ -31,10 +31,10 @@
           <div id="addcreator" ref="addCreator" class="scroll-container">
             <div class="dish-container">
               <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+                <dish-form :dish="dish" label="DJ Black" @remove="removeDish(index)"></dish-form>
               </div>
+              <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
             </div>
-          </div>
         </div>
         <div id="maps-div">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -79,10 +79,11 @@
         </div>
       </div>
     </div>
+    </div>
   </template>
   
   <script>
-  import DishForm from '../components/EventComponenet.vue';
+  import DishForm from '../components/MailComponent.vue';
 
   export default {
     components: {
@@ -124,7 +125,263 @@
   </script>
   
   <style scoped>
-@import "../css/overviewPages.css"
+  #header {
+    background-color: var(--create-page-header-background);
+    padding-bottom: 40px;
+    padding-top: 10px;
+  }
+  
+  #picture-name {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: end;
+    gap: 20px;
+  }
+  
+  #icon-div {
+    width: 40px;
+    padding: 15px;
+    padding-bottom: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--textfield-background);
+    margin-left: 10px;
+  }
+  
+  .icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+  
+  #name-description {
+    background-color: var(--create-page-header-background);
+    padding: 10px;
+  }
 
+  #name {
+    text-align: left;
+    font-size: 35px;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  #description-short {
+    text-align: left;
+    font-size: 18px;
+    color: white;
+    margin-bottom: -10px;
+  }
+  
+  .name-description-input {
+    display: grid;
+    grid-template-columns: 300px;
+    justify-content: left;
+  }
+  
+  .description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  
+  #file-div {
+    width: 250px;
+    height: 180px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    background-color: var(--textfield-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -225px;
+  }
+  
+  #main {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    background-color: var(--create-page-background);
+    padding-top: 30px;
+    gap: 20px;
+  }
+
+  #left-side {
+    margin-left: -20px;
+  }
+  
+  .long-description {
+    border-radius: 10px;
+    background-color: var(--textfield-background);
+    padding: 10px;
+    display: grid;
+    justify-content: left;
+    font-weight: bold;
+  }
+  
+  #right-side-info {
+    border-radius: 10px;
+    background-color: var(--textfield-background);
+    padding: 10px;
+  }
+  
+  .infos {
+    display: grid;
+    margin-top: 20px;
+    margin-right: 10px;
+  }
+  
+  .time-value-left {
+    width: 71.9px;
+    text-align: center;
+    border: 1px solid #000000; /* Rahmenstil */
+    border-radius: 5px; /* Abgerundete Ecken */
+    height: 25px;
+    margin-right: 5px;
+  }
+  
+  .time-value-right {
+    width: 71.9px;
+    text-align: center;
+    border: 1px solid #000000; /* Rahmenstil */
+    border-radius: 5px; /* Abgerundete Ecken */
+    height: 25px;
+    margin-left: 5px;
+  }
+  
+  .info-subheadline {
+    text-align: left;
+    font-size: 12px;
+  }
+  
+  #long-description-text {
+    width: 580px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    border-radius: 8px;
+    resize: none;
+    text-align: left;
+    text-decoration: none;
+    font-weight: lighter;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
+  }
+  
+  #add-location-icon {
+    width: 25px;
+    height: 25px;
+    margin-top: 4px;
+  }
+  
+  #add-location {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--textfield-background);
+  }
+  
+  #info-headline {
+    display: block; /* Als Block-Element anzeigen */
+    text-align: left; /* Text links ausrichten */
+    font-family: Arial, sans-serif; /* Schriftart festlegen */
+    font-size: 18px; /* Schriftgröße festlegen */
+    font-weight: bold;
+  }
+  
+  #ticket {
+    background-color: var(--green);
+    color: var(--simple-font-color);
+    height: 30px;
+    border-radius: 7px;
+    border: 1px solid #000000;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  #info-bookmark {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #div-bookmark {
+    border-radius: 30px;
+    padding: 2px;
+    width: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding-left: 1px;
+    padding-top: 5px;
+  }
+
+  #bookmark {
+    width: 10px;
+    height: 17px;
+  }
+
+  #addcreator {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  align-items: center;
+  padding: 20px 0;
+  margin-top: -25px;
+}
+
+.dish-item {
+  display: inline-block;
+  margin-right: 10px;
+  flex: 0 0 auto;
+  margin-left: 10px;
+}
+
+#add-icon {
+  width: 24px;
+  height: 24px;
+}
+
+#dish-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+#artist {
+  display: flex;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.long-description {
+  border-radius: 10px;
+    background-color: var(--textfield-background);
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 580px;
+  justify-content: left;
+  font-weight: bold;
+}
+
+#maps {
+  border-radius: 8px;
+}
+
+#maps-div {
+  border: 1px solid #000000;
+  border-radius: 8px;
+  margin-top: 15px;
+}
   </style>
   
