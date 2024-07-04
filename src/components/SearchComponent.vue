@@ -200,7 +200,7 @@
                             case "date":
                                 return `<div class="filter-item">Datum: <input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
                             case "distance":
-                                return `<div class="filter-item">Entfernung: <input class="filter-distance" type="range" min="0" max="100" value="100" oninput="rangeValue.innerText = this.value + (this.value == 100 ? '+' : '') + 'Km'"><p id="rangeValue">100+Km</p></div>`;
+                                return `<div class="filter-item">Entfernung: <input class="filter-distance" type="range" min="0" max="100" value="100" oninput="rangeValue.innerText = this.value + (this.value == 100 ? 'Km+' : 'Km')"><p id="rangeValue">100Km+</p></div>`;
                             case "capacity":
                                 return `<div class="filter-item">Kapazität: <div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
                             case "rating":
