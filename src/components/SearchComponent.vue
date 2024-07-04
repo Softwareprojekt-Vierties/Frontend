@@ -3,7 +3,7 @@
         <div id="selct-filter-searchbar">
             <div id="select_filter">
                 <select v-model="searchType" class="options" @change="toggleSearchType" :disabled="!mutable">
-                    <option value="0">Kategorie wählen</option>
+                    <option value="0">Alle Kategorien</option>
                     <option value="1">Location</option>
                     <option value="2">DJ/Band</option>
                     <option value="3">Caterer</option>
@@ -119,18 +119,19 @@
                     '9': { name: 'myLocation', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
                 },
                 sortingOptions: {
-                    "0": { name: "none", filters: ["name"] },
-                    "1": { name: "location", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
-                    "2": { name: "djBand", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
-                    "3": { name: "caterer", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
-                    "4": { name: "event", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                    "5": { name: "person", filters: ["name", "adresse", "altersfreigabe", "gender"] },
-                    "6": { name: "myEvents", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                    "7": { name: "myTickets", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                    "8": { name: "myFriends", filters: ["name", "adresse", "altersfreigabe", "gender"] },
-                    "9": { name: "myLocation", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                    "0": { name: "none", filters: ["unsortiert", "name"] },
+                    "1": { name: "location", filters: ["unsortiert", "name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                    "2": { name: "djBand", filters: ["unsortiert", "name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                    "3": { name: "caterer", filters: ["unsortiert", "name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                    "4": { name: "event", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "5": { name: "person", filters: ["unsortiert", "name", "adresse", "altersfreigabe", "gender"] },
+                    "6": { name: "myEvents", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "7": { name: "myTickets", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                    "8": { name: "myFriends", filters: ["unsortiert", "name", "adresse", "altersfreigabe", "gender"] },
+                    "9": { name: "myLocation", filters: ["unsortiert", "name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
                 },
                 translations: {
+                    unsortiert: "keine Sortierung",
                     name: "Name",
                     adresse: "Addresse",
                     datum: "Datum",
@@ -148,7 +149,7 @@
                 },
                 searchInput: "",
                 searchType: "0",
-                sortType: "name",
+                sortType: "unsortiert",
                 searchResults: [],
                 filteredSearchResults: [],
                 searchError: false,
@@ -164,7 +165,7 @@
             },
             toggleSearchType() {
                 this.updateFilterContent();
-                this.sortType = "name";
+                this.sortType = "unsortiert";
                 this.search();
             },
             updateFilterContent() {
@@ -489,6 +490,9 @@
             },
             sortContent() {
                 let sortType = this.sortType;
+                if (sortType === "unsortiert") {
+                    return;
+                }
                 function sortCriteria(a, b) {
                     if (a[sortType] > b[sortType]) {
                         return 1;
