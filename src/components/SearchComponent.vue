@@ -380,6 +380,18 @@
                         if (this.searchType == 0) {
                             this.searchResults[field].forEach(item => {
                                 switch (field) {
+                                    case "person":
+                                        this.searchResults.combined.push({
+                                            "name": item.name,
+                                            "line1": "Stadt: " + item.region,
+                                            "line2": "Alter: " + item.alter,
+                                            "line3": "Geschlecht: " + item?.geschlecht ?? "male" == "male" ? "Männlich" : "Weiblich",
+                                            "buttonText": "Freundschftsanfrage",
+                                            "imagePath": item.bild,
+                                            "isBookmarked": item.favorit ?? 0,
+                                            "key": item.id,
+                                        });
+                                        break
                                     case "location":
                                         this.searchResults.combined.push({
                                             "name": item.name,
