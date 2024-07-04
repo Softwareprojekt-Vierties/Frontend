@@ -36,9 +36,9 @@
 }
 
 #name-description {
-    border-radius: 10px;
-    background-color: var(--create-page-background);
-    padding: 10px;
+  border-radius: 10px;
+  background-color: var(--textfield-background);
+  padding: 10px;
 }
 
 .name-description-input {

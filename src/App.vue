@@ -16,7 +16,6 @@ export default {
 </script>
 
 <style>
-
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #222222;
@@ -38,7 +37,9 @@ export default {
         --green: #0faa19;
         --blue: #8533c9;
         --cyan: #00adad;
+        --yellow: #d5b110;
         --white: #dddddd;
+        --light-gray: #aaaaaa;
     }
 }
 
@@ -59,11 +60,14 @@ export default {
         --upload-text-color: #999999;
         --slider-background-color: #cccccc;
 
-        --red: #f81111;
-        --green: #1fda29;
-        --blue: #9543f9;
-        --cyan: #00d9d9;
+        
+        --red: rgb(254, 68, 77);
+        --green: rgb(146, 208, 80);
+        --blue: rgb(216, 110, 204);
+        --cyan: rgb(0, 216, 176);
+        --yellow: #f5d130;
         --white: #ffffff;
+        --light-gray: #ccc;
     }
 }
 

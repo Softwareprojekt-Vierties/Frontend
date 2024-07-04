@@ -460,6 +460,18 @@
                         if (this.searchType == 0) {
                             this.searchResults[field].forEach(item => {
                                 switch (field) {
+                                    case "person":
+                                        this.searchResults.combined.push({
+                                            "name": item.name,
+                                            "line1": "Stadt: " + item.region,
+                                            "line2": "Alter: " + item.alter,
+                                            "line3": "Geschlecht: " + item?.geschlecht ?? "male" == "male" ? "Männlich" : "Weiblich",
+                                            "buttonText": "Freundschftsanfrage",
+                                            "imagePath": item.bild,
+                                            "isBookmarked": item.favorit ?? 0,
+                                            "key": item.id + field,
+                                        });
+                                        break
                                     case "location":
                                         this.searchResults.combined.push({
                                             "name": item.name,
@@ -472,7 +484,7 @@
                                             "info": item,
                                             "buttonClickFunction": this.buttonClickFunctions.location,
                                             "titleClickFunction": this.buttonClickFunctions.location,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break
                                     case "artist":
@@ -488,7 +500,7 @@
                                             "info": item,
                                             "buttonClickFunction": field == "artist" ? this.buttonClickFunctions.artist : this.buttonClickFunctions.caterer,
                                             "titleClickFunction": field == "artist" ? this.titleClickFunctions.artist : this.titleClickFunctions.caterer,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break
                                     case "events":
@@ -504,7 +516,7 @@
                                             "info": item,
                                             "buttonClickFunction": field == "events" ? this.buttonClickFunctions.event : this.buttonClickFunctions.ticket,
                                             "titleClickFunction": field == "events" ? this.titleClickFunctions.event : this.titleClickFunctions.ticket,
-                                            "key": item.id,
+                                            "key": item.id + field,
                                         });
                                         break;
 
@@ -578,7 +590,7 @@
                 if (this.sortAscending) {
                     Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => sortCriteria(a, b)));
                 } else {
-                    Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => -sortCriteria(a, b)));
+                    Object.keys(this.searchResults).forEach((sortable) => this.searchResults[sortable].sort((a, b) => sortCriteria(b, a)));
                 }
                 this.$forceUpdate();
             },
@@ -615,7 +627,6 @@
             this.appliedSearchTypes = this.allowedSearchTypes ?? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
             this.searchType = this.startValue ?? this.appliedSearchTypes[0];
             this.toggleSearchType();
-            this.search();
         },
     computed: {
         isDarkMode() {
@@ -688,7 +699,7 @@
   }
 
   ::v-deep input:checked + .slider {
-      background-color: var(--blue);
+      background-color: var(--cyan);
   }
 
   ::v-deep input:focus + .slider {
@@ -773,7 +784,7 @@
       flex-direction: row-reverse;
       margin-left: 10%;
       width: 280px;
-      height: 20px;
+      height: 20px; /* Angepasst für flexible Höhe */
       border-radius: 5px;
       border: 1px solid #ccc;
       text-align: center;
@@ -784,26 +795,37 @@
       display: grid;
       place-content: center;
       cursor: pointer;
+      width: 20px; /* Angepasste Breite */
+      height: 20px; /* Angepasste Höhe */
+      appearance: none;
+      margin-top: 0;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      position: relative;
   }
 
-  @media (prefers-color-scheme: dark) {
-      ::v-deep .filter-rating > input::before {
-          content: url("../assets/empty_star_dark.png");
-      }
-      ::v-deep .filter-rating > input:checked::before,
-      ::v-deep .filter-rating > input:checked~input::before {
-          content: url("../assets/yellow_star_dark.png");
-      }
+  ::v-deep .filter-rating > input::before {
+      content: "☆"; /* Leeres Stern-Emoji */
+      font-size: 24px; /* Größe des Stern-Emojis */
+      color: var(--light-gray, #ccc);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
   }
 
-  @media (prefers-color-scheme: light) {
-      ::v-deep .filter-rating > input::before {
-          content: url("../assets/empty_star.png");
-      }
-      ::v-deep .filter-rating > input:checked::before,
-      ::v-deep .filter-rating > input:checked~input::before {
-          content: url("../assets/yellow_star.png");
-      }
+  ::v-deep .filter-rating > input:checked::before,
+  ::v-deep .filter-rating > input:checked~input::before {
+      content: "★"; /* Gefülltes Stern-Emoji */
+      color: var(--yellow, gold);
+  }
+
+  ::v-deep .filter-rating > input::before {
+      color: var(--light-gray, #666);
+  }
+  ::v-deep .filter-rating > input:checked::before,
+  ::v-deep .filter-rating > input:checked~input::before {
+      color: var(-yellow, gold);
   }
 
   ::v-deep .filter-duration {
