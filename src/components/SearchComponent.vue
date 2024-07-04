@@ -1,4 +1,5 @@
 <template>
+    <div id="filter-tooltip-background" @click="toggleTooltip"></div>
     <div id="main_div">
         <div id="selct-filter-searchbar">
             <div id="select_filter">
@@ -162,6 +163,8 @@
             toggleTooltip() {
                 const tooltip = document.getElementById("dynamic-tooltip");
                 tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
+                const tooltipBackground = document.getElementById("filter-tooltip-background");
+                tooltipBackground.style.display = tooltipBackground.style.display === "block" ? "none" : "block";
             },
             toggleSearchType() {
                 this.updateFilterContent();
@@ -786,6 +789,15 @@
       color: var(--textfield-font-color);
   }
 
+  #filter-tooltip-background {
+      display: none;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: none;
+  }
+
   ::v-deep .filter-item {
       display: flex;
       justify-content: start; 
@@ -894,6 +906,7 @@
       width: 600px;
       padding-left: 10px;
       background-color: var(--background);
+      z-index: 1;
   }
 
   .options {
@@ -915,6 +928,7 @@
       border: 0px;
       background-color: var(--background);
       color: var(--textfield-font-color);
+      z-index: 1;
   }
 
   #searchbar:focus {
