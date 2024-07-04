@@ -4,6 +4,7 @@ import './registerServiceWorker';
 import router from './router';
 import axios from 'axios';
 
+
 // Setzen der korrekten Basis-URL für alle Anfragen
 axios.defaults.baseURL = 'https://webserver-eventure.onrender.com';
 
