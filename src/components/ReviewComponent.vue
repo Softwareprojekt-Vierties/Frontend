@@ -1,6 +1,8 @@
 <template>
     <div id="comment-div">
-        <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
+
+        <img class="other-review" src="../assets/left.jpg" width="20px" height="20px" @click="previousReview" >
+
         <div class="review">
             <div class="user-info">
                 <div class="user-info-details">
@@ -19,57 +21,109 @@
                 {{ reviewText }}
             </div>
         </div>
-        <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
+
+        <img class="other-review" src="../assets/right.jpg" width="20px" height="20px" @click="nextReview">
+
     </div>
 </template>
 
 
 
 <script>
+import axios from 'axios'; 
 export default {
-  props: {
-    userName: {
-      type: String,
-      default: "Peter Müller"
+    data(){
+        return {
+            userName : '',
+            rating : '',
+            totalStars : 5,
+            reviewText : '',
+            reviews : [],
+            reviewSize : '',
+            reviewIndex : 0,
+            reviewToGet: ''
+        };
     },
-    rating: {
-      type: Number,
-      default: 3
-    },
-    totalStars: {
-      type: Number,
-      default: 5
-    },
-    reviewText:{
-        type: String,
-        default: "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm" 
-    }
-  }
-}
 
+    watch: {
+        typeOfReview: 'updateReviewToGet'
+    },
+
+    props: {
+        idFromFather: {
+            type: String,
+            required: true   
+        },
+        typeOfReview: {
+            type: Number,
+            required: true
+        }
+    },
+
+    methods: {
+        async updateReviewToGet() {
+            if (this.typeOfReview === 0) {
+                this.reviewToGet = "getPersonReview";
+            } else if (this.typeOfReview === 1) {
+                this.reviewToGet = "getLocationReview";
+            }
+
+            if (this.reviewToGet) {
+                try {
+                    const response = await axios.get(`/${this.reviewToGet}/${this.idFromFather}`);
+                    this.reviews = response.data.rows;
+                    this.reviewSize = this.reviews.length;
+
+                    console.log("Review data received:", this.reviews);
+                    this.setFormData(this.reviews);
+                } catch (error) {
+                    console.error('Error with sending review ID to DB:', error);
+                }
+            }
+        },
+
+        setFormData(data) {
+            if (data.length > 0) {
+                this.userName = data[this.reviewIndex]["profilname"];
+                this.rating = data[this.reviewIndex]["sterne"];
+                this.reviewText = data[this.reviewIndex]["inhalt"];
+            }
+        },
+
+        previousReview() {
+            if (this.reviewIndex > 0) {
+                this.reviewIndex -= 1;
+            } else {
+                this.reviewIndex = 0;
+            }
+            this.setFormData(this.reviews);
+        },
+
+        nextReview() {
+            if (this.reviewIndex >= 0 && this.reviewIndex < this.reviewSize - 1) {
+                this.reviewIndex += 1;
+            } else {
+                this.reviewIndex = this.reviewSize - 1;
+            }
+            this.setFormData(this.reviews);
+        }
+    },
+
+    created() {
+        this.updateReviewToGet();
+    }
+};
 </script>
+
+
 
 
 <style scoped>
 
 
-.review{
-    display:flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    background-color: white;
-    border-radius: 18px;
-    margin:2px;
-    max-height: 110px;
-    max-width: 530px;
+.other-review{
+    cursor:pointer;
 }
-
-.user-info{
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-    margin-left: -5px;
-}
-
 .user-info-details{
     display: flex;
     flex-direction: row;
@@ -80,7 +134,6 @@ export default {
     margin:10px;
     margin-bottom: 0px;
     gap:7.5px;
-
 }
 
 .user-logo{
@@ -101,7 +154,6 @@ export default {
     font-size: 13px; 
     font-weight: bold;
     margin-top:5px;
-
 }
 
 .comment{
@@ -134,4 +186,5 @@ export default {
     align-items: center;
     margin-top: 10px;
 }
+
 </style>
