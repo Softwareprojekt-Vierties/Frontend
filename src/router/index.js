@@ -13,8 +13,6 @@ import EditDjView from '@/views/EditDjView.vue'
 import EditLocationView from '@/views/EditLocationView.vue'
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
-
-import DjView from'@/views/DjView.vue'
 import CatererView from '@/views/CatererView.vue'
 
 
@@ -64,7 +62,7 @@ const routes = [
     path :'/caterer',
     name : 'CatererType',
     component : CatererView
-  }
+  },
 
         {
         path: '/createevent',
