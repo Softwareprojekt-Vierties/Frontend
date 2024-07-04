@@ -18,6 +18,7 @@ import CatererView from '@/views/CatererView.vue'
 
 import DjView from '@/views/DjView.vue'
 import CreatePersonView from '@/views/CreatePersonView.vue'
+import EditPersonView from '@/views/EditPersonView.vue'
 import PersonView from '@/views/PersonView.vue'
 import EmailView from '@/views/EmailView.vue'
 
@@ -109,6 +110,10 @@ const routes = [
         path: '/createPerson',
         name: 'CreatePersonType',
         component: CreatePersonView
+    },  {
+        path: '/editPerson',
+        name: 'EditPersonType',
+        component: EditPersonView
     },  {
         path: '/person/:id',
         name: 'PersonType',

@@ -77,8 +77,8 @@
             </div>
           </div>
           <div id="buttons">
-            <div id="break">
-              abbrechen
+            <div id="break" @click="reset">
+              zurücksetzen
             </div>
             <div id="continue" @click="openModal">
               anlegen
@@ -199,6 +199,9 @@
                     console.error('Error with Event creation:', error);
                 }
             },
+          reset() {
+              this.$router.go();
+          },
     },
       computed: {
             fileDivStyle() {
