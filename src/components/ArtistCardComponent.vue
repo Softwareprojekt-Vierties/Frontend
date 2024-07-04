@@ -1,111 +1,172 @@
 <template>
     <div id="artist-div">
-        <img class="left-right-button" src="../assets/left.jpg" width="20px" height="20px" @click="leftFunction">
+        <img class="other-event" src="../assets/left.jpg" width="20px" height="20px" @click="previousEvent">
+
         <div id="background">
             <div id="card">
                 <img :alt="name" :src="computedImagePath" class="image">
                 <div id="details">
                     <div id="name-bookmark">
                         <div id="headline">
-                            {{name}}
+                            {{ eventName }}
                         </div>
                         <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
                     </div>
                     <div class="line-div">
-                        {{line1}}
+                        Location: {{ eventLocation }}
                     </div>
                     <div class="line-div">
-                        {{line2}}
+                         Datum: {{ formattedEventDate }}
                     </div>
                     <div class="line-div">
-                        {{line3}}
+                        Uhrzeit: {{ eventTime }}
                     </div>
-                    <div id="button" @click="buttonClickFunction">
-                        {{buttonText}}
+
+                    <div id="button" @click="clickFuntion">
+                        {{ buttonText }}
+
                     </div>
                 </div>
             </div>
         </div>
-        <img class="left-right-button" src="../assets/right.png" width="20px" height="20px" @click="rightFunction">
+
+        <img class="other-event" src="../assets/right.jpg" width="20px" height="20px" @click="nextEvent">
+
     </div>
 </template>
 
 <script>
-    export default {
-        props: {
-            name: {
-                type: String,
-                default: "UNI PARTY"
-            }, 
-            line1: {
-                type: String,
-                default: "Location: Campus Minden"
-            },
-            line2: {
-                type: String,
-                default: "Datum: 17.8.2024"
-            },
-            line3: {
-                type: String,
-                default: "Zeit: 19 Uhr – 2Uhr"
-            },
-            buttonText: {
-                type: String,
-                default: "Ticket buchen (20/50)"
-            },
-            imagePath: {
-                type: String,
-                default : require("@/assets/bild-hsbi.jpg")
-            },
-            isBookmarked: {
-                type: Boolean,
-                default: false
-            },
-            buttonClickFunction: {
-                type: Function,
-                default: function () { console.log("No function"); }
-            },
-            leftFunction: {
-                type: Function,
-                default: function () { console.log("No function"); }
-            },
-            rightFunction: {
-                type: Function,
-                default: function () { console.log("No function"); }
-            },
+
+export default {
+    props: {
+        eventsFromFather: {
+            type: Array,
+            default: () => []
+
         },
-        data() {
-            return {
-                hasBookmark: false,
+        buttonText: {
+            type: String,
+            default: "Event ansehen"
+        },
+        imagePath: {
+            type: String,
+            default: require("@/assets/bild-hsbi.jpg")
+        },
+        isBookmarked: {
+            type: Boolean,
+            default: false
+        },
+        clickFuntion: {
+            type: Function,
+            default: function () { console.log("No function"); }
+        },
+    },
+    data() {
+        return {
+            hasBookmark: false,
+            events: [],
+            eventsIndex: 0,
+            eventName: '',
+            eventLocation: '',
+            eventDate: '',
+            eventTime: ''
+        };
+    },
+    computed: {
+        computedImagePath() {
+            if (this.imagePath === null) {
+                return require("@/assets/bild-hsbi.jpg");
             }
-        },
-        computed: {
-            computedImagePath() {
-                if (this.imagePath === null) {
-                    return require("@/assets/bild-hsbi.jpg");
-                }
-                return this.imagePath;
-            },
-        },
-        methods: {
-            changeBookmark() {
-                this.hasBookmark = !this.hasBookmark;
-                // send switch to server
-            },
-            setScaleFactor(factor) {
-                document.documentElement.style.setProperty('--scale-factor', factor);
-            }
-        },
-        created() {
-            this.hasBookmark = this.isBookmarked;
-            this.setScaleFactor(0.56); // Setzt den Skalierungsfaktor dynamisch
+            return this.imagePath;
+        } , 
+        formattedEventDate() {
+            return this.formatDate(this.eventDate);
         }
-    };
+    },
+    methods: {
+        changeBookmark() {
+            this.hasBookmark = !this.hasBookmark;
+            // send switch to server
+        },
+        setScaleFactor(factor) {
+            document.documentElement.style.setProperty('--scale-factor', factor);
+        },
+        updateEvents() {
+            console.log("events from father received",this.eventsFromFather);
+            this.events = [];
+            this.eventsFromFather.forEach(event => this.events.push({
+                id: event['id'],
+                name: event['name'],
+                location: event['location'],
+                datum: event['datum'],
+                time: event['uhrzeit']
+            }));
+
+            if (this.events.length > 0) {
+                this.eventName = this.events[this.eventsIndex].name;
+                this.eventLocation = this.events[this.eventsIndex].location;
+                this.eventDate = this.events[this.eventsIndex].datum;
+                this.eventTime = this.events[this.eventsIndex].time;
+            }
+        }, 
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        },
+
+        previousEvent(){
+            if(this.eventsIndex >0){
+                this.eventsIndex -= 1 ;
+            } else{
+                this.eventsIndex = 0;
+            }
+
+            this.refreshEvents(this.events[this.eventsIndex]);
+        },
+
+        nextEvent(){
+
+            if(this.eventsIndex >= 0 && this.eventsIndex < this.events.length -1){
+                this.eventsIndex += 1;
+            } else{
+                this.eventsIndex = this.events.length -1;
+            }
+            this.refreshEvents(this.events[this.eventsIndex]);
+
+        },
+
+        refreshEvents(data){
+            this.eventName = data.name;
+            this.eventLocation = data.location;
+            this.eventDate = data.datum;
+            this.eventTime = data.time;
+
+        }
+    },
+    created() {
+        this.hasBookmark = this.isBookmarked;
+        this.setScaleFactor(0.56); // Setzt den Skalierungsfaktor dynamisch
+        this.updateEvents();
+    },
+    watch: {
+        eventsFromFather: {
+            handler: 'updateEvents',
+            immediate: true
+        }
+    }
+};
 </script>
 
 <style scoped>
 :root {
     --scale-factor: 1; /* Standardwert */
+}
+
+.other-event{
+    cursor: pointer;
 }
 
 #background {

@@ -170,8 +170,12 @@
       onFileChangeComponent(event, index) {
         const file = event.target.files[0];
         if (file) {
-          this.dishes[index].imagePreview = URL.createObjectURL(file);
-          this.dishes[index].uploadedImage = file;
+          const reader = new FileReader();
+          reader.onload = e => {
+            this.dishes[index].imagePreview = e.target.result;
+            this.dishes[index].uploadedImage = file; // Manter a referência ao arquivo, se necessário
+          };
+          reader.readAsDataURL(file);
         }
       },
   

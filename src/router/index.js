@@ -14,6 +14,10 @@ import EditLocationView from '@/views/EditLocationView.vue'
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
 
+import DjView from'@/views/DjView.vue'
+import CatererView from '@/views/CatererView.vue'
+
+
 import DjView from '@/views/DjView.vue'
 import CreatePersonView from '@/views/CreatePersonView.vue'
 import PersonView from '@/views/PersonView.vue'
@@ -21,6 +25,7 @@ import EmailView from '@/views/EmailView.vue'
 
 import MobileLoginView from '@/views/MobileLoginView.vue'
 import MobileSignupView from '@/views/MobileSignupView.vue'
+
 
 
 function isMobile() {
@@ -51,6 +56,15 @@ const routes = [
         name: 'SucheViewType',
         component: isMobile() ? SucheView  : SucheView 
     },
+  {
+    path: '/dj',
+    name: 'DjType',
+    component: DjView
+  } , {
+    path :'/caterer',
+    name : 'CatererType',
+    component : CatererView
+  }
 
         {
         path: '/createevent',
@@ -106,6 +120,7 @@ const routes = [
         name: 'EmailType',
         component: EmailView
     }
+
 
 ]
 
