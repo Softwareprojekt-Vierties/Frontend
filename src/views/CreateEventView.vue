@@ -29,31 +29,6 @@
       </div>
     </div>
 
-            <div id="picture-name">
-                <div id="file-div" :style="fileDivStyle">
-                    <div id="file-upload">
-                        <label id="image-text" for="fileToUpload">
-                            <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                            <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                            <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
-                        </label>
-                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
-                    </div>
-                </div>
-
-                <div id="name-description">
-                    <div class="name-description-input">
-                        <label class="description">Eventnamen hinzufügen:</label>
-                        <input class="header-input" v-model="eventName" type="text" placeholder="z.B. UNI PARTY"><br>
-                    </div>
-                    <div class="name-description-input">
-                        <label class="description">Kurze Beschreibung hinzufügen:</label>
-                        <input class="header-input" v-model="shortDescription" type="text" placeholder="z.B. Minden">
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div id="main">
             <div id="left-side">
                 <div class="long-description">
@@ -136,6 +111,7 @@
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- Integrated PopupModal functionality -->
         <div v-if="isModalVisible" id="modal-overlay">
@@ -174,7 +150,6 @@
             </div>
         </div>
 
-    </div>
 </template>
 
 
@@ -804,5 +779,116 @@ footer {
 #CreateEventView {
     min-height: 100vh;
     background-color: var(--create-page-background);
+}
+
+/* Integrated PopupModal styles */
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal-content {
+    background: var(--background);
+    color: var(--font-color);
+    padding: 30px;
+    padding-top: 20px;
+    padding-bottom: 12.5px;
+    border-radius: 20px;
+    text-align: center;
+    width: 800px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+#modal-content-location{
+    background: var(--background);
+    color: var(--font-color);
+    padding: 30px;
+    padding-top: 20px;
+    padding-bottom: 12.5px;
+    border-radius: 20px;
+    text-align: center;
+    width: 60vw;
+    height: 80vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+
+}
+
+#headline {
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+#event-buttons {
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#event-button {
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    padding: 11px;
+    padding-left: 45px;
+    padding-right: 45px;
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+#action-buttons {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+#cancel-button {
+    background-color: var(--red);
+    width: 115px;
+    height: 35px;
+    border-radius: 7px;
+    border: 1px solid #000000;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.create-button {
+    background-color: var(--green);
+    width: 115px;
+    height: 35px;
+    border-radius: 7px;
+    border: 1px solid #000000;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#modal-content #event-buttons #event-button.selected {
+    background-color: var(--blue); 
+    color: var(--white); 
+}
+
+.event-div{
+    width: 60vw;
+    height: 60vh;
+    overflow-y: scroll;
 }
 </style>
