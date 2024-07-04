@@ -112,8 +112,8 @@
       headerStyle() {
         return {
           backgroundImage: `url(${this.imagePreview})`,
-          backgroundSize: '340%',
-          backgroundPosition: 'center center'
+          backgroundPosition: 'center center',
+            backgroundSize: 'cover',
           //filter:flur(8px);
         };
       },
