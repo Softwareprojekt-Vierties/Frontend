@@ -121,7 +121,7 @@ export default {
     border-radius: 18px;
     margin:2px;
     max-height: 110px;
-    max-width: 530px;
+    width: 530px;
 }
 
 .user-info{
