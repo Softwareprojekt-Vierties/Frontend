@@ -4,8 +4,7 @@
           <div id="header-inner">
               <HomeButton :isLoggedIn="true" />
         <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-          </div>
+          <Image :url="profilePicture" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" />
           <div id="name-description">
             <div class="name-description-input">
                 <label id="name">{{userName}}</label>
@@ -78,6 +77,7 @@
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import HomeButton from '../components/HomeButton.vue';
+  import Image from '../components/ImageComponent.vue';
   import axios from 'axios';
   
   export default {
@@ -87,13 +87,13 @@
       ArtistCard,
         Bookmark,
         HomeButton,
+        Image,
     },
     data() {
       return {
           userName: "",
         isModalVisible: false,
           profilePicture: null,
-          fileDivStyle: null,
           fileHeaderStyle: null,
           favoriteEventTypes: "",
           favoriteSong: "",
@@ -160,7 +160,6 @@
                     res.data.tickets.rows?.forEach(event => {
                         this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
                     });
-                    this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
                     this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
 
                     // to be implemented
@@ -175,7 +174,6 @@
                     })
                 })
                 .catch(err => console.log("Error: ", err));
-            console.log(this.fileDivStyle);
         },
         increaseEventLocationsIndex() {
             if (this.eventsLocationsIndex < this.myEventsLocations.length - 1) {
@@ -282,19 +280,6 @@
   text-align: left;
   font-size: 12px;
   margin-bottom: 3px;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-  background-color: white;
 }
 
 #file-upload {

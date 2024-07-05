@@ -4,8 +4,7 @@
           <div id="header-inner">
               <HomeButton :isLoggedIn="true" />
         <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-          </div>
+          <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" />
           <div id="name-description">
             <div class="name-description-input">
                 <div id="name-stars">
@@ -75,6 +74,7 @@
   import Caterer from '../components/CatererComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import HomeButton from '../components/HomeButton.vue';
+  import Image from '../components/ImageComponent.vue';
   import axios from 'axios'; 
 
 
@@ -85,6 +85,7 @@
       Caterer,
         Bookmark,
         HomeButton,
+        Image,
     },
     data() {
       return {
@@ -114,11 +115,6 @@
           //filter:flur(8px);
         };
       },
-      fileDivStyle() {
-        return this.imagePreview
-          ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-          : {};
-      }
     },
 
     async created(){
@@ -221,18 +217,6 @@
     margin-bottom: 3px;
     font-size: 13px;
     font-weight: bold;
-  }
-  
-  #file-div {
-    width: 250px;
-    height: 180px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -225px;
   }
   
   #main {

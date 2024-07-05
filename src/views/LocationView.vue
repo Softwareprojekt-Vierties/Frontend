@@ -3,11 +3,7 @@
     <div id="header" :style="headerStyle">
         <HomeButton :isLoggedIn="true" />
       <div id="picture-name">
-        <div id="file-div" :style="fileDivStyle">
-          <div id="file-upload">
-            <label id="image-text"></label>
-          </div>
-        </div>
+          <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" />
         <div id="name-description">
           <div class="name-description-input">
             <div id="name-stars">
@@ -74,6 +70,7 @@
 import DishForm from '../components/ReviewComponent.vue';
 import Bookmark from '../components/ViewPageBookmark.vue';
 import HomeButton from '../components/HomeButton.vue';
+import Image from '../components/ImageComponent.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -83,6 +80,7 @@ export default {
     DishForm,
       Bookmark,
       HomeButton,
+      Image,
   },
   data() {
     return {
@@ -293,18 +291,6 @@ body {
   margin-bottom: 3px;
   font-size: 13px;
   font-weight: bold;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
 }
 
 #file-upload label {

@@ -4,8 +4,7 @@
             <div id="header-inner">
                 <HomeButton :isLoggedIn="true" />
                 <div id="picture-name">
-                    <div id="file-div">
-                    </div>
+                    <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" />
                     <div id="name-description">
                         <div class="name-description-input">
                             <label id="name">Uni Party</label>
@@ -77,12 +76,14 @@
   import DishForm from '../components/MailComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import HomeButton from '../components/HomeButton.vue';
+  import Image from '../components/ImageComponent.vue';
 
   export default {
     components: {
       DishForm,
         Bookmark,
         HomeButton,
+        Image,
     },
     data() {
       return {
@@ -181,18 +182,6 @@
     margin-bottom: 3px;
     font-size: 13px;
     font-weight: bold;
-  }
-  
-  #file-div {
-    width: 250px;
-    height: 180px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -225px;
   }
   
   #main {
