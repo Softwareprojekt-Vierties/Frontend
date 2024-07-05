@@ -1,84 +1,53 @@
 <template>
     <div id="app">
-      <div id="header">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
-        <div id="picture-name">
-          <div id="file-div">
-            <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                <img v-if="isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                <img v-else src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                <span id="upload-text">Bild hochladen</span>
-              </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
-            </div>
-          </div>
-          <div id="name-description">
-            <div class="name-description-input">
-              <label id="name">Uni Party</label>
-            </div>
-            <div class="name-description-input">
-              <label id="description-short">Minden</label>
-            </div>
-          </div>
-        </div>
-      </div>
-  
+        <Header :imagePreview="profilePicture" :name="userName" :sterne="-1" :kurzbeschreibung="shortDescription" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung:</label>
-            <label id="long-description-input" type="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</label>
+            <label id="long-description-input" type="text">{{longDescription}}</label>
             <label class="description-info">Eventarten:</label>
-            <label id="long-description-input" type="text">Lorem ipsum dolo.</label>
+            <label id="long-description-input" type="text">{{favoriteEventTypes}}</label>
             <label class="description-info">Lieblings Lied:</label>
-            <label id="long-description-input" type="text">Lorem ipsum</label>
+            <label id="long-description-input" type="text">{{favoriteSong}}</label>
             <label class="description-info">Lieblings Gericht:</label>
-            <label id="long-description-input" type="text">Lorem ipsum</label>
+            <label id="long-description-input" type="text">{{favoriteDish}}</label>
           </div>          
           <br>
           <div class="long-description">
             <label class="description">Bilder:</label>
             <div id="addcreator" ref="addCreator" class="scroll-container">
               <div class="dish-container">
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
-                  <dish-form></dish-form>
+                  <dish-form v-for="picture in pictures" :imagePath="picture.partybild_data" :mutable="false" :key="picture" />
               </div>
             </div>
           </div>
           <div id="event-dish">
             <div id="event">
               <label class="description">Meine Events/Locations:</label>
-              <ArtistCard></ArtistCard>
+              <ArtistCard v-if="myEventsLocations.length" :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
             </div>
             <div id="dish">
               <label class="description">Meine Interessen:</label>
-              <ArtistCard></ArtistCard>
+              <ArtistCard v-if="myIntrests.length" :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
             </div>
         </div>
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <label id="info-headline">Infos</label><div class="infos">
-              <label class="info-subheadline"><strong>Region:</strong> 32427 Minden</label>
+              <Bookmark :isFavorite="false" :id="id" type="artist" />
+            <div class="infos">
+                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Alter:</strong> 30 Jahre</label>
+                <label class="info-subheadline"><strong>Alter:</strong> {{age}} Jahre</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Geschlecht:</strong> M</label>
+                <label class="info-subheadline"><strong>Geschlecht:</strong> {{gender}}</label>
             </div>
           </div>
-          <div id="continue" @click="openModal">Freundschaftsanfrage</div>
+          <div id="break" v-if="isFriend" @click="unfriend">Freundschaft beenden</div>
+          <div id="continue" v-else @click="sendFriendRequest">Freundschaftsanfrage</div>
         </div>
       </div>
   
@@ -90,19 +59,35 @@
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
   import ArtistCard from '../components/ArtistCardComponent.vue';
+  import Bookmark from '../components/ViewPageBookmark.vue';
+  import Header from '../components/ViewHeader.vue';
+  import axios from 'axios';
   
   export default {
     components: {
       DishForm,
       PopupModal,
-      ArtistCard
+      ArtistCard,
+        Bookmark,
+        Header,
     },
     data() {
       return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-        isModalVisible: false
+          userName: "",
+        isModalVisible: false,
+          profilePicture: null,
+          favoriteEventTypes: "",
+          favoriteSong: "",
+          favoriteDish: "",
+          region: "",
+          age: 0,
+          gender: "",
+          pictures: [],
+          myEventsLocations: [],
+          eventsLocationsIndex: 0,
+          myIntrests: [],
+          intrestsIndex: 0,
+          isFriend: false,
       };
     },
     methods: {
@@ -121,13 +106,87 @@
       },
       closeModal() {
         this.isModalVisible = false;
-      }
+      },
+        sendFriendRequest() {
+            console.log(this.id);
+            axios.get("/friendrequest/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => console.log("Success: ", res))
+                .catch(err => console.log("Error: ", err));
+        },
+        unfriend() {
+            axios.get("/unfriend/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => console.log("Success: ", res))
+                .catch(err => console.log("Error: ", err));
+        },
+        getInfo() {
+              axios.get("/getUserById/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.userName = res.data.user.rows[0].profilname;
+                    this.shortDescription = res.data.user.rows[0].kurzbeschreibung;
+                    this.longDescription = res.data.user.rows[0].beschreibung;
+                    this.favoriteEventTypes = res.data.user.rows[0].arten;
+                    this.favoriteSong = res.data.user.rows[0].lied;
+                    this.favoriteDish = res.data.user.rows[0].gericht;
+                    this.region = res.data.user.rows[0].region;
+                    this.age = res.data.user.rows[0].alter;
+                    this.gender = res.data.user.rows[0].geschlecht;
+                    this.profilePicture = res.data.user.rows[0].profilbild;
+                    res.data.owenevents.rows?.forEach(event => {
+                        this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                    });
+                    res.data.locations.rows?.forEach(event => {
+                        this.myEventsLocations.push({header: event.name, line1: "Addresse: " + event.addresse, line2: "Kapazität: " + event.kapazitaet, line3: "Preis: " + event.preis, id: event.id});
+                    });
+                    res.data.tickets.rows?.forEach(event => {
+                        this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                    });
+
+                    // to be implemented
+                    this.isFriend = false;
+                })
+                .catch(err => console.log("Error: ", err));
+            axios.get("/getPartybilder/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Bilder: ", res);
+                    res.data.rows?.forEach(bild => {
+                        this.pictures.push(bild);
+                    })
+                })
+                .catch(err => console.log("Error: ", err));
+        },
+        increaseEventLocationsIndex() {
+            if (this.eventsLocationsIndex < this.myEventsLocations.length - 1) {
+                this.eventsLocationsIndex++;
+            }
+        },
+        decreaseEventLocationsIndex() {
+            if (this.eventsLocationsIndex > 0) {
+                this.eventsLocationsIndex--;
+            }
+        },
+        increaseIntrestsIndex() {
+            if (this.intrestsIndex < this.myIntrests.length - 1) {
+                this.intrestsIndex++;
+            }
+        },
+        decreaseIntrestsIndex() {
+            if (this.intrestsIndex > 0) {
+                this.intrestsIndex--;
+            }
+        },
     },
       computed: {
           isDarkMode() {
               return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-          }
-      }
+          },
+          id() {
+              return this.$route.params.id;
+          },
+      },
+      created() {
+          this.getInfo();
+      },
   }
   </script>
   
@@ -138,133 +197,11 @@
   background-color: var(--create-page-background);
 }
 
-#header {
-  background-color: var(--create-page-header-background);
-  padding-bottom: 40px;
-  padding-top: 10px;
-}
-
-#picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--create-page-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-#name-description {
-    background-color: var(--create-page-header-background);
-    padding: 10px;
+  .description {
+      text-align: left;
+      font-size: 12px;
+      margin-bottom: 3px;
   }
-
-.name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
-}
-
-#name {
-  text-align: left;
-  font-size: 35px;
-  color: white;
-  margin-bottom: 10px;
-}
-
-#description-short {
-  text-align: left;
-  font-size: 18px;
-  color: white;
-  margin-bottom: -10px;
-}
-
-.header-input {
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  text-align: center;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.header-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-.description {
-  text-align: left;
-  font-size: 12px;
-  margin-bottom: 3px;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-  background-color: white;
-}
-
-#file-upload {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
-}
-
-#upload-text {
-  color: var(--upload-text-color);
-  margin-top: 0; /* Remove any top margin to bring it closer to the image */
-}
 
 .switch {
   position: relative;
@@ -421,7 +358,6 @@ input:checked + .slider:before {
   color: var(--textfield-font-color);
   text-align: left;
   font-weight: normal;
-  color: rgb(80, 80, 80);
 }
 
 #open-air {
@@ -438,6 +374,19 @@ input:checked + .slider:before {
   gap: 20px;
   margin-top: 15px;
   color: var(--simple-font-color);
+}
+
+#break {
+  background-color: var(--red);
+  width: 88px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 #continue {

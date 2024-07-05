@@ -5,12 +5,12 @@
                 <label>Privatsphäre-Einstellung</label>
             </div>
             <div id="event-buttons">
-                <div id="event-button">privates Event</div>
-                <div id="event-button">öffentliches Event</div>
+                <div @click="isPrivate = true" :style="{backgroundColor: isPrivate ? 'var(--blue)' : 'var(--white)'}" id="event-button">{{privateText}}</div>
+                <div @click="isPrivate = false" :style="{backgroundColor: !isPrivate ? 'var(--blue)' : 'var(--white)'}" id="event-button">{{publicText}}</div>
             </div>
             <div id="action-buttons">
                 <button id="cancel-button" @click="closeModal">abbrechen</button>
-                <button id="create-button" @click="createEvent">Jetzt erstellen</button>
+                <button id="create-button" @click="create">Jetzt erstellen</button>
             </div>
         </div>
     </div>
@@ -18,18 +18,36 @@
 
 <script>
 export default {
+    data() {
+        return {
+            isPrivate: true,
+        }
+    },
 props: {
     show: {
         type: Boolean,
         required: true
-    }
+    },
+    onCreate: {
+        type: Function,
+        default: () => {},
+    },
+    privateText: {
+        type: String,
+        default: "privat",
+    },
+    publicText: {
+        type: String,
+        default: "öffentlich",
+    },
 },
 methods: {
     closeModal() {
         this.$emit('close');
     },
-    createEvent() {
+    create() {
         // Logik für das Erstellen des Events hinzufügen
+        this.onCreate(this.isPrivate);
         this.closeModal();
     }
 }

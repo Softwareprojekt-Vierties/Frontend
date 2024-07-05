@@ -1,7 +1,9 @@
 <template>
     <div id="event-card">
         <img :alt="name" :src="computedImagePath" id="event-image">
+
         <label>{{ componentName }}</label>
+
     </div>
 </template>
 
@@ -12,15 +14,18 @@
                 type: String,
                 default : require("@/assets/bild-hsbi.jpg")
             },
+
             componentName:{
                 type:String,
                 default:'provider'
             }
 
+
         },
         computed: {
             computedImagePath() {
-                if (this.imagePath === null) {
+                console.log(this.label);
+                if (this.imagePath == null) {
                     return require("@/assets/bild-hsbi.jpg");
                 }
                 return this.imagePath;

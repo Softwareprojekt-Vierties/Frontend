@@ -1,29 +1,63 @@
 <template>
-    <div id="file-upload">
-      <label id="image-text" for="fileToUpload">
-        <img v-if="isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-        <img v-else src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-        <span id="upload-text">Bild hochladen</span>
-      </label>
-      <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
+    <div id="file-upload" :style="fileDivStyle">
+        <label id="image-text" for="fileToUpload">
+            <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
+            <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
+            <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
+        </label>
+        <input v-if="mutable" type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
     </div>
 </template>
 
 <script>
   export default {
+      data() {
+        return {
+            imagePreview: null,
+            eventImage: null,
+        }
+      },
       props: {
+          imageGrabber: {
+              type: Function,
+              default: () => {},
+          },
           imagePath: {
               type: String,
-              default : require("@/assets/bild-hsbi.jpg")
+              default: null,
+          },
+          mutable: {
+              type: Boolean,
+              default: true,
           }
       },
       computed: {
-          computedImagePath() {
-              if (this.imagePath === null) {
-                  return require("@/assets/bild-hsbi.jpg");
+          isDarkMode() {
+              return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+          },
+          fileDivStyle() {
+              return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+          },
+      },
+      methods: {
+          onFileChange(event) {
+              const file = event.target.files[0];
+              if (file) {
+                  this.eventImage = file;
+                  const reader = new FileReader();
+                  reader.onload = e => {
+                      this.imagePreview = e.target.result;
+                      this.imageGrabber(this.imagePreview);
+                  };
+                  reader.readAsDataURL(file);
               }
-              return this.imagePath;
+          },
+          getImage() {
+              return this.imagePreview;
           }
+      },
+      created() {
+          this.imagePreview = this.imagePath;
       },
   }
 </script>

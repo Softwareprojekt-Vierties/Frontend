@@ -1,25 +1,25 @@
 <template>
     <div id="app">
-      <div id="header">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" src="../assets/home.jpg">
-        </div>
+      <div id="header" :style="headerStyle">
+          <div id="header-inner">
+              <HomeButton :isLoggedIn="true" />
         <div id="picture-name">
-          <div id="file-div">
+          <div id="file-div" :style="fileDivStyle">
           </div>
           <div id="name-description">
             <div class="name-description-input">
                 <div id="name-stars">
-                    <label id="name">DJ BLACK</label>
+                    <label id="name">{{ name }}</label>
                     <div class="stars">
-                        <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': 3 <= 5 }">★</span>
+                      <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
                     </div>
                 </div>
             </div>
             <div class="name-description-input">
-              <label id="description-short">Minden</label>
+              <label id="description-short">{{ kurzbeschreibung }}</label>
             </div>
           </div>
+        </div>
         </div>
       </div>
   
@@ -27,47 +27,42 @@
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung:</label>
-            <div id="long-description-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</div>
+            <div id="long-description-text">{{ beschreibung }}</div>
           </div>
         <div id="event-dish">
             <div id="event">
               <label class="description">Nächste Events:</label>
-              <ArtistCard></ArtistCard>
+              <ArtistCard v-if="events" :eventsFromFather="events"/>
             </div>
             <div id="dish">
               <label class="description">Aktuelle Playlist:</label>
-              <Dj></Dj>
+              <Dj v-if="idSent" :idFromFather="idSent" />
             </div>
         </div>
         <br>
           <div class="long-description">
           <label class="description">Bewertungen:</label>
-          <dish-form></dish-form>
+            <DishForm v-if="userid" :idFromFather="userid" :typeOfReview="reviewType"/>
         </div>
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <div id="info-bookmark">
-                <label id="info-headline">Infos</label>
-                <div id="div-bookmark">
-                  <img src="../assets/bookmark-white.jpg" id="bookmark">
-                </div>
+              <Bookmark :isFavorite="false" :id="id" type="artist" />
+            <div class="infos">
+              <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Region:</strong> 32427 Minden</label>
+              <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Kategorie:</strong> Techno</label>
+              <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Erfahrung:</strong> 10 Jahre</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> 100 €/h</label>
+              <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
           </div>
-          <div id="ticket">
-            Ticket buchen (20/50)
+          <div id="ticket" @click="weiter">
+            {{ buttonLabel }}
           </div>
         </div>
       </div>
@@ -78,39 +73,108 @@
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Dj from '../components/DjComponent.vue';
+  import Bookmark from '../components/ViewPageBookmark.vue';
+  import HomeButton from '../components/HomeButton.vue';
+  import axios from 'axios'; 
+
 
   export default {
     components: {
       DishForm,
       ArtistCard,
-      Dj
+      Dj,
+        Bookmark,
+        HomeButton,
     },
     data() {
       return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-        isModalVisible: false
+        name : '',
+        sterne: '',
+        kurzbeschreibung:'',
+        beschreibung: '',
+        region: '',
+        kategorie : '',
+        erfahrung  :'',
+        preis : '',
+        imagePreview : null,
+        id:'',
+        reviewType :0,
+        events : [],
+        userid:'',
+        idSent : '',
+        isOwner: ''
+        
       };
     },
-    methods: {
-      addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
-        this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
-        });
+
+    computed: {
+      headerStyle() {
+        return {
+          backgroundImage: `url(${this.imagePreview})`,
+          backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+          //filter:flur(8px);
+        };
       },
-      removeDish(index) {
-        this.dishes.splice(index, 1);
-      },
-      openModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
+      fileDivStyle() {
+        return this.imagePreview
+          ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+          : {};
+      }, 
+      buttonLabel() {
+        return this.isOwner ? 'Edit DJ' : 'Event Erstellen';
       }
-    }
+    },
+
+    async created(){
+    this.idSent = 13;
+    const token = localStorage.getItem('authToken');
+      try {
+          const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});
+          console.log(response);
+          this.setFormData(response.data);
+          console.log('dj data received:', response.data);
+      } catch (error) {
+          console.error('Error with sending dj ID to DB :', error);
+        }
+    },
+
+    methods: {
+
+      setFormData(data){
+
+        const myVar =data['artist'].rows[0].region.split(',');
+        console.log(myVar[0]);
+        console.log(myVar[1]);
+
+        this.name = data['artist'].rows[0].benutzername;
+        this.kurzbeschreibung = data['artist'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['artist'].rows[0].beschreibung ;
+        this.region =myVar[1] ;
+        this.kategorie = data['artist'].rows[0].kategorie;
+        this.erfahrung = data['artist'].rows[0].erfahrung;
+        this.preis = data['artist'].rows[0].preis;
+        this.imagePreview = data['artist'].rows[0].profilbild;
+        this.sterne = data['artist'].rows[0].sterne;
+        this.userid = data['artist'].rows[0].userid;
+        this.id = data['artist'].rows[0].id;
+        this.events = data['events'].rows;
+        this.isOwner = data['isOwner'];
+      },
+      
+      goToAnotherPage() {
+        this.$router.push('/search');
+      }, 
+      weiter(){
+        if(this.isOwner === false){
+          this.$router.push('/createevent');
+        } else{
+          this.$router.push({ name : 'EditDjType', params: {id : this.idSent}});
+        }
+      }
+    }, 
+
+
   }
   </script>
   
@@ -118,8 +182,15 @@
 
 #header {
     background-color: var(--create-page-header-background);
-    padding-bottom: 40px;
-    padding-top: 10px;
+}
+
+#header-inner {
+    width: 100%;
+    height: 100%;
+  padding-bottom: 40px;
+  padding-top: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 #picture-name {
@@ -130,27 +201,12 @@
     gap: 20px;
 }
 
-#icon-div {
-    width: 40px;
-    padding: 15px;
-    padding-bottom: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-    margin-left: 10px;
-}
-
-.icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-}
-
 #name-description {
     background-color: var(--create-page-header-background);
     padding: 10px;
-}
+
+    background-color: transparent;
+  }
 
 #name {
     text-align: left;
@@ -294,27 +350,6 @@
     align-items: center;
     cursor: pointer;
     margin-top: 10px;
-}
-
-#info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-}
-
-#bookmark {
-    width: 10px;
-    height: 17px;
 }
 
 #addcreator {

@@ -7,10 +7,10 @@
 
   <div id="content">
   <div>
-   <input v-model="benutzername" class="textFeld" type="text" placeholder="Email" name="benutzername" />
+   <input v-model="benutzername" ref="usernameInput" class="textFeld" type="text" @keyup.enter="placeCursorPassword" @focus="placeCursorUsername" placeholder="Email" name="benutzername" />
   </div>
   <div>
-   <input v-model="password" class="textFeld" type="password" placeholder="Password" name="password" />
+   <input v-model="password" ref="passwordInput" class="textFeld" type="password" @keyup.enter="login" @focus="placeCursorPassword" placeholder="Password" name="password" />
   </div>
 
   <div> 
@@ -89,7 +89,15 @@ export default {
       .catch(error => {
         console.error('Fehler beim Abrufen der Daten:', error);
       });
-    }
+    },
+      placeCursorPassword() {
+          this.$refs.passwordInput.focus();
+          this.$refs.passwordInput.setSelectionRange(0, -1);
+      },
+      placeCursorUsername() {
+          this.$refs.usernameInput.focus();
+          this.$refs.usernameInput.setSelectionRange(0, -1);
+      }
   },
 };
 </script>
@@ -118,6 +126,7 @@ export default {
     outline: none;
     background-color: var(--textfield-background);
     color: var(--textfield-font-color);
+    padding-left: 10px;
 }
 
 .textFeld::placeholder {

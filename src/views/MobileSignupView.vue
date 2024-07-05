@@ -1,41 +1,42 @@
 <template>
     <div id="wrapper">
-  <div id="image">
-    <LoginComponent />
-  </div>
+        <div id="image">
+            <div id="Eventure-Logo-Text">
+                <img alt="Eventure Logo" id="logo" src="../assets/logo.png">
+                <div id="headline">Eventure</div>
+            </div>
+        </div>
 
-  <div id="content">
-  <div>
-    <input v-model="benutzername" ref="usernameInput" class="textFeld" type="text" @keyup.enter="placeCursorEmail" @focus="placeCursorUsername" placeholder=" Benutzername" name="benutzername" />
-  </div>
+        <div id="content">
+            <div>
+                <input v-model="benutzername" class="textFeld" type="text" placeholder=" Benutzername" name="benutzername" />
+            </div>
 
-  <div>
-    <input v-model="email" ref="emailInput" class="textFeld" type="email" @keyup.enter="placeCursorPassword" @focus="placeCursorEmail" placeholder=" E-Mail" name="email" />
-  </div>
+            <div>
+                <input v-model="email" class="textFeld" type="email" placeholder=" E-Mail" name="email" />
+            </div>
 
-  <div>
-    <input v-model="password" ref="passwordInput" class="textFeld" type="password" @keyup.enter="isFormValid" @focus="placeCursorPassword" placeholder=" Password" name="password" />
-  </div>
-  </div>
+            <div>
+                <input v-model="password" class="textFeld" type="password" placeholder=" Password" name="password" />
+            </div>
+        </div>
 
-  <div> 
-    <button @click="zuruck" class="abbrechen">abbrechen</button>
-    <button @click="isFormValid" class="weiter">weiter</button>
-  </div>
-  <div id="policy-note">
-    <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
-  </div>
+        <div> 
+            <button @click="zuruck" class="abbrechen">abbrechen</button>
+            <button @click="isFormValid" class="weiter">weiter</button>
+        </div>
+        <div id="policy-note">
+            <p>By signing up, you agree to our Terms. See how we use your data in our Privacy Policy.</p>
+        </div>
   </div>
 </template>
 
 <script>
-import LoginComponent from '@/components/LoginComponent'; 
 import axios from 'axios';
 
 export default {
   name: 'SignupPage', 
   components: {
-    LoginComponent 
   },
   data() {
     return {
@@ -54,15 +55,14 @@ export default {
       const benutzernameValid = this.benutzername.length > 0;
 
       if (emailValid && passwordValid && benutzernameValid) {
-        axios.post('/tempToken', {
+        axios.post('/register', {
           email: this.email,
           pass: this.password,
           name: this.benutzername
         })
         .then(response => {
-          console.log('Success:', response);
-            localStorage.setItem('authToken', response.data);
-          this.$router.push('/usertype');
+          console.log('Konto erfolgreich erstellt:', response);
+          this.$router.push('/');
         })
         .catch(error => {
           console.error('Fehler beim Login:', error.response.data.message);
@@ -72,18 +72,7 @@ export default {
         alert('Bitte füllen Sie alle Felder korrekt aus.');
         console.log("asdad")
       }
-    },
-      placeCursorPassword() {
-          this.$refs.passwordInput.focus();
-          this.$refs.passwordInput.setSelectionRange(0, -1);
-      },
-      placeCursorUsername() {
-          this.$refs.usernameInput.focus();
-          this.$refs.usernameInput.setSelectionRange(0, -1);
-      },
-      placeCursorEmail() {
-          this.$refs.emailInput.focus();
-      },
+    }
   }
 };
 </script>
@@ -93,12 +82,6 @@ export default {
     display: flex;
     flex-direction: column;
     min-height: 100dvh;
-}
-
-#image {
-    margin-top: 100px;
-    margin-bottom: 100px;
-    width: 100%;
 }
 
 .textFeld {
@@ -161,10 +144,29 @@ export default {
     justify-content: center;
     margin-top: auto;
     height: fit-content;
+    font-size: 8px;
 }
 
 #policy-note p {
     margin: 0;
     padding: 0;
+}
+
+#Eventure-Logo-Text {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10vh;
+    margin-bottom: 15vh;
+}
+
+#logo {
+    width: 58px;
+}
+
+#headline {
+    font-size: 48px;
 }
 </style>

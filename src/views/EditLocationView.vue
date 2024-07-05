@@ -1,34 +1,6 @@
 <template>
     <div id="app">
-      <div id="header">
-        <div id="icon-div">
-          <img @click="goToAnotherPage" alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img @click="goToAnotherPage" alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
-        <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-            <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
-              </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
-            </div>
-          </div>
-          <div id="name-description">
-            <div class="name-description-input">
-              <label class="description">Name:</label>
-              <input v-model="name" class="header-input" type="text" placeholder="z.B. Campus Minden"><br>
-            </div>
-            <div class="name-description-input">
-              <label class="description">Kurze Beschreibung hinzufügen:</label>
-              <input v-model="kurzbeschreibung" class="header-input" type="text" placeholder="z.B. Minden">
-            </div>
-          </div>
-        </div>
-      </div>
-  
+      <Header v-model:name="name" v-model:kurzbeschreibung="kurzbeschreibung" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
@@ -50,15 +22,15 @@
             </div>
             <div class="infos">
               <label class="info-subheadline">Kapazität:</label>
-              <input v-model="kapazitaet" class="input" type="text" placeholder="z.B. 50 Personen">
+              <input v-model="kapazitaet" class="input" type="number" min="0" placeholder="z.B. 50 Personen">
             </div>
             <div class="infos">
               <label class="info-subheadline">Preis:</label>
-              <input v-model="preis" class="input" type="text" placeholder="z.B. 50€">
+              <input v-model="preis" class="input" type="number" min="0" placeholder="z.B. 50€">
             </div>
             <div class="infos">
               <label class="info-subheadline">Größe:</label>
-              <input v-model="flaeche" class="input" type="text" placeholder="z.B. 50 ha">
+              <input v-model="flaeche" class="input" type="number" min="0" placeholder="z.B. 50 ha">
             </div>
             <div id="open-air">
               <label class="info-subheadline">Open Air:</label>
@@ -80,8 +52,10 @@
   
 <script>
   import axios from 'axios'; 
+  import Header from '../components/EditHeader.vue';
   export default {
     components: {
+        Header,
     },
 
     data() {
@@ -98,16 +72,20 @@
       openair: false,
       imagePreview: null,
       bild:null,
-      originalData: {}        
+      originalData: {},
+      id : null      
 
       };
     },
 
     async created(){
-      let id = 59;
+      this.id = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
+
+      console.log("received id", this.id);
       try {
-          const response = await axios.get(`/getLocation/${id}`);
-          const dbLocation = response.data.rows[0];
+          const response = await axios.get(`/getLocation/${this.id}`, {headers: {'auth':token}});
+          const dbLocation = response.data;
           console.log(dbLocation);
           this.originalData = { ...dbLocation };
           this.setFormData(dbLocation);
@@ -119,9 +97,6 @@
     },
 
     computed: {
-      fileDivStyle() {
-        return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-      },
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
@@ -130,21 +105,20 @@
     methods: {
       
       setFormData(data) {
-        const myVar = data.adresse.split(',');
-        console.log(myVar[0]);
-        console.log(myVar[1]);
+        const myVar = data['result'].rows[0].adresse.split(',');
 
-        this.name = data.name;
-        this.kurzbeschreibung = data.kurzbeschreibung;
-        this.beschreibung = data.beschreibung;
+
+        this.name = data['result'].rows[0].name;
+        this.kurzbeschreibung = data['result'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['result'].rows[0].beschreibung;
         this.region = myVar[1];
         this.addresse = myVar[0];
-        this.kapazitaet = data.kapazitaet;
-        this.preis = data.preis;
-        this.flaeche = data.flaeche;
-        this.openair = data.openair;
-        this.imagePreview = data.bild;
-        this.bild = data.bild;
+        this.kapazitaet = data['result'].rows[0].kapazitaet;
+        this.preis = data['result'].rows[0].preis;
+        this.flaeche = data['result'].rows[0].flaeche;
+        this.openair = data['result'].rows[0].openair;
+        this.imagePreview = data['result'].rows[0].bild;
+        this.bild = data['result'].rows[0].bild;
      },  
       onFileChange(event) {
         const file = event.target.files[0];
@@ -182,13 +156,15 @@
             formData.flaeche = this.flaeche;
             formData.openair = this.openair;
             formData.bild = this.imagePreview;
-            formData.locationid = this.originalData.id;
+            formData.locationid = this.id;
             formData.privat = true;
             console.log(formData);
             console.log("this ist sent to db");
 
+            const token = localStorage.getItem('authToken');
+
         try {
-          const response = await axios.post('/updateLoacation', formData);
+          const response = await axios.post('/updateLocation', formData, {headers: {'auth':token}});
           console.log('Location edited:', response.data);
           alert('Location edited successfully!');
           //this.reset();
@@ -202,120 +178,6 @@
   </script>
   
   <style scoped>
-#header {
-    background-color: var(--create-page-header-background);
-    padding-bottom: 40px;
-    padding-top: 10px;
-}
-
-#picture-name {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: center;
-    align-items: end;
-    gap: 20px;
-}
-
-#icon-div {
-    width: 40px;
-    padding: 15px;
-    padding-bottom: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-    margin-left: 10px;
-}
-
-.icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-#name-description {
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    padding: 10px;
-}
-
-.name-description-input {
-    display: grid;
-    grid-template-columns: 300px;
-    justify-content: left;
-}
-
-.header-input {
-    height: 25px;
-    border-radius: 5px;
-    border: 1px solid #000000;
-    text-align: center;
-    background-color: var(--textfield-background);
-    color: var(--textfield-font-color);
-}
-
-.header-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-.description {
-    text-align: left;
-    font-size: 12px;
-    margin-bottom: 3px;
-}
-
-#file-div {
-    width: 250px;
-    height: 180px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -225px;
-}
-
-#file-upload {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#file-upload label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.upload-icon {
-    max-width: 50%;
-    max-height: 50%;
-    margin-bottom: -10px; /* Adjust margin to bring the text closer */
-    margin-left: 10px;
-    margin-top: -10px;
-}
-
-#upload-text {
-    color: var(--upload-text-color);
-    margin-top: 0; /* Remove any top margin to bring it closer to the image */
-}
-
 .switch {
     position: relative;
     display: inline-block;
@@ -481,6 +343,12 @@ input:checked + .slider:before {
     width: 25px;
     height: 25px;
     margin-top: 4px;
+}
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 #add-location {

@@ -1,45 +1,17 @@
 <template>
     <div id="app">
-      <div id="header">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
-        <div id="picture-name">
-          <div id="file-div">
-            <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                <img v-if="isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                <img v-else src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                <span id="upload-text">Bild hochladen</span>
-              </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
-            </div>
-          </div>
-          <div id="name-description">
-            <div class="name-description-input">
-              <label class="description">Name:</label>
-              <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
-            </div>
-            <div class="name-description-input">
-              <label class="description">Kurze Beschreibung hinzufügen:</label>
-              <input class="header-input" type="text" placeholder="z.B. Minden">
-            </div>
-          </div>
-        </div>
-      </div>
-  
+      <Header v-model:name="personName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
             <label class="description">Beschreibung hinzufügen:</label>
-            <textarea id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
+            <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
             <label class="description-info">Eventarten hinzufügen:</label>
-            <input class="description-info-input" type="text" placeholder="z.B. Party-Song">
+            <input v-model="favoriteEventTypes" class="description-info-input" type="text" placeholder="z.B. Party-Song">
             <label class="description-info">Lieblings Lied:</label>
-            <input class="description-info-input" type="text" placeholder="z.B. Techno">
+            <input v-model="favoriteSong" class="description-info-input" type="text" placeholder="z.B. Techno">
             <label class="description-info">Lieblings Gericht hinzufügen:</label>
-            <input class="description-info-input" type="text" placeholder="z.B. Kuchen">
+            <input v-model="favoriteDish" class="description-info-input" type="text" placeholder="z.B. Kuchen">
           </div>          
           <br>
           <div class="long-description">
@@ -47,7 +19,7 @@
             <div id="addcreator" ref="addCreator" class="scroll-container">
               <div class="dish-container">
                 <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                  <dish-form :dish="dish" @remove="removeDish(index)"></dish-form>
+                    <dish-form :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
                 </div>
                 <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
               </div>
@@ -59,24 +31,26 @@
             <label id="info-headline">Infos hinzufügen:</label>
             <div class="infos">
               <label class="info-subheadline">Region:</label>
-              <input class="input" type="text" placeholder="z.B. 32427 Minden">
+              <input v-model="region" class="input" type="text" placeholder="z.B. 32427 Minden">
             </div>
             <div class="infos">
               <label class="info-subheadline">Alter:</label>
               <div id="age">
-                <img src="../assets/minus.png"/>
-                <label id="age-input" type="text">0</label>
-                <img src="../assets/plus.png"/>
+                <img v-if="isDarkMode" @click="decreaseAge" src="../assets/minus_dark.png"/>
+                <img v-else @click="decreaseAge" src="../assets/minus.png"/>
+                <label id="age-input" type="text">{{this.age}}{{this.age == 99 ? "+" : ""}}</label>
+                <img v-if="isDarkMode" @click="increaseAge" src="../assets/plus_dark.png"/>
+                <img v-else @click="increaseAge" src="../assets/plus.png"/>
               </div>
             </div>
             <div class="infos">
               <label class="info-subheadline">Geschlecht:</label>
-              <input class="input" type="text" placeholder="z.B. M">
+              <input v-model="gender" class="input" type="text" placeholder="z.B. M">
             </div>
           </div>
           <div id="buttons">
-            <div id="break">
-              abbrechen
+            <div id="break" @click="reset">
+              zurücksetzen
             </div>
             <div id="continue" @click="openModal">
               anlegen
@@ -85,30 +59,52 @@
         </div>
       </div>
   
-      <PopupModal :show="isModalVisible" @close="closeModal"/>
+      <PopupModal :onCreate="createPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
     </div>
   </template>
   
   <script>
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
+  import Header from '../components/EditHeader.vue';
+  import axios from 'axios';
   
   export default {
     components: {
       DishForm,
-      PopupModal
+      PopupModal,
+        Header,
     },
     data() {
       return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
+        dishes: [null],
+          personName: "",
+          shortDescription: "",
+          longDescription: "",
+          region: "",
+          gender: "",
+          favoriteEventTypes: "",
+          favoriteDish: "",
+          favoriteSong: "",
+          imagePreview: null,
+          age: 0,
         isModalVisible: false
       };
     },
-    methods: {
-      addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
+      methods: {
+          onFileChange(event) {
+              const file = event.target.files[0];
+              if (file) {
+                  this.eventImage = file;
+                  const reader = new FileReader();
+                  reader.onload = e => {
+                      this.imagePreview = e.target.result;
+                  };
+                  reader.readAsDataURL(file);
+              }
+          },
+          addDish() {
+        this.dishes.push(null);
         this.$nextTick(() => {
           const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
           container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
@@ -119,15 +115,74 @@
       },
       openModal() {
         this.isModalVisible = true;
+          console.log(this.dishes);
       },
       closeModal() {
         this.isModalVisible = false;
-      }
+      },
+        decreaseAge() {
+            if (this.age > 0) {
+                this.age--;
+            }
+        },
+          increaseAge() {
+              if (this.age < 99) {
+                  this.age++;
+              }
+          },
+            async createPerson(isPrivate) {
+                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
+                    || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                let formData = {};
+                formData.benutzername = this.personName;
+                formData.kurzbeschreibung = this.shortDescription;
+                formData.beschreibung = this.longDescription;
+                formData.region = this.region;
+                formData.alter = this.age;
+                formData.eventarten = this.favoriteEventTypes;
+                formData.lieblingslied = this.favoriteSong;
+                formData.lieblingsgericht = this.favoriteDish;
+                formData.geschlecht = this.gender;
+                formData.bilder = [];
+                formData.privat = isPrivate;
+                this.dishes.forEach(image => {
+                    if (image) {
+                        formData.bilder.push(image);
+                    }
+                });
+
+                if (this.imagePreview) {
+                    formData.bild = this.imagePreview;
+                }
+
+                const token = localStorage.getItem('authToken');
+
+                try {
+                    const response = await axios.post('/createPerson', formData, {
+                        headers: {
+                            "auth": token,
+                        }
+                    });
+                    console.log('Person created:', response.data);
+                    localStorage.setItem('authToken', response.data);
+                    this.closeModal(); 
+                    this.$router.push("/search");
+                } catch (error) {
+                    console.error('Error with Person creation:', error);
+                }
+            },
+          reset() {
+              this.$router.go();
+          },
     },
       computed: {
           isDarkMode() {
               return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-          }
+          },
       }
   }
   </script>
@@ -137,122 +192,6 @@
   width: 100%;
   height: 100%;
   background-color: var(--create-page-background);
-}
-
-#header {
-  background-color: var(--create-page-header-background);
-  padding-bottom: 40px;
-  padding-top: 10px;
-}
-
-#picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--create-page-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-#name-description {
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  padding: 10px;
-  background-color: white;
-}
-
-.name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
-}
-
-.header-input {
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  text-align: center;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.header-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-.description {
-  text-align: left;
-  font-size: 12px;
-  margin-bottom: 3px;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-  background-color: white;
-}
-
-#file-upload {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
-}
-
-#upload-text {
-  color: var(--upload-text-color);
-  margin-top: 0; /* Remove any top margin to bring it closer to the image */
 }
 
 .switch {
@@ -498,6 +437,13 @@ footer {
   background-color: var(--create-page-background);
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 #dish-form {
       display: grid;
       grid-template-columns: auto auto;
@@ -601,5 +547,10 @@ footer {
     align-items: center;
     gap: 15px;
 }
+
+#age img {
+    cursor: pointer;
+}
+
   </style>
   

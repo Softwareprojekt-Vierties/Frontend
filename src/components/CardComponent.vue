@@ -5,7 +5,7 @@
         </div>
         <div id="details">
             <div id="name-bookmark">
-                <div id="headline">
+                <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
                 <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
@@ -22,7 +22,7 @@
             <div class="line-div">
                 {{line3}}
             </div>
-            <div id="button" @click="clickFuntion">
+            <div id="button" @click="buttonClickFunction(info)">
                 {{buttonText}}
             </div>
         </div>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
         props: {
             name: {
@@ -60,10 +62,18 @@
                 type: Boolean,
                 default: false
             },
-            clickFuntion: {
+            buttonClickFunction: {
                 type: Function,
                 default: function () { console.log("No function"); }
             },
+            titleClickFunction: {
+                type: Function,
+                default: function () { console.log("No function"); }
+            },
+            info: {
+                type: Object,
+                default: null,
+            }
         },
         data() {
             return {
@@ -85,6 +95,14 @@
             changeBookmark() {
                 this.hasBookmark = !this.hasBookmark;
                 // send switch to server
+                axios.post("/changeFavorite/", {
+                    id: this.info.id,
+                    type: this.info.type,
+                },{
+                    headers: { "auth": localStorage.getItem("authToken")}
+                })
+                    .then(res => console.log("Success: ", res))
+                    .catch(err => console.error("Error: ", err));
             }
         },
         created() {

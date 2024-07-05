@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+
       <div id="header">
         <div id="icon-div">
           <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
@@ -80,20 +81,23 @@
           <div id="ticket">
             Event buchen 
           </div>
+
         </div>
-      </div>
-    </div>
-  </template>
+</template>
   
   <script>
+
   import DishForm from '../components/EventComponenet.vue';
   import axios from 'axios';
   import Leaflet from 'leaflet';
   import 'leaflet/dist/leaflet.css';
 
+
   export default {
     components: {
-      DishForm
+      DishForm,
+        Bookmark,
+        Header,
     },
 
     data(){
@@ -256,6 +260,7 @@
   </script>
   
   <style scoped>
+
   #header {
     background-color: var(--create-page-header-background);
     padding-bottom: 40px;
@@ -335,6 +340,7 @@
     margin-left: -225px;
   }
   
+
   #main {
     display: grid;
     grid-template-columns: auto auto;
@@ -391,6 +397,13 @@
     text-align: left;
     font-size: 12px;
   }
+
+  .description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+  }
   
   #long-description-text {
     width: 580px;
@@ -438,27 +451,6 @@
     align-items: center;
     cursor: pointer;
     margin-top: 10px;
-  }
-
-  #info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  #div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-  }
-
-  #bookmark {
-    width: 10px;
-    height: 17px;
   }
 
   #addcreator {
