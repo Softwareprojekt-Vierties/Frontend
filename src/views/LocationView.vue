@@ -43,12 +43,7 @@
       </div>
       <div id="right-side">
         <div id="right-side-info">
-          <div id="info-bookmark">
-            <label id="info-headline">Infos</label>
-            <div id="div-bookmark">
-              <img src="../assets/bookmark-white.jpg" id="bookmark">
-            </div>
-          </div>
+              <Bookmark :isFavorite="false" :id="id" type="location" />
           <div class="infos">
             <label class="info-subheadline"><strong>Stadt:</strong> {{ region }}</label>
           </div>
@@ -79,13 +74,15 @@
 
 <script>
 import DishForm from '../components/ReviewComponent.vue';
+import Bookmark from '../components/ViewPageBookmark.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export default {
   components: {
-    DishForm
+    DishForm,
+      Bookmark,
   },
   data() {
     return {
@@ -444,28 +441,6 @@ body {
   align-items: center;
   cursor: pointer;
   margin-top: 10px;
-}
-
-#info-bookmark {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#div-bookmark {
-  border-radius: 30px;
-  padding: 2px;
-  width: 25px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding-left: 1px;
-  padding-top: 5px;
-}
-
-#bookmark {
-  width: 10px;
-  height: 17px;
-  margin-left: 2px;
 }
 
 #add-icon {

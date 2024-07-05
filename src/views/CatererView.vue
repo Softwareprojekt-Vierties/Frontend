@@ -48,12 +48,7 @@
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <div id="info-bookmark">
-                <label id="info-headline">Infos</label>
-                <div id="div-bookmark">
-                  <img src="../assets/bookmark-white.jpg" id="bookmark">
-                </div>
-            </div>
+              <Bookmark :isFavorite="false" :id="id" type="caterer" />
             <div class="infos">
               <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
@@ -80,6 +75,7 @@
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Caterer from '../components/CatererComponent.vue';
+  import Bookmark from '../components/ViewPageBookmark.vue';
   import axios from 'axios'; 
 
 
@@ -87,7 +83,8 @@
     components: {
       DishForm,
       ArtistCard,
-      Caterer
+      Caterer,
+        Bookmark,
     },
     data() {
       return {
@@ -370,28 +367,6 @@
     align-items: center;
     cursor: pointer;
     margin-top: 10px;
-  }
-
-  #info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  #div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-  }
-
-  #bookmark {
-    width: 10px;
-    height: 17px;
-    margin-left: 2px;
   }
 
 #add-icon {

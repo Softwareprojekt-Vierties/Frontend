@@ -178,10 +178,12 @@ export default {
       //const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createArtist', formData);
+          const response = await axios.post('/createArtist', formData, { headers: { auth: localStorage.authToken } });
           console.log('Artist created:', response.data);
+          localStorage.setItem('authToken', response.data);
           alert('Artist created successfully!');
           this.reset();
+          this.$router.push("/search");
         } catch (error) {
           console.error('Error with Artist creation:', error);
           alert('Error creating Artist. Please try again.');
