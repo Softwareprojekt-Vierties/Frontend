@@ -2,10 +2,7 @@
     <div id="app">
         <div id="header" :style="headerStyle">
             <div id="header-inner">
-                <div id="icon-div">
-                    <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-                    <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-                </div>
+                <HomeButton :isLoggedIn="true" />
                 <div id="picture-name">
                     <div id="file-div">
                     </div>
@@ -79,11 +76,13 @@
   <script>
   import DishForm from '../components/MailComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
+  import HomeButton from '../components/HomeButton.vue';
 
   export default {
     components: {
       DishForm,
         Bookmark,
+        HomeButton,
     },
     data() {
       return {
@@ -150,23 +149,6 @@
     justify-content: center;
     align-items: end;
     gap: 20px;
-  }
-  
-  #icon-div {
-    width: 40px;
-    padding: 15px;
-    padding-bottom: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-    margin-left: 10px;
-  }
-  
-  .icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
   }
   
   #name-description {

@@ -2,9 +2,7 @@
     <div id="app">
       <div id="header" :style="headerStyle">
           <div id="header-inner">
-        <div id="icon-div">
-          <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">
-        </div>
+              <HomeButton :isLoggedIn="true" />
         <div id="picture-name">
           <div id="file-div" :style="fileDivStyle">
           </div>
@@ -76,6 +74,7 @@
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Dj from '../components/DjComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
+  import HomeButton from '../components/HomeButton.vue';
   import axios from 'axios'; 
 
 
@@ -85,6 +84,7 @@
       ArtistCard,
       Dj,
         Bookmark,
+        HomeButton,
     },
     data() {
       return {
@@ -183,23 +183,6 @@
     justify-content: center;
     align-items: end;
     gap: 20px;
-}
-
-#icon-div {
-    width: 40px;
-    padding: 15px;
-    padding-bottom: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-    margin-left: 10px;
-}
-
-.icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
 }
 
 #name-description {

@@ -1,10 +1,7 @@
 <template>
     <div id="app">
       <div id="header">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
+        <HomeButton :isLoggedIn="false" />
         <div id="picture-name">
           <div id="file-div" :style="fileDivStyle">
             <div id="file-upload">
@@ -94,12 +91,14 @@
   <script>
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
+  import HomeButton from '../components/HomeButton.vue';
   import axios from 'axios';
   
   export default {
     components: {
       DishForm,
-      PopupModal
+      PopupModal,
+        HomeButton,
     },
     data() {
       return {
@@ -235,23 +234,6 @@
   justify-content: center;
   align-items: end;
   gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--create-page-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
 }
 
 #name-description {

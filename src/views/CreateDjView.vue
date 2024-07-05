@@ -1,10 +1,7 @@
 <template>
   <div id="CreateDjView">
     <div id="header">
-      <div id="icon-div">
-        <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png" @click="goToHomePage">
-        <img alt="Filer" class="icon" v-else src="../assets/home.jpg" @click="goToHomePage">
-      </div>
+        <HomeButton :isLoggedIn="false" />
       <div id="picture-name">
         <div id="file-div" :style="fileDivStyle">
           <div id="file-upload">
@@ -91,9 +88,13 @@
 </template>
 
 <script>
+import HomeButton from '../components/HomeButton.vue';
 import axios from 'axios'; 
 
 export default {
+    components: {
+        HomeButton,
+    },
   data() {
     return {
       djName: '',
@@ -207,23 +208,6 @@ export default {
   justify-content: center;
   align-items: end;
   gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--textfield-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
 }
 
 #name-description {
