@@ -20,6 +20,7 @@
           </div>
         </div>
       </div>
+      </div>
   
       <div id="main">
         <div id="left-side">
@@ -63,7 +64,6 @@
             Caterer buchen
           </div>
         </div>
-      </div>
       </div>
     </div>
   </template>
