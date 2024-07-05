@@ -200,10 +200,12 @@ export default {
       //const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createCaterer', formData);
+          const response = await axios.post('/createCaterer', formData, { headers: { auth: localStorage.authToken } });
           console.log('Caterer created:', response.data);
+          localStorage.setItem('authToken', response.data);
           alert('Caterer created successfully!');
           this.default_values();
+          this.$router.push("/search");
         } catch (error) {
           console.error('Error with Caterer creation:', error);
           alert('Error creating Caterer. Please try again.');

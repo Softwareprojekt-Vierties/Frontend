@@ -193,10 +193,12 @@
                             "auth": token,
                         }
                     });
-                    console.log('Event created:', response.data);
+                    console.log('Person created:', response.data);
+                    localStorage.setItem('authToken', response.data);
                     this.closeModal(); 
+                    this.$router.push("/search");
                 } catch (error) {
-                    console.error('Error with Event creation:', error);
+                    console.error('Error with Person creation:', error);
                 }
             },
           reset() {
