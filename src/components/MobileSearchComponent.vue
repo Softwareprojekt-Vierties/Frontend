@@ -91,458 +91,513 @@
 </template>
 
 <script>
-    import CardComponent from "@/components/MobileCardComponent";
-    import axios from "axios";
+import CardComponent from "@/components/MobileCardComponent";
+import axios from "axios";
 
-    export default {
-        name: 'SearchComponent',
-        props: {
-            msg: String,
-            startValue: {
-                type: String,
-                default: "0",
-            },
-            mutable: {
-                type: Boolean,
-                default: true,
-            }
+export default {
+    name: 'SearchComponent',
+    props: {
+        msg: String,
+        startValue: {
+            type: String,
+            default: "0",
         },
-        components: {
-            CardComponent,
-        },
-        data() {
-            return {
-                order:"Absteigend:",
-                filterContent: "",
-                filterSelection: "",
-                selectedFilters: [],
-                filterOptions: {
-                    '1': { name: 'location', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
-                    '2': { name: 'djBand', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
-                    '3': { name: 'caterer', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
-                    '4': { name: 'event', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
-                    '5': { name: 'person', filters: ['region', 'age', 'gender'] },
-                    '6': { name: 'myEvents', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
-                    '7': { name: 'myTickets', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
-                    '8': { name: 'myFriends', filters: ['region', 'age', 'gender'] },
-                    '9': { name: 'myLocation', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
-                },
-                sortingOptions: {
-                    "0": { name: "none", filters: ["name"] },
-                    "1": { name: "location", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
-                    "2": { name: "djBand", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
-                    "3": { name: "caterer", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
-                    "4": { name: "event", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                    "5": { name: "person", filters: ["name", "adresse", "altersfreigabe", "gender"] },
-                    "6": { name: "myEvents", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                    "7": { name: "myTickets", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                    "8": { name: "myFriends", filters: ["name", "adresse", "altersfreigabe", "gender"] },
-                    "9": { name: "myLocation", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
-                },
-                translations: {
-                    name: "Name",
-                    adresse: "Addresse",
-                    datum: "Datum",
-                    entfernung: "Entfernung",
-                    kapazitaet: "Kapazität",
-                    sterne: "Bewertung",
-                    uhrzeit: "Startzeit",
-                    dauer: "Dauer",
-                    experience: "Erfahrung",
-                    kategorie: "Kategorie",
-                    altersfreigabe: "Alter",
-                    gender: "Geschlecht",
-                    eventgroesse: "Eventgröße",
-                    preis: "Preis",
-                },
-                searchInput: "",
-                searchType: "0",
-                sortType: "name",
-                searchResults: [],
-                filteredSearchResults: [],
-                searchError: false,
-                hasSearchResults: false,
-                sortAscending: false,
-                bookmarked: false,
-            };
-        },
-        methods: {
-    toggleTooltip() {
-        const tooltip = document.getElementById("dynamic-tooltip");
-        tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
-    },
-    toggleSearchType() {
-        this.updateFilterContent();
-        this.sortType = "name";
-        this.search();
-    },
-    updateFilterContent() {
-        const selectedValue = this.searchType;
-        if (selectedValue === "0") {
-            this.filterContent = "Wählen Sie eine Suchmodalität";
-        } else {
-            const selectedFilters = this.filterOptions[selectedValue].filters;
-            this.selectedFilters = selectedFilters;
-            this.filterContent = this.generateFilterContent(selectedFilters);
+        mutable: {
+            type: Boolean,
+            default: true,
         }
     },
-    generateFilterContent(filters) {
-        return filters
-            .map((filter) => {
+    components: {
+        CardComponent,
+    },
+    data() {
+        return {
+            order:"Absteigend:",
+            filterContent: "",
+            filterSelection: "",
+            selectedFilters: [],
+            filterOptions: {
+                '1': { name: 'location', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
+                '2': { name: 'djBand', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
+                '3': { name: 'caterer', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
+                '4': { name: 'event', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
+                '5': { name: 'person', filters: ['region', 'age', 'gender'] },
+                '6': { name: 'myEvents', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
+                '7': { name: 'myTickets', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
+                '8': { name: 'myFriends', filters: ['region', 'age', 'gender'] },
+                '9': { name: 'myLocation', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
+            },
+            sortingOptions: {
+                "0": { name: "none", filters: ["name"] },
+                "1": { name: "location", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                "2": { name: "djBand", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                "3": { name: "caterer", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                "4": { name: "event", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                "5": { name: "person", filters: ["name", "adresse", "altersfreigabe", "gender"] },
+                "6": { name: "myEvents", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                "7": { name: "myTickets", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                "8": { name: "myFriends", filters: ["name", "adresse", "altersfreigabe", "gender"] },
+                "9": { name: "myLocation", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+            },
+            translations: {
+                name: "Name",
+                adresse: "Addresse",
+                datum: "Datum",
+                entfernung: "Entfernung",
+                kapazitaet: "Kapazität",
+                sterne: "Bewertung",
+                uhrzeit: "Startzeit",
+                dauer: "Dauer",
+                experience: "Erfahrung",
+                kategorie: "Kategorie",
+                altersfreigabe: "Alter",
+                gender: "Geschlecht",
+                eventgroesse: "Eventgröße",
+                preis: "Preis",
+            },
+            searchInput: "",
+            searchType: "0",
+            sortType: "name",
+            searchResults: [],
+            filteredSearchResults: [],
+            searchError: false,
+            hasSearchResults: false,
+            sortAscending: false,
+            bookmarked: false,
+        };
+    },
+    methods: {
+        toggleTooltip() {
+            const tooltip = document.getElementById("dynamic-tooltip");
+            tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
+            this.updateTooltipWidth();
+            if (tooltip.style.display === "block") {
+                this.adjustFilterRegion();
+            }
+        },
+        toggleSearchType() {
+            this.updateFilterContent();
+            this.sortType = "name";
+            this.search();
+        },
+        updateFilterContent() {
+            const selectedValue = this.searchType;
+            if (selectedValue === "0") {
+                this.filterContent = "Wählen Sie eine Suchmodalität";
+            } else {
+                const selectedFilters = this.filterOptions[selectedValue].filters;
+                this.selectedFilters = selectedFilters;
+                this.filterContent = this.generateFilterContent(selectedFilters);
+            }
+        },
+        generateFilterContent(filters) {
+            return filters
+                .map((filter) => {
+                    switch (filter) {
+                        case "region":
+                            return `<div class="filter-item"><div id="filter-item-text">Region: </div><input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
+                        case "date":
+                            return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
+                        case "distance":
+                            return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
+                        case "capacity":
+                            return `<div class="filter-item"><div id="filter-item-text">Kapazität: </div><div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
+                        case "rating":
+                            return `<div class="filter-item"><div id="filter-item-text">Bewertung: </div><fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
+                        case "startTime":
+                            return `<div class="filter-item"><div id="filter-item-text">Startzeit: </div><div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
+                        case "duration":
+                            return `<div class="filter-item"><div id="filter-item-text">Dauer: </div><div class="duration"> <input class="filter-duration" type="number" min="0" placeholder="5 Stunden"> - <input class="filter-duration" type="number" min="0" placeholder="7 Stunden"> </div></div>`;
+                        case "openAir":
+                            return `<div class="filter-item"><div id="filter-item-text">Open Air: </div><label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label> </div>`;
+                        case "price":
+                            return `<div class="filter-item"><div id="filter-item-text">Preis: </div><div class="price"> <input class="filter-price" type="number" min="0" placeholder="50 €"> - <input class="filter-price" type="number" min="0" placeholder="500 €"> </div> </div>`;
+                        case "category":
+                            return `<div class="filter-item"><div id="filter-item-text">Kategorie: </div><input class="filter-category" type="text" placeholder="Kategorie"></div>`;
+                        case "experience":
+                            return `<div class="filter-item"><div id="filter-item-text">Erfahrung: </div><input class="filter-experience" type="number" min="0" placeholder="10 Jahren"></div>`;
+                        case "eventSize":
+                            return `<div class="filter-item"><div id="filter-item-text">Eventgröße: </div><input class="filter-event-size" type="number" min="0" placeholder="Nr. Personen"></div>`;
+                        case "ticketPrice":
+                            return `<div class="filter-item"><div id="filter-item-text">Ticketpreis: </div><input class="filter-ticket-price" type="number" min="0" placeholder="Ticketpreis"></div>`;
+                        case "age":
+                            return `<div class="filter-item"><div id="filter-item-text">Alter: </div><input class="filter-age" type="number" min="0" placeholder="Alter"></div>`;
+                        case "gender":
+                            return `<div class="filter-item"><div id="filter-item-text">Geschlecht: </div><select class="filter-gender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
+                        default:
+                            return "";
+                    }
+                })
+                .join("");
+        },
+        updateTooltipWidth() {
+            const tooltip = this.$refs.filterContainer;
+            const searchbarAndIcons = document.getElementById("searchbar-and-icons");
+            if (tooltip && searchbarAndIcons) {
+                tooltip.style.width = `${searchbarAndIcons.offsetWidth-35}px`;
+            }
+        },
+        adjustFilterRegion() {
+            const tooltip = this.$refs.filterContainer;
+            const filterRegions = tooltip.querySelectorAll('.filter-region');
+            const filter_item_text = tooltip.querySelectorAll('#filter-item-text')
+
+            filterRegions.forEach(region => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    region.style.height = `${tooltipWidth * 0.065}px`; // 10% der Tooltip-Höhe
+                    region.style.fontSize = `${tooltipWidth * 0.05}px`; // 5% der Tooltip-Höhe
+                    region.style.width = `${tooltipWidth * 0.5}px`; // 80% der Tooltip-Breite
+                }
+                else {
+                    region.style.height = `${19.5}px`;
+                    region.style.fontSize = `${15}px`;
+                    region.style.width = `${tooltipWidth * 0.6}px`;
+                }
+            });
+
+            filter_item_text.forEach(filter_item_text => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    filter_item_text.style.fontSize = `${tooltipWidth * 0.05}px`; // 5% der Tooltip-Höhe
+                    filter_item_text.style.width = `${tooltipWidth * 0.3}px`; // 5% der Tooltip-Höhe
+                }
+                else {
+                    filter_item_text.style.fontSize = `${15}px`;
+                    filter_item_text.style.width = `${tooltipWidth * 0.2}px`;
+                }
+            });
+        },
+        submitFilters() {
+            const filtersContainer = this.$refs.filterContainer;
+            const filterValues = {};
+
+            if (filtersContainer == null) {
+                return filterValues;
+            }
+            this.selectedFilters.forEach((filter) => {
                 switch (filter) {
                     case "region":
-                        return `<div class="filter-item"><div id="filter-item-text">Region: </div><input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
+                        filterValues.region = filtersContainer.querySelector(".filter-region")?.value ?? "";
+                        break;
                     case "date":
-                        return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
+                        filterValues.date = filtersContainer.querySelector(".filter-date")?.value ?? "";
+                        break;
                     case "distance":
-                        return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
+                        filterValues.distance = filtersContainer.querySelector(".filter-distance")?.value ?? "";
+                        break;
                     case "capacity":
-                        return `<div class="filter-item"><div id="filter-item-text">Kapazität: </div><div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
+                        filterValues.capacity = [
+                            filtersContainer.querySelectorAll(".filter-capacity")[0]?.value ?? "",
+                            filtersContainer.querySelectorAll(".filter-capacity")[1]?.value ?? "",
+                        ];
+                        break;
                     case "rating":
-                        return `<div class="filter-item"><div id="filter-item-text">Bewertung: </div><fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
+                        filterValues.rating = filtersContainer.querySelector(".filter-rating input:checked")?.value ?? "";
+                        break;
                     case "startTime":
-                        return `<div class="filter-item"><div id="filter-item-text">Startzeit: </div><div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
+                        filterValues.startTime = [
+                            filtersContainer.querySelectorAll(".filter-time")[0]?.value ?? "",
+                            filtersContainer.querySelectorAll(".filter-time")[1]?.value ?? "",
+                        ];
+                        break;
                     case "duration":
-                        return `<div class="filter-item"><div id="filter-item-text">Dauer: </div><div class="duration"> <input class="filter-duration" type="number" min="0" placeholder="5 Stunden"> - <input class="filter-duration" type="number" min="0" placeholder="7 Stunden"> </div></div>`;
+                        filterValues.duration = [
+                            filtersContainer.querySelectorAll(".filter-duration")[0]?.value ?? "",
+                            filtersContainer.querySelectorAll(".filter-duration")[1]?.value ?? "",
+                        ];
+                        break;
                     case "openAir":
-                        return `<div class="filter-item"><div id="filter-item-text">Open Air: </div><label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label> </div>`;
+                        filterValues.openAir = filtersContainer.querySelector('input[type="checkbox"]')?.checked ?? false;
+                        break;
                     case "price":
-                        return `<div class="filter-item"><div id="filter-item-text">Preis: </div><div class="price"> <input class="filter-price" type="number" min="0" placeholder="50 €"> - <input class="filter-price" type="number" min="0" placeholder="500 €"> </div> </div>`;
+                        filterValues.price = [
+                            filtersContainer.querySelectorAll(".filter-price")[0]?.value ?? "",
+                            filtersContainer.querySelectorAll(".filter-price")[1]?.value ?? "",
+                        ];
+                        break;
                     case "category":
-                        return `<div class="filter-item"><div id="filter-item-text">Kategorie: </div><input class="filter-category" type="text" placeholder="Kategorie"></div>`;
+                        filterValues.category = filtersContainer.querySelector(".filter-category")?.value ?? "";
+                        break;
                     case "experience":
-                        return `<div class="filter-item"><div id="filter-item-text">Erfahrung: </div><input class="filter-experience" type="number" min="0" placeholder="10 Jahren"></div>`;
+                        filterValues.experience = filtersContainer.querySelector(".filter-experience")?.value ?? "";
+                        break;
                     case "eventSize":
-                        return `<div class="filter-item"><div id="filter-item-text">Eventgröße: </div><input class="filter-event-size" type="number" min="0" placeholder="Nr. Personen"></div>`;
+                        filterValues.eventSize = filtersContainer.querySelector(".filter-event-size")?.value ?? "";
+                        break;
                     case "ticketPrice":
-                        return `<div class="filter-item"><div id="filter-item-text">Ticketpreis: </div><input class="filter-ticket-price" type="number" min="0" placeholder="Ticketpreis"></div>`;
+                        filterValues.ticketPrice = filtersContainer.querySelector(".filter-ticket-price")?.value ?? "";
+                        break;
                     case "age":
-                        return `<div class="filter-item"><div id="filter-item-text">Alter: </div><input class="filter-age" type="number" min="0" placeholder="Alter"></div>`;
+                        filterValues.age = filtersContainer.querySelector(".filter-age")?.value ?? "";
+                        break;
                     case "gender":
-                        return `<div class="filter-item"><div id="filter-item-text">Geschlecht: </div><select class="filter-gender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
-                    default:
-                        return "";
+                        filterValues.gender = filtersContainer.querySelector(".filter-gender")?.value ?? "";
+                        break;
                 }
-            })
-            .join("");
-    },
-    submitFilters() {
-        const filtersContainer = this.$refs.filterContainer;
-        const filterValues = {};
+            });
 
-        if (filtersContainer == null) {
             return filterValues;
-        }
-        this.selectedFilters.forEach((filter) => {
-            switch (filter) {
-                case "region":
-                    filterValues.region = filtersContainer.querySelector(".filter-region")?.value ?? "";
-                    break;
-                case "date":
-                    filterValues.date = filtersContainer.querySelector(".filter-date")?.value ?? "";
-                    break;
-                case "distance":
-                    filterValues.distance = filtersContainer.querySelector(".filter-distance")?.value ?? "";
-                    break;
-                case "capacity":
-                    filterValues.capacity = [
-                        filtersContainer.querySelectorAll(".filter-capacity")[0]?.value ?? "",
-                        filtersContainer.querySelectorAll(".filter-capacity")[1]?.value ?? "",
-                    ];
-                    break;
-                case "rating":
-                    filterValues.rating = filtersContainer.querySelector(".filter-rating input:checked")?.value ?? "";
-                    break;
-                case "startTime":
-                    filterValues.startTime = [
-                        filtersContainer.querySelectorAll(".filter-time")[0]?.value ?? "",
-                        filtersContainer.querySelectorAll(".filter-time")[1]?.value ?? "",
-                    ];
-                    break;
-                case "duration":
-                    filterValues.duration = [
-                        filtersContainer.querySelectorAll(".filter-duration")[0]?.value ?? "",
-                        filtersContainer.querySelectorAll(".filter-duration")[1]?.value ?? "",
-                    ];
-                    break;
-                case "openAir":
-                    filterValues.openAir = filtersContainer.querySelector('input[type="checkbox"]')?.checked ?? false;
-                    break;
-                case "price":
-                    filterValues.price = [
-                        filtersContainer.querySelectorAll(".filter-price")[0]?.value ?? "",
-                        filtersContainer.querySelectorAll(".filter-price")[1]?.value ?? "",
-                    ];
-                    break;
-                case "category":
-                    filterValues.category = filtersContainer.querySelector(".filter-category")?.value ?? "";
-                    break;
-                case "experience":
-                    filterValues.experience = filtersContainer.querySelector(".filter-experience")?.value ?? "";
-                    break;
-                case "eventSize":
-                    filterValues.eventSize = filtersContainer.querySelector(".filter-event-size")?.value ?? "";
-                    break;
-                case "ticketPrice":
-                    filterValues.ticketPrice = filtersContainer.querySelector(".filter-ticket-price")?.value ?? "";
-                    break;
-                case "age":
-                    filterValues.age = filtersContainer.querySelector(".filter-age")?.value ?? "";
-                    break;
-                case "gender":
-                    filterValues.gender = filtersContainer.querySelector(".filter-gender")?.value ?? "";
-                    break;
-            }
-        });
+        },
+        packageFilters() {
+            let filterResults = this.submitFilters();
+            let packet = {};
 
-        return filterValues;
-    },
-    packageFilters() {
-        let filterResults = this.submitFilters();
-        let packet = {};
-
-        if (this.searchInput != null && this.searchInput != 0) {
-            packet.search = this.searchInput;
-        } 
-        if (this.searchType != 0) {
-            if (filterResults.openAir) {
-                packet.openair = true;
-            }
-            if (filterResults.date != null && filterResults.date != 0) {
-                packet.datum = filterResults.date;
+            if (this.searchInput != null && this.searchInput != 0) {
+                packet.search = this.searchInput;
             } 
-            if (filterResults.startTime != null && filterResults.startTime != 0){
-                if ((filterResults.startTime[0] != null && filterResults.startTime[0] != 0) || (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
-                    packet.uhrzeit = filterResults.startTime;
-                } 
-            }
-            if (filterResults.duration != null && filterResults.duration != 0){
-                if ((filterResults.duration[0] != null && filterResults.duration[0] != 0) || (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
-                    packet.dauer = filterResults.duration;
-                } 
-            }
-            if (filterResults.price != null && filterResults.price != 0){
-                if ((filterResults.price[0] != null && filterResults.price[0] != 0) || (filterResults.price[1] != null && filterResults.price[1] != 0)) {
-                    packet.preis = filterResults.price;
-                } 
-            }
-            if (filterResults.capacity != null && filterResults.capacity != 0){
-                if ((filterResults.capacity[0] != null && filterResults.capacity[0] != 0) || (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
-                    packet.kapazitaet = filterResults.capacity;
-                } 
-            }
-            if (filterResults.eventSize != null && filterResults.eventSize != 0) {
-                packet.eventgroesse = filterResults.eventSize;
-            } 
-            if (filterResults.region != null && filterResults.region != 0) {
-                packet.region = filterResults.region;
-            } 
-            if (filterResults.distance != null && filterResults.distance != 0) {
-                packet.distanz = filterResults.distance;
-            }
-            if (filterResults.rating != null && filterResults.rating != 0) {
-                packet.bewertung = filterResults.rating;
-            }
-            if (filterResults.category != null && filterResults.category != 0) {
-                packet.kategorie = filterResults.category;
-            }
-            if (filterResults.experience != null && filterResults.experience != 0) {
-                packet.erfahrung = filterResults.experience;
-            }
-            if (filterResults.ticketPrice != null && filterResults.ticketPrice != 0) {
-                packet.preis = filterResults.ticketPrice;
-            }
-            if (this.searchType === 5 || this.searchType === 8) {
-                if (filterResults.age != null && filterResults.age != 0) {
-                    packet.alter = filterResults.age;
+            if (this.searchType != 0) {
+                if (filterResults.openAir) {
+                    packet.openair = true;
                 }
+                if (filterResults.date != null && filterResults.date != 0) {
+                    packet.datum = filterResults.date;
+                } 
+                if (filterResults.startTime != null && filterResults.startTime != 0){
+                    if ((filterResults.startTime[0] != null && filterResults.startTime[0] != 0) || (filterResults.startTime[1] != null && filterResults.startTime[1] != 0)) {
+                        packet.uhrzeit = filterResults.startTime;
+                    } 
+                }
+                if (filterResults.duration != null && filterResults.duration != 0){
+                    if ((filterResults.duration[0] != null && filterResults.duration[0] != 0) || (filterResults.duration[1] != null && filterResults.duration[1] != 0)) {
+                        packet.dauer = filterResults.duration;
+                    } 
+                }
+                if (filterResults.price != null && filterResults.price != 0){
+                    if ((filterResults.price[0] != null && filterResults.price[0] != 0) || (filterResults.price[1] != null && filterResults.price[1] != 0)) {
+                        packet.preis = filterResults.price;
+                    } 
+                }
+                if (filterResults.capacity != null && filterResults.capacity != 0){
+                    if ((filterResults.capacity[0] != null && filterResults.capacity[0] != 0) || (filterResults.capacity[1] != null && filterResults.capacity[1] != 0)) {
+                        packet.kapazitaet = filterResults.capacity;
+                    } 
+                }
+                if (filterResults.eventSize != null && filterResults.eventSize != 0) {
+                    packet.eventgroesse = filterResults.eventSize;
+                } 
+                if (filterResults.region != null && filterResults.region != 0) {
+                    packet.region = filterResults.region;
+                } 
+                if (filterResults.distance != null && filterResults.distance != 0) {
+                    packet.distanz = filterResults.distance;
+                }
+                if (filterResults.rating != null && filterResults.rating != 0) {
+                    packet.bewertung = filterResults.rating;
+                }
+                if (filterResults.category != null && filterResults.category != 0) {
+                    packet.kategorie = filterResults.category;
+                }
+                if (filterResults.experience != null && filterResults.experience != 0) {
+                    packet.erfahrung = filterResults.experience;
+                }
+                if (filterResults.ticketPrice != null && filterResults.ticketPrice != 0) {
+                    packet.preis = filterResults.ticketPrice;
+                }
+                if (this.searchType === 5 || this.searchType === 8) {
+                    if (filterResults.age != null && filterResults.age != 0) {
+                        packet.alter = filterResults.age;
+                    }
+                } else {
+                    if (filterResults.age != null && filterResults.age != 0) {
+                        packet.altersfreigabe = filterResults.age;
+                    }
+                }
+                if (filterResults.gender != null && filterResults.gender != 0) {
+                    packet.geschlecht = filterResults.gender;
+                }
+                if (this.searchType == 6) {
+                    packet.istbesitzer = true;
+                }
+                if (this.searchType == 7) {
+                    packet.hatticket = true;
+                }
+                if (this.searchType == 8) {
+                    packet.istfreund = true;
+                }
+                if (this.searchType == 9) {
+                    packet.istbesitzer = true;
+                }
+            }
+            return packet;
+        },
+        searchSpecific(destination, field) {
+            axios.post(destination, this.packageFilters(), { headers: { "auth": localStorage.getItem("authToken")}})
+                .then(response => {
+                    console.log("Successful search:", response);
+                    this.searchResults[field] = response.data.rows || [];
+                    this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true) || [];
+                    this.hasSearchResults |= response.data.rows.length > 0;
+                    if (this.searchType == 0) {
+                        this.searchResults[field].forEach(item => {
+                            switch (field) {
+                                case "location":
+                                    this.searchResults.combined.push({
+                                        "name": item.name,
+                                        "line1": "Addresse: " + item.adresse,
+                                        "line2": "Kapazität: " + item.kapazitaet,
+                                        "line3": "Preis: " + item.preis,
+                                        "buttonText": "Event erstellen",
+                                        "imagePath": item.bild,
+                                        "isBookmarked": item.favorit ?? 0,
+                                        "key": item.id,
+                                    });
+                                    break
+                                case "artist":
+                                case "caterer":
+                                    this.searchResults.combined.push({
+                                        "name": item.name,
+                                        "line1": "Stadt: " + item.adresse,
+                                        "line2": "Kategorie: " + item.kategorie,
+                                        "line3": "Preis: " + item.preis,
+                                        "buttonText": "Event erstellen",
+                                        "imagePath": item.profilbild,
+                                        "isBookmarked": item.favorit ?? 0,
+                                        "key": item.id,
+                                    });
+                                    break
+                                case "events":
+                                case "tickets":
+                                    this.searchResults.combined.push({
+                                        "name": item.name,
+                                        "line1": "Location: " + item.locationname,
+                                        "line2": "Datum: " + new Date(item.datum).toDateString(),
+                                        "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
+                                        "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
+                                        "imagePath": item.bild,
+                                        "isBookmarked": item.favorit ?? 0,
+                                        "key": item.id,
+                                    });
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        })
+                        this.filteredSearchResults.combined = this.searchResults.combined.filter(item => item.isBookmarked);
+                    } 
+                })
+                .catch(error => {
+                    console.error("Unsuccessful search:", error);
+                    this.searchError = true;
+                });
+        },
+        search() {
+            this.searchResults = []
+            this.filteredSearchResults = []
+            this.searchResults.combined = []
+            this.filteredSearchResults.combined = []
+            this.hasSearchResults = false;
+            this.searchError = false;
+            switch (this.searchType) {
+                case "0":
+                    this.searchSpecific("/searchLoacation", "location")
+                    this.searchSpecific("/searchArtist", "artist")
+                    this.searchSpecific("/searchCaterer", "caterer")
+                    this.searchSpecific("/searchEvent", "events")
+                    this.searchSpecific("/searchEndnutzer", "person")
+                    break;
+                case "1":
+                case "9":
+                    this.searchSpecific("/searchLoacation", "location")
+                    break;
+                case "2":
+                    this.searchSpecific("/searchArtist", "artist")
+                    break;
+                case "3":
+                    this.searchSpecific("/searchCaterer", "caterer")
+                    break;
+                case "4":
+                case "6":
+                    this.searchSpecific("/searchEvent", "events")
+                    break;
+                case "5":
+                case "8":
+                    this.searchSpecific("/searchEndnutzer", "person")
+                    break;
+                case "7":
+                    this.searchSpecific("/searchEvent", "tickets")
+                    break;
+
+                default: break;
+            }
+        },
+        sortArrowClick() {
+            this.sortAscending = !this.sortAscending;
+            this.sortContent();
+            if (this.order === "Aufsteigend:") {
+                this.order = "Absteigend:"
+                return;
+            }
+            this.order = "Aufsteigend:";
+        },
+        sortContent() {
+            let sortType = this.sortType;
+            function sortCriteria(a, b) {
+                if (a[sortType] > b[sortType]) {
+                    return 1;
+                } else if (a[sortType] < b[sortType]) {
+                    return -1;
+                }
+                return 0;
+            }
+
+            if (this.sortAscending) {
+                Object.keys(this.searchResults).forEach((key) => {
+                    if (Array.isArray(this.searchResults[key])) {
+                        this.searchResults[key].sort((a, b) => sortCriteria(a, b));
+                    }
+                });
             } else {
-                if (filterResults.age != null && filterResults.age != 0) {
-                    packet.altersfreigabe = filterResults.age;
-                }
+                Object.keys(this.searchResults).forEach((key) => {
+                    if (Array.isArray(this.searchResults[key])) {
+                        this.searchResults[key].sort((a, b) => -sortCriteria(a, b));
+                    }
+                });
             }
-            if (filterResults.gender != null && filterResults.gender != 0) {
-                packet.geschlecht = filterResults.gender;
-            }
-            if (this.searchType == 6) {
-                packet.istbesitzer = true;
-            }
-            if (this.searchType == 7) {
-                packet.hatticket = true;
-            }
-            if (this.searchType == 8) {
-                packet.istfreund = true;
-            }
-            if (this.searchType == 9) {
-                packet.istbesitzer = true;
-            }
-        }
-        return packet;
-    },
-    searchSpecific(destination, field) {
-        axios.post(destination, this.packageFilters(), { headers: { "auth": localStorage.getItem("authToken")}})
-            .then(response => {
-                console.log("Successful search:", response);
-                this.searchResults[field] = response.data.rows || [];
-                this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true) || [];
-                this.hasSearchResults |= response.data.rows.length > 0;
-                if (this.searchType == 0) {
-                    this.searchResults[field].forEach(item => {
-                        switch (field) {
-                            case "location":
-                                this.searchResults.combined.push({
-                                    "name": item.name,
-                                    "line1": "Addresse: " + item.adresse,
-                                    "line2": "Kapazität: " + item.kapazitaet,
-                                    "line3": "Preis: " + item.preis,
-                                    "buttonText": "Event erstellen",
-                                    "imagePath": item.bild,
-                                    "isBookmarked": item.favorit ?? 0,
-                                    "key": item.id,
-                                });
-                                break
-                            case "artist":
-                            case "caterer":
-                                this.searchResults.combined.push({
-                                    "name": item.name,
-                                    "line1": "Stadt: " + item.adresse,
-                                    "line2": "Kategorie: " + item.kategorie,
-                                    "line3": "Preis: " + item.preis,
-                                    "buttonText": "Event erstellen",
-                                    "imagePath": item.profilbild,
-                                    "isBookmarked": item.favorit ?? 0,
-                                    "key": item.id,
-                                });
-                                break
-                            case "events":
-                            case "tickets":
-                                this.searchResults.combined.push({
-                                    "name": item.name,
-                                    "line1": "Location: " + item.locationname,
-                                    "line2": "Datum: " + new Date(item.datum).toDateString(),
-                                    "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
-                                    "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
-                                    "imagePath": item.bild,
-                                    "isBookmarked": item.favorit ?? 0,
-                                    "key": item.id,
-                                });
-                                break;
-
-                            default:
-                                break;
-                        }
-                    })
-                    this.filteredSearchResults.combined = this.searchResults.combined.filter(item => item.isBookmarked);
-                } 
-            })
-            .catch(error => {
-                console.error("Unsuccessful search:", error);
-                this.searchError = true;
-            });
-    },
-    search() {
-        this.searchResults = []
-        this.filteredSearchResults = []
-        this.searchResults.combined = []
-        this.filteredSearchResults.combined = []
-        this.hasSearchResults = false;
-        this.searchError = false;
-        switch (this.searchType) {
-            case "0":
-                this.searchSpecific("/searchLoacation", "location")
-                this.searchSpecific("/searchArtist", "artist")
-                this.searchSpecific("/searchCaterer", "caterer")
-                this.searchSpecific("/searchEvent", "events")
-                this.searchSpecific("/searchEndnutzer", "person")
-                break;
-            case "1":
-            case "9":
-                this.searchSpecific("/searchLoacation", "location")
-                break;
-            case "2":
-                this.searchSpecific("/searchArtist", "artist")
-                break;
-            case "3":
-                this.searchSpecific("/searchCaterer", "caterer")
-                break;
-            case "4":
-            case "6":
-                this.searchSpecific("/searchEvent", "events")
-                break;
-            case "5":
-            case "8":
-                this.searchSpecific("/searchEndnutzer", "person")
-                break;
-            case "7":
-                this.searchSpecific("/searchEvent", "tickets")
-                break;
-
-            default: break;
+            this.$forceUpdate();
+        },
+        toggleBookmark() {
+            this.bookmarked = !this.bookmarked;
+            // TODO: filter for bookmarked elements
+        },
+        openSelect() {
+            const selectElement = this.$refs.mySelect;
+            selectElement.focus();
+            selectElement.click();
+        },
+        getDynamicPart(option) {
+            return option ? this.translations[option] : '';
         }
     },
-    sortArrowClick() {
-        this.sortAscending = !this.sortAscending;
-        this.sortContent();
-        if (this.order === "Aufsteigend:") {
-            this.order = "Absteigend:"
-            return;
+    watch: {
+        filterContent() {
+            this.$nextTick(this.adjustFilterRegion);
         }
-        this.order = "Aufsteigend:";
-    },
-    sortContent() {
-        let sortType = this.sortType;
-        function sortCriteria(a, b) {
-            if (a[sortType] > b[sortType]) {
-                return 1;
-            } else if (a[sortType] < b[sortType]) {
-                return -1;
-            }
-            return 0;
-        }
-
-        if (this.sortAscending) {
-            Object.keys(this.searchResults).forEach((key) => {
-                if (Array.isArray(this.searchResults[key])) {
-                    this.searchResults[key].sort((a, b) => sortCriteria(a, b));
-                }
-            });
-        } else {
-            Object.keys(this.searchResults).forEach((key) => {
-                if (Array.isArray(this.searchResults[key])) {
-                    this.searchResults[key].sort((a, b) => -sortCriteria(a, b));
-                }
-            });
-        }
-        this.$forceUpdate();
-    },
-    toggleBookmark() {
-        this.bookmarked = !this.bookmarked;
-        // TODO: filter for bookmarked elements
-    },
-    openSelect() {
-        const selectElement = this.$refs.mySelect;
-        selectElement.focus();
-        selectElement.click();
-    },
-    getDynamicPart(option) {
-        return option ? this.translations[option] : '';
-    }
     },
     created() {
         this.searchType = this.startValue;
         this.toggleSearchType();
         this.search();
+        window.addEventListener('resize', this.updateTooltipWidth);
+    },
+    mounted() {
+        this.updateTooltipWidth();
+        this.adjustFilterRegion(); // Beim Initialisieren der Komponente
+    },
+    beforeUnmount() {
+        window.removeEventListener('resize', this.updateTooltipWidth);
     },
     computed: {
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
     }
-
 }
 </script>
 
 <style scoped>
+/* eslint-disable */
 .events-outside-div {
     align-items: center;
     margin-top: 30px;
@@ -618,7 +673,6 @@
 }
 
 ::v-deep .filter-region {
-    margin-left: 10%;
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -747,7 +801,7 @@
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     width: 555px;
-    padding-left: 20px;
+    padding-left: 15px;
     color: var(--textfield-font-color);
 }
 
