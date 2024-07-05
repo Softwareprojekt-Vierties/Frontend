@@ -1,22 +1,6 @@
 <template>
   <div id="CreateEventView">
-    <div id="header">
-        <HomeButton :isLoggedIn="false" />
-      <div id="picture-name">
-          <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" :onFileChange="onFileChange" />
-        <div id="name-description">
-          <div class="name-description-input">
-            <label class="description">Eventnamen hinzufügen:</label>
-            <input class="header-input" type="text" placeholder="z.B. UNI PARTY"><br>
-          </div>
-          <div class="name-description-input">
-            <label class="description">Kurze Beschreibung hinzufügen:</label>
-            <input class="header-input" type="text" placeholder="z.B. Minden">
-          </div>
-        </div>
-      </div>
-    </div>
-
+      <Header v-model:name="eventName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
         <div id="main">
             <div id="left-side">
                 <div class="long-description">
@@ -147,8 +131,7 @@
     import DishForm from '../components/ArtistComponent.vue';
     import LocationCard from '../components/EventComponenet.vue'
     import EventCard from '../components/EventCardComponent.vue';
-    import HomeButton from '../components/HomeButton.vue';
-    import Image from '../components/ChangeableImageComponent.vue';
+    import Header from '../components/EditHeader.vue';
 
     export default {
         components: {
@@ -156,8 +139,7 @@
             EventCard,
             SearchComponent,
             LocationCard,
-            HomeButton,
-            Image,
+            Header,
         },
         data() {
             return {
@@ -327,51 +309,6 @@
 </script>
 
 <style scoped>
-#header {
-  background-color: var(--create-page-header-background);
-  padding-bottom: 40px;
-  padding-top: 10px;
-}
-
-#picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
-}
-
-#name-description {
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  padding: 10px;
-}
-
-.name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
-}
-
-.header-input {
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  text-align: center;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.header-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-.description {
-  text-align: left;
-  font-size: 12px;
-  margin-bottom: 3px;
-}
-
 .switch {
   position: relative;
   display: inline-block;
