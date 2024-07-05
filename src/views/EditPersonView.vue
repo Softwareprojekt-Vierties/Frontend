@@ -465,6 +465,13 @@ input:checked + .slider:before {
     margin-left: 16px;
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 footer {
     background-color: var(--create-page-background);
 }

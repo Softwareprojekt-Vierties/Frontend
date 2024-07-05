@@ -437,6 +437,13 @@ footer {
   background-color: var(--create-page-background);
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 #dish-form {
       display: grid;
       grid-template-columns: auto auto;

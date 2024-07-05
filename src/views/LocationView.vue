@@ -248,6 +248,13 @@ body {
   margin-right: 5px;
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 .time-value-right {
   width: 71.9px;
   text-align: center;

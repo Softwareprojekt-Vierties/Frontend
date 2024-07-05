@@ -160,6 +160,13 @@
     text-align: left;
     font-size: 12px;
   }
+
+  .description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+  }
   
   #long-description-text {
     width: 580px;

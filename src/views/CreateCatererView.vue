@@ -203,6 +203,13 @@ export default {
   margin-left: 70px;
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 .slider {
   position: absolute;
   cursor: pointer;

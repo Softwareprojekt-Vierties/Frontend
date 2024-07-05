@@ -512,6 +512,13 @@ input:checked + .slider:before {
   color: var(--simple-font-color);
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 #break {
   background-color: var(--red);
   width: 88px;
