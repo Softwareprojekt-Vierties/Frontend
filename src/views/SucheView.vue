@@ -41,10 +41,10 @@
                 // go to the profile page
             },
             gotoMailPage() {
-                // go to the mail page
+                this.$router.push('/email');
             },
             gotoEventCreation() {
-                // go to the event creation page
+                this.$router.push('/createevent');
             },
         },
     computed: {
