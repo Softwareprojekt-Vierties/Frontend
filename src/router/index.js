@@ -14,7 +14,6 @@ import EditLocationView from '@/views/EditLocationView.vue'
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
 
-import DjView from'@/views/DjView.vue'
 import CatererView from '@/views/CatererView.vue'
 
 
@@ -64,62 +63,62 @@ const routes = [
     path :'/caterer',
     name : 'CatererType',
     component : CatererView
-  }
+  },
 
-        {
-        path: '/createevent',
-        name: 'CreateEventType',
-        component: CreateEvent 
-    },
-        {
-        path: '/createcaterer',
-        name: 'CreateCatererType',
-        component: CreateCatererView 
-    },  {
-        path: '/createlocation',
-        name: 'CreateLocationType',
-        component: CreateLocationView 
-    },  {
-        path: '/createdj',
-        name: 'CreateDjType',
-        component: CreateDjView 
-    }, {
-        path: '/editcaterer',
-        name: 'EditCatererType',
-        component: EditCatererView 
-    }, {
-        path: '/editdj',
-        name: 'EditDjType',
-        component: EditDjView 
-    },  {
-        path: '/editLocation',
-        name: 'EditLocationType',
-        component: EditLocationView 
-    },  {
-        path: '/event',
-        name: 'EventType',
-        component: EventView
-    },  {
-        path: '/location',
-        name: 'LocationType',
-        component: LocationView
-    },  {
-        path: '/dj',
-        name: 'DjType',
-        component: DjView
-    },  {
-        path: '/createPerson',
-        name: 'CreatePersonType',
-        component: CreatePersonView
-    },  {
-        path: '/person/:id',
-        name: 'PersonType',
-        component: PersonView
-    },  {
-        path: '/email',
-        name: 'EmailType',
-        component: EmailView
-    }
+{
+    path: '/createevent',
+    name: 'CreateEventType',
+    component: CreateEvent 
+},
+    {
+    path: '/createcaterer',
+    name: 'CreateCatererType',
+    component: CreateCatererView 
+},  {
+    path: '/createlocation',
+    name: 'CreateLocationType',
+    component: CreateLocationView 
+},  {
+    path: '/createdj',
+    name: 'CreateDjType',
+    component: CreateDjView 
+}, {
+    path: '/editcaterer',
+    name: 'EditCatererType',
+    component: EditCatererView 
+}, {
+    path: '/editdj',
+    name: 'EditDjType',
+    component: EditDjView 
+},  {
+    path: '/editlocation/:id',
+    name: 'EditLocationType',
+    component: EditLocationView 
+},  {
+    path: '/event',
+    name: 'EventType',
+    component: EventView
+},  {
+    path: '/location',
+    name: 'LocationType',
+    component: LocationView
+},  {
+    path: '/dj',
+    name: 'DjType',
+    component: DjView
+},  {
+    path: '/createPerson',
+    name: 'CreatePersonType',
+    component: CreatePersonView
+},  {
+    path: '/person/:id',
+    name: 'PersonType',
+    component: PersonView
+},  {
+    path: '/email',
+    name: 'EmailType',
+    component: EmailView
+}
 
 
 ]
