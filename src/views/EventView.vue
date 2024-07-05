@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-      <div id="header">
       <div id="header" :style="headerStyle">
+          <div id="header-inner">
         <div id="icon-div">
           <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
           <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
