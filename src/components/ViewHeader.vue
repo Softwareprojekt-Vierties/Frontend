@@ -1,5 +1,5 @@
 <template>
-    <div id="header" :style="headerStyle">
+    <div id="header">
         <div id="header-inner">
             <HomeButton :isLoggedIn="true" />
             <div id="picture-name">
@@ -66,76 +66,78 @@
     background-postion: center;
 }
 
-  #header-inner {
-      width: 100%;
-      height: 100%;
-      padding-bottom: 40px;
-      padding-top: 10px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-  }
+#header-inner {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 40px;
+    padding-top: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    @media (prefers-color-scheme: dark) {
+        backdrop-filter: brightness(50%) blur(10px);
+        -webkit-backdrop-filter: brightness(50%) blur(10px);
+    }
+}
 
-  #picture-name {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: center;
-      align-items: end;
-      gap: 20px;
-  }
+#picture-name {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: end;
+    gap: 20px;
+}
 
-  #name-description {
-      background-color: none;
-      padding: 10px;
-  }
+#name-description {
+    background-color: none;
+    padding: 10px;
+}
 
-  .name-description-input {
-      display: grid;
-      grid-template-columns: 300px;
-      justify-content: left;
-  }
+.name-description-input {
+    display: grid;
+    grid-template-columns: 300px;
+    justify-content: left;
+}
 
-  #name {
-      text-align: left;
-      font-size: 35px;
-      color: white;
-      margin-bottom: 10px;
-  }
+#name {
+    text-align: left;
+    font-size: 35px;
+    color: white;
+    margin-bottom: 10px;
+}
 
-  #description-short {
-      text-align: left;
-      font-size: 18px;
-      color: white;
-      margin-bottom: -10px;
-  }
+#description-short {
+    text-align: left;
+    font-size: 18px;
+    color: white;
+    margin-bottom: -10px;
+}
 
-  .name-description-input {
-      display: grid;
-      grid-template-columns: 300px;
-      justify-content: left;
-  }
+.name-description-input {
+    display: grid;
+    grid-template-columns: 300px;
+    justify-content: left;
+}
 
-  .stars{
-      margin-bottom: 10px;
-  }
+.stars{
+    margin-bottom: 10px;
+}
 
-  .star {
-      color: var(--light-gray); 
-      font-size: 27px; 
-  }
+.star {
+    color: var(--light-gray); 
+    font-size: 27px; 
+}
 
-  .star.filled {
-      color: var(--yellow); 
+.star.filled {
+    color: var(--yellow); 
 
-  }
+}
 
-  #name-stars {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: left;
-      align-items: center;
-      gap: 10px;
-  }
-
-
+#name-stars {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
 
 </style>
