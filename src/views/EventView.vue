@@ -43,15 +43,7 @@
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <div id="info-bookmark">
-                <label id="info-headline">Infos</label>
-                <div id="div-bookmark">
-                  <img v-if="isFavorit && isDarkMode" src="../assets/bookmark-filled.png" id="bookmark">
-                  <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
-                  <img v-else-if="isFavorit" src="../assets/bookmark-gray.jpg" id="bookmark">
-                  <img v-else src="../assets/bookmark-white.jpg" id="bookmark">
-                </div>
-            </div>
+              <Bookmark :isFavorite="false" :id="id" type="events" />
             <div class="infos">
               <label class="info-subheadline"><strong>Location:</strong> Campus Minden</label>
             </div>
@@ -86,10 +78,12 @@
   
   <script>
   import DishForm from '../components/MailComponent.vue';
+  import Bookmark from '../components/ViewPageBookmark.vue';
 
   export default {
     components: {
-      DishForm
+      DishForm,
+        Bookmark,
     },
     data() {
       return {
@@ -322,27 +316,6 @@
     align-items: center;
     cursor: pointer;
     margin-top: 10px;
-  }
-
-  #info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  #div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-  }
-
-  #bookmark {
-    width: 10px;
-    height: 17px;
   }
 
   #addcreator {

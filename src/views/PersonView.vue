@@ -55,7 +55,8 @@
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <label id="info-headline">Infos</label><div class="infos">
+              <Bookmark :isFavorite="false" :id="id" type="artist" />
+            <div class="infos">
                 <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
             <div class="infos">
@@ -78,13 +79,15 @@
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
   import ArtistCard from '../components/ArtistCardComponent.vue';
+  import Bookmark from '../components/ViewPageBookmark.vue';
   import axios from 'axios';
   
   export default {
     components: {
       DishForm,
       PopupModal,
-      ArtistCard
+      ArtistCard,
+        Bookmark,
     },
     data() {
       return {
