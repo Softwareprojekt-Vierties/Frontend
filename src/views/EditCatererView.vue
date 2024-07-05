@@ -127,15 +127,18 @@
         dishes: [
           { id: '',dishName: '', info1: '', info2: '', imagePreview: null }
         ],
-        originalData : {}
+        originalData : {},
+        id:''
   
         };
     },
   
     async created(){
-        let id = 14;
+        let id = this.$route.params.id;
+        const token = localStorage.getItem('authToken');
+
         try {
-            const response = await axios.get(`/getCatererById/${id}`);
+            const response = await axios.get(`/getCatererById/${id}`,{headers: {'auth':token}});
             console.log(response);
             this.originalData = { ...response.data };
             this.setFormData(response.data);
@@ -255,10 +258,10 @@
           console.log('FormData:', formData); 
   
   
-        //const token = localStorage.getItem('authToken'); 
+        const token = localStorage.getItem('authToken'); 
   
         try {
-            const response = await axios.post('/updateCaterer', formData);
+            const response = await axios.post('/updateCaterer', formData, {headers: {'auth':token}});
             console.log('Caterer updated:', response.data);
             alert('Caterer updated successfully!');
           } catch (error) {

@@ -39,8 +39,10 @@ export default {
 
   async created(){
   let id = this.idFromFather;
+  const token = localStorage.getItem('authToken');
+  console.log("id from father",id);
     try {
-        const response = await axios.get(`/getArtistById/${id}`);
+        const response = await axios.get(`/getArtistById/${id}`, {headers: {'auth':token}});
         console.log(response);
         this.setFormData(response.data);
         console.log('dj songs data received:', response.data);

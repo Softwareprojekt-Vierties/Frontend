@@ -43,7 +43,7 @@
         <br>
           <div class="long-description">
           <label class="description">Bewertungen:</label>
-            <DishForm v-if="id" :idFromFather="userId" :typeOfReview="reviewType"/>
+            <DishForm v-if="idSent" :idFromFather="idSent" :typeOfReview="reviewType"/>
         </div>
         </div>
         <div id="right-side">
@@ -67,8 +67,8 @@
               <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
           </div>
-          <div id="ticket">
-            Caterer buchen
+          <div id="ticket" @click="weiter">
+            {{ buttonLabel }}
           </div>
         </div>
       </div>
@@ -103,7 +103,9 @@
         id:'',
         userId:'',
         reviewType :0,
-        events: []
+        events: [],
+        idSent:'',
+        isOwner:''
         
       };
     },
@@ -121,13 +123,18 @@
         return this.imagePreview
           ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
           : {};
-      }
+      },
+      buttonLabel() {
+      return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
+    }
     },
 
     async created(){
-    let id = 14;
+    this.idSent = 14;
+    const token = localStorage.getItem('authToken');
+
       try {
-          const response = await axios.get(`/getCatererById/${id}`);
+          const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
           console.log(response);
           this.setFormData(response.data);
           console.log('dj data received:', response.data);
@@ -156,12 +163,20 @@
         this.userId = data['caterer'].rows[0].userid;
         this.id = data['caterer'].rows[0].id;
         this.events = data['events'].rows;
+        this.isOwner = data['isOwner'];
         console.log("my events",this.events);
       },
       
       goToAnotherPage() {
         this.$router.push('/search');
+      }, 
+      weiter(){
+      if(this.isOwner === false){
+        this.$router.push('/createevent');
+      } else{
+        this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
       }
+    }
     }
   }
   </script>

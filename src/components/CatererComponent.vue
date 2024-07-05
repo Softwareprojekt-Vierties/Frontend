@@ -43,8 +43,10 @@
   
     async created(){
     let id = this.idFromFather;
+    const token = localStorage.getItem('authToken');
+
       try {
-          const response = await axios.get(`/getCatererById/${id}`);
+          const response = await axios.get(`/getCatererById/${id}`,{headers: {'auth':token}});
           console.log(response);
           this.setFormData(response.data);
           console.log('caterer dishes data received:', response.data);
