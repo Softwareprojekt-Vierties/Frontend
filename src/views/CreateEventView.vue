@@ -625,6 +625,7 @@ input:checked + .slider:before {
 }
 
 #add-icon {
+    margin-top: 5px;
   width: 24px;
   height: 24px;
 }
