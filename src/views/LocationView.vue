@@ -33,7 +33,7 @@
           <div id="long-description-text">{{ beschreibung }}</div>
         </div>
         <div id="maps-div" style="height: 400px;">
-          <!-- use openstreetmap here -->
+          <!-- using openstreetmap here with maps-div :D -->
         </div>
         <br>
         <div class="long-description">
@@ -63,8 +63,9 @@
             <label class="info-subheadline"><strong>Open Air:</strong> {{ openair }}</label>
           </div>
         </div>
-        <div id="ticket">
-          Location buchen
+        <div id="ticket" @click="weiter" >
+          <!-- create event or edit location button-->
+          {{ buttonLabel }}
         </div>
       </div>
     </div>
@@ -100,21 +101,22 @@ export default {
       map: null,
       marker: null,
       id:'',
-      reviewType : 1
+      idSent: '',
+      reviewType : 1,
+      isOwner: ''
 
     };
   },
 
   async created() {
-    let id = 23;
+    this.idSent = 26;
+    const token = localStorage.getItem('authToken');
     try {
-      const response = await axios.get(`/getLocation/${id}`);
-      const dbLocation = response.data.rows[0];
-      console.log(dbLocation);
-      this.originalData = { ...dbLocation };
-      this.setFormData(dbLocation);
+      
+      const response = await axios.get(`/getLocation/${this.idSent}`, {headers: {'auth':token}});
+      console.log(response.data);
+      this.setFormData(response.data);
       this.geocodeAddress();
-      console.log('Location data received:', response.data);
     } catch (error) {
       console.error('Error with sending location ID to DB :', error);
     }
@@ -132,6 +134,9 @@ export default {
         backgroundSize: '340%',
         backgroundPosition: 'center center'
       };
+    }, 
+    buttonLabel() {
+      return this.isOwner ? 'Edit Location' : 'Event Erstellen';
     }
   },
 
@@ -148,28 +153,27 @@ export default {
     },
 
     setFormData(data) {
-      const myVar = data.adresse.split(',');
-      console.log(myVar[0]);
-      console.log(myVar[1]);
-
-      this.name = data.name;
-      this.kurzbeschreibung = data.kurzbeschreibung;
-      this.beschreibung = data.beschreibung;
+      const myVar = data['result'].rows[0].adresse.split(',');
+      this.name = data['result'].rows[0].name;
+      this.kurzbeschreibung = data['result'].rows[0].kurzbeschreibung;
+      this.beschreibung = data['result'].rows[0].beschreibung;
       this.region = myVar[1];
       this.addresse = myVar[0];
-      this.kapazitaet = data.kapazitaet;
-      this.preis = data.preis;
-      this.flaeche = data.flaeche;
-      if (data.openair == true) {
+      this.kapazitaet = data['result'].rows[0].kapazitaet;
+      this.preis = data['result'].rows[0].preis;
+      this.flaeche = data['result'].rows[0].flaeche;
+
+      if (data['result'].rows[0].openair == true) {
         this.openair = 'Ja';
       } else {
         this.openair = 'Nein';
       }
 
-      this.imagePreview = data.bild;
-      this.bild = data.bild;
-      this.sterne = data.sterne;
-      this.id = data.id;
+      this.imagePreview = data['result'].rows[0].bild;     
+      this.bild = data['result'].rows[0].bild;
+      this.sterne = data['result'].rows[0].sterne;
+      this.id = data['result'].rows[0].id;
+      this.isOwner = data['isOwner'];
     },
 
     goToAnotherPage() {
@@ -177,12 +181,10 @@ export default {
     },
     async geocodeAddress() {
       const address = `${this.addresse}, ${this.region}`;
-      console.log('Geocoding address:', address);
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
 
       try {
         const response = await axios.get(url);
-        console.log('Geocode response:', response.data);
         if (response.data.length > 0) {
           const location = response.data[0];
           this.showMap(location.lat, location.lon);
@@ -195,7 +197,6 @@ export default {
     },
 
     showMap(lat, lon) {
-      console.log('Lat:', lat, 'Lon:', lon);
       if (this.map) this.map.remove();
       this.map = Leaflet.map('maps-div').setView([lat, lon], 16);
       Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
@@ -206,6 +207,13 @@ export default {
         popupAnchor: [0, -30]
       });
       this.marker = Leaflet.marker([lat, lon], { icon: customIcon }).addTo(this.map);
+    },
+    weiter(){
+      if(this.isOwner === false){
+        this.$router.push('/createevent');
+      } else{
+        this.$router.push({ name : 'EditLocationType', params: {id : this.idSent}});
+      }
     }
   }
 };

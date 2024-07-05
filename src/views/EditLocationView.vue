@@ -50,15 +50,15 @@
             </div>
             <div class="infos">
               <label class="info-subheadline">Kapazität:</label>
-              <input v-model="kapazitaet" class="input" type="text" placeholder="z.B. 50 Personen">
+              <input v-model="kapazitaet" class="input" type="number" min="0" placeholder="z.B. 50 Personen">
             </div>
             <div class="infos">
               <label class="info-subheadline">Preis:</label>
-              <input v-model="preis" class="input" type="text" placeholder="z.B. 50€">
+              <input v-model="preis" class="input" type="number" min="0" placeholder="z.B. 50€">
             </div>
             <div class="infos">
               <label class="info-subheadline">Größe:</label>
-              <input v-model="flaeche" class="input" type="text" placeholder="z.B. 50 ha">
+              <input v-model="flaeche" class="input" type="number" min="0" placeholder="z.B. 50 ha">
             </div>
             <div id="open-air">
               <label class="info-subheadline">Open Air:</label>
@@ -98,16 +98,20 @@
       openair: false,
       imagePreview: null,
       bild:null,
-      originalData: {}        
+      originalData: {},
+      id : null      
 
       };
     },
 
     async created(){
-      let id = 59;
+      this.id = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
+
+      console.log("received id", this.id);
       try {
-          const response = await axios.get(`/getLocation/${id}`);
-          const dbLocation = response.data.rows[0];
+          const response = await axios.get(`/getLocation/${this.id}`, {headers: {'auth':token}});
+          const dbLocation = response.data;
           console.log(dbLocation);
           this.originalData = { ...dbLocation };
           this.setFormData(dbLocation);
@@ -130,21 +134,20 @@
     methods: {
       
       setFormData(data) {
-        const myVar = data.adresse.split(',');
-        console.log(myVar[0]);
-        console.log(myVar[1]);
+        const myVar = data['result'].rows[0].adresse.split(',');
 
-        this.name = data.name;
-        this.kurzbeschreibung = data.kurzbeschreibung;
-        this.beschreibung = data.beschreibung;
+
+        this.name = data['result'].rows[0].name;
+        this.kurzbeschreibung = data['result'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['result'].rows[0].beschreibung;
         this.region = myVar[1];
         this.addresse = myVar[0];
-        this.kapazitaet = data.kapazitaet;
-        this.preis = data.preis;
-        this.flaeche = data.flaeche;
-        this.openair = data.openair;
-        this.imagePreview = data.bild;
-        this.bild = data.bild;
+        this.kapazitaet = data['result'].rows[0].kapazitaet;
+        this.preis = data['result'].rows[0].preis;
+        this.flaeche = data['result'].rows[0].flaeche;
+        this.openair = data['result'].rows[0].openair;
+        this.imagePreview = data['result'].rows[0].bild;
+        this.bild = data['result'].rows[0].bild;
      },  
       onFileChange(event) {
         const file = event.target.files[0];
@@ -182,13 +185,15 @@
             formData.flaeche = this.flaeche;
             formData.openair = this.openair;
             formData.bild = this.imagePreview;
-            formData.locationid = this.originalData.id;
+            formData.locationid = this.id;
             formData.privat = true;
             console.log(formData);
             console.log("this ist sent to db");
 
+            const token = localStorage.getItem('authToken');
+
         try {
-          const response = await axios.post('/updateLoacation', formData);
+          const response = await axios.post('/updateLocation', formData, {headers: {'auth':token}});
           console.log('Location edited:', response.data);
           alert('Location edited successfully!');
           //this.reset();
