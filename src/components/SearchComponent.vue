@@ -66,19 +66,19 @@
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.startuhrzeit ?? '--:--'}Uhr - ${result.enduhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 1 || searchType == 9" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.location" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 2" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.artist" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.artist" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.artist" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.artist" :titleClickFunction="titleClickFunctions.artist" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 3" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.caterer" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 5 || searchType == 8" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 7" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.ticket" :info="result" :key="result.id"/>
                 </div>
             </div>
             <div v-else>
@@ -497,8 +497,8 @@
                                             "imagePath": item.bild,
                                             "isBookmarked": item.favorit ?? 0,
                                             "info": item,
-                                            "buttonClickFunction": this.buttonClickFunctions.location,
-                                            "titleClickFunction": this.buttonClickFunctions.location,
+                                            "buttonClickFunction": this.buttonClickFunctions.person,
+                                            "titleClickFunction": this.titleClickFunctions.person,
                                             "key": item.id + field,
                                         });
                                         break
@@ -513,7 +513,7 @@
                                             "isBookmarked": item.favorit ?? 0,
                                             "info": item,
                                             "buttonClickFunction": this.buttonClickFunctions.location,
-                                            "titleClickFunction": this.buttonClickFunctions.location,
+                                            "titleClickFunction": this.titleClickFunctions.location,
                                             "key": item.id + field,
                                         });
                                         break
@@ -635,20 +635,20 @@
         },
         created() {
             this.buttonClickFunctions = {
-                event: this.eventButtonFunction ?? ((info) => { console.log(info); }),
-                caterer: this.catererButtonFunction ?? ((info) => { console.log(info); }),
-                location: this.locationButtonFunction ?? ((info) => { console.log(info); }),
-                artist: this.artistButtonFunction ?? ((info) => { console.log(info); }),
-                ticket: this.ticketButtonFunction ?? ((info) => { console.log(info); }),
-                person: this.personButtonFunction ?? ((info) => { console.log(info); }),
+                event: this.eventButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+                caterer: this.catererButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+                location: this.locationButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+                artist: this.artistButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+                ticket: this.ticketButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+                person: this.personButtonFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
             };
             this.titleClickFunctions = {
-                event: this.eventTitleFunction ?? ((info) => { console.log(info); }),
-                caterer: this.catererTitleFunction ?? ((info) => { console.log(info); }),
-                location: this.locationTitleFunction ?? ((info) => { console.log(info); }),
-                artist: this.artistTitleFunction ?? ((info) => { console.log(info); }),
-                ticket: this.ticketTitleFunction ?? ((info) => { console.log(info); }),
-                person: this.personTitleFunction ?? ((info) => { console.log(info); }),
+                event: this.eventTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+                caterer: this.catererTitleFunction ?? ((info) => { this.$router.push("/caterer/" + info.id); }),
+                location: this.locationTitleFunction ?? ((info) => { this.router.push("/location/" + info.id); }),
+                artist: this.artistTitleFunction ?? ((info) => { this.$router.push("/dj/" + info.id); }),
+                ticket: this.ticketTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+                person: this.personTitleFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
             };
             this.buttonTexts = {
                 event: this.eventButtonText ?? "Ticket buchen",
