@@ -38,7 +38,7 @@
             <label class="description">Bilder:</label>
             <div id="addcreator" ref="addCreator" class="scroll-container">
               <div class="dish-container">
-                  <dish-form v-for="picture in pictures" :imagePath="picture" :mutable="false" :key="picture" />
+                  <dish-form v-for="picture in pictures" :imagePath="picture.partybild_data" :mutable="false" :key="picture" />
               </div>
             </div>
           </div>
@@ -158,9 +158,6 @@
                     res.data.tickets.rows?.forEach(event => {
                         this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
                     });
-                    res.data.partybilder?.forEach(bild => {
-                        this.pictures.push(bild);
-                    })
                     this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
                     this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
 
@@ -168,11 +165,15 @@
                     this.isFriend = false;
                 })
                 .catch(err => console.log("Error: ", err));
+            axios.get("/getPartybilder/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Bilder: ", res);
+                    res.data.rows?.forEach(bild => {
+                        this.pictures.push(bild);
+                    })
+                })
+                .catch(err => console.log("Error: ", err));
             console.log(this.fileDivStyle);
-            //this.profilePicture = require("../assets/bild-hsbi.jpg");
-            // get persons events
-            // get persons Locations
-            // get persons booked tickets?
         },
         increaseEventLocationsIndex() {
             if (this.eventsLocationsIndex < this.myEventsLocations.length - 1) {

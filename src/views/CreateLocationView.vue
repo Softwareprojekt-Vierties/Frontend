@@ -164,7 +164,8 @@
 
         try {
           const token = localStorage.getItem('authToken');
-          const response = await axios.post('/createLocation', formData,{headers: {'auth':token}});
+          const response = await axios.post('/createLocation', formData,
+          {headers: {'auth':token}});
           console.log('Location created:', response.data);
           alert('Location created successfully!');
           this.reset();

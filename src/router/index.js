@@ -13,12 +13,12 @@ import EditDjView from '@/views/EditDjView.vue'
 import EditLocationView from '@/views/EditLocationView.vue'
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
-
 import CatererView from '@/views/CatererView.vue'
 
 
 import DjView from '@/views/DjView.vue'
 import CreatePersonView from '@/views/CreatePersonView.vue'
+import EditPersonView from '@/views/EditPersonView.vue'
 import PersonView from '@/views/PersonView.vue'
 import EmailView from '@/views/EmailView.vue'
 
@@ -64,6 +64,7 @@ const routes = [
     name : 'CatererType',
     component : CatererView
   },
+
 
 {
     path: '/createevent',
@@ -111,6 +112,11 @@ const routes = [
     name: 'CreatePersonType',
     component: CreatePersonView
 },  {
+    path: '/editPerson',
+    name: 'EditPersonType',
+    component: EditPersonView
+},
+  {
     path: '/person/:id',
     name: 'PersonType',
     component: PersonView
@@ -119,6 +125,7 @@ const routes = [
     name: 'EmailType',
     component: EmailView
 }
+
 
 
 ]

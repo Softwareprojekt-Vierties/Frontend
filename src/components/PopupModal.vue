@@ -5,8 +5,8 @@
                 <label>Privatsphäre-Einstellung</label>
             </div>
             <div id="event-buttons">
-                <div @click="isPrivate = true" id="event-button">{{privateText}}</div>
-                <div @click="isPrivate = false" id="event-button">{{publicText}}</div>
+                <div @click="isPrivate = true" :style="{backgroundColor: isPrivate ? 'var(--blue)' : 'var(--white)'}" id="event-button">{{privateText}}</div>
+                <div @click="isPrivate = false" :style="{backgroundColor: !isPrivate ? 'var(--blue)' : 'var(--white)'}" id="event-button">{{publicText}}</div>
             </div>
             <div id="action-buttons">
                 <button id="cancel-button" @click="closeModal">abbrechen</button>
@@ -20,7 +20,7 @@
 export default {
     data() {
         return {
-            isPrivate: null,
+            isPrivate: true,
         }
     },
 props: {

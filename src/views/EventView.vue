@@ -1,6 +1,7 @@
 <template>
     <div id="app">
       <div id="header">
+      <div id="header" :style="headerStyle">
         <div id="icon-div">
           <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
           <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
@@ -78,6 +79,7 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
     </div>
   </template>
@@ -117,6 +119,14 @@
       }
     },
       computed: {
+      headerStyle() {
+        return {
+          backgroundImage: `url(${this.imagePreview})`,
+          backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+          //filter:flur(8px);
+        };
+      },
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
@@ -125,11 +135,20 @@
   </script>
   
   <style scoped>
-  #header {
+  
+#header {
     background-color: var(--create-page-header-background);
-    padding-bottom: 40px;
-    padding-top: 10px;
-  }
+}
+
+#header-inner {
+    width: 100%;
+    height: 100%;
+  padding-bottom: 40px;
+  padding-top: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
   
   #picture-name {
     display: grid;

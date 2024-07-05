@@ -1,6 +1,7 @@
 <template>
     <div id="app">
       <div id="header" :style="headerStyle">
+          <div id="header-inner">
         <div id="icon-div">
           <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">
         </div>
@@ -20,6 +21,7 @@
               <label id="description-short">{{ kurzbeschreibung }}</label>
             </div>
           </div>
+        </div>
         </div>
       </div>
   
@@ -110,8 +112,8 @@
       headerStyle() {
         return {
           backgroundImage: `url(${this.imagePreview})`,
-          backgroundSize: '340%',
-          backgroundPosition: 'center center'
+          backgroundPosition: 'center center',
+            backgroundSize: 'cover',
           //filter:flur(8px);
         };
       },
@@ -167,8 +169,15 @@
 
 #header {
     background-color: var(--create-page-header-background);
-    padding-bottom: 40px;
-    padding-top: 10px;
+}
+
+#header-inner {
+    width: 100%;
+    height: 100%;
+  padding-bottom: 40px;
+  padding-top: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 #picture-name {

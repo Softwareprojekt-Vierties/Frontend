@@ -1,6 +1,7 @@
 <template>
     <div id="app">
       <div id="header" :style="headerStyle">
+          <div id="header-inner">
         <div id="icon-div">
           <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">
         </div>
@@ -71,6 +72,7 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
   </template>
   
@@ -110,7 +112,7 @@
       headerStyle() {
         return {
           backgroundImage: `url(${this.imagePreview})`,
-          backgroundSize: '340%',
+          backgroundSize: 'cover',
           backgroundPosition: 'center center'
           //filter:flur(8px);
         };
@@ -172,9 +174,16 @@
   }
   
   #header {
-    background-color: rgb(213, 213, 213);
-    padding-bottom: 40px;
-    padding-top: 10px;
+    background-color: var(--create-page-header-background);
+  }
+
+  #header-inner {
+      width: 100%;
+      height: 100%;
+      padding-bottom: 40px;
+      padding-top: 10px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
   }
   
   #picture-name {
