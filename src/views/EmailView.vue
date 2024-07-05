@@ -80,8 +80,10 @@ export default {
 
   async created(){
     //45, 56, 67
-    let id = 56; // id muss von eingeloggtem User sein
-    const response = await axios.get(`/getMails/${id}`);
+    //let id = 56; // id muss von eingeloggtem User sein
+    const token = localStorage.getItem('authToken');
+
+    const response = await axios.get(`/getMails`,{ headers: {'auth': token }});
     console.log(response.data);
     this.setFormData(response.data);
 
@@ -127,13 +129,14 @@ export default {
 
     async akzeptieren(){
 
+      const token = localStorage.getItem('authToken');
       for(let varId in this.mailList){
         if(this.mailList[varId].id == this.mailId){
           await axios.post('/updateMail',{
           id : this.mailList[varId].id,
           gelesen : true,
           angenommen : true
-        });
+        }, { headers: {'auth': token }} );
         }
         this.mailList[varId].angenommen = true;
         this.selectedMailStatus = true;
@@ -143,13 +146,15 @@ export default {
 
     
     async ablehnen(){
+
+      const token = localStorage.getItem('authToken');
       for(let varId in this.mailList){
         if(this.mailList[varId].id == this.mailId){
           await axios.post('/updateMail',{
           id : this.mailList[varId].id,
           gelesen : true,
           angenommen : false
-          });
+          },{ headers: {'auth': token }});
         }
         this.mailList[varId].angenommen = false;
         this.selectedMailStatus = false;
