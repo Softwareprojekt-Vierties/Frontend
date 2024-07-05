@@ -36,7 +36,7 @@
             </div>
             <div id="dish">
               <label class="description">Aktuelle Playlist:</label>
-              <Dj v-if="id" :idFromFather="id" />
+              <Dj v-if="idSent" :idFromFather="idSent" />
             </div>
         </div>
         <br>
@@ -61,8 +61,8 @@
               <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
           </div>
-          <div id="ticket">
-            DJ buchen (20/50)
+          <div id="ticket" @click="weiter">
+            {{ buttonLabel }}
           </div>
         </div>
       </div>
@@ -100,7 +100,9 @@
         id:'',
         reviewType :0,
         events : [],
-        userid:''
+        userid:'',
+        idSent : '',
+        isOwner: ''
         
       };
     },
@@ -118,13 +120,17 @@
         return this.imagePreview
           ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
           : {};
+      }, 
+      buttonLabel() {
+        return this.isOwner ? 'Edit DJ' : 'Event Erstellen';
       }
     },
 
     async created(){
-    let id = 4;
+    this.idSent = 13;
+    const token = localStorage.getItem('authToken');
       try {
-          const response = await axios.get(`/getArtistById/${id}`);
+          const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});
           console.log(response);
           this.setFormData(response.data);
           console.log('dj data received:', response.data);
@@ -153,12 +159,22 @@
         this.userid = data['artist'].rows[0].userid;
         this.id = data['artist'].rows[0].id;
         this.events = data['events'].rows;
+        this.isOwner = data['isOwner'];
       },
       
       goToAnotherPage() {
         this.$router.push('/search');
+      }, 
+      weiter(){
+        if(this.isOwner === false){
+          this.$router.push('/createevent');
+        } else{
+          this.$router.push({ name : 'EditDjType', params: {id : this.idSent}});
+        }
       }
-    }
+    }, 
+
+
   }
   </script>
   

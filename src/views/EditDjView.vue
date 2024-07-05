@@ -42,11 +42,11 @@
           </div>
           <div class="infos">
             <label class="info-subheadline">Erfahrung:</label>
-            <input v-model="experience" class="input" type="text" placeholder="z.B. 10 Jahre">
+            <input v-model="experience" class="input" type="number" min ="0" placeholder="z.B. 10 Jahre">
           </div>
           <div class="infos">
             <label class="info-subheadline">Preis:</label>
-            <input v-model="price" class="input" type="text" placeholder="z.B. 50€">
+            <input v-model="price" class="input" type="number" min="0" placeholder="z.B. 50€">
           </div>
         </div>
         <div id="buttons">
@@ -86,14 +86,17 @@ export default {
       songs: [
         { id: '', songName: '', songLength: '', songYear: '' }
       ],
-      originalData : {}
+      originalData : {},
+      id:''
     };
   },
 
   async created(){
-    let id = 13;
+    this.id = this.$route.params.id;
+    const token = localStorage.getItem('authToken'); 
+
       try {
-          const response = await axios.get(`/getArtistById/${id}`);
+          const response = await axios.get(`/getArtistById/${this.id}`,{headers: {'auth':token}});
           console.log(response);
           this.originalData = { ...response.data };
           this.setFormData(response.data);
@@ -149,12 +152,13 @@ export default {
       formData.email = this.email;
       formData.profilbild = this.imagePreview;
       formData.songs = this.songs;
+      formData.id = this.id;
       console.log('FormData:', formData); 
 
-      //const token = localStorage.getItem('authToken'); 
+      const token = localStorage.getItem('authToken'); 
 
       try {
-        const response = await axios.post('/updateArtist', formData);
+        const response = await axios.post('/updateArtist', formData, {headers: {'auth':token}});
         console.log('Artist updated:', response.data);
         alert('Artist updated successfully!');
       } catch (error) {

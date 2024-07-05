@@ -84,11 +84,11 @@ const routes = [
     name: 'CreateDjType',
     component: CreateDjView 
 }, {
-    path: '/editcaterer',
+    path: '/editcaterer/:id',
     name: 'EditCatererType',
     component: EditCatererView 
 }, {
-    path: '/editdj',
+    path: '/editdj/:id',
     name: 'EditDjType',
     component: EditDjView 
 },  {
