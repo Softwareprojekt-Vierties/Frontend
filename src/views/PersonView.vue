@@ -492,7 +492,6 @@ input:checked + .slider:before {
   color: var(--textfield-font-color);
   text-align: left;
   font-weight: normal;
-  color: rgb(80, 80, 80);
 }
 
 #open-air {
