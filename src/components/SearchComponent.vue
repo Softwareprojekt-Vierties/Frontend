@@ -63,7 +63,7 @@
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :buttonClickFunction="result.buttonClickFunction" :titleClickFunction="result.titleClickFunction" :info="result.info" :key="result.key"/>
                 </div>
                 <div v-else-if="searchType == 4 || searchType == 6" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.startuhrzeit ?? '--:--'}Uhr - ${result.enduhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 1 || searchType == 9" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
@@ -539,7 +539,7 @@
                                             "name": item.name,
                                             "line1": "Location: " + item.locationname,
                                             "line2": "Datum: " + new Date(item.datum).toDateString(),
-                                            "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
+                                            "line3": "Zeit: " + (item.startuhrzeit ?? "--:--") + "Uhr - " + (item.enduhrzeit ?? "--:--") + "Uhr",
                                             "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
                                             "imagePath": item.bild,
                                             "isBookmarked": item.favorit ?? 0,

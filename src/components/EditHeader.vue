@@ -57,7 +57,10 @@
         computed: {
             imageURL() {
                 return `url(${this.imagePreview})`;
-            }
+            },
+            brightnessFilter() {
+                return this.imagePreview ? .5 : 1.0;
+            },
         },
     }
 </script>
@@ -81,8 +84,8 @@
       padding-bottom: 40px;
       padding-top: 10px;
       @media (prefers-color-scheme: dark) {
-          backdrop-filter: brightness(50%) blur(10px);
-          -webkit-backdrop-filter: brightness(50%) blur(10px);
+          backdrop-filter: brightness(v-bind("brightnessFilter")) blur(10px);
+          -webkit-backdrop-filter: brightness(v-bind("brightnessFilter")) blur(10px);
       }
   }
 
