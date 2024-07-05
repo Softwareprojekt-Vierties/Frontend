@@ -1,5 +1,5 @@
 <template>
-    <div id="file-div" :style="fileDivStyle">
+    <div id="file-div">
         <div id="file-upload">
             <label id="image-text" for="fileToUpload">
                 <img v-if="!url && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />

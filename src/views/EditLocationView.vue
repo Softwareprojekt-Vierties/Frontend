@@ -3,16 +3,7 @@
       <div id="header">
         <HomeButton :isLoggedIn="true" />
         <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-            <div id="file-upload">
-              <label id="image-text" for="fileToUpload">
-                <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-                <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-                <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
-              </label>
-              <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
-            </div>
-          </div>
+          <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" :onFileChange="onFileChange" />
           <div id="name-description">
             <div class="name-description-input">
               <label class="description">Name:</label>
@@ -77,10 +68,12 @@
   
 <script>
     import HomeButton from '../components/HomeButton.vue';
+    import Image from '../components/ChangeableImageComponent.vue';
   import axios from 'axios'; 
   export default {
     components: {
         HomeButton,
+        Image,
     },
 
     data() {
@@ -122,9 +115,6 @@
     },
 
     computed: {
-      fileDivStyle() {
-        return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-      },
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
@@ -249,58 +239,6 @@
     text-align: left;
     font-size: 12px;
     margin-bottom: 3px;
-}
-
-#file-div {
-    width: 250px;
-    height: 180px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -225px;
-}
-
-#file-upload {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#file-upload label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.upload-icon {
-    max-width: 50%;
-    max-height: 50%;
-    margin-bottom: -10px; /* Adjust margin to bring the text closer */
-    margin-left: 10px;
-    margin-top: -10px;
-}
-
-#upload-text {
-    color: var(--upload-text-color);
-    margin-top: 0; /* Remove any top margin to bring it closer to the image */
 }
 
 .switch {

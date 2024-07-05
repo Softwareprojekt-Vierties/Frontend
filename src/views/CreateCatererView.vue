@@ -103,10 +103,6 @@ export default {
   },
 
   computed: {
-
-    fileDivStyle() {
-      return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-    },
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
