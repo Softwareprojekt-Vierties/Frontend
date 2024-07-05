@@ -4,11 +4,11 @@
     </div>
 
     <div>
-      <button class="buttonPerson">Privatperson</button>
+      <button class="buttonPerson" @click="this.$router.push('/createPerson')">Privatperson</button>
     </div>
 
     <div>
-      <button class="buttonDienst">Dienstleister</button>
+      <button class="buttonDienst" @click="this.$router.push('/serviceType')">Dienstleister</button>
     </div>
 
     <div>

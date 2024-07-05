@@ -54,14 +54,15 @@ export default {
       const benutzernameValid = this.benutzername.length > 0;
 
       if (emailValid && passwordValid && benutzernameValid) {
-        axios.post('/register', {
+        axios.post('/tempToken', {
           email: this.email,
           pass: this.password,
           name: this.benutzername
         })
         .then(response => {
-          console.log('Konto erfolgreich erstellt:', response);
-          this.$router.push('/');
+          console.log('Success:', response);
+            localStorage.setItem('authToken', response.data);
+          this.$router.push('/usertype');
         })
         .catch(error => {
           console.error('Fehler beim Login:', error.response.data.message);
