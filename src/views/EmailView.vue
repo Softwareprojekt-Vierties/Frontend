@@ -1,8 +1,6 @@
 <template>
   <div id="header">
-    <div id="icon-div">
-      <img alt="Filer" class="icon" src="../assets/home.jpg">
-    </div>
+      <HomeButton :isLoggedIn="true" />
   </div>
   <div id="Eventure-Logo-Text">
     <img alt="Eventure Logo" id="logo" :src="isDarkMode ? require('../assets/dark_logo_test.png') : require('../assets/logo.png')">
@@ -59,11 +57,13 @@
 
 <script>
 import DishForm from '../components/MailComponent.vue';
+import HomeButton from '../components/HomeButton.vue';
 import axios from 'axios'; 
 
 export default {
   components: {
-    DishForm
+    DishForm,
+      HomeButton,
   },
   data() {
     return {
@@ -269,25 +269,6 @@ export default {
 </script>
 
 <style scoped>
-#icon-div {
-    width: 40px;
-    padding: 15px;
-    padding-bottom: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-    margin-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-}
-
 #Eventure-Logo-Text {
     display: grid;
     grid-template-columns: auto auto;

@@ -1,31 +1,6 @@
 <template>
   <div id="app">
-    <div id="header" :style="headerStyle">
-      <div id="icon-div">
-        <img @click="goToAnotherPage" alt="Filer" class="icon" src="../assets/home.jpg">
-      </div>
-      <div id="picture-name">
-        <div id="file-div" :style="fileDivStyle">
-          <div id="file-upload">
-            <label id="image-text"></label>
-          </div>
-        </div>
-        <div id="name-description">
-          <div class="name-description-input">
-            <div id="name-stars">
-              <label id="name">{{ name }}</label>
-              <div class="stars">
-                <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
-              </div>
-            </div>
-          </div>
-          <div class="name-description-input">
-            <label id="description-short">{{ kurzbeschreibung }}</label>
-          </div>
-        </div>
-      </div>
-    </div>
-
+        <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
     <div id="main">
       <div id="left-side">
         <div class="long-description">
@@ -75,6 +50,7 @@
 <script>
 import DishForm from '../components/ReviewComponent.vue';
 import Bookmark from '../components/ViewPageBookmark.vue';
+import Header from '../components/ViewHeader.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -83,6 +59,7 @@ export default {
   components: {
     DishForm,
       Bookmark,
+      Header,
   },
   data() {
     return {
@@ -226,119 +203,6 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgb(242, 242, 242);
-}
-
-#header {
-  position: relative;
-  z-index: 0;
-  padding-bottom: 40px;
-  padding-top: 10px;
-}
-
-#header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: inherit; /* Nimmt das Hintergrundbild von #header */
-  background-size: 400%;
-  background-position: center center;
-  filter: blur(10px);
-  z-index: -1; /* Stellt sicher, dass das Pseudo-Element hinter den Kinderelementen liegt */
-}
-
-#icon-div,
-#picture-name,
-#file-div {
-  position: relative; /* Stellt sicher, dass diese Elemente über dem gefilterten Hintergrund erscheinen */
-  z-index: 1;
-}
-
-#picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: white;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-#name-description {
-  padding: 10px;
-}
-
-#name {
-  text-align: left;
-  font-size: 35px;
-  color: white;
-  margin-bottom: 10px;
-}
-
-#description-short {
-  text-align: left;
-  font-size: 18px;
-  color: white;
-  margin-bottom: -10px;
-}
-
-.name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
-}
-
-.description {
-  text-align: left;
-  margin-bottom: 3px;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-}
-
-#file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#file-upload input[type='file'] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
 }
 
 #main {

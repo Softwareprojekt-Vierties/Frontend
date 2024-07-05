@@ -1,34 +1,6 @@
 <template>
   <div id="CreateDjView">
-    <div id="header">
-      <div id="icon-div">
-        <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png" @click="goToHomePage">
-        <img alt="Filer" class="icon" v-else src="../assets/home.jpg" @click="goToHomePage">
-      </div>
-      <div id="picture-name">
-        <div id="file-div" :style="fileDivStyle">
-          <div id="file-upload">
-            <label id="image-text" for="fileToUpload">
-              <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-              <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-              <span id="upload-text" v-if="!imagePreview">Bild hochladen</span>
-            </label>
-            <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
-          </div>
-        </div>
-        <div id="name-description">
-          <div class="name-description-input">
-            <label class="description">Name:</label>
-            <input v-model="djName" class="header-input" type="text" placeholder="z.B. Name"><br>
-          </div>
-          <div class="name-description-input">
-            <label class="description">Kurze Beschreibung hinzufügen:</label>
-            <input v-model="shortDescription" class="header-input" type="text" placeholder="z.B. 24/7">
-          </div>
-        </div>
-      </div>
-    </div>
-
+      <Header v-model:name="djName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
     <div id="main">
       <div id="left-side">
         <div class="long-description">
@@ -91,9 +63,13 @@
 </template>
 
 <script>
+import Header from '../components/EditHeader.vue';
 import axios from 'axios'; 
 
 export default {
+    components: {
+        Header,
+    },
   data() {
     return {
       djName: '',
@@ -111,9 +87,6 @@ export default {
     };
   },
   computed: {
-    fileDivStyle() {
-      return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-    },
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
@@ -195,120 +168,6 @@ export default {
 
 
 <style scoped>
-#header {
-  background-color: var(--create-page-header-background);
-  padding-bottom: 40px;
-  padding-top: 10px;
-}
-
-#picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--textfield-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-#name-description {
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  padding: 10px;
-}
-
-.name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
-}
-
-.header-input {
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  text-align: center;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.header-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-.description {
-  text-align: left;
-  font-size: 12px;
-  margin-bottom: 3px;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-}
-
-#file-upload {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
-}
-
-#upload-text {
-  color: var(--upload-text-color);
-  margin-top: 0; /* Remove any top margin to bring it closer to the image */
-}
-
 .switch {
   position: relative;
   display: inline-block;

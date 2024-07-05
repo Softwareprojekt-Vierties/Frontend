@@ -1,21 +1,9 @@
 <template>
   <div id="CreateEventView">
     <div id="header">
-      <div id="icon-div">
-        <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-        <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-      </div>
+        <HomeButton :isLoggedIn="false" />
       <div id="picture-name">
-        <div id="file-div">
-          <div id="file-upload">
-            <label id="image-text" for="fileToUpload">
-              <img v-if="isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
-              <img v-else src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
-              <span id="upload-text">Bild hochladen</span>
-            </label>
-            <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
-          </div>
-        </div>
+          <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" :onFileChange="onFileChange" />
         <div id="name-description">
           <div class="name-description-input">
             <label class="description">Eventnamen hinzufügen:</label>
@@ -159,6 +147,8 @@
     import DishForm from '../components/ArtistComponent.vue';
     import LocationCard from '../components/EventComponenet.vue'
     import EventCard from '../components/EventCardComponent.vue';
+    import HomeButton from '../components/HomeButton.vue';
+    import Image from '../components/ChangeableImageComponent.vue';
 
     export default {
         components: {
@@ -166,6 +156,8 @@
             EventCard,
             SearchComponent,
             LocationCard,
+            HomeButton,
+            Image,
         },
         data() {
             return {
@@ -193,9 +185,6 @@
             };
         },
         computed: {
-            fileDivStyle() {
-                return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-            },
             isDarkMode() {
                 return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
             }
@@ -352,23 +341,6 @@
   gap: 20px;
 }
 
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--textfield-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
 #name-description {
   border-radius: 10px;
   background-color: var(--textfield-background);
@@ -398,58 +370,6 @@
   text-align: left;
   font-size: 12px;
   margin-bottom: 3px;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-}
-
-#file-upload {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
-}
-
-#upload-text {
-  color: var(--upload-text-color);
-  margin-top: 0; /* Remove any top margin to bring it closer to the image */
 }
 
 .switch {

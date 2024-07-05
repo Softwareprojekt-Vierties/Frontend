@@ -1,26 +1,6 @@
 <template>
     <div id="app">
-      <div id="header" :style="fileHeaderStyle">
-          <div id="header-inner">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
-        <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-          </div>
-          <div id="name-description">
-            <div class="name-description-input">
-                <label id="name">{{userName}}</label>
-            </div>
-            <div class="name-description-input">
-                <label id="description-short">{{shortDescription}}</label>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-  
+        <Header :imagePreview="profilePicture" :name="userName" :sterne="-1" :kurzbeschreibung="shortDescription" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
@@ -80,6 +60,7 @@
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
+  import Header from '../components/ViewHeader.vue';
   import axios from 'axios';
   
   export default {
@@ -88,14 +69,13 @@
       PopupModal,
       ArtistCard,
         Bookmark,
+        Header,
     },
     data() {
       return {
           userName: "",
         isModalVisible: false,
           profilePicture: null,
-          fileDivStyle: null,
-          fileHeaderStyle: null,
           favoriteEventTypes: "",
           favoriteSong: "",
           favoriteDish: "",
@@ -161,8 +141,6 @@
                     res.data.tickets.rows?.forEach(event => {
                         this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
                     });
-                    this.fileDivStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-                    this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
 
                     // to be implemented
                     this.isFriend = false;
@@ -176,7 +154,6 @@
                     })
                 })
                 .catch(err => console.log("Error: ", err));
-            console.log(this.fileDivStyle);
         },
         increaseEventLocationsIndex() {
             if (this.eventsLocationsIndex < this.myEventsLocations.length - 1) {
@@ -220,140 +197,11 @@
   background-color: var(--create-page-background);
 }
 
-#header {
-  background-color: var(--create-page-header-background);
-}
-
-#header-inner {
-    width: 100%;
-    height: 100%;
-  padding-bottom: 40px;
-  padding-top: 10px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-#picture-name {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: center;
-  align-items: end;
-  gap: 20px;
-}
-
-#icon-div {
-  width: 40px;
-  padding: 15px;
-  padding-bottom: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: var(--create-page-background);
-  margin-left: 10px;
-}
-
-.icon {
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-}
-
-#name-description {
-    background-color: none;
-    padding: 10px;
+  .description {
+      text-align: left;
+      font-size: 12px;
+      margin-bottom: 3px;
   }
-
-.name-description-input {
-  display: grid;
-  grid-template-columns: 300px;
-  justify-content: left;
-}
-
-#name {
-  text-align: left;
-  font-size: 35px;
-  color: white;
-  margin-bottom: 10px;
-}
-
-#description-short {
-  text-align: left;
-  font-size: 18px;
-  color: white;
-  margin-bottom: -10px;
-}
-
-.header-input {
-  height: 25px;
-  border-radius: 5px;
-  border: 1px solid #000000;
-  text-align: center;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.header-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-.description {
-  text-align: left;
-  font-size: 12px;
-  margin-bottom: 3px;
-}
-
-#file-div {
-  width: 250px;
-  height: 180px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background-color: var(--create-page-background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: -225px;
-  background-color: white;
-}
-
-#file-upload {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#file-upload label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#file-upload input[type="file"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
-}
-
-#upload-text {
-  color: var(--upload-text-color);
-  margin-top: 0; /* Remove any top margin to bring it closer to the image */
-}
 
 .switch {
   position: relative;
