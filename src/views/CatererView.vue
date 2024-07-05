@@ -1,27 +1,6 @@
 <template>
     <div id="app">
-      <div id="header" :style="headerStyle">
-          <div id="header-inner">
-              <HomeButton :isLoggedIn="true" />
-        <div id="picture-name">
-          <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" />
-          <div id="name-description">
-            <div class="name-description-input">
-                <div id="name-stars">
-                    <label id="name">{{ name }}</label>
-                    <div class="stars">
-                      <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
-                    </div>
-                </div>
-            </div>
-            <div class="name-description-input">
-              <label id="description-short">{{ kurzbeschreibung }}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-  
+        <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
@@ -73,8 +52,7 @@
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Caterer from '../components/CatererComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
-  import HomeButton from '../components/HomeButton.vue';
-  import Image from '../components/ImageComponent.vue';
+  import Header from '../components/ViewHeader.vue';
   import axios from 'axios'; 
 
 
@@ -84,8 +62,7 @@
       ArtistCard,
       Caterer,
         Bookmark,
-        HomeButton,
-        Image,
+        Header,
     },
     data() {
       return {
@@ -107,14 +84,6 @@
     },
 
     computed: {
-      headerStyle() {
-        return {
-          backgroundImage: `url(${this.imagePreview})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center'
-          //filter:flur(8px);
-        };
-      },
     },
 
     async created(){
@@ -166,59 +135,12 @@
     background-color: rgb(242, 242, 242);
   }
   
-  #header {
-    background-color: var(--create-page-header-background);
-  }
-
-  #header-inner {
-      width: 100%;
-      height: 100%;
-      padding-bottom: 40px;
-      padding-top: 10px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-  }
-  
-  #picture-name {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: center;
-    align-items: end;
-    gap: 20px;
-  }
-  
-  #name-description {
-    padding: 10px;
-    background-color: transparent;
-  }
-
-  #name {
-    text-align: left;
-    font-size: 35px;
-    color: white;
-    margin-bottom: 10px;
-  }
-
-  #description-short {
-    text-align: left;
-    font-size: 18px;
-    color: white;
-    margin-bottom: -10px;
-  }
-  
-  .name-description-input {
-    display: grid;
-    grid-template-columns: 300px;
-    justify-content: left;
-  }
-  
   .description {
-    text-align: left;
-    margin-bottom: 3px;
-    font-size: 13px;
-    font-weight: bold;
+      text-align: left;
+      font-size: 12px;
+      margin-bottom: 3px;
   }
-  
+
   #main {
     display: grid;
     grid-template-columns: auto auto;
@@ -347,28 +269,6 @@
     align-items: center;
     gap: 10px;
     margin-top: 15px;
-}
-
-.stars{
-    margin-bottom: 10px;
-}
-
-.star {
-    color: #ccc; 
-    font-size: 27px; 
-}
-
-.star.filled {
-    color: #f5d130; 
-
-}
-
-#name-stars {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: left;
-    align-items: center;
-    gap: 10px;
 }
 
 #event {
