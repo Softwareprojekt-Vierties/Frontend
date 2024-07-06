@@ -62,7 +62,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-      background-color: var(--background);
+    background-color: var(--background);
 }
 
   #header {
