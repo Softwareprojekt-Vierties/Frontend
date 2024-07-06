@@ -3,16 +3,7 @@
         <Header :imagePreview="profilePicture" :name="userName" :sterne="-1" :kurzbeschreibung="shortDescription" />
       <div id="main">
         <div id="left-side">
-          <div class="long-description">
-            <label class="description">Beschreibung:</label>
-            <label id="long-description-input" type="text">{{longDescription}}</label>
-            <label class="description-info">Eventarten:</label>
-            <label id="long-description-input" type="text">{{favoriteEventTypes}}</label>
-            <label class="description-info">Lieblings Lied:</label>
-            <label id="long-description-input" type="text">{{favoriteSong}}</label>
-            <label class="description-info">Lieblings Gericht:</label>
-            <label id="long-description-input" type="text">{{favoriteDish}}</label>
-          </div>          
+          <LongDescription :description="longDescription" :events="favoriteEventTypes" :song="favoriteSong" :dish="favoriteDish" />
           <br>
           <div class="long-description">
             <label class="description">Bilder:</label>
@@ -61,6 +52,7 @@
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import Header from '../components/ViewHeader.vue';
+  import LongDescription from '../components/LongDescription.vue';
   import axios from 'axios';
   
   export default {
@@ -70,10 +62,13 @@
       ArtistCard,
         Bookmark,
         Header,
+        LongDescription,
     },
     data() {
       return {
           userName: "",
+          longDescription: "",
+          shortDescription: "",
         isModalVisible: false,
           profilePicture: null,
           favoriteEventTypes: "",
@@ -347,19 +342,6 @@ input:checked + .slider:before {
     color: var(--placeholder-color);
 }
 
-#long-description-input {
-  width: 580px;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  padding: 0px;
-  border: none;
-  resize: none;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-  text-align: left;
-  font-weight: normal;
-}
-
 #open-air {
   display: block;
   text-align: left;
@@ -527,13 +509,6 @@ footer {
     margin-top: 5px;
     border-top: 1px solid rgb(200, 200, 200);
     padding-top: 5px;
-  }
-
-  .description-info {
-    text-align: left;
-    font-size: 12px;
-    margin-bottom: 3px;
-    margin-top: 20px;
   }
 
   #info-headline {

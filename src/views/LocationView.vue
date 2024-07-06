@@ -3,10 +3,7 @@
         <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
     <div id="main">
       <div id="left-side">
-        <div class="long-description">
-          <label class="description">Beschreibung:</label>
-          <div id="long-description-text">{{ beschreibung }}</div>
-        </div>
+          <LongDescription :description="beschreibung" />
         <div id="maps-div" style="height: 400px;">
           <!-- using openstreetmap here with maps-div :D -->
         </div>
@@ -51,6 +48,7 @@
 import DishForm from '../components/ReviewComponent.vue';
 import Bookmark from '../components/ViewPageBookmark.vue';
 import Header from '../components/ViewHeader.vue';
+import LongDescription from '../components/LongDescription.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -60,6 +58,7 @@ export default {
     DishForm,
       Bookmark,
       Header,
+      LongDescription,
   },
   data() {
     return {

@@ -3,10 +3,7 @@
         <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
       <div id="main">
         <div id="left-side">
-          <div class="long-description">
-            <label class="description">Beschreibung:</label>
-            <div id="long-description-text">{{ beschreibung }}</div>
-          </div>
+          <LongDescription :description="beschreibung" />
         <div id="event-dish">
             <div id="event">
               <label class="description">Nächste Events:</label>
@@ -53,6 +50,7 @@
   import Caterer from '../components/CatererComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import Header from '../components/ViewHeader.vue';
+  import LongDescription from '../components/LongDescription.vue';
   import axios from 'axios'; 
 
 
@@ -63,6 +61,7 @@
       Caterer,
         Bookmark,
         Header,
+        LongDescription,
     },
     data() {
       return {
