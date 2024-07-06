@@ -1203,6 +1203,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 7.5px;
+    background-color: white;
 }
 
 #newevent-mobile {
@@ -1222,6 +1223,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 2.5px;
+    background-color: white;
 }
 
 #email-mobile {
@@ -1241,6 +1243,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 2.5px;
+    background-color: white;
 }
 
 #profile-mobile {
@@ -1260,6 +1263,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 7.5px;
+    background-color: white;
 }
 
 #menu-mobile {
