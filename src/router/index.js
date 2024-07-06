@@ -24,6 +24,7 @@ import EmailView from '@/views/EmailView.vue'
 
 import MobileLoginView from '@/views/MobileLoginView.vue'
 import MobileSignupView from '@/views/MobileSignupView.vue'
+import MoblieSearchView from'@/views/MoblieSearchView.vue'
 
 
 
@@ -53,7 +54,7 @@ const routes = [
     },  {
         path: '/search',
         name: 'SucheViewType',
-        component: isMobile() ? SucheView  : SucheView 
+        component: isMobile() ? MoblieSearchView  : SucheView 
     },
   {
     path: '/dj/:id',
