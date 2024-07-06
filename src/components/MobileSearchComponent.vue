@@ -87,6 +87,18 @@
                 </div>
             </div>
         </div>
+        <div id="newevent-button" v-if="menu">
+            <img id="newevent-mobile" src="../assets/newevent-mobile.png" />
+        </div>
+        <div id="email-button" v-if="menu">
+            <img id="email-mobile" src="../assets/email-mobile.png" />
+        </div>
+        <div id="profile-button" v-if="menu">
+            <img id="profile-mobile" src="../assets/profile-mobile.png" />
+        </div>
+        <div id="menu-button" @click="handleClick">
+            <img id="menu-mobile" src="../assets/menu-mobile.png" />
+        </div>
     </div>
 </template>
 
@@ -112,6 +124,7 @@ export default {
     },
     data() {
         return {
+            menu: false,
             order:"Absteigend:",
             filterContent: "",
             filterSelection: "",
@@ -167,12 +180,20 @@ export default {
         };
     },
     methods: {
+        handleClick() {
+            if(this.menu) {
+                this.menu = false;
+            }
+            else {
+                this.menu = true;
+            }
+        },
         toggleTooltip() {
             const tooltip = document.getElementById("dynamic-tooltip");
             tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
             this.updateTooltipWidth();
             if (tooltip.style.display === "block") {
-                this.adjustFilterRegion();
+                this.adjustFilter();
             }
         },
         toggleSearchType() {
@@ -195,35 +216,35 @@ export default {
                 .map((filter) => {
                     switch (filter) {
                         case "region":
-                            return `<div class="filter-item"><div id="filter-item-text">Region: </div><input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Region: </div><input id="filter-region" class="filter" type="text" placeholder="z.B. 32427 Minden"></div>`;
                         case "date":
-                            return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input id="filter-date" class="filter" type="date" placeholder="z.B. 17.08.2024"></div>`;
                         case "distance":
-                            return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input class="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input id="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
                         case "capacity":
-                            return `<div class="filter-item"><div id="filter-item-text">Kapazität: </div><div class="kapazitaet"> <input id="first-capacity" class="filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Kapazität: </div><div id="kapazitaet" class="two-filter-div"> <input id="first-capacity" class="two-filter-div-param filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="two-filter-div-param filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
                         case "rating":
                             return `<div class="filter-item"><div id="filter-item-text">Bewertung: </div><fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
                         case "startTime":
-                            return `<div class="filter-item"><div id="filter-item-text">Startzeit: </div><div class="time"> <input class="filter-time" type="time"> - <input class="filter-time" type="time"> </div></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Startzeit: </div><div class="two-filter-div time"> <input class="two-filter-div-param filter-time" type="time"> - <input class="two-filter-div-param filter-time" type="time"> </div></div>`;
                         case "duration":
-                            return `<div class="filter-item"><div id="filter-item-text">Dauer: </div><div class="duration"> <input class="filter-duration" type="number" min="0" placeholder="5 Stunden"> - <input class="filter-duration" type="number" min="0" placeholder="7 Stunden"> </div></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Dauer: </div><div class="two-filter-div duration"> <input class="two-filter-div-param filter-duration" type="number" min="0" placeholder="5 Stunden"> - <input class="two-filter-div-param filter-duration" type="number" min="0" placeholder="7 Stunden"> </div></div>`;
                         case "openAir":
                             return `<div class="filter-item"><div id="filter-item-text">Open Air: </div><label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label> </div>`;
                         case "price":
-                            return `<div class="filter-item"><div id="filter-item-text">Preis: </div><div class="price"> <input class="filter-price" type="number" min="0" placeholder="50 €"> - <input class="filter-price" type="number" min="0" placeholder="500 €"> </div> </div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Preis: </div><div class="two-filter-div price"> <input class="two-filter-div-param filter-price" type="number" min="0" placeholder="50 €"> - <input class="two-filter-div-param filter-price" type="number" min="0" placeholder="500 €"> </div> </div>`;
                         case "category":
-                            return `<div class="filter-item"><div id="filter-item-text">Kategorie: </div><input class="filter-category" type="text" placeholder="Kategorie"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Kategorie: </div><input id="filter-category" class="filter" type="text" placeholder="Kategorie"></div>`;
                         case "experience":
-                            return `<div class="filter-item"><div id="filter-item-text">Erfahrung: </div><input class="filter-experience" type="number" min="0" placeholder="10 Jahren"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Erfahrung: </div><input id="filter-experience" class="filter" type="number" min="0" placeholder="10 Jahren"></div>`;
                         case "eventSize":
-                            return `<div class="filter-item"><div id="filter-item-text">Eventgröße: </div><input class="filter-event-size" type="number" min="0" placeholder="Nr. Personen"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Eventgröße: </div><input id="filter-event-size" class="filter" type="number" min="0" placeholder="Nr. Personen"></div>`;
                         case "ticketPrice":
-                            return `<div class="filter-item"><div id="filter-item-text">Ticketpreis: </div><input class="filter-ticket-price" type="number" min="0" placeholder="Ticketpreis"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Ticketpreis: </div><input id="filter-ticket-price" class="filter" type="number" min="0" placeholder="Ticketpreis"></div>`;
                         case "age":
-                            return `<div class="filter-item"><div id="filter-item-text">Alter: </div><input class="filter-age" type="number" min="0" placeholder="Alter"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Alter: </div><input id="filter-age" class="filter" type="number" min="0" placeholder="Alter"></div>`;
                         case "gender":
-                            return `<div class="filter-item"><div id="filter-item-text">Geschlecht: </div><select class="filter-gender"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Geschlecht: </div><select class="filter-gender filter"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
                         default:
                             return "";
                     }
@@ -237,22 +258,110 @@ export default {
                 tooltip.style.width = `${searchbarAndIcons.offsetWidth-35}px`;
             }
         },
-        adjustFilterRegion() {
+        adjustFilter() {
             const tooltip = this.$refs.filterContainer;
-            const filterRegions = tooltip.querySelectorAll('.filter-region');
+            const filter = tooltip.querySelectorAll('.filter');
             const filter_item_text = tooltip.querySelectorAll('#filter-item-text')
+            const filter_distance = tooltip.querySelectorAll('#filter-distance')
+            const rangeValue = tooltip.querySelectorAll('#rangeValue')
+            const filter_capacity = tooltip.querySelectorAll('.two-filter-div-param')
+            const capacity = tooltip.querySelectorAll('.two-filter-div')
+            const filter_switch = tooltip.querySelectorAll('.switch')
+            const filter_rating_input = tooltip.querySelectorAll('.filter-rating > input')
+            const filter_rating = tooltip.querySelectorAll('.filter-rating')
 
-            filterRegions.forEach(region => {
+            filter.forEach(filter => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    filter.style.height = `${tooltipWidth * 0.065}px`; // 10% der Tooltip-Höhe
+                    filter.style.fontSize = `${tooltipWidth * 0.05}px`; // 5% der Tooltip-Höhe
+                    filter.style.width = `${tooltipWidth * 0.5}px`; // 80% der Tooltip-Breite
+                }
+                else {
+                    filter.style.height = `${19.5}px`;
+                    filter.style.fontSize = `${15}px`;
+                    filter.style.width = `${tooltipWidth * 0.6}px`;
+                }
+            });
+
+            filter_distance.forEach(region => {
                 const tooltipWidth = tooltip.offsetWidth;
                 if(tooltipWidth < 300) {
                     region.style.height = `${tooltipWidth * 0.065}px`; // 10% der Tooltip-Höhe
                     region.style.fontSize = `${tooltipWidth * 0.05}px`; // 5% der Tooltip-Höhe
-                    region.style.width = `${tooltipWidth * 0.5}px`; // 80% der Tooltip-Breite
+                    region.style.width = `${tooltipWidth * 0.35}px`; // 80% der Tooltip-Breite
                 }
                 else {
                     region.style.height = `${19.5}px`;
                     region.style.fontSize = `${15}px`;
-                    region.style.width = `${tooltipWidth * 0.6}px`;
+                    region.style.width = `${(tooltipWidth * 0.6) - 35}px`;
+                }
+            });
+
+            rangeValue.forEach(rangeValue => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    rangeValue.style.fontSize = `${tooltipWidth * 0.05}px`; // 5% der Tooltip-Höhe
+                }
+                else {
+                    rangeValue.style.fontSize = `${10}px`;
+                }
+            });
+
+            filter_capacity.forEach(filter_capacity => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    filter_capacity.style.height = `${tooltipWidth * 0.065}px`; // 10% der Tooltip-Höhe
+                    filter_capacity.style.fontSize = `${tooltipWidth * 0.035}px`; // 5% der Tooltip-Höhe
+                    filter_capacity.style.width = `${tooltipWidth * 0.2}px`; // 80% der Tooltip-Breite
+                }
+                else {
+                    filter_capacity.style.height = `${19.5}px`;
+                    filter_capacity.style.fontSize = `${15}px`;
+                    filter_capacity.style.width = `${tooltipWidth * 0.25}px`;
+                }
+            });
+
+            capacity.forEach(capacity => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    capacity.style.gap = `${tooltipWidth * 0.05 - 5}px`;
+                }
+                else {
+                    capacity.style.gap = `${tooltipWidth * 0.05 - 5}px`;
+                }
+            })
+
+            filter_switch.forEach(filter_switch => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    filter_switch.style.marginLeft = `${tooltipWidth * 0.25 - 15}px`; // 80% der Tooltip-Breite
+                }
+                else {
+                    filter_switch.style.marginLeft = `${tooltipWidth * 0.3 - 15}px`;
+                }
+            });
+
+            filter_rating_input.forEach(filter_rating_input => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    filter_rating_input.style.margin = `${tooltipWidth * 0.02}px`; // 80% der Tooltip-Breite
+                    filter_rating_input.style.width = `${tooltipWidth * 0.05}px`;
+                }
+                else {
+                    filter_rating_input.style.margin = `${tooltipWidth * 0.02}px`; // 80% der Tooltip-Breite
+                    filter_rating_input.style.width = `${tooltipWidth * 0.05}px`;
+                }
+            });
+
+            filter_rating.forEach(filter_rating => {
+                const tooltipWidth = tooltip.offsetWidth;
+                if(tooltipWidth < 300) {
+                    filter_rating.style.marginLeft = `${tooltipWidth * 0.0}px`; // 80% der Tooltip-Breite
+                }
+                else {
+                    filter_rating.style.marginLeft = `${tooltipWidth * 0.06}px`; // 80% der Tooltip-Breite
+                    filter_rating.style.fontSize = `${20}px`;
                 }
             });
 
@@ -264,7 +373,7 @@ export default {
                 }
                 else {
                     filter_item_text.style.fontSize = `${15}px`;
-                    filter_item_text.style.width = `${tooltipWidth * 0.2}px`;
+                    filter_item_text.style.width = `${tooltipWidth * 0.3}px`;
                 }
             });
         },
@@ -278,13 +387,13 @@ export default {
             this.selectedFilters.forEach((filter) => {
                 switch (filter) {
                     case "region":
-                        filterValues.region = filtersContainer.querySelector(".filter-region")?.value ?? "";
+                        filterValues.region = filtersContainer.querySelector("#filter-region")?.value ?? "";
                         break;
                     case "date":
-                        filterValues.date = filtersContainer.querySelector(".filter-date")?.value ?? "";
+                        filterValues.date = filtersContainer.querySelector("#filter-date")?.value ?? "";
                         break;
                     case "distance":
-                        filterValues.distance = filtersContainer.querySelector(".filter-distance")?.value ?? "";
+                        filterValues.distance = filtersContainer.querySelector("#filter-distance")?.value ?? "";
                         break;
                     case "capacity":
                         filterValues.capacity = [
@@ -317,19 +426,19 @@ export default {
                         ];
                         break;
                     case "category":
-                        filterValues.category = filtersContainer.querySelector(".filter-category")?.value ?? "";
+                        filterValues.category = filtersContainer.querySelector("#filter-category")?.value ?? "";
                         break;
                     case "experience":
-                        filterValues.experience = filtersContainer.querySelector(".filter-experience")?.value ?? "";
+                        filterValues.experience = filtersContainer.querySelector("#filter-experience")?.value ?? "";
                         break;
                     case "eventSize":
-                        filterValues.eventSize = filtersContainer.querySelector(".filter-event-size")?.value ?? "";
+                        filterValues.eventSize = filtersContainer.querySelector("#filter-event-size")?.value ?? "";
                         break;
                     case "ticketPrice":
-                        filterValues.ticketPrice = filtersContainer.querySelector(".filter-ticket-price")?.value ?? "";
+                        filterValues.ticketPrice = filtersContainer.querySelector("#filter-ticket-price")?.value ?? "";
                         break;
                     case "age":
-                        filterValues.age = filtersContainer.querySelector(".filter-age")?.value ?? "";
+                        filterValues.age = filtersContainer.querySelector("#filter-age")?.value ?? "";
                         break;
                     case "gender":
                         filterValues.gender = filtersContainer.querySelector(".filter-gender")?.value ?? "";
@@ -572,7 +681,7 @@ export default {
     },
     watch: {
         filterContent() {
-            this.$nextTick(this.adjustFilterRegion);
+            this.$nextTick(this.adjustFilter);
         }
     },
     created() {
@@ -583,7 +692,7 @@ export default {
     },
     mounted() {
         this.updateTooltipWidth();
-        this.adjustFilterRegion(); // Beim Initialisieren der Komponente
+        this.adjustFilter(); // Beim Initialisieren der Komponente
     },
     beforeUnmount() {
         window.removeEventListener('resize', this.updateTooltipWidth);
@@ -672,7 +781,7 @@ export default {
     transform: translateX(20px); /* Angepasst an die neue Höhe */
 }
 
-::v-deep .filter-region {
+::v-deep #filter-region {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -681,7 +790,6 @@ export default {
 }
 
 ::v-deep .filter-gender {
-    margin-left: 10%;
     width: 305px;
     height: 20px;
     border-radius: 5px;
@@ -689,8 +797,7 @@ export default {
     text-align: center;
 }
 
-::v-deep .filter-experience {
-    margin-left: 10%;
+::v-deep #filter-experience {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -702,8 +809,7 @@ export default {
     margin-left: 20px;
 }
 
-::v-deep .filter-age {
-    margin-left: 10%;
+::v-deep #filter-age {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -711,8 +817,7 @@ export default {
     text-align: center;
 }
 
-::v-deep .filter-event-size {
-    margin-left: 10%;
+::v-deep #filter-event-size {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -720,8 +825,7 @@ export default {
     text-align: center;
 }
 
-::v-deep .filter-ticket-price {
-    margin-left: 10%;
+::v-deep #filter-ticket-price {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -729,8 +833,7 @@ export default {
     text-align: center;
 }
 
-::v-deep .filter-category {
-    margin-left: 10%;
+::v-deep #filter-category {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -770,8 +873,7 @@ export default {
     text-align: center;
 }
 
-::v-deep .filter-date {
-    margin-left: 10%;
+::v-deep #filter-date {
     width: 300px;
     height: 20px;
     border-radius: 5px;
@@ -779,11 +881,10 @@ export default {
     text-align: center;
 }
 
-::v-deep .filter-distance {
+::v-deep #filter-distance {
     display: inline-grid;
     grid-template-columns: auto auto auto;
     grid-columns: 1;
-    margin-left: 10%;
     margin-right: 10px;
     width: 250px;
     height: 20px;
@@ -796,6 +897,7 @@ export default {
     position: absolute;
     top: 120%;
     transform: translateX(-1%);
+    z-index: 1;
     background-color: var(--textfield-background);
     border-radius: 10px;
     padding: 10px;
@@ -827,8 +929,7 @@ export default {
 }
 
 
-::v-deep .kapazitaet {
-    margin-left: 10%;
+::v-deep #kapazitaet {
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -837,7 +938,6 @@ export default {
 }
 
 ::v-deep .time {
-    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -846,7 +946,6 @@ export default {
 }
 
 ::v-deep .duration {
-    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -855,7 +954,6 @@ export default {
 }
 
 ::v-deep .price {
-    margin-left: 10%;
     display: grid;
     grid-template-columns: auto auto auto;
     align-items: center;
@@ -866,7 +964,6 @@ export default {
 ::v-deep .filter-rating {
     display: flex;
     flex-direction: row-reverse;
-    margin-left: 17.5%;
     width: auto; /* Angepasst für flexible Breite */
     height: auto; /* Angepasst für flexible Höhe */
     border-radius: 5px;
@@ -879,18 +976,16 @@ export default {
     display: grid;
     place-content: center;
     cursor: pointer;
-    width: 30px; /* Angepasste Breite */
-    height: 30px; /* Angepasste Höhe */
     margin: 5px; /* Abstand zwischen den Radio-Buttons */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     position: relative;
+    font-size: 30px; /* Größe des Stern-Emojis */
 }
 
 ::v-deep .filter-rating > input::before {
     content: "☆"; /* Leeres Stern-Emoji */
-    font-size: 40px; /* Größe des Stern-Emojis */
     color: var(--empty-star-color, #ccc);
     position: absolute;
     top: 50%;
@@ -1095,5 +1190,81 @@ option {
     overflow-y: auto;
     padding-top: 0;
     margin-top: 50px;
+}
+
+#newevent-button {
+    position: fixed;
+    bottom: 170px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 7.5px;
+}
+
+#newevent-mobile {
+    margin-bottom: -3px;
+    width: 20px;
+    height: 20px;
+}
+
+#email-button {
+    position: fixed;
+    bottom: 120px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 2.5px;
+}
+
+#email-mobile {
+    margin-bottom: -3px;
+    width: 30px;
+    height: 30px;
+}
+
+#profile-button {
+    position: fixed;
+    bottom: 70px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 2.5px;
+}
+
+#profile-mobile {
+    margin-bottom: -3px;
+    width: 30px;
+    height: 30px;
+}
+
+#menu-button {
+    position: fixed;
+    bottom: 20px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 7.5px;
+}
+
+#menu-mobile {
+    margin-bottom: -3px;
+    width: 20px;
+    height: 20px;
 }
 </style>
