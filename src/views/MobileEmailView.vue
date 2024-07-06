@@ -82,6 +82,12 @@ Kontakt:
         </div>
       </div>
     </div>
+    <div id="home-button" v-if="menu">
+        <img id="home-mobile" src="../assets/home-mobile.png" />
+    </div>
+    <div id="menu-button" @click="handleClick">
+        <img id="menu-mobile" src="../assets/menu-mobile.png" />
+    </div>
   </div>
 </template>
 
@@ -94,6 +100,7 @@ export default {
   },
   data() {
     return {
+      menu: false,
       searchInput: '',
       showPopup: false,
       mailForms: new Array(11).fill(null), // Dummy array to simulate multiple mail forms
@@ -169,6 +176,14 @@ export default {
     search() {
       // Implement search functionality
     },
+    handleClick() {
+      if(this.menu) {
+          this.menu = false;
+      }
+      else {
+          this.menu = true;
+      }
+    }
   },
   created() {
     window.addEventListener('resize', this.updateTooltipWidth);
@@ -354,5 +369,44 @@ export default {
   align-items: center;
   border-radius: 7px;
   background-color: var(--green);
+}
+
+#home-button {
+    position: fixed;
+    bottom: 70px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    background-color: white;
+}
+
+#home-mobile {
+    margin-bottom: -3px;
+    width: 35px;
+    height: 35px;
+}
+
+#menu-button {
+    position: fixed;
+    bottom: 20px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 7.5px;
+    background-color: white;
+}
+
+#menu-mobile {
+    margin-bottom: -3px;
+    width: 20px;
+    height: 20px;
 }
 </style>
