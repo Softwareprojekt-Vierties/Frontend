@@ -1189,7 +1189,7 @@ option {
     flex: 1;
     overflow-y: auto;
     padding-top: 0;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 #newevent-button {
