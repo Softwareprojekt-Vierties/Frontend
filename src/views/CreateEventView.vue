@@ -155,7 +155,7 @@
                 price: '',
                 ageLimit: '',
                 openAir: false,
-                serviceProvider: [{ name: '', ingredients: [] }],
+                serviceProvider: [{ name: '', details: null }],
                 isModalVisible: false,
                 isLocationModalVisible : false,
                 selectedEventType: null,
@@ -184,7 +184,7 @@
                 }
             },
             addProvider() {
-                this.serviceProvider.push({ name: '', details: [] });
+                this.serviceProvider.push({ name: '', details: null });
                 this.$nextTick(() => {
                     const container = this.$refs.addCreator;
                     container.scrollLeft = container.scrollWidth - container.clientWidth;
@@ -230,7 +230,7 @@
                 this.price = '';
                 this.ageLimit = '';
                 this.openAir = false;
-                this.serviceProvider = [{ name: '', ingredients: [] }];
+                this.serviceProvider = [{ name: '', details: null }];
                 this.selectedEventType= null; 
                 this.location = null;
             },
@@ -258,7 +258,7 @@
                 formData.serviceProviders = [];
                 this.serviceProvider.forEach(sp => {
                     if (sp.name != "") {
-                        formData.serviceProviders.push(sp);
+                        formData.serviceProviders.push({id: sp.details.id, type: sp.details.type});
                     }
                 });
 
@@ -288,13 +288,14 @@
             },
             setCurrentProvider(info) {
                 this.currentProvider = { name: "",  details: [] };
-                for (const key in info) {
+                Object.keys(info).forEach(key => {
                     if (key == "name") {
                         this.currentProvider.name = info.name;
                     } else {
                         this.currentProvider.details[key] = info[key];
                     }
-                }
+                });
+                console.log(this.currentProvider);
             },
             selectLocation() {
                 this.location = this.tmpLocation;
