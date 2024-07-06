@@ -24,7 +24,8 @@ import EmailView from '@/views/EmailView.vue'
 
 import MobileLoginView from '@/views/MobileLoginView.vue'
 import MobileSignupView from '@/views/MobileSignupView.vue'
-import MoblieSearchView from'@/views/MoblieSearchView.vue'
+import MoblieSearchView from '@/views/MoblieSearchView.vue'
+import MobileEmailView from '@/views/MobileEmailView.vue'
 
 
 
@@ -124,7 +125,7 @@ const routes = [
 },  {
     path: '/email',
     name: 'EmailType',
-    component: EmailView
+    component: isMobile() ? MobileEmailView  : EmailView 
 }
 
 
