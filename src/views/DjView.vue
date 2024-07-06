@@ -25,10 +25,7 @@
   
       <div id="main">
         <div id="left-side">
-          <div class="long-description">
-            <label class="description">Beschreibung:</label>
-            <div id="long-description-text">{{ beschreibung }}</div>
-          </div>
+          <LongDescription :description="beschreibung" />
         <div id="event-dish">
             <div id="event">
               <label class="description">Nächste Events:</label>
@@ -75,6 +72,7 @@
   import Dj from '../components/DjComponent.vue';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import HomeButton from '../components/HomeButton.vue';
+  import LongDescription from '../components/LongDescription.vue';
   import axios from 'axios'; 
 
 
@@ -85,6 +83,7 @@
       Dj,
         Bookmark,
         HomeButton,
+        LongDescription,
     },
     data() {
       return {
