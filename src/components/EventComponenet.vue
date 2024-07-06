@@ -38,7 +38,7 @@
 #event-card {
     display: grid;
     grid-template-columns: auto auto;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     padding: 10px;
@@ -46,6 +46,7 @@
     padding-bottom: 13px;
     border-radius: 12px;
     height: 40px;
+    width : 141px;
 }
 
 #event-image {
@@ -59,6 +60,7 @@ label {
     font-size: 16px;
     margin-left: 15px;
     margin-right: 20px;
+    text-align: left;
 }
 </style>
 

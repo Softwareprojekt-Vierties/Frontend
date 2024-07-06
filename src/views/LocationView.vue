@@ -86,7 +86,7 @@ export default {
   },
 
   async created() {
-    this.idSent = 26;
+    this.idSent = this.$route.params.id;
     const token = localStorage.getItem('authToken');
     try {
       

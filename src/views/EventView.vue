@@ -1,24 +1,8 @@
 <template>
     <div id="app">
 
-      <div id="header">
-        <div id="icon-div">
-          <img alt="Filer" class="icon" v-if="isDarkMode" src="../assets/home_dark.png">
-          <img alt="Filer" class="icon" v-else src="../assets/home.jpg">
-        </div>
-        <div id="picture-name">
-          <div id="file-div"><img :src="imagePreview" alt="eventImage"> </div>
-          <div id="name-description">
-            <div class="name-description-input">
-              <label id="name">{{ eventName }}</label>
-            </div>
-            <div class="name-description-input">
-              <label id="description-short">{{kurzbeschreibung}}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-  
+      <Header :imagePreview="imagePreview" :name="eventName" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
+
       <div id="main">
         <div id="left-side">
           <div class="long-description">
@@ -47,15 +31,7 @@
         </div>
         <div id="right-side">
           <div id="right-side-info">
-            <div id="info-bookmark">
-                <label id="info-headline">Infos</label>
-                <div id="div-bookmark">
-                  <img v-if="isFavorit && isDarkMode" src="../assets/bookmark-filled.png" id="bookmark">
-                  <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
-                  <img v-else-if="isFavorit" src="../assets/bookmark-gray.jpg" id="bookmark">
-                  <img v-else src="../assets/bookmark-white.jpg" id="bookmark">
-                </div>
-            </div>
+            <Bookmark/>
             <div class="infos">
               <label class="info-subheadline"><strong>Location:</strong> {{ location }}</label>
             </div>
@@ -63,7 +39,7 @@
               <label class="info-subheadline"><strong>Datum:</strong> {{ formattedEventDate }}</label>
             </div>
             <div class="infos">
-              <label class="info-subheadline"><strong>Zeit:</strong> {{ zeit }} Uhr</label>
+              <label class="info-subheadline"><strong>Startzeit:</strong> {{ zeit }} Uhr</label>
             </div>
             <div class="infos">
               <label class="info-subheadline"><strong>Eventgröße:</strong> {{anzahlPersonen }} Personen</label>
@@ -81,8 +57,9 @@
           <div id="ticket">
             Event buchen 
           </div>
-
         </div>
+        </div>
+      </div>
 </template>
   
   <script>
@@ -91,13 +68,15 @@
   import axios from 'axios';
   import Leaflet from 'leaflet';
   import 'leaflet/dist/leaflet.css';
+  import Bookmark from '../components/ViewPageBookmark.vue';
+  import Header from '../components/ViewHeader.vue'
 
 
   export default {
     components: {
       DishForm,
-        Bookmark,
-        Header,
+       Bookmark,
+       Header,
     },
 
     data(){
@@ -127,9 +106,11 @@
 
     async created(){
 
-      let id = 44;
-      const response = await axios.get(`/getEventById/${id}`)
-      console.log(response.data);
+      let id = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
+      const response = await axios.get(`/getEventById/${id}`,{headers: {'auth':token}});
+      console.log("where i am ??",response.data);
+
       this.setFormData(response.data);
       this.geocodeAddress();
 
@@ -157,10 +138,17 @@
         this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
         this.preis = data.event.rows[0].preis;
         this.alter = data.event.rows[0].altersfreigabe;
-        this.zeit = data.event.rows[0].uhrzeit;
+        let time = data.event.rows[0].startuhrzeit.split(":");
+        this.zeit = time[0]+":"+time[1];
         this.location = data.event.rows[0].locationname;
         this.anzahlPersonen = data.event.rows[0].eventgroesse;
         this.datum = data.event.rows[0].datum;
+        let openair = data.event.rows[0].openair;
+        if(openair === true){
+          this.openAir = "Ja";
+        } else{
+          this.openAir = "Nein";
+        }
         this.addresse = data.event.rows[0].adresse;
         data['caterers'].rows.forEach(caterer =>{
           this.caterers.push({
@@ -182,21 +170,6 @@
 
         this.combinedProviders = [...this.caterers, ...this.artists];
 
-
-
-
-
-
-        /* this.kurzbeschreibung : '',
-        this.beschreibung : '',
-        this.location : '',
-        this.datum : '',
-        this.zeit : '',
-        this.anzahlPersonen : '',
-        this.preis : '',
-        this.alter : '',
-        this.openAir : '',
-        this.imagePreview : null,  */
       }, 
 
       formatDate(dateString) {
@@ -240,19 +213,15 @@
       },
 
       nextProvider() {
-    // Muda o currentIndex para mostrar os próximos três providers, sem ultrapassar o tamanho do array
-    if (this.currentIndex + 3 < this.combinedProviders.length) {
-      this.currentIndex += 3;
-    }
-  },
-  previousProvider() {
-    // Muda o currentIndex para mostrar os três providers anteriores, sem ir abaixo de zero
-    if (this.currentIndex - 3 >= 0) {
-      this.currentIndex -= 3;
-    }
-  }
-
-
+        if (this.currentIndex + 3 < this.combinedProviders.length) {
+          this.currentIndex += 3;
+        }
+      },
+      previousProvider() {
+        if (this.currentIndex - 3 >= 0) {
+          this.currentIndex -= 3;
+        }
+      }
 
     }
 
