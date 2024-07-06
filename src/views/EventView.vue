@@ -226,67 +226,7 @@
   </script>
   
   <style scoped>
-
-  #header {
-    background-color: var(--create-page-header-background);
-    padding-bottom: 40px;
-    padding-top: 10px;
-  }
-  
-  #picture-name {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: center;
-    align-items: end;
-    gap: 20px;
-  }
-  
-  #icon-div {
-    width: 40px;
-    padding: 15px;
-    padding-bottom: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-    margin-left: 10px;
-  }
-  
-  .icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-  } 
-
-  .other-provider{
-    cursor: pointer;
-  }
-  
-  #name-description {
-    background-color: var(--create-page-header-background);
-    padding: 10px;
-  }
-
-  #name {
-    text-align: left;
-    font-size: 35px;
-    color: white;
-    margin-bottom: 10px;
-  }
-
-  #description-short {
-    text-align: left;
-    font-size: 18px;
-    color: white;
-    margin-bottom: -10px;
-  }
-  
-  .name-description-input {
-    display: grid;
-    grid-template-columns: 300px;
-    justify-content: left;
-  }
-  
+ 
   .description {
     text-align: left;
     margin-bottom: 3px;
