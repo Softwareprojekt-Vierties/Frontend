@@ -56,8 +56,8 @@ export default {
       if (emailValid && passwordValid && benutzernameValid) {
         axios.post('/tempToken', {
           email: this.email,
-          pass: this.password,
-          name: this.benutzername
+          password: this.password,
+          benutzername: this.benutzername
         })
         .then(response => {
           console.log('Success:', response);

@@ -138,7 +138,7 @@
                 }
 
                 let formData = {};
-                formData.benutzername = this.personName;
+                formData.profilname = this.personName;
                 formData.kurzbeschreibung = this.shortDescription;
                 formData.beschreibung = this.longDescription;
                 formData.region = this.region;
@@ -147,22 +147,22 @@
                 formData.lieblingslied = this.favoriteSong;
                 formData.lieblingsgericht = this.favoriteDish;
                 formData.geschlecht = this.gender;
-                formData.bilder = [];
+                formData.partybilder = [];
                 formData.privat = isPrivate;
                 this.dishes.forEach(image => {
                     if (image) {
-                        formData.bilder.push(image);
+                        formData.partybilder.push(image);
                     }
                 });
 
                 if (this.imagePreview) {
-                    formData.bild = this.imagePreview;
+                    formData.profilbild = this.imagePreview;
                 }
 
                 const token = localStorage.getItem('authToken');
 
                 try {
-                    const response = await axios.post('/createPerson', formData, {
+                    const response = await axios.post('/createEndnutzer', formData, {
                         headers: {
                             "auth": token,
                         }
@@ -170,7 +170,7 @@
                     console.log('Person created:', response.data);
                     localStorage.setItem('authToken', response.data);
                     this.closeModal(); 
-                    this.$router.push("/search");
+                    this.$router.push("/");
                 } catch (error) {
                     console.error('Error with Person creation:', error);
                 }

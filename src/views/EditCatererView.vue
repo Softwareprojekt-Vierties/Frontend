@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <Header v-model:name="catererName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+      <Header :isLoggedIn="true" v-model:name="catererName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">

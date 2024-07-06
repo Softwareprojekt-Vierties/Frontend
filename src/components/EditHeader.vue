@@ -49,6 +49,10 @@
                 type: String,
                 default: "",
             },
+            isLoggedIn: {
+                type: Boolean,
+                default: false,
+            },
         },
         emits: [
             "update:name",
