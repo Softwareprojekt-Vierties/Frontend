@@ -230,8 +230,9 @@
                 this.price = '';
                 this.ageLimit = '';
                 this.openAir = false;
-                this.serviceProviders = [{ name: '', ingredients: [] }];
+                this.serviceProvider = [{ name: '', ingredients: [] }];
                 this.selectedEventType= null; 
+                this.location = null;
             },
             async createEvent() {
                 if (!this.eventName || !this.shortDescription || !this.longDescription || !this.eventDate || !this.eventStartTime 
