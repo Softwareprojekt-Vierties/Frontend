@@ -1,60 +1,69 @@
 <template>
     <div id="app">
-        <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
-            <div id="main">
-                <div id="left-side">
-                    <LongDescription :description="beschreibung" />
-                <br>
-                <div class="long-description">
-                    <label class="description">Dienstleister:</label>
-                    <div id="addcreator" ref="addCreator" class="scroll-container">
-                        <div class="dish-container">
-                            <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                                <dish-form :dish="dish" label="DJ Black" @remove="removeDish(index)"></dish-form>
-                            </div>
-                            <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
-                        </div>
-                    </div>
-                    <div id="maps-div">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9761.28464057027!2d8.919081382044633!3d52.29202508832965!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ba741a148fc0fd%3A0x8b85d34e7d7adcb1!2sHSBI%20Campus%20Minden!5e0!3m2!1sde!2sde!4v1718673701082!5m2!1sde!2sde" id="maps" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-            </div>
-            <div id="right-side">
-                <div id="right-side-info">
-                        <Bookmark :isFavorite="false" :id="id" type="events" />
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Location:</strong> Campus Minden</label>
-                        </div>
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Datum:</strong> 17.08.2024</label>
-                        </div>
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Zeit:</strong> 19Uhr - 2Uhr</label>
-                        </div>
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Eventgröße:</strong> 50 Personen</label>
-                        </div>
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Preis:</strong> 10€</label>
-                        </div>
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Altersfreigabe:</strong> 18+</label>
-                        </div>
-                        <div class="infos">
-                            <label class="info-subheadline"><strong>Open Air:</strong> Nein</label>
-                        </div>
-                    </div>
-                    <div id="ticket">
-                        Ticket buchen (20/50)
-                    </div>
-                </div>
+      <Header :imagePreview="imagePreview" :name="eventName" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
+
+      <div id="main">
+        <div id="left-side">
+            <LongDescription :description="beschreibung" />
+          <br>
+          <div class="long-description">
+          <label class="description">Dienstleister:</label>
+            <div id="artist">
+              <img class="other-provider" src="../assets/left.jpg" width="20px" height="20px" @click="previousProvider">
+              <div id="dish-container">
+                <DishForm
+                  v-for="(provider, index) in currentProviders"
+                  :key="index"
+                  :componentName="provider.nameCaterer || provider.nameArtist"
+                  :imagePath="provider.imageCaterer || provider.imageArtist"
+                />
+
+              </div>
+              <img class="other-provider" src="../assets/right.jpg" width="20px" height="20px" @click="nextProvider">
             </div>
         </div>
+        <div id="maps-div" style="height: 400px;">
+        </div>
+        </div>
+        <div id="right-side">
+          <div id="right-side-info">
+            <Bookmark/>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Location:</strong> {{ location }}</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Datum:</strong> {{ formattedEventDate }}</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Startzeit:</strong> {{ zeit }} Uhr</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Eventgröße:</strong> {{anzahlPersonen }} Personen</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Preis:</strong> {{preis}}€</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Altersfreigabe:</strong> {{alter}}+</label>
+            </div>
+            <div class="infos">
+              <label class="info-subheadline"><strong>Open Air:</strong> {{openAir}}</label>
+            </div>
+          </div>
+          <div id="ticket">
+            Event buchen 
+          </div>
+        </div>
+        </div>
+      </div>
 </template>
   
   <script>
-  import DishForm from '../components/MailComponent.vue';
+
+  import DishForm from '../components/EventComponenet.vue';
+  import axios from 'axios';
+  import Leaflet from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
   import Bookmark from '../components/ViewPageBookmark.vue';
   import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
@@ -66,43 +75,238 @@
         Header,
         LongDescription,
     },
-    data() {
-      return {
-        dishes: [
-          { name: '', ingredients: [] }
-        ],
-          isFavorit: false,
-        isModalVisible: false
-      };
+
+    data(){
+        return{
+          eventName:'',
+          kurzbeschreibung : '',
+          beschreibung : '',
+          location : '',
+          datum : '',
+          zeit : '',
+          anzahlPersonen : '',
+          preis : '',
+          alter : '',
+          openAir : '',
+          imagePreview : null,
+          artists: [],
+          caterers : [],
+          adresse : '',
+          map: null,
+          marker : null,
+          currentIndex: 0,
+          combinedProviders: []
+
+        
+        };
     },
-    methods: {
-      addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
-        this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
-        });
-      },
-      removeDish(index) {
-        this.dishes.splice(index, 1);
-      },
-      openModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
+
+    async created(){
+
+      let id = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
+      const response = await axios.get(`/getEventById/${id}`,{headers: {'auth':token}});
+      console.log("where i am ??",response.data);
+
+      this.setFormData(response.data);
+      this.geocodeAddress();
+
+    },
+
+    computed: {
+      isDarkMode() {
+          return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+      }, 
+      formattedEventDate() {
+            return this.formatDate(this.datum);
+      }, 
+      currentProviders() {
+        return this.combinedProviders.slice(this.currentIndex, this.currentIndex + 3);
       }
     },
-      computed: {
-        isDarkMode() {
-            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+
+    methods: {
+
+      setFormData(data){
+        this.eventName = data.event.rows[0].name;
+        this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
+        this.imagePreview = data.event.rows[0].bild;
+        this.beschreibung = data.event.rows[0].beschreibung;
+        this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
+        this.preis = data.event.rows[0].preis;
+        this.alter = data.event.rows[0].altersfreigabe;
+        let time = data.event.rows[0].startuhrzeit.split(":");
+        this.zeit = time[0]+":"+time[1];
+        this.location = data.event.rows[0].locationname;
+        this.anzahlPersonen = data.event.rows[0].eventgroesse;
+        this.datum = data.event.rows[0].datum;
+        let openair = data.event.rows[0].openair;
+        if(openair === true){
+          this.openAir = "Ja";
+        } else{
+          this.openAir = "Nein";
+        }
+        this.addresse = data.event.rows[0].adresse;
+        data['caterers'].rows.forEach(caterer =>{
+          this.caterers.push({
+            id: caterer.id,
+            nameCaterer: caterer.profilname,
+            imageCaterer : caterer.profilbild
+          })
+        });
+        console.log("the caterer", this.caterers);
+
+        data['artists'].rows.forEach(artist =>{
+          this.artists.push({
+            id: artist.id,
+            nameArtist: artist.profilname,
+            imageArtist : artist.profilbild
+          })
+        });
+        console.log("the artists", this.artists);
+
+        this.combinedProviders = [...this.caterers, ...this.artists];
+
+      }, 
+
+      formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+      }, 
+
+      async geocodeAddress() {
+        const address = `${this.addresse}`;
+        console.log('Geocoding address:', address);
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+
+        try {
+          const response = await axios.get(url);
+          console.log('Geocode response:', response.data);
+          if (response.data.length > 0) {
+            const location = response.data[0];
+            this.showMap(location.lat, location.lon);
+          } else {
+            console.error('No location found for this address');
+          }
+        } catch (error) {
+          console.error('Failed to fetch coordinates:', error);
+        }
+      },
+      showMap(lat, lon) {
+        console.log('Lat:', lat, 'Lon:', lon);
+        if (this.map) this.map.remove();
+        this.map = Leaflet.map('maps-div').setView([lat, lon], 16);
+        Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+        var customIcon = Leaflet.icon({
+          iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Map_pin_icon.svg',
+          iconSize: [30, 30],
+          iconAnchor: [15, 30],
+          popupAnchor: [0, -30]
+        });
+        this.marker = Leaflet.marker([lat, lon], { icon: customIcon }).addTo(this.map);
+      },
+
+      nextProvider() {
+        if (this.currentIndex + 3 < this.combinedProviders.length) {
+          this.currentIndex += 3;
+        }
+      },
+      previousProvider() {
+        if (this.currentIndex - 3 >= 0) {
+          this.currentIndex -= 3;
         }
       }
+
+    }
+
   }
   </script>
   
   <style scoped>
- 
+
+  #header {
+    background-color: var(--create-page-header-background);
+    padding-bottom: 40px;
+    padding-top: 10px;
+  }
+  
+  #picture-name {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: end;
+    gap: 20px;
+  }
+  
+  #icon-div {
+    width: 40px;
+    padding: 15px;
+    padding-bottom: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--textfield-background);
+    margin-left: 10px;
+  }
+  
+  .icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  } 
+
+  .other-provider{
+    cursor: pointer;
+  }
+  
+  #name-description {
+    background-color: var(--create-page-header-background);
+    padding: 10px;
+  }
+
+  #name {
+    text-align: left;
+    font-size: 35px;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  #description-short {
+    text-align: left;
+    font-size: 18px;
+    color: white;
+    margin-bottom: -10px;
+  }
+  
+  .name-description-input {
+    display: grid;
+    grid-template-columns: 300px;
+    justify-content: left;
+  }
+  
+  .description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  
+  #file-div {
+    width: 250px;
+    height: 180px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    background-color: var(--textfield-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -225px;
+  }
+  
+
   #main {
     display: grid;
     grid-template-columns: auto auto;
@@ -158,6 +362,13 @@
   .info-subheadline {
     text-align: left;
     font-size: 12px;
+  }
+
+  .description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
   }
   
   #long-description-text {

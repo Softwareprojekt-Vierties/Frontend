@@ -56,11 +56,11 @@ const routes = [
         component: isMobile() ? SucheView  : SucheView 
     },
   {
-    path: '/dj',
+    path: '/dj/:id',
     name: 'DjType',
     component: DjView
   } , {
-    path :'/caterer',
+    path :'/caterer/:id',
     name : 'CatererType',
     component : CatererView
   },
@@ -96,15 +96,15 @@ const routes = [
     name: 'EditLocationType',
     component: EditLocationView 
 },  {
-    path: '/event',
+    path: '/event/:id',
     name: 'EventType',
     component: EventView
 },  {
-    path: '/location',
+    path: '/location/:id',
     name: 'LocationType',
     component: LocationView
 },  {
-    path: '/dj',
+    path: '/dj/:id',
     name: 'DjType',
     component: DjView
 },  {

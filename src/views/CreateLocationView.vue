@@ -366,6 +366,13 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 #continue {
   background-color: var(--green);
   width: 88px;

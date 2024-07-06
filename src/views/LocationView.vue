@@ -85,7 +85,7 @@ export default {
   },
 
   async created() {
-    this.idSent = 26;
+    this.idSent = this.$route.params.id;
     const token = localStorage.getItem('authToken');
     try {
       
@@ -245,6 +245,13 @@ body {
   border-radius: 5px; /* Abgerundete Ecken */
   height: 25px;
   margin-right: 5px;
+}
+
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .time-value-right {

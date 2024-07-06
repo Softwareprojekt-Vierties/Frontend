@@ -168,6 +168,14 @@ export default {
 
 
 <style scoped>
+
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 .switch {
   position: relative;
   display: inline-block;

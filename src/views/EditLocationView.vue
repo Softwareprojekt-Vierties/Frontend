@@ -344,6 +344,12 @@ input:checked + .slider:before {
     height: 25px;
     margin-top: 4px;
 }
+.description {
+    text-align: left;
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: bold;
+}
 
 #add-location {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);

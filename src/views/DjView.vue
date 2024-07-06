@@ -126,7 +126,7 @@
     },
 
     async created(){
-    this.idSent = 13;
+    this.idSent = this.$route.params.id;
     const token = localStorage.getItem('authToken');
       try {
           const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});

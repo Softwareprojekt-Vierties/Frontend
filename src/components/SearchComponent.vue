@@ -645,7 +645,7 @@
             this.titleClickFunctions = {
                 event: this.eventTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
                 caterer: this.catererTitleFunction ?? ((info) => { this.$router.push("/caterer/" + info.id); }),
-                location: this.locationTitleFunction ?? ((info) => { this.router.push("/location/" + info.id); }),
+                location: this.locationTitleFunction ?? ((info) => { this.$router.push("/location/" + info.id); }),
                 artist: this.artistTitleFunction ?? ((info) => { this.$router.push("/dj/" + info.id); }),
                 ticket: this.ticketTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
                 person: this.personTitleFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
