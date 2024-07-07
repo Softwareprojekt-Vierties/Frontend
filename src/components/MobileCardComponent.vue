@@ -199,7 +199,7 @@
     background-color: var(--green);
     color: var(--simple-font-color);
     padding: calc(5px * var(--scale-factor));
-    border: 1px solid #000;
+    border: var(--button-border);
     border-radius: 5px;
     width: calc(180px * var(--scale-factor));
     height: calc(15px * var(--scale-factor));

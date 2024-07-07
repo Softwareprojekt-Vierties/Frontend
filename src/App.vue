@@ -32,6 +32,7 @@ export default {
         --simple-font-color-disabled: #aaaaaa;
         --upload-text-color: #cccccc;
         --slider-background-color: #aaaaaa;
+        --button-border: none;
 
         --red: #c80101;
         --green: #0faa19;
@@ -59,6 +60,7 @@ export default {
         --simple-font-color-disabled: #101010;
         --upload-text-color: #999999;
         --slider-background-color: #cccccc;
+        --button-border: 1px solid black;
 
         
         --red: rgb(254, 68, 77);
