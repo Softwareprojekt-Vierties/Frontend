@@ -100,6 +100,7 @@ export default {
     },
     data() {
       return {
+        menu: '',
         name : '',
         sterne: '',
         kurzbeschreibung:'',
@@ -121,32 +122,31 @@ export default {
 
     computed: {
       buttonLabel() {
-      return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
-    }
+        return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
+      }
     },
 
     async created(){
-    this.idSent = this.$route.params.id;
-    const token = localStorage.getItem('authToken');
+      this.idSent = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
 
       try {
-          const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
-          console.log(response);
-          this.setFormData(response.data);
-          console.log('dj data received:', response.data);
-      } catch (error) {
-          console.error('Error with sending Caterer ID for caterer page to DB :', error);
-        }
+        const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
+        console.log(response);
+        this.setFormData(response.data);
+        console.log('dj data received:', response.data);
+      }
+      catch (error) {
+        console.error('Error with sending Caterer ID for caterer page to DB :', error);
+      }
     },
 
     methods: {
 
       setFormData(data){
-
         const myVar =data['caterer'].rows[0].region.split(',');
         console.log(myVar[0]);
         console.log(myVar[1]);
-
         this.name = data['caterer'].rows[0].profilname;
         this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
         this.beschreibung = data['caterer'].rows[0].beschreibung ;
@@ -167,12 +167,21 @@ export default {
         this.$router.push('/search');
       }, 
       weiter(){
-      if(this.isOwner === false){
-        this.$router.push('/createevent');
-      } else{
-        this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
-      }
-    }
+        if(this.isOwner === false){
+            this.$router.push('/createevent');
+        }
+        else{
+            this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
+        }
+    },
+    handleClick() {
+            if(this.menu) {
+                this.menu = false;
+            }
+            else {
+                this.menu = true;
+            }
+        }
     }
   }
 </script>
