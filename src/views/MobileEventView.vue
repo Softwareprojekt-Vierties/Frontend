@@ -4,12 +4,7 @@
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
-                <div id="div-bookmark" @click="changeBookmark">
-                    <img v-if="isDarkMode && hasBookmark" src="../assets/bookmark-filled.png" id="bookmark">
-                    <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
-                    <img v-else-if="hasBookmark" src="../assets/bookmark-white.jpg" id="bookmark">
-                    <img v-else src="../assets/bookmark-gray.jpg" id="bookmark">
-                </div>
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="events" />
             </div>
         </div>
         <div id="info">
@@ -78,11 +73,13 @@ import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventComponent from '@/components/MobileEventComponent.vue';
+import Bookmark from '@/components/MobileViewPageBookmark.vue';
 
 export default {
     components: {
         MobileHeaderComponent,
-        MobileEventComponent
+        MobileEventComponent,
+        Bookmark,
     },
 
     data(){
@@ -122,9 +119,6 @@ export default {
     },
 
     computed: {
-        isDarkMode() {
-            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-        }, 
         formattedEventDate() {
                 return this.formatDate(this.datum);
         }, 
@@ -231,18 +225,6 @@ export default {
                 this.currentIndex -= 3;
             }
         },
-        changeBookmark() {
-            this.hasBookmark = !this.hasBookmark;
-            // send switch to server
-            axios.post("/changeFavorite/", {
-                id: this.id,
-                type: this.type,
-            },{
-                headers: { "auth": localStorage.getItem("authToken")}
-            })
-                .then(res => console.log("Success: ", res))
-                .catch(err => console.error("Error: ", err));
-        },
         handleClick() {
             if(this.menu) {
                 this.menu = false;
@@ -274,23 +256,6 @@ export default {
     text-align: center;
     font-size: 20px;
     font-weight: bold;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-#bookmark {
-    width: 10px;
-    height: 17px;
-    margin-left: 2px;
 }
 
 #info {

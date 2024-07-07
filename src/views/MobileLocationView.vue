@@ -4,12 +4,7 @@
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
-                <div id="div-bookmark" @click="changeBookmark">
-                    <img v-if="isDarkMode && hasBookmark" src="../assets/bookmark-filled.png" id="bookmark">
-                    <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
-                    <img v-else-if="hasBookmark" src="../assets/bookmark-white.jpg" id="bookmark">
-                    <img v-else src="../assets/bookmark-gray.jpg" id="bookmark">
-                </div>
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="location" />
             </div>
         </div>
         <div id="info">
@@ -85,12 +80,14 @@ import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
+import Bookmark from '@/components/MobileViewPageBookmark.vue';
 
   
 export default {
     components: {
         MobileHeaderComponent,
-        MobileReviewComponent
+        MobileReviewComponent,
+        Bookmark,
     },
     data() {
         return {
@@ -114,6 +111,7 @@ export default {
         reviewType : 1,
         isOwner: '',
         reviews : [],
+        hasBookmark: false,
         };
     },
 
