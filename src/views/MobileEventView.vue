@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent></MobileHeaderComponent>
+        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -15,22 +15,22 @@
         <div id="info">
             <div id="info-left">
                 <pre>
-Location: Campus Minden
+Location: {{location}}
 
-Datum: 17.8.2024
+Datum: {{datum}}
 
-Zeit: 19 Uhr – 2Uhr
+Zeit: {{startuhrzeit}}Uhr - {{enduhrzeit}}Uhr
 
-Eventgröße: 50 Personen
+Eventgröße: {{anzahlPersonen}} Personen
                 </pre>
             </div>
             <div id="info-right">
                 <pre>
-Preis: 10 €
+Preis: {{preis}} €
 
-Altersfreigabe: 18+
+Altersfreigabe: {{alter}}+
 
-Open Air: Nein
+Open Air: {{openAir ? "Ja" : "Nein"}}
                 </pre>
             </div>
         </div>
@@ -41,7 +41,7 @@ Open Air: Nein
         </div>
         <div id="description-div">
             <div id="description">
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+                {{beschreibung}}
             </div>
         </div>
         <div class="description-headline-div">
@@ -50,7 +50,7 @@ Open Air: Nein
             </div>
         </div>
         <div id="event-container">
-            <MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/><MobileEventComponent/>
+            <MobileEventComponent v-for="(provider, index) in currentProviders" :key="index" :componentName="provider.nameCaterer || provider.nameArtist" :imagePath="provider.imageCaterer || provider.imageArtist" />
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -81,7 +81,6 @@ export default {
             beschreibung : '',
             location : '',
             datum : '',
-            zeit : '',
             anzahlPersonen : '',
             preis : '',
             alter : '',
@@ -93,7 +92,10 @@ export default {
             map: null,
             marker : null,
             currentIndex: 0,
-            combinedProviders: []
+            combinedProviders: [],
+            startuhrzeit: "",
+            enduhrzeit: "",
+            hasBookmark: false,
         };
     },
 
@@ -129,10 +131,13 @@ export default {
             this.preis = data.event.rows[0].preis;
             this.alter = data.event.rows[0].altersfreigabe;
             let time = data.event.rows[0].startuhrzeit.split(":");
-            this.zeit = time[0]+":"+time[1];
+            this.startuhrzeit = time[0]+":"+time[1];
+            time = data.event.rows[0].enduhrzeit.split(":");
+            this.enduhrzeit = time[0]+":"+time[1];
             this.location = data.event.rows[0].locationname;
             this.anzahlPersonen = data.event.rows[0].eventgroesse;
-            this.datum = data.event.rows[0].datum;
+            let date = data.event.rows[0].datum.split("-");
+            this.datum = date[2].split("T")[0] + "." + date[1] + "." + date[0];
             let openair = data.event.rows[0].openair;
 
             if(openair === true){
@@ -213,7 +218,19 @@ export default {
             if (this.currentIndex - 3 >= 0) {
                 this.currentIndex -= 3;
             }
-        }
+        },
+            changeBookmark() {
+                this.hasBookmark = !this.hasBookmark;
+                // send switch to server
+                axios.post("/changeFavorite/", {
+                    id: this.id,
+                    type: this.type,
+                },{
+                    headers: { "auth": localStorage.getItem("authToken")}
+                })
+                    .then(res => console.log("Success: ", res))
+                    .catch(err => console.error("Error: ", err));
+            }
     }
 }
 </script>

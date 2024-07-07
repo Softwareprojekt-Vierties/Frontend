@@ -59,6 +59,7 @@ label {
     font-size: 13px;
     text-align: left;
     font-weight: bold;
+    overflow: hidden;
 }
 </style>
 
