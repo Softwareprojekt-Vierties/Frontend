@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <Header :imagePreview="imagePreview" :name="eventName" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
+      <Header :imagePreview="imagePreview" :name="eventName" :sterne=-1 :kurzbeschreibung="kurzbeschreibung"/>
 
       <div id="main">
         <div id="left-side">

@@ -26,6 +26,7 @@ import MobileLoginView from '@/views/MobileLoginView.vue'
 import MobileSignupView from '@/views/MobileSignupView.vue'
 import MoblieSearchView from '@/views/MoblieSearchView.vue'
 import MobileEmailView from '@/views/MobileEmailView.vue'
+import MobileEventView from '@/views/MobileEventView.vue'
 
 
 
@@ -100,7 +101,7 @@ const routes = [
 },  {
     path: '/event/:id',
     name: 'EventType',
-    component: EventView
+    component: isMobile() ? MobileEventView : EventView
 },  {
     path: '/location/:id',
     name: 'LocationType',
