@@ -1,12 +1,15 @@
 <template>
     <div id="card">
-        <img :alt="name" :src="computedImagePath" class="image">
+        <Image :url="computedImagePath" width="calc(170px * var(--scale-factor))" height="calc(135px * var(--scale-factor))" border-radius="5px" background-color="none" />
         <div id="details">
             <div id="name-bookmark">
                 <div id="headline">
                     {{name}}
                 </div>
-                <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else-if="isDarkMode" :src="require('@/assets/bookmark-empty.png')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else-if="hasBookmark" :src="require('@/assets/bookmark-gray.jpg')" class="bookmark">
+                <img :alt="name" @click="changeBookmark" v-else :src="require('@/assets/bookmark-white.jpg')" class="bookmark">
             </div>
             <div class="line-div">
                 {{line1}}
@@ -25,7 +28,13 @@
 </template>
 
 <script>
+    import Image from './ImageComponent.vue';
+    import axios from 'axios';
+
     export default {
+        components: {
+            Image,
+        },
         props: {
             name: {
                 type: String,
@@ -72,11 +81,22 @@
                 }
                 return this.imagePath;
             },
+        isDarkMode() {
+            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+        }
         },
         methods: {
             changeBookmark() {
                 this.hasBookmark = !this.hasBookmark;
                 // send switch to server
+                axios.post("/changeFavorite/", {
+                    id: this.info.id,
+                    type: this.info.type,
+                },{
+                    headers: { "auth": localStorage.getItem("authToken")}
+                })
+                    .then(res => console.log("Success: ", res))
+                    .catch(err => console.error("Error: ", err));
             },
             setScaleFactor(factor) {
                 document.documentElement.style.setProperty('--scale-factor', factor);
@@ -116,6 +136,14 @@
     border-radius: 5px;
     gap: calc(15px * var(--scale-factor));
     width: calc(380px * var(--scale-factor));
+    background-color: var(--textfield-background);
+}
+
+#headline {
+    @media (prefers-color-scheme: dark) {
+        color: var(--textfield-font-color);
+    }
+    overflow: hidden;
 }
 
 .image {
@@ -160,7 +188,8 @@
 #button {
     font-size: calc(11px * var(--scale-factor));
     cursor: pointer;
-    background-color: rgb(146, 208, 80);
+    background-color: var(--green);
+    color: var(--simple-font-color);
     padding: calc(5px * var(--scale-factor));
     border: 1px solid #000;
     border-radius: 5px;

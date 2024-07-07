@@ -45,7 +45,7 @@
                 </div>
                 <div id="select-sort" @change="sortContent">
                     <select v-model="sortType" class="options">
-                        <option v-for="option in sortingOptions[searchType]['filters']" :value="option" v-bind:key="option">{{translations[option]}}</option>
+                        <option v-for="option in sortingOptions[searchType]['filters']" :value="option" v-bind:key="option" :disabled="option === 'unsortiert'">{{translations[option]}}</option>
                     </select>
                 </div>
                 <div class="bookmark-arrow-div">

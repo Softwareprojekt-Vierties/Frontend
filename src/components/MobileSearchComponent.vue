@@ -1,18 +1,19 @@
 <template>
+    <div id="filter-tooltip-background" @click="toggleTooltip"></div>
     <div id="main_div">
         <div id="select-filter-searchbar">
             <div id="select_filter">
                 <select v-model="searchType" class="options" @change="toggleSearchType" :disabled="!mutable">
-                    <option value="0">Kategorie wählen</option>
-                    <option value="1">Location</option>
-                    <option value="2">DJ/Band</option>
-                    <option value="3">Caterer</option>
-                    <option value="4">Event</option>
-                    <option value="5">Person</option>
-                    <option value="6">Meine Events</option>
-                    <option value="7">Meine Tickets</option>
-                    <option value="8">Meine Freunde</option>
-                    <option value="9">Meine Locations</option>
+                    <option value="0" v-if="appliedSearchTypes.includes('0')">Kategorie wählen</option>
+                    <option value="1" v-if="appliedSearchTypes.includes('1')">Location</option>
+                    <option value="2" v-if="appliedSearchTypes.includes('2')">DJ/Band</option>
+                    <option value="3" v-if="appliedSearchTypes.includes('3')">Caterer</option>
+                    <option value="4" v-if="appliedSearchTypes.includes('4')">Event</option>
+                    <option value="5" v-if="appliedSearchTypes.includes('5')">Person</option>
+                    <option value="6" v-if="appliedSearchTypes.includes('6')">Meine Events</option>
+                    <option value="7" v-if="appliedSearchTypes.includes('7')">Meine Tickets</option>
+                    <option value="8" v-if="appliedSearchTypes.includes('8')">Meine Freunde</option>
+                    <option value="9" v-if="appliedSearchTypes.includes('9')">Meine Locations</option>
                 </select>
             </div>
 
@@ -35,10 +36,11 @@
         <div class="events-outside-div">
             <div id="bookmark-arrow">
                 <div class="select-sort left" @change="sortContent">
-                    <img src="../assets/setting.jpg" @click="openSelect"/>
+                    <img v-if="isDarkMode" src="../assets/setting.png" @click="openSelect"/>
+                    <img v-else src="../assets/setting.jpg" @click="openSelect"/>
                     <div class="sort-text" @click="openSelect">Sortiert nach: {{ getDynamicPart(sortType) }}</div>
                     <select ref="mySelect" v-model="sortType" id="option" @change="sortContent">
-                        <option v-for="option in sortingOptions[searchType]['filters']" :value="option" :key="option">{{translations[option]}}</option>
+                        <option v-for="option in sortingOptions[searchType]['filters']" :value="option" v-bind:key="option" :disabled="option === 'unsortiert'">{{translations[option]}}</option>
                     </select>
                 </div>
                 <div id="right-sort">
@@ -67,15 +69,25 @@
         <div>
             <div v-if="hasSearchResults">
                 <div v-if="searchType==0" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :key="result.key"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :buttonClickFunction="result.buttonClickFunction" :titleClickFunction="result.titleClickFunction" :info="result.info" :key="result.key"/>
                 </div>
-                <div v-else id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit ?? '--:--'}Uhr`" buttonText="Ticket buchen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" buttonText="Event erstellen" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" buttonText="Event erstellen" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" buttonText="Freundschaftsanfrage" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" buttonText="Eventinfo" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :key="result.id"/>
+                <div v-else-if="searchType == 4 || searchType == 6" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.startuhrzeit ?? '--:--'}Uhr - ${result.enduhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 1 || searchType == 9" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.location" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 2" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.artist" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.artist" :titleClickFunction="titleClickFunctions.artist" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 3" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.caterer" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 5 || searchType == 8" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
+                </div>
+                <div v-else-if="searchType == 7" id="results">
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.ticket" :info="result" :key="result.id"/>
                 </div>
             </div>
             <div v-else>
@@ -88,16 +100,20 @@
             </div>
         </div>
         <div id="newevent-button" v-if="menu">
-            <img id="newevent-mobile" src="../assets/newevent-mobile.png" />
+            <img v-if="isDarkMode" id="newevent-mobile" src="../assets/menu-mobile-dark.png" />
+            <img v-else id="newevent-mobile" src="../assets/newevent-mobile.png" />
         </div>
         <div id="email-button" v-if="menu">
-            <img id="email-mobile" src="../assets/email-mobile.png" />
+            <img v-if="isDarkMode" id="email-mobile" src="../assets/email-mobile-dark.png" />
+            <img v-else id="email-mobile" src="../assets/email-mobile.png" />
         </div>
         <div id="profile-button" v-if="menu">
-            <img id="profile-mobile" src="../assets/profile-mobile.png" />
+            <img v-if="isDarkMode" id="profile-mobile" src="../assets/profile-icon-dark.png" />
+            <img v-else id="profile-mobile" src="../assets/profile-mobile.png" />
         </div>
         <div id="menu-button" @click="handleClick">
-            <img id="menu-mobile" src="../assets/menu-mobile.png" />
+            <img v-if="isDarkMode" id="menu-mobile" src="../assets/menu-mobile-dark.png" />
+            <img v-else id="menu-mobile" src="../assets/menu-mobile.png" />
         </div>
     </div>
 </template>
@@ -112,11 +128,87 @@ export default {
         msg: String,
         startValue: {
             type: String,
-            default: "0",
+            default: null,
         },
         mutable: {
             type: Boolean,
             default: true,
+        },
+        eventButtonFunction: {
+            type: Function,
+            default: null,
+        },
+        locationButtonFunction: {
+            type: Function,
+            default: null,
+        },
+        artistButtonFunction: {
+            type: Function,
+            default: null,
+        },
+        catererButtonFunction: {
+            type: Function,
+            default: null,
+        },
+        personButtonFunction: {
+            type: Function,
+            default: null,
+        },
+        ticketButtonFunction: {
+            type: Function,
+            default: null,
+        },
+        eventTitleFunction: {
+            type: Function,
+            default: null,
+        },
+        locationTitleFunction: {
+            type: Function,
+            default: null,
+        },
+        artistTitleFunction: {
+            type: Function,
+            default: null,
+        },
+        catererTitleFunction: {
+            type: Function,
+            default: null,
+        },
+        personTitleFunction: {
+            type: Function,
+            default: null,
+        },
+        ticketTitleFunction: {
+            type: Function,
+            default: null,
+        },
+        eventButtonText: {
+            type: String,
+            default: null,
+        },
+        locationButtonText: {
+            type: String,
+            default: null,
+        },
+        artistButtonText: {
+            type: String,
+            default: null,
+        },
+        catererButtonText: {
+            type: String,
+            default: null,
+        },
+        personButtonText: {
+            type: String,
+            default: null,
+        },
+        ticketButtonText: {
+            type: String,
+            default: null,
+        },
+        allowedSearchTypes: {
+            type: Array,
+            default: null,
         }
     },
     components: {
@@ -141,16 +233,16 @@ export default {
                 '9': { name: 'myLocation', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
             },
             sortingOptions: {
-                "0": { name: "none", filters: ["name"] },
-                "1": { name: "location", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
-                "2": { name: "djBand", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
-                "3": { name: "caterer", filters: ["name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
-                "4": { name: "event", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                "5": { name: "person", filters: ["name", "adresse", "altersfreigabe", "gender"] },
-                "6": { name: "myEvents", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                "7": { name: "myTickets", filters: ["name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                "8": { name: "myFriends", filters: ["name", "adresse", "altersfreigabe", "gender"] },
-                "9": { name: "myLocation", filters: ["name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                "0": { name: "none", filters: ["unsortiert", "name"] },
+                "1": { name: "location", filters: ["unsortiert", "name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
+                "2": { name: "djBand", filters: ["unsortiert", "name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                "3": { name: "caterer", filters: ["unsortiert", "name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
+                "4": { name: "event", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                "5": { name: "person", filters: ["unsortiert", "name", "adresse", "altersfreigabe", "gender"] },
+                "6": { name: "myEvents", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                "7": { name: "myTickets", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
+                "8": { name: "myFriends", filters: ["unsortiert", "name", "adresse", "altersfreigabe", "gender"] },
+                "9": { name: "myLocation", filters: ["unsortiert", "name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
             },
             translations: {
                 name: "Name",
@@ -170,13 +262,17 @@ export default {
             },
             searchInput: "",
             searchType: "0",
-            sortType: "name",
+            sortType: "unsortiert",
             searchResults: [],
             filteredSearchResults: [],
             searchError: false,
             hasSearchResults: false,
             sortAscending: false,
             bookmarked: false,
+            titleClickFunctions: {},
+            buttonClickFunctions: {},
+            buttonTexts: {},
+            appliedSearchTypes: [],
         };
     },
     methods: {
@@ -195,10 +291,22 @@ export default {
             if (tooltip.style.display === "block") {
                 this.adjustFilter();
             }
+            const tooltipBackground = document.getElementById("filter-tooltip-background");
+            tooltipBackground.style.display = tooltipBackground.style.display === "block" ? "none" : "block";
+        },
+        hideTooltip() {
+            const tooltip = document.getElementById("dynamic-tooltip");
+            if (tooltip) {
+                tooltip.style.display = "none";
+            }
+            const tooltipBackground = document.getElementById("filter-tooltip-background");
+            if (tooltipBackground) {
+                tooltipBackground.style.display = "none";
+            }
         },
         toggleSearchType() {
             this.updateFilterContent();
-            this.sortType = "name";
+            this.sortType = "unsortiert";
             this.search();
         },
         updateFilterContent() {
@@ -220,11 +328,11 @@ export default {
                         case "date":
                             return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input id="filter-date" class="filter" type="date" placeholder="z.B. 17.08.2024"></div>`;
                         case "distance":
-                            return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input id="filter-distance" type="range" min="0" max="100" oninput="rangeValue.innerText = this.value + 'Km'"><p id="rangeValue">50Km</p></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Entfernung: </div><input id="filter-distance" type="range" value="100" min="0" max="100" oninput="rangeValue.innerText = this.value + (this.value == 100 ? 'Km+' : 'Km')"><p id="rangeValue">100Km+</p></div>`;
                         case "capacity":
                             return `<div class="filter-item"><div id="filter-item-text">Kapazität: </div><div id="kapazitaet" class="two-filter-div"> <input id="first-capacity" class="two-filter-div-param filter-capacity" type="number" min="0" placeholder="10 Personen"> - <input id="second-capacity" class="two-filter-div-param filter-capacity" type="number" min="0" placeholder="50 Personen"> </div></div>`;
                         case "rating":
-                            return `<div class="filter-item"><div id="filter-item-text">Bewertung: </div><fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" checked /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" /></input></fieldset></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Bewertung: </div><fieldset class="filter-rating" ><input type="radio" name="rating" title="star5" value="5" /><input type="radio" name="rating" title="star4" value="4" /><input type="radio" name="rating" title="star3" /><input type="radio" name="rating" title="star2" value="2" /><input type="radio" name="rating" title="star1" value="1" checked /></input></fieldset></div>`;
                         case "startTime":
                             return `<div class="filter-item"><div id="filter-item-text">Startzeit: </div><div class="two-filter-div time"> <input class="two-filter-div-param filter-time" type="time"> - <input class="two-filter-div-param filter-time" type="time"> </div></div>`;
                         case "duration":
@@ -534,12 +642,30 @@ export default {
             axios.post(destination, this.packageFilters(), { headers: { "auth": localStorage.getItem("authToken")}})
                 .then(response => {
                     console.log("Successful search:", response);
-                    this.searchResults[field] = response.data.rows || [];
-                    this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true) || [];
+                    this.searchResults[field] = response.data.rows;
+                    this.searchResults[field].forEach(result => {
+                        result.type = field;
+                    });
+                    this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true);
                     this.hasSearchResults |= response.data.rows.length > 0;
                     if (this.searchType == 0) {
                         this.searchResults[field].forEach(item => {
                             switch (field) {
+                                case "person":
+                                    this.searchResults.combined.push({
+                                        "name": item.name,
+                                        "line1": "Stadt: " + item.region,
+                                        "line2": "Alter: " + item.alter,
+                                        "line3": "Geschlecht: " + item?.geschlecht ?? "male" == "male" ? "Männlich" : "Weiblich",
+                                        "buttonText": "Freundschftsanfrage",
+                                        "imagePath": item.bild,
+                                        "isBookmarked": item.favorit ?? 0,
+                                        "info": item,
+                                        "buttonClickFunction": this.buttonClickFunctions.person,
+                                        "titleClickFunction": this.titleClickFunctions.person,
+                                        "key": item.id + field,
+                                    });
+                                    break
                                 case "location":
                                     this.searchResults.combined.push({
                                         "name": item.name,
@@ -549,7 +675,10 @@ export default {
                                         "buttonText": "Event erstellen",
                                         "imagePath": item.bild,
                                         "isBookmarked": item.favorit ?? 0,
-                                        "key": item.id,
+                                        "info": item,
+                                        "buttonClickFunction": this.buttonClickFunctions.location,
+                                        "titleClickFunction": this.titleClickFunctions.location,
+                                        "key": item.id + field,
                                     });
                                     break
                                 case "artist":
@@ -562,7 +691,10 @@ export default {
                                         "buttonText": "Event erstellen",
                                         "imagePath": item.profilbild,
                                         "isBookmarked": item.favorit ?? 0,
-                                        "key": item.id,
+                                        "info": item,
+                                        "buttonClickFunction": field == "artist" ? this.buttonClickFunctions.artist : this.buttonClickFunctions.caterer,
+                                        "titleClickFunction": field == "artist" ? this.titleClickFunctions.artist : this.titleClickFunctions.caterer,
+                                        "key": item.id + field,
                                     });
                                     break
                                 case "events":
@@ -571,11 +703,14 @@ export default {
                                         "name": item.name,
                                         "line1": "Location: " + item.locationname,
                                         "line2": "Datum: " + new Date(item.datum).toDateString(),
-                                        "line3": "Zeit: " + (item.uhrzeit ?? "--:--") + "Uhr",
+                                        "line3": "Zeit: " + (item.startuhrzeit ?? "--:--") + "Uhr - " + (item.enduhrzeit ?? "--:--") + "Uhr",
                                         "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
                                         "imagePath": item.bild,
                                         "isBookmarked": item.favorit ?? 0,
-                                        "key": item.id,
+                                        "info": item,
+                                        "buttonClickFunction": field == "events" ? this.buttonClickFunctions.event : this.buttonClickFunctions.ticket,
+                                        "titleClickFunction": field == "events" ? this.titleClickFunctions.event : this.titleClickFunctions.ticket,
+                                        "key": item.id + field,
                                     });
                                     break;
 
@@ -592,6 +727,7 @@ export default {
                 });
         },
         search() {
+            this.hideTooltip();
             this.searchResults = []
             this.filteredSearchResults = []
             this.searchResults.combined = []
@@ -642,6 +778,9 @@ export default {
         },
         sortContent() {
             let sortType = this.sortType;
+            if (sortType === "unsortiert") {
+                return;
+            }
             function sortCriteria(a, b) {
                 if (a[sortType] > b[sortType]) {
                     return 1;
@@ -685,9 +824,33 @@ export default {
         }
     },
     created() {
-        this.searchType = this.startValue;
+        this.buttonClickFunctions = {
+            event: this.eventButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+            caterer: this.catererButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+            location: this.locationButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+            artist: this.artistButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+            ticket: this.ticketButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+            person: this.personButtonFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
+        };
+        this.titleClickFunctions = {
+            event: this.eventTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+            caterer: this.catererTitleFunction ?? ((info) => { this.$router.push("/caterer/" + info.id); }),
+            location: this.locationTitleFunction ?? ((info) => { this.$router.push("/location/" + info.id); }),
+            artist: this.artistTitleFunction ?? ((info) => { this.$router.push("/dj/" + info.id); }),
+            ticket: this.ticketTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
+            person: this.personTitleFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
+        };
+        this.buttonTexts = {
+            event: this.eventButtonText ?? "Ticket buchen",
+            caterer: this.catererButtonText ?? "Event erstellen",
+            location: this.locationButtonText ?? "Event erstellen",
+            artist: this.artistButtonText ?? "Event erstellen",
+            ticket: this.ticketButtonText ?? "Eventinfo",
+            person: this.personButtonText ?? "Freundschaftsanfrage",
+        };
+        this.appliedSearchTypes = this.allowedSearchTypes ?? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        this.searchType = this.startValue ?? this.appliedSearchTypes[0];
         this.toggleSearchType();
-        this.search();
         window.addEventListener('resize', this.updateTooltipWidth);
     },
     mounted() {
@@ -905,6 +1068,15 @@ export default {
     width: 555px;
     padding-left: 15px;
     color: var(--textfield-font-color);
+}
+
+#filter-tooltip-background {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: none;
 }
 
 ::v-deep .filter-item {
@@ -1203,7 +1375,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 7.5px;
-    background-color: white;
+    background-color: var(--textfield-background);
 }
 
 #newevent-mobile {
@@ -1223,7 +1395,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 2.5px;
-    background-color: white;
+    background-color: var(--textfield-background);
 }
 
 #email-mobile {
@@ -1243,7 +1415,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 2.5px;
-    background-color: white;
+    background-color: var(--textfield-background);
 }
 
 #profile-mobile {
@@ -1263,7 +1435,7 @@ option {
     z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
     border-radius: 30px;
     padding: 7.5px;
-    background-color: white;
+    background-color: var(--textfield-background);
 }
 
 #menu-mobile {

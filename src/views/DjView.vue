@@ -1,27 +1,6 @@
 <template>
     <div id="app">
-      <div id="header" :style="headerStyle">
-          <div id="header-inner">
-              <HomeButton :isLoggedIn="true" />
-        <div id="picture-name">
-          <div id="file-div" :style="fileDivStyle">
-          </div>
-          <div id="name-description">
-            <div class="name-description-input">
-                <div id="name-stars">
-                    <label id="name">{{ name }}</label>
-                    <div class="stars">
-                      <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
-                    </div>
-                </div>
-            </div>
-            <div class="name-description-input">
-              <label id="description-short">{{ kurzbeschreibung }}</label>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
+        <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
   
       <div id="main">
         <div id="left-side">
@@ -70,8 +49,7 @@
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Dj from '../components/DjComponent.vue';
-  import Bookmark from '../components/ViewPageBookmark.vue';
-  import HomeButton from '../components/HomeButton.vue';
+  import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
   import axios from 'axios'; 
 
@@ -81,8 +59,7 @@
       DishForm,
       ArtistCard,
       Dj,
-        Bookmark,
-        HomeButton,
+        Header,
         LongDescription,
     },
     data() {

@@ -60,6 +60,10 @@
             style: {
                 type: Object,
                 default: null,
+            },
+            backgroundColor: {
+                type: String,
+                default: "var(--textfield-background)"
             }
         },
         computed: {
@@ -77,12 +81,12 @@
     height: v-bind("height");
     background-image: v-bind("imageURL");
     background-size: cover;
-    background-postion: center;
+    background-position: center;
     
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--textfield-background);
+    background-color: v-bind("backgroundColor");
 
     margin-left: v-bind("marginLeft");
     margin-right: v-bind("marginRight");

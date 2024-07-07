@@ -1,7 +1,7 @@
 <template>
     <div id="card">
         <div class="image-container">
-            <img :alt="name" :src="computedImagePath" class="image">
+            <Image :url="computedImagePath" width="170px" height="135px" border-radius="5px" background-color="none" />
         </div>
         <div id="details">
             <div id="name-bookmark">
@@ -30,9 +30,13 @@
 </template>
 
 <script>
+    import Image from './ImageComponent.vue';
     import axios from 'axios';
 
     export default {
+        components: {
+            Image,
+        },
         props: {
             name: {
                 type: String,
@@ -128,13 +132,8 @@
 @media (prefers-color-scheme: dark) {
     #headline {
         color: var(--textfield-font-color);
+        overflow: hidden;
     }
-}
-
-.image {
-    width: 170px;
-    height: 135px;
-    border-radius: 5px;
 }
 
 .bookmark {
