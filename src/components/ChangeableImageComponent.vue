@@ -1,12 +1,12 @@
 <template>
     <div id="file-div">
         <div id="file-upload">
-            <label id="image-text" for="fileToUpload">
+            <label id="image-text" for="veryVeryUniqueFileUploadId">
                 <img v-if="!url && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon" />
                 <img v-else-if="!url" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon" />
                 <span id="upload-text" v-if="!url">Bild hochladen</span>
             </label>
-            <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChange">
+            <input type="file" name="fileToUpload" id="veryVeryUniqueFileUploadId" accept="image/*" @change="onFileChange">
         </div>
     </div>
 </template>
