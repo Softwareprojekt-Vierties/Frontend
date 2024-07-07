@@ -100,6 +100,7 @@
                 axios.post("/changeFavorite/", {
                     id: this.info.id,
                     type: this.info.type,
+                    istfav: this.hasBookmark, 
                 },{
                     headers: { "auth": localStorage.getItem("authToken")}
                 })
@@ -177,7 +178,7 @@
     background-color: var(--green);
     color: var(--simple-font-color);
     padding: 5px;
-    border: 1px solid #000;
+    border: var(--button-border);
     border-radius: 5px;
     width: 180px;
     height: 15px;
