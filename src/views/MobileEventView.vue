@@ -65,7 +65,7 @@
                 Ticket buchen (20/50)
             </div>
         </div>
-        <div id="home-button" v-if="menu">
+        <div id="home-button" v-if="menu" @click="goToHomePage">
             <img id="home-mobile" src="../assets/home-mobile.png" />
         </div>
         <div id="menu-button" @click="handleClick">
@@ -137,6 +137,9 @@ export default {
     },
 
     methods: {
+        goToHomePage(){
+            this.$router.push('/search');
+        },
         setFormData(data){
             this.eventName = data.event.rows[0].name;
             this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
