@@ -115,13 +115,14 @@ export default {
       this.selectedMailId = mail.id; 
       this.selectedMailStatus = mail.angenommen;
       console.log("email gelesen",mail);
+      const token = localStorage.getItem('authToken');
 
         if(mail.gelesen == false){
           await axios.post('/updateMail',{
             id : mail.id,
             gelesen : true,
             angenommen : mail.angenommen
-          });
+          }, { headers: {'auth': token }});
           mail.gelesen = true;
         }
 

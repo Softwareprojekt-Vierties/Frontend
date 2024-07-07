@@ -5,7 +5,7 @@
             <label id="name">{{ name }}</label>
             <div id="info">Betreff: {{ auftrag }}</div>
         </div>
-        <div id="status"></div>
+        <div id="status" :class="{status_color_read : gelesen, status_color_notread :!gelesen}"></div>
     </div>
 </template>
 
@@ -136,6 +136,15 @@
     border-radius: 10px;
     border: 1.5px solid #000000;
     margin-right: 7.5px;
+    
+}
+
+.status_color_read{
+    background-color:var(--green);
+}
+
+.status_color_notread{
+    background-color:var(--red);
 }
 
 

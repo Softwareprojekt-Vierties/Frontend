@@ -12,7 +12,7 @@
     </div>
     <div id="search">
       <input
-        v-model="searchInput"
+        v-model="searchQuery"
         @keyup.enter="search"
         id="search-input"
         type="search"
@@ -35,7 +35,16 @@
       </div>
     </div>
     <div id="mail-forms-container">
-      <mail-form v-for="(form, index) in mailForms" :key="index" @click="openPopup"></mail-form>
+      <MailForm
+      v-for="(mail, index) in filteredMails"
+                :key="index"
+                :name="mail.sendername"
+                :auftrag="mail.anfragetyp"
+                :imagePath = "mail.senderprofilbild"
+                :isSelected="selectedMailId === mail.id"
+                :gelesen ="mail.gelesen" 
+                @click="handleClickMail(mail)"
+                @email-selected="updateFormattedText(mail)"/>
     </div>
 
     <div v-if="showPopup" id="popup-overlay" @click="closePopup">
@@ -47,43 +56,29 @@
           <img id="mobile-close" src="../assets/mobile-close.png" @click="closePopup">
         </div>
         <div id="mail-text">
-          <div id="headline-mail">Betreff: Uni Party</div>
+          <div id="headline-mail">Betreff: {{ mailHeadline }}</div>
           <div id="content">
             <!-- Hier den langen Text oder Inhalte hinzufügen, um den Scroll-Effekt zu sehen -->
-            <pre>
-Hallo Herr Mustermann,
-
-Es liegt eine Anfrage 
-des Events UNI PARTY vor.
-
-Infos:
-    Location: Campus Minden
-
-    Datum: 17.8.2024
-
-    Zeit: 19 Uhr – 2Uhr
-
-    Eventgröße: 50 Personen
-
-    Preis: 10 €
-
-    Altersfreigabe: 18+
-
-    Open Air: Nein
-
-Kontakt:
-    E-Mail: petermueller@gmail.com
-        </pre>
+            <pre v-html="formattedText"></pre>
           </div>
           <div id="buttons">
-              <div id="reject-button">ablehnen</div>
-              <div id="accept-button">annehmen</div>
+            <div id="reject-button" :class="{ disabled: selectedMailStatus !== null }"
+            :style="{ cursor: selectedMailStatus !== null ? 'not-allowed' : 'pointer' }"
+            @click="selectedMailStatus === null && ablehnen()">
+            ablehnen
+          </div>
+            <div id="accept-button" :class="{ disabled: selectedMailStatus !== null }"
+              :style="{ cursor: selectedMailStatus !== null ? 'not-allowed' : 'pointer' }"
+              @click="selectedMailStatus === null && akzeptieren()">
+            annehmen
+            </div>
+
           </div>
         </div>
       </div>
     </div>
     <div id="home-button" v-if="menu">
-        <img id="home-mobile" src="../assets/home-mobile.png" />
+        <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
     </div>
     <div id="menu-button" @click="handleClick">
         <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -93,6 +88,8 @@ Kontakt:
 
 <script>
 import MailForm from '../components/MobileMailComponent.vue';
+import axios from 'axios'; 
+
 
 export default {
   components: {
@@ -108,9 +105,22 @@ export default {
       startY: 0,
       initialHeight: 0,
       isDragging: false,
+      mailHeadline: '',
+      formattedText: '',
+      mailList : [],
+      searchQuery: '',
+      mailId : '' ,
+      selectedMailId: null,
+      selectedMailStatus: null,
+      showInnerContent : false ,
     };
   },
   methods: {
+
+    goToHomePage(){
+      this.$router.push('/search');
+    }
+    ,
     toggleTooltip() {
       this.updateTooltipWidth();
     },
@@ -183,10 +193,185 @@ export default {
       else {
           this.menu = true;
       }
+    }, 
+    setFormData(data){
+      data.rows.forEach(details => 
+        {
+          this.mailList.push({
+          anfragetyp : details.anfragetyp.toUpperCase(),
+          datum : details.datum,
+          dauer : details.dauer,
+          eventname : details.eventname,
+          id : details.id,
+          locationadresse : details.locationadresse,
+          locationflaeche : details.locationflaeche,
+          locationkapazitaet : details.locationkapazitaet,
+          locationname : details.locationname,
+          locationopenair : details.locationopenair,
+          senderemail : details.senderemail,
+          sendername : details.sendername,
+          senderprofilbild : details.senderprofilbild,
+          uhrzeit : details.uhrzeit,
+          gelesen : details.gelesen,
+          angenommen : details.angenommen,
+          empfaengername : details.empfaengername
+
+         })
+         this.mailList.sort((a,b) => b.id - a.id );
+         console.log("maillist ->",this.mailList);
+        });
+    }, 
+    updateText(newText, newHeadline) {
+      this.formattedText = newText;
+      this.mailHeadline = newHeadline;
+    },
+    async handleClickMail(mail){
+      this.showPopup = true;
+      this.selectedMailId = mail.id; 
+      this.selectedMailStatus = mail.angenommen;
+      console.log("email gelesen",mail);
+      const token = localStorage.getItem('authToken');
+
+
+        if(mail.gelesen == false){
+          await axios.post('/updateMail',{
+            id : mail.id,
+            gelesen : true,
+            angenommen : mail.angenommen
+          }, { headers: {'auth': token }});
+          mail.gelesen = true;
+        }
+        
+
+    },
+
+    async akzeptieren(){
+
+      const token = localStorage.getItem('authToken');
+      for(let varId in this.mailList){
+        if(this.mailList[varId].id == this.mailId){
+          await axios.post('/updateMail',{
+          id : this.mailList[varId].id,
+          gelesen : true,
+          angenommen : true
+        }, { headers: {'auth': token }} );
+        }
+        this.mailList[varId].angenommen = true;
+        this.selectedMailStatus = true;
+      }
+
+    },
+
+    
+    async ablehnen(){
+
+      const token = localStorage.getItem('authToken');
+      for(let varId in this.mailList){
+        if(this.mailList[varId].id == this.mailId){
+          await axios.post('/updateMail',{
+          id : this.mailList[varId].id,
+          gelesen : true,
+          angenommen : false
+          },{ headers: {'auth': token }});
+        }
+        this.mailList[varId].angenommen = false;
+        this.selectedMailStatus = false;
+      }
+    },
+
+    updateFormattedText(mail) {
+        const formatDate = (dateString) => {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        };
+
+        const formattedDate = formatDate(mail.datum);
+
+        this.mailHeadline = mail.anfragetyp;
+        if(mail.anfragetyp === "LOCATION"){
+          this.formattedText = `
+    Hallo ${mail.empfaengername},
+
+    es liegt eine Anfrage des Events 
+    <b>${mail.eventname}</b> vor.
+    Wir würden gerne 
+    Ihre Location buchen.
+
+
+    <b>Infos:</b>
+            <b>Location:</b> ${mail.locationname || 'N/A'}
+
+            <b>Datum:</b> ${formattedDate}
+
+            <b>Zeit:</b> ${mail.uhrzeit  || 'N/A'}
+
+            <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
+
+            <b>Ticketpreis:</b> ${mail.preis || 'N/A'}
+
+            <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
+            
+            <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+
+
+    <b>Kontakt:</b> 
+            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+    `;
+        } else if(mail.anfragetyp === "FREUNDSCHAFT"){
+          this.formattedText = `
+    Hallo ${mail.empfaengername},
+    es liegt eine Freundschaftsanfrage 
+    von <b>${mail.sendername}</b>  vor.
+
+    
+    <b>Kontakt:</b> 
+            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+    `;
+        } else if(mail.anfragetyp === "SERVICE"){
+          this.formattedText = `
+    Hallo ${mail.empfaengername},
+
+    es liegt eine Anfrage des Events 
+    <b>${mail.eventname}</b> vor.
+    Wir würden gerne Ihre Dienstleistung 
+    buchen.
+
+
+    <b>Infos:</b>
+            <b>Location:</b> ${mail.locationname || 'N/A'}
+
+            <b>Datum:</b> ${formattedDate}
+
+            <b>Zeit:</b> ${mail.uhrzeit || 'N/A'}
+
+            <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
+
+            <b>Ticketpreis:</b> ${mail.preis || 'N/A'}
+
+            <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
+            
+            <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+
+
+    <b>Kontakt:</b> 
+            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+    `;
+        }
+
+        this.mailId = mail.id;
     }
   },
-  created() {
+  async created() {
     window.addEventListener('resize', this.updateTooltipWidth);
+    const token = localStorage.getItem('authToken');
+
+    const response = await axios.get(`/getMails`,{ headers: {'auth': token }});
+    console.log(response.data);
+    this.setFormData(response.data);
   },
   mounted() {
     this.updateTooltipWidth();
@@ -194,6 +379,20 @@ export default {
   beforeUnmount() {
     window.removeEventListener('resize', this.updateTooltipWidth);
   },
+  computed: {
+  filteredMails() {
+          if (!this.searchQuery) {
+              return this.mailList;
+          }
+          const query = this.searchQuery.toLowerCase();
+          return this.mailList.filter(mail => {
+              return (
+                  mail.sendername.toLowerCase().includes(query) ||
+                  mail.anfragetyp.toLowerCase().includes(query)
+              );
+          });
+      }
+  }
 };
 </script>
 
@@ -408,5 +607,10 @@ export default {
     margin-bottom: -3px;
     width: 20px;
     height: 20px;
+}
+
+.disabled {
+  background-color: grey !important;
+  pointer-events: none;
 }
 </style>
