@@ -100,6 +100,7 @@
                 axios.post("/changeFavorite/", {
                     id: this.info.id,
                     type: this.info.type,
+                    istfav: this.hasBookmark, 
                 },{
                     headers: { "auth": localStorage.getItem("authToken")}
                 })

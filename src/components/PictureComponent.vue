@@ -41,6 +41,8 @@
       },
       methods: {
           onFileChange(event) {
+              console.log("C", event.srcElement);
+              console.log(document.getElementById("fileToUpload"));
               const file = event.target.files[0];
               if (file) {
                   this.eventImage = file;

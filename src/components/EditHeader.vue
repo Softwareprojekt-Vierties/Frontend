@@ -33,10 +33,6 @@
             }
         },
         props: {
-            onFileChange: {
-                type: Function,
-                default: () => {},
-            },
             imagePreview: {
                 type: String,
                 default: "",
@@ -57,6 +53,7 @@
         emits: [
             "update:name",
             "update:kurzbeschreibung",
+            "update:imagePreview",
         ],
         computed: {
             imageURL() {
@@ -65,6 +62,20 @@
             brightnessFilter() {
                 return this.imagePreview ? .5 : 1.0;
             },
+        },
+        methods: {
+          onFileChange(event) {
+              console.log("V", event.srcElement);
+              console.log(document.getElementById("fileToUpload"));
+              const file = event.target.files[0];
+              if (file) {
+                  const reader = new FileReader();
+                  reader.onload = e => {
+                      this.$emit('update:imagePreview', e.target.result);
+                  };
+                  reader.readAsDataURL(file);
+              }
+          },
         },
     }
 </script>

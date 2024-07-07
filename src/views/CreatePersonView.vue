@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <Header v-model:name="personName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+      <Header v-model:name="personName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
@@ -92,17 +92,6 @@
       };
     },
       methods: {
-          onFileChange(event) {
-              const file = event.target.files[0];
-              if (file) {
-                  this.eventImage = file;
-                  const reader = new FileReader();
-                  reader.onload = e => {
-                      this.imagePreview = e.target.result;
-                  };
-                  reader.readAsDataURL(file);
-              }
-          },
           addDish() {
         this.dishes.push(null);
         this.$nextTick(() => {
