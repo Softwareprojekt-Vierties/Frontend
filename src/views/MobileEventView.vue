@@ -224,12 +224,19 @@ export default {
 
 }
 
+#info-bookmark {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    gap: 200px;
+    margin-top: 20px;
+}
+
 #info-headline {
     text-align: center;
     font-size: 20px;
     font-weight: bold;
-    margin-right: 240px;
-    margin-top: 20px;
 }
 
 #div-bookmark {
@@ -240,6 +247,7 @@ export default {
     padding-left: 1px;
     padding-top: 5px;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 #bookmark {
