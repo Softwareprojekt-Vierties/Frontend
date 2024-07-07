@@ -1,7 +1,17 @@
 <template>
     <div id="app">
         <MobileHeaderComponent></MobileHeaderComponent>
-        <div id="info-headline">Infos</div>
+        <div>
+            <div id="info-bookmark">
+                <div id="info-headline">Infos</div>
+                <div id="div-bookmark" @click="changeBookmark">
+                    <img v-if="isDarkMode && hasBookmark" src="../assets/bookmark-filled.png" id="bookmark">
+                    <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
+                    <img v-else-if="hasBookmark" src="../assets/bookmark-white.jpg" id="bookmark">
+                    <img v-else src="../assets/bookmark-gray.jpg" id="bookmark">
+                </div>
+            </div>
+        </div>
         <div id="info">
             <div id="info-left">
                 <pre>
@@ -220,6 +230,21 @@ export default {
     font-weight: bold;
     margin-right: 240px;
     margin-top: 20px;
+}
+
+#div-bookmark {
+    border-radius: 30px;
+    padding: 2px;
+    width: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding-left: 1px;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+#bookmark {
+    width: 10px;
+    height: 17px;
 }
 
 #info {
