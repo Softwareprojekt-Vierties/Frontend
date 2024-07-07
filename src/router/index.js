@@ -28,6 +28,7 @@ import MoblieSearchView from '@/views/MoblieSearchView.vue'
 import MobileEmailView from '@/views/MobileEmailView.vue'
 import MobileEventView from '@/views/MobileEventView.vue'
 import MobileLocationView from '@/views/MobileLocationView.vue'
+import MobileDjView from '@/views/MobileDjView.vue'
 
 
 
@@ -62,7 +63,7 @@ const routes = [
   {
     path: '/dj/:id',
     name: 'DjType',
-    component: DjView
+    component: isMobile() ? MobileDjView : DjView
   } , {
     path :'/caterer/:id',
     name : 'CatererType',
@@ -107,11 +108,7 @@ const routes = [
     path: '/location/:id',
     name: 'LocationType',
     component: isMobile() ? MobileLocationView : LocationView
-},  {
-    path: '/dj/:id',
-    name: 'DjType',
-    component: DjView
-},  {
+}, {
     path: '/createPerson',
     name: 'CreatePersonType',
     component: CreatePersonView
