@@ -1,6 +1,6 @@
 <template>
   <div id="CreateEventView">
-      <Header v-model:name="eventName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+      <Header :isLoggedIn="true" v-model:name="eventName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
         <div id="main">
             <div id="left-side">
                 <div class="long-description">
