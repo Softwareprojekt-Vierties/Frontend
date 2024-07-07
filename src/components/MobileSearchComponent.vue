@@ -84,7 +84,7 @@
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.caterer" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 5 || searchType == 8" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 7" id="results">
                     <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.ticket" :info="result" :key="result.id"/>
@@ -658,7 +658,7 @@ export default {
                                         "line2": "Alter: " + item.alter,
                                         "line3": "Geschlecht: " + item?.geschlecht ?? "male" == "male" ? "Männlich" : "Weiblich",
                                         "buttonText": "Freundschftsanfrage",
-                                        "imagePath": item.bild,
+                                        "imagePath": item.profilbild,
                                         "isBookmarked": item.favorit ?? 0,
                                         "info": item,
                                         "buttonClickFunction": this.buttonClickFunctions.person,
@@ -830,7 +830,7 @@ export default {
             location: this.locationButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
             artist: this.artistButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
             ticket: this.ticketButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
-            person: this.personButtonFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
+            person: this.personButtonFunction ?? ((info) => { this.$router.push("/person/" + info.ap_user_id); }),
         };
         this.titleClickFunctions = {
             event: this.eventTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
@@ -838,7 +838,7 @@ export default {
             location: this.locationTitleFunction ?? ((info) => { this.$router.push("/location/" + info.id); }),
             artist: this.artistTitleFunction ?? ((info) => { this.$router.push("/dj/" + info.id); }),
             ticket: this.ticketTitleFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
-            person: this.personTitleFunction ?? ((info) => { this.$router.push("/person/" + info.id); }),
+            person: this.personTitleFunction ?? ((info) => { this.$router.push("/person/" + info.app_user_id); }),
         };
         this.buttonTexts = {
             event: this.eventButtonText ?? "Ticket buchen",
