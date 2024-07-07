@@ -58,6 +58,14 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
             <div id="maps-div" style="height: 200px;"></div>
         </div>
+        <div class="description-headline-div">
+            <div class="description-headline">
+                Bewertungen:
+            </div>
+        </div>
+        <div id="review-div">
+            <MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/>
+        </div>
         <div id="button-div">
             <div id="button">
                 Ticket buchen (20/50)
@@ -78,185 +86,145 @@ import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventComponent from '@/components/MobileEventComponent.vue';
+import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
 
+  
 export default {
     components: {
         MobileHeaderComponent,
-        MobileEventComponent
+        MobileEventComponent,
+        MobileReviewComponent
     },
-
-    data(){
-        return{
-            menu: false,
-            eventName:'',
-            kurzbeschreibung : '',
-            beschreibung : '',
-            location : '',
-            datum : '',
-            anzahlPersonen : '',
-            preis : '',
-            alter : '',
-            openAir : '',
-            imagePreview : null,
-            artists: [],
-            caterers : [],
-            adresse : '',
-            map: null,
-            marker : null,
-            currentIndex: 0,
-            combinedProviders: [],
-            startuhrzeit: "",
-            enduhrzeit: "",
-            hasBookmark: false,
+    data() {
+        return {
+        name: '',
+        kurzbeschreibung: '',
+        beschreibung: '',
+        region: '',
+        addresse: '',
+        kapazitaet: '',
+        preis: '',
+        flaeche: '',
+        openair: false,
+        imagePreview: null,
+        bild: null,
+        sterne: '',
+        map: null,
+        marker: null,
+        id:'',
+        idSent: '',
+        reviewType : 1,
+        isOwner: ''
         };
     },
-
-    async created(){
-        let id = this.$route.params.id;
+    async created() {
+        this.idSent = this.$route.params.id;
         const token = localStorage.getItem('authToken');
-        const response = await axios.get(`/getEventById/${id}`,{headers: {'auth':token}});
-        console.log("where i am ??",response.data);
-
-        this.setFormData(response.data);
-        this.geocodeAddress();
-    },
-
-    computed: {
-        isDarkMode() {
-            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-        }, 
-        formattedEventDate() {
-                return this.formatDate(this.datum);
-        }, 
-        currentProviders() {
-            return this.combinedProviders.slice(this.currentIndex, this.currentIndex + 3);
+        try {
+            const response = await axios.get(`/getLocation/${this.idSent}`, {headers: {'auth':token}});
+            console.log(response.data);
+            this.setFormData(response.data);
+            this.geocodeAddress();
+        } catch (error) {
+            console.error('Error with sending location ID to DB :', error);
         }
     },
-
+    computed: {
+        fileDivStyle() {
+            return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+        },
+        headerStyle() {
+            return {
+                backgroundImage: `url(${this.imagePreview})`,
+                backgroundSize: '340%',
+                backgroundPosition: 'center center'
+            };
+        }, 
+        buttonLabel() {
+            return this.isOwner ? 'Edit Location' : 'Event Erstellen';
+        }
+    },
     methods: {
-        setFormData(data){
-            this.eventName = data.event.rows[0].name;
-            this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
-            this.imagePreview = data.event.rows[0].bild;
-            this.beschreibung = data.event.rows[0].beschreibung;
-            this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
-            this.preis = data.event.rows[0].preis;
-            this.alter = data.event.rows[0].altersfreigabe;
-            let time = data.event.rows[0].startuhrzeit.split(":");
-            this.startuhrzeit = time[0]+":"+time[1];
-            time = data.event.rows[0].enduhrzeit.split(":");
-            this.enduhrzeit = time[0]+":"+time[1];
-            this.location = data.event.rows[0].locationname;
-            this.anzahlPersonen = data.event.rows[0].eventgroesse;
-            let date = data.event.rows[0].datum.split("-");
-            this.datum = date[2].split("T")[0] + "." + date[1] + "." + date[0];
-            let openair = data.event.rows[0].openair;
-
-            if(openair === true){
-                this.openAir = "Ja";
-            } else{
-                this.openAir = "Nein";
+        onFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    this.imagePreview = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
+        },
 
-            this.addresse = data.event.rows[0].adresse;
+        setFormData(data) {
+            const myVar = data['result'].rows[0].adresse.split(',');
+            this.name = data['result'].rows[0].name;
+            this.kurzbeschreibung = data['result'].rows[0].kurzbeschreibung;
+            this.beschreibung = data['result'].rows[0].beschreibung;
+            this.region = myVar[1];
+            this.addresse = myVar[0];
+            this.kapazitaet = data['result'].rows[0].kapazitaet;
+            this.preis = data['result'].rows[0].preis;
+            this.flaeche = data['result'].rows[0].flaeche;
 
-            data['caterers'].rows.forEach(caterer =>{
-                this.caterers.push({
-                    id: caterer.id,
-                    nameCaterer: caterer.profilname,
-                    imageCaterer : caterer.profilbild
-                })
-            });
-            console.log("the caterer", this.caterers);
+            if (data['result'].rows[0].openair == true) {
+                this.openair = 'Ja';
+            } else {
+                this.openair = 'Nein';
+            }
+            this.imagePreview = data['result'].rows[0].bild;     
+            this.bild = data['result'].rows[0].bild;
+            this.sterne = data['result'].rows[0].sterne;
+            this.id = data['result'].rows[0].id;
+            this.isOwner = data['isOwner'];
+        },
 
-            data['artists'].rows.forEach(artist =>{
-                this.artists.push({
-                    id: artist.id,
-                    nameArtist: artist.profilname,
-                    imageArtist : artist.profilbild
-                })
-            });
-            console.log("the artists", this.artists);
-
-            this.combinedProviders = [...this.caterers, ...this.artists];
-        }, 
-
-        formatDate(dateString) {
-            const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}/${month}/${year}`;
-        }, 
-
+        goToAnotherPage() {
+            this.$router.push('/search');
+        },
+        
         async geocodeAddress() {
-            const address = `${this.addresse}`;
-            console.log('Geocoding address:', address);
+            const address = `${this.addresse}, ${this.region}`;
             const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
 
             try {
                 const response = await axios.get(url);
-                console.log('Geocode response:', response.data);
                 if (response.data.length > 0) {
                     const location = response.data[0];
                     this.showMap(location.lat, location.lon);
-                } else {
+                } 
+                else {
                     console.error('No location found for this address');
                 }
-                } catch (error) {
-                    console.error('Failed to fetch coordinates:', error);
+            } 
+            catch (error) {
+                console.error('Failed to fetch coordinates:', error);
             }
         },
         showMap(lat, lon) {
-            console.log('Lat:', lat, 'Lon:', lon);
             if (this.map) this.map.remove();
                 this.map = Leaflet.map('maps-div').setView([lat, lon], 16);
                 Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
                 var customIcon = Leaflet.icon({
-                iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Map_pin_icon.svg',
-                iconSize: [30, 30],
-                iconAnchor: [15, 30],
-                popupAnchor: [0, -30]
+                    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Map_pin_icon.svg',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 30],
+                    popupAnchor: [0, -30]
             });
             this.marker = Leaflet.marker([lat, lon], { icon: customIcon }).addTo(this.map);
         },
-
-        nextProvider() {
-            if (this.currentIndex + 3 < this.combinedProviders.length) {
-                this.currentIndex += 3;
-            }
-        },
-        previousProvider() {
-            if (this.currentIndex - 3 >= 0) {
-                this.currentIndex -= 3;
-            }
-        },
-        changeBookmark() {
-            this.hasBookmark = !this.hasBookmark;
-            // send switch to server
-            axios.post("/changeFavorite/", {
-                id: this.id,
-                type: this.type,
-            },{
-                headers: { "auth": localStorage.getItem("authToken")}
-            })
-                .then(res => console.log("Success: ", res))
-                .catch(err => console.error("Error: ", err));
-        },
-        handleClick() {
-            if(this.menu) {
-                this.menu = false;
-            }
-            else {
-                this.menu = true;
+        weiter(){
+            if(this.isOwner === false){
+                this.$router.push('/createevent');
+            } else{
+                this.$router.push({ name : 'EditLocationType', params: {id : this.idSent}});
             }
         }
     }
-}
+};
 </script>
   
 <style scoped>
-
 #main {
 
 }
@@ -356,6 +324,16 @@ export default {
     margin-bottom: 10px;
 }
 
+#review-div {
+    display: flex;
+    overflow-x: auto;
+    width: 280px;
+    margin: 0 auto;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
 #maps-div {
   border: 1px solid #000000;
   border-radius: 8px;
@@ -421,5 +399,6 @@ export default {
     width: 20px;
     height: 20px;
 }
-</style>
+  </style>
+  
   
