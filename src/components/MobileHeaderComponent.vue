@@ -152,7 +152,7 @@
 }
 
 #name {
-    font-size: 25px;
+    font-size: 12px;
     font-weight: bold;
     color: white;
     text-align: left;
@@ -160,8 +160,22 @@
 }
 
 #short-decription {
-    font-size: 15px;
+    font-size: 10px;
     color: white;
     text-align: left;
 }
+.stars{
+    margin-bottom: 10px;
+}
+
+.star {
+    color: var(--light-gray); 
+    font-size: 17px; 
+}
+
+.star.filled {
+    color: var(--yellow); 
+
+}
+
 </style>

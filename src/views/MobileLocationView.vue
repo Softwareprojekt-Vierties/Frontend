@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" />
+        <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" :sterne ="sterne" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -14,24 +14,25 @@
         </div>
         <div id="info">
             <div id="info-left">
-                <pre>
-Location: {{location}}
-
-Datum: {{datum}}
-
-Zeit: {{startuhrzeit}}Uhr - {{enduhrzeit}}Uhr
-
-Eventgröße: {{anzahlPersonen}} Personen
-                </pre>
+                
+                <label class="info-subheadline"><strong>Stadt:</strong> {{region}}</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Straße:</strong> {{addresse}} </label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Kapazität:</strong>{{ kapazitaet }} Personen</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Preis:</strong> {{preis}} € </label>
+   
             </div>
             <div id="info-right">
-                <pre>
-Preis: {{preis}} €
+                <label class="info-subheadline"><strong>Fläche:</strong> {{ flaeche }} ha.</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Open Air:</strong> {{openair ? "Ja" : "Nein"}}</label>
 
-Altersfreigabe: {{alter}}+
-
-Open Air: {{openAir ? "Ja" : "Nein"}}
-                </pre>
             </div>
         </div>
         <div class="description-headline-div">
@@ -46,14 +47,6 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
-                Dienstleister:
-            </div>
-        </div>
-        <div id="event-container">
-            <MobileEventComponent v-for="(provider, index) in currentProviders" :key="index" :componentName="provider.nameCaterer || provider.nameArtist" :imagePath="provider.imageCaterer || provider.imageArtist" />
-        </div>
-        <div class="description-headline-div">
-            <div class="description-headline">
                 Karte:
             </div>
             <div id="maps-div" style="height: 200px;"></div>
@@ -64,7 +57,13 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="review-div">
-            <MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/>
+            <MobileReviewComponent 
+                v-for="(review, index) in reviews" 
+                :key="index" 
+                :userName="review.userName" 
+                :rating="review.rating" 
+                :reviewText="review.reviewText"
+            />
         </div>
         <div id="button-div">
             <div id="button">
@@ -72,7 +71,7 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" />
+            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -85,18 +84,17 @@ import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
-import MobileEventComponent from '@/components/MobileEventComponent.vue';
 import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
 
   
 export default {
     components: {
         MobileHeaderComponent,
-        MobileEventComponent,
         MobileReviewComponent
     },
     data() {
         return {
+        menu : false,
         name: '',
         kurzbeschreibung: '',
         beschreibung: '',
@@ -114,9 +112,11 @@ export default {
         id:'',
         idSent: '',
         reviewType : 1,
-        isOwner: ''
+        isOwner: '',
+        reviews : [],
         };
     },
+
     async created() {
         this.idSent = this.$route.params.id;
         const token = localStorage.getItem('authToken');
@@ -128,7 +128,9 @@ export default {
         } catch (error) {
             console.error('Error with sending location ID to DB :', error);
         }
+        this.getReview();
     },
+
     computed: {
         fileDivStyle() {
             return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
@@ -145,6 +147,36 @@ export default {
         }
     },
     methods: {
+
+        async getReview() {
+            try {
+                const response = await axios.get(`/getLocationReview/${this.id}`);
+                this.reviews = response.data.rows;
+                console.log("Review data received:", this.reviews);
+                this.setFormDataReview(this.reviews);
+            } catch (error) {
+                console.error('Error with sending review ID to DB:', error);
+            }
+        },
+
+        setFormDataReview(data) {
+            if (data.length > 0) {
+                this.reviews=[];
+                data.forEach(content => {this.reviews.push({
+
+                    userName : content.profilname,
+                    rating: content.sterne,
+                    reviewText : content.inhalt
+                });
+            
+            });
+            }
+        },
+
+        goToHomePage(){
+            this.$router.push('/search');
+        },
+
         onFileChange(event) {
             const file = event.target.files[0];
             if (file) {
@@ -153,6 +185,15 @@ export default {
                     this.imagePreview = e.target.result;
                 };
                 reader.readAsDataURL(file);
+            }
+        },
+
+        handleClick() {
+            if(this.menu) {
+                this.menu = false;
+            }
+            else {
+                this.menu = true;
             }
         },
 
@@ -312,17 +353,7 @@ export default {
     font-size: 13px;
 }
 
-#event-container {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    width: 280px; /* Feste Breite, die du anpassen kannst */
-    margin: 0 auto; /* Zentriert den Container horizontal */
-    gap: 10px;
-    padding: 10px;
-    margin-top: -10px;
-    margin-bottom: 10px;
-}
+
 
 #review-div {
     display: flex;
@@ -398,6 +429,11 @@ export default {
     margin-bottom: -3px;
     width: 20px;
     height: 20px;
+}
+
+.info-subheadline {
+  text-align: left;
+  font-size: 12px;
 }
   </style>
   

@@ -23,87 +23,25 @@
 
 
 <script>
-import axios from 'axios'; 
 export default {
-    data(){
-        return {
-            userName : 'Peter Müller',
-            rating : '3',
-            totalStars : 5,
-            reviewText : 'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.',
-            reviews : [],
-            reviewSize : '',
-            reviewIndex : 0,
-            reviewToGet: ''
-        };
-    },
-
-    watch: {
-        typeOfReview: 'updateReviewToGet'
-    },
-
     props: {
-        idFromFather: {
+        userName: {
             type: String,
-            required: true   
+            required: true
         },
-        typeOfReview: {
+        rating: {
             type: Number,
+            required: true
+        },
+        reviewText: {
+            type: String,
             required: true
         }
     },
-
-    methods: {
-        async updateReviewToGet() {
-            if (this.typeOfReview === 0) {
-                this.reviewToGet = "getPersonReview"; //dj
-            } else if (this.typeOfReview === 1) {
-                this.reviewToGet = "getLocationReview"; // location
-            }
-
-            if (this.reviewToGet) {
-                try {
-                    const response = await axios.get(`/${this.reviewToGet}/${this.idFromFather}`);
-                    this.reviews = response.data.rows;
-                    this.reviewSize = this.reviews.length;
-
-                    console.log("Review data received:", this.reviews);
-                    this.setFormData(this.reviews);
-                } catch (error) {
-                    console.error('Error with sending review ID to DB:', error);
-                }
-            }
-        },
-
-        setFormData(data) {
-            if (data.length > 0) {
-                this.userName = data[this.reviewIndex]["profilname"];
-                this.rating = data[this.reviewIndex]["sterne"];
-                this.reviewText = data[this.reviewIndex]["inhalt"];
-            }
-        },
-
-        previousReview() {
-            if (this.reviewIndex > 0) {
-                this.reviewIndex -= 1;
-            } else {
-                this.reviewIndex = 0;
-            }
-            this.setFormData(this.reviews);
-        },
-
-        nextReview() {
-            if (this.reviewIndex >= 0 && this.reviewIndex < this.reviewSize - 1) {
-                this.reviewIndex += 1;
-            } else {
-                this.reviewIndex = this.reviewSize - 1;
-            }
-            this.setFormData(this.reviews);
-        }
-    },
-
-    created() {
-        this.updateReviewToGet();
+    data() {
+        return {
+            totalStars: 5
+        };
     }
 };
 </script>
@@ -116,7 +54,7 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     display: grid;
     grid-template-columns: auto auto;
-    justify-content: center;
+    justify-content: left;
     align-items: top;
     width: 268px;
     border-radius: 18px;
