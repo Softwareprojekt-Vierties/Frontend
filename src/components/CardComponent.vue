@@ -1,8 +1,6 @@
 <template>
     <div id="card">
-        <div class="image-container">
-            <Image :url="computedImagePath" width="170px" height="135px" border-radius="5px" background-color="none" />
-        </div>
+        <Image :url="computedImagePath" width="170px" height="135px" border-radius="5px" background-color="none" />
         <div id="details">
             <div id="name-bookmark">
                 <div id="headline" @click="titleClickFunction(info)">
@@ -129,11 +127,11 @@
     background-color: var(--textfield-background);
 }
 
-@media (prefers-color-scheme: dark) {
-    #headline {
+#headline {
+    @media (prefers-color-scheme: dark) {
         color: var(--textfield-font-color);
-        overflow: hidden;
     }
+    overflow: hidden;
 }
 
 .bookmark {

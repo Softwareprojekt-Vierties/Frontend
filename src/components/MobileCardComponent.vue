@@ -3,7 +3,7 @@
         <Image :url="computedImagePath" width="calc(170px * var(--scale-factor))" height="calc(135px * var(--scale-factor))" border-radius="5px" background-color="none" />
         <div id="details">
             <div id="name-bookmark">
-                <div id="headline">
+                <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
                 <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
@@ -20,7 +20,7 @@
             <div class="line-div">
                 {{line3}}
             </div>
-            <div id="button" @click="clickFuntion">
+            <div id="button" @click="buttonClickFunction(info)">
                 {{buttonText}}
             </div>
         </div>
@@ -64,9 +64,17 @@
                 type: Boolean,
                 default: false
             },
-            clickFuntion: {
+            buttonClickFunction: {
                 type: Function,
                 default: function () { console.log("No function"); }
+            },
+            titleClickFunction: {
+                type: Function,
+                default: function () { console.log("No function"); }
+            },
+            info: {
+                type: Object,
+                default: null,
             },
         },
         data() {
