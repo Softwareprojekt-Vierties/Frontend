@@ -66,8 +66,8 @@
             />
         </div>
         <div id="button-div">
-            <div id="button">
-                Ticket buchen (20/50)
+            <div id="button" @click="weiter">
+                {{ buttonLabel }}
             </div>
         </div>
         <div id="home-button" v-if="menu">

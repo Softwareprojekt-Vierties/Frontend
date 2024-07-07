@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" />
+        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" :sterne="sterne" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -14,24 +14,26 @@
         </div>
         <div id="info">
             <div id="info-left">
-                <pre>
-Location: {{location}}
 
-Datum: {{datum}}
-
-Zeit: {{startuhrzeit}}Uhr - {{enduhrzeit}}Uhr
-
-Eventgröße: {{anzahlPersonen}} Personen
-                </pre>
+                <label class="info-subheadline"><strong>Location:</strong>{{location}}</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Datum:</strong> {{ formattedEventDate }}</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Startzeit:</strong> {{ zeit }} Uhr</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Eventgröße:</strong> {{anzahlPersonen }} Personen</label>
             </div>
             <div id="info-right">
-                <pre>
-Preis: {{preis}} €
-
-Altersfreigabe: {{alter}}+
-
-Open Air: {{openAir ? "Ja" : "Nein"}}
-                </pre>
+                <label class="info-subheadline"><strong>Preis:</strong> {{preis}}€</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Altersfreigabe:</strong> {{alter}}+</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Open Air:</strong> {{openAir}}</label>
             </div>
         </div>
         <div class="description-headline-div">
@@ -63,7 +65,7 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
                 Ticket buchen (20/50)
             </div>
         </div>
-        <div id="home-button" v-if="menu">
+        <div id="home-button" v-if="menu" @click="goToHomePage">
             <img id="home-mobile" src="../assets/home-mobile.png" />
         </div>
         <div id="menu-button" @click="handleClick">
@@ -97,6 +99,7 @@ export default {
             preis : '',
             alter : '',
             openAir : '',
+            sterne: '',
             imagePreview : null,
             artists: [],
             caterers : [],
@@ -134,6 +137,9 @@ export default {
     },
 
     methods: {
+        goToHomePage(){
+            this.$router.push('/search');
+        },
         setFormData(data){
             this.eventName = data.event.rows[0].name;
             this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
@@ -159,6 +165,7 @@ export default {
             }
 
             this.addresse = data.event.rows[0].adresse;
+            this.sterne = data.event.rows[0].sterne;
 
             data['caterers'].rows.forEach(caterer =>{
                 this.caterers.push({
