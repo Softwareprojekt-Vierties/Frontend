@@ -58,6 +58,17 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
             <div id="maps-div" style="height: 200px;"></div>
         </div>
+        <div id="button-div">
+            <div id="button">
+                Ticket buchen (20/50)
+            </div>
+        </div>
+        <div id="home-button" v-if="menu">
+            <img id="home-mobile" src="../assets/home-mobile.png" />
+        </div>
+        <div id="menu-button" @click="handleClick">
+            <img id="menu-mobile" src="../assets/menu-mobile.png" />
+        </div>
     </div>
 </template>
   
@@ -76,6 +87,7 @@ export default {
 
     data(){
         return{
+            menu: false,
             eventName:'',
             kurzbeschreibung : '',
             beschreibung : '',
@@ -219,18 +231,26 @@ export default {
                 this.currentIndex -= 3;
             }
         },
-            changeBookmark() {
-                this.hasBookmark = !this.hasBookmark;
-                // send switch to server
-                axios.post("/changeFavorite/", {
-                    id: this.id,
-                    type: this.type,
-                },{
-                    headers: { "auth": localStorage.getItem("authToken")}
-                })
-                    .then(res => console.log("Success: ", res))
-                    .catch(err => console.error("Error: ", err));
+        changeBookmark() {
+            this.hasBookmark = !this.hasBookmark;
+            // send switch to server
+            axios.post("/changeFavorite/", {
+                id: this.id,
+                type: this.type,
+            },{
+                headers: { "auth": localStorage.getItem("authToken")}
+            })
+                .then(res => console.log("Success: ", res))
+                .catch(err => console.error("Error: ", err));
+        },
+        handleClick() {
+            if(this.menu) {
+                this.menu = false;
             }
+            else {
+                this.menu = true;
+            }
+        }
     }
 }
 </script>
@@ -270,6 +290,7 @@ export default {
 #bookmark {
     width: 10px;
     height: 17px;
+    margin-left: 2px;
 }
 
 #info {
@@ -339,6 +360,66 @@ export default {
   border: 1px solid #000000;
   border-radius: 8px;
   margin-top: 3px;
+  margin-bottom: 20px;
+}
+
+#button-div {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+#button {
+    background-color: var(--green);
+    width: 285px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1.5px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#home-button {
+    position: fixed;
+    bottom: 70px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    background-color: white;
+}
+
+#home-mobile {
+    margin-bottom: -3px;
+    width: 35px;
+    height: 35px;
+}
+
+#menu-button {
+    position: fixed;
+    bottom: 20px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 7.5px;
+    background-color: white;
+}
+
+#menu-mobile {
+    margin-bottom: -3px;
+    width: 20px;
+    height: 20px;
 }
 </style>
   
