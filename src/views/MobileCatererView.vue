@@ -54,11 +54,11 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
-                Playlist:
+                Gerichte:
             </div>
         </div>
         <div id="palylist-container">
-            <MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/>
+            <MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/>
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -88,7 +88,7 @@ import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
 import MobileReviewComponent from '@/components/MobileReviewComponent.vue';
-import MobilePlaylistComponent from '@/components/MobilePlaylistComponent.vue';
+import MobileCatererComponenet from '@/components/MobileCatererComponenet.vue';
 
   
 export default {
@@ -96,12 +96,12 @@ export default {
         MobileHeaderComponent,
         MobileEventCardComponent,
         MobileReviewComponent,
-        MobilePlaylistComponent
+        MobileCatererComponenet
     },
     data() {
       return {
         menu: '',
-        name: '',
+        name : '',
         sterne: '',
         kurzbeschreibung:'',
         beschreibung: '',
@@ -111,68 +111,56 @@ export default {
         preis : '',
         imagePreview : null,
         id:'',
+        userId:'',
         reviewType :0,
-        events : [],
-        userid:'',
-        idSent : '',
-        isOwner: ''
+        events: [],
+        idSent:'',
+        isOwner:''
         
       };
     },
 
     computed: {
-      headerStyle() {
-        return {
-          backgroundImage: `url(${this.imagePreview})`,
-          backgroundPosition: 'center center',
-            backgroundSize: 'cover',
-          //filter:flur(8px);
-        };
-      },
-      fileDivStyle() {
-        return this.imagePreview
-          ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-          : {};
-      }, 
       buttonLabel() {
-        return this.isOwner ? 'Edit DJ' : 'Event Erstellen';
+        return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
       }
     },
 
     async created(){
-    this.idSent = this.$route.params.id;
-    const token = localStorage.getItem('authToken');
+      this.idSent = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
+
       try {
-          const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});
-          console.log(response);
-          this.setFormData(response.data);
-          console.log('dj data received:', response.data);
-      } catch (error) {
-          console.error('Error with sending dj ID to DB :', error);
-        }
+        const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
+        console.log(response);
+        this.setFormData(response.data);
+        console.log('dj data received:', response.data);
+      }
+      catch (error) {
+        console.error('Error with sending Caterer ID for caterer page to DB :', error);
+      }
     },
 
     methods: {
 
       setFormData(data){
-
-        const myVar =data['artist'].rows[0].region.split(',');
+        const myVar =data['caterer'].rows[0].region.split(',');
         console.log(myVar[0]);
         console.log(myVar[1]);
-
-        this.name = data['artist'].rows[0].benutzername;
-        this.kurzbeschreibung = data['artist'].rows[0].kurzbeschreibung;
-        this.beschreibung = data['artist'].rows[0].beschreibung ;
+        this.name = data['caterer'].rows[0].profilname;
+        this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['caterer'].rows[0].beschreibung ;
         this.region =myVar[1] ;
-        this.kategorie = data['artist'].rows[0].kategorie;
-        this.erfahrung = data['artist'].rows[0].erfahrung;
-        this.preis = data['artist'].rows[0].preis;
-        this.imagePreview = data['artist'].rows[0].profilbild;
-        this.sterne = data['artist'].rows[0].sterne;
-        this.userid = data['artist'].rows[0].userid;
-        this.id = data['artist'].rows[0].id;
+        this.kategorie = data['caterer'].rows[0].kategorie;
+        this.erfahrung = data['caterer'].rows[0].erfahrung;
+        this.preis = data['caterer'].rows[0].preis;
+        this.imagePreview = data['caterer'].rows[0].profilbild;
+        this.sterne = data['caterer'].rows[0].sterne;
+        this.userId = data['caterer'].rows[0].userid;
+        this.id = data['caterer'].rows[0].id;
         this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
+        console.log("my events",this.events);
       },
       
       goToAnotherPage() {
@@ -180,12 +168,13 @@ export default {
       }, 
       weiter(){
         if(this.isOwner === false){
-          this.$router.push('/createevent');
-        } else{
-          this.$router.push({ name : 'EditDjType', params: {id : this.idSent}});
+            this.$router.push('/createevent');
         }
-      },
-      handleClick() {
+        else{
+            this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
+        }
+    },
+    handleClick() {
             if(this.menu) {
                 this.menu = false;
             }
@@ -193,13 +182,11 @@ export default {
                 this.menu = true;
             }
         }
-    }, 
-
-
+    }
   }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   #main {
   
   }
@@ -382,4 +369,4 @@ export default {
   }
     </style>
     
-    
+  

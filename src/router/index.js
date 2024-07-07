@@ -29,7 +29,7 @@ import MobileEmailView from '@/views/MobileEmailView.vue'
 import MobileEventView from '@/views/MobileEventView.vue'
 import MobileLocationView from '@/views/MobileLocationView.vue'
 import MobileDjView from '@/views/MobileDjView.vue'
-
+import MobileCatererView from '@/views/MobileCatererView.vue'
 
 
 function isMobile() {
@@ -67,7 +67,7 @@ const routes = [
   } , {
     path :'/caterer/:id',
     name : 'CatererType',
-    component : CatererView
+    component : isMobile() ? MobileCatererView : CatererView
   },
 
 
