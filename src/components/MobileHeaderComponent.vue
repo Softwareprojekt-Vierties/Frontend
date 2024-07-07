@@ -3,7 +3,12 @@
         <div id="header-inner">
             <Image :url="imagePreview" width="125px" height="110px" margin-bottom="20px" borderRadius="15px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" />
             <div id="header-text">
-                <div id="name">{{name}}</div>
+                <div id="name-stars">
+                    <label id="name">{{ name }}</label>
+                    <div v-if="sterne != -1" class="stars">
+                        <span v-for="star in 5" :key="star" class="star" v-bind:class="{ 'filled': star <= sterne }">★</span>
+                    </div>
+                </div>
                 <div id="short-decription">{{kurzbeschreibung}}</div>
             </div>
         </div>
