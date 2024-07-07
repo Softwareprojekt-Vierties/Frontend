@@ -5,7 +5,7 @@
             <label id="name">{{ name }}</label>
             <div id="info">Betreff: {{ auftrag }}</div>
         </div>
-        <div id="status" :class="{status_color_read : gelesen, status_color_notread :!gelesen}"></div>
+        <div id="status" :class="{status_color_accept : angenommen, status_color_notaccept :!angenommen, status_color_new: angenommen === null}"></div>
     </div>
 </template>
 
@@ -31,6 +31,10 @@
             gelesen: {
                 type: Boolean,
                 default: false
+            }, 
+            angenommen: {
+                type: [Boolean, null],
+                required: true
             }
         },
         
@@ -66,7 +70,6 @@
     grid-template-columns: auto auto;
     justify-content: space-between;
     align-items: top;
-    border: 1px solid rgb(100, 100, 100);
     padding: 10px;
     padding-right: 0px;
     border-radius: 10px;
@@ -75,6 +78,8 @@
     margin-left: 5px;
     margin-right: 5px;
     margin-top: 5px;
+    max-height: 27.8px;
+    min-height: 27.8px;
 }
 
 #icon-text {
@@ -87,6 +92,7 @@
 
 .gelesenMail {
     border: 1px solid rgb(0, 0, 0);
+
 }
 
 .unreadMail {
@@ -139,12 +145,16 @@
     
 }
 
-.status_color_read{
+.status_color_accept{
     background-color:var(--green);
 }
 
-.status_color_notread{
+.status_color_notaccept{
     background-color:var(--red);
+}
+
+.status_color_new{
+    background-color:grey;
 }
 
 
