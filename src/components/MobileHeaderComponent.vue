@@ -157,12 +157,14 @@
     color: white;
     text-align: left;
     margin-top: 11px;
+    overflow: hidden;
 }
 
 #short-decription {
     font-size: 10px;
     color: white;
     text-align: left;
+    overflow: hidden;
 }
 .stars{
     margin-bottom: 10px;
