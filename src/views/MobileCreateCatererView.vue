@@ -12,13 +12,13 @@
                     <div class="input-headline">Region:</div>
                     <input placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Kategorie:</div>
-                    <input placeholder="z.B. Techno"/>
+                    <input placeholder="z.B. Desserts"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Erfahrung:</div>
                     <input placeholder="z.B. 10 Jahre"/>
                     <div class="input-headline">Preis:</div>
-                    <input placeholder="z.B. 50 €/h"/>
+                    <input placeholder="z.B. 50 €/Portion"/>
                 </div>
             </div>
         </div>
@@ -26,12 +26,12 @@
           <div id="headline-text">Beschreibung hinzufügen:</div>
           <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
         </div>
-        <div id="songs-headline">Songs hinzufügen:</div>
+        <div id="songs-headline">Gericht hinzufügen:</div>
         <div id="songs">
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
                 <div v-for="(song, index) in songs" :key="index" class="dish-item">
-                    <MobileMusicComponent/>
+                    <MobileDishFrom/>
                 </div>
                 <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
@@ -57,12 +57,12 @@
 <script>
 import axios from 'axios';
 import MobileEditHeader from '@/components/MobileEditHeader.vue';
-import MobileMusicComponent from '@/components/MobileMusicComponent.vue';
+import MobileDishFrom from '@/components/MobileDishFrom.vue';
 
 export default {
     components: {
         MobileEditHeader,
-        MobileMusicComponent
+        MobileDishFrom
     },
   data() {
     return {
@@ -168,7 +168,7 @@ export default {
   }
 }
 </script>
-
+    
 <style scoped>
 #main {
 
@@ -261,7 +261,7 @@ input {
     grid-template-columns: 1fr;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 305px;
     margin: 0 auto;
 }
 
@@ -271,6 +271,7 @@ input {
   white-space: nowrap;
   align-items: center;
   padding: 7px;
+  padding-left: 5px;
 }
 
 .dish-item {

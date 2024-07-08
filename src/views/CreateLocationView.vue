@@ -39,10 +39,10 @@
           </div>
           <div id="buttons">
             <div id="break" @click="reset">
-              zurücksetzen
+              erstellen
             </div>
             <div id="continue" @click="createLocation">
-              anlegen
+              zurücksetzen
             </div>
           </div>
         </div>
