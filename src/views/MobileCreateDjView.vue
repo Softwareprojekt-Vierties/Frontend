@@ -9,26 +9,33 @@
         <div id="infos">
             <div class="info">
                 <div id="left">
-                    <div class="input-headline">Stadt:</div>
+                    <div class="input-headline">Region:</div>
                     <input placeholder="z.B. 32427 Minden"/>
-                    <div class="input-headline">Straße:</div>
-                    <input placeholder="z.B. Artilleriestraße 9"/>
-                    <div class="input-headline">Kapazität:</div>
-                    <input placeholder="z.B. 200 Personen"/>
+                    <div class="input-headline">Kategorie:</div>
+                    <input placeholder="z.B. Techno"/>
                 </div>
                 <div id="right">
+                    <div class="input-headline">Erfahrung:</div>
+                    <input placeholder="z.B. 10 Jahre"/>
                     <div class="input-headline">Preis:</div>
                     <input placeholder="z.B. 50 €/h"/>
-                    <div class="input-headline">Größe:</div>
-                    <input placeholder="z.B. 50 ha"/>
-                    <div class="input-headline">Open Air:</div>
-                    <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
                 </div>
             </div>
         </div>
         <div id="description">
           <div id="headline-text">Beschreibung hinzufügen:</div>
           <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
+        </div>
+        <div id="songs-headline">Songs hinzufügen:</div>
+        <div id="songs">
+            <div id="addcreator" ref="addCreator" class="scroll-container">
+                <div class="dish-container">
+                <div v-for="(song, index) in songs" :key="index" class="dish-item">
+                    <MobileMusicComponent/>
+                </div>
+                <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+                </div>
+            </div>
         </div>
         <div id="button-div">
             <div id="button-reset">
@@ -46,44 +53,44 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import axios from 'axios';
 import MobileEditHeader from '@/components/MobileEditHeader.vue';
+import MobileMusicComponent from '@/components/MobileMusicComponent.vue';
 
 export default {
     components: {
         MobileEditHeader,
+        MobileMusicComponent
     },
-
-    data() {
-      return {
-        menu: '',
-        locationName: '',
-        smallDescription: '',
-        longDescription: '',
-        region: '',
-        address: '',
-        quantityPersons: '',
-        price: '',
-        size: '',
-        openAir: false,
-        imagePreview: null,
-        eventImage: null        
-      };
-    },
-
-    computed: {
+  data() {
+    return {
+      menu: '',
+      djName: '',
+      shortDescription: '',
+      longDescription: '',
+      region: '',
+      category: '',
+      experience: '',
+      price: '',
+      imagePreview: null,
+      uploadedImage: null,
+      songs: [
+        { songName: '', songLength: '', songYear: '' }
+      ]
+    };
+  },
+  computed: {
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
-    },
-
-    methods: {
-      onFileChange(event) {
+  },
+  methods: {
+    onFileChange(event) {
         const file = event.target.files[0];
         if (file) {
-          this.eventImage = file;
+          this.uploadedImage = file;
           const reader = new FileReader();
           reader.onload = e => {
             this.imagePreview = e.target.result;
@@ -91,70 +98,77 @@ export default {
           reader.readAsDataURL(file);
         }
       },
-      reset(){
-        this.locationName = '';
-        this.smallDescription = '';
-        this.longDescription = '';
-        this.region = '';
-        this.address = '';
-        this.quantityPersons = '';
-        this.price = '';
-        this.size = '';
-        this.openAir = false;
-        this.imagePreview = null;
-        this.eventImage = null;
-        console.log("values turned into default");
-      },
+    addSong() {
+      this.songs.push({ songName: '', songLength: '', songYear: '' });
+    },
+    removeSong(index) {
+      this.songs.splice(index, 1);
+    },
+    reset() {
+      this.djName = '';
+      this.shortDescription = '';
+      this.longDescription = '';
+      this.region = '';
+      this.category = '';
+      this.experience = '';
+      this.price = '';
+      this.imagePreview = null;
+      this.uploadedImage = null;
+      this.songs = [{ songName: '', songLength: '', songYear: '' }];
+    },
+    goToHomePage() {
+      this.$router.push('/search');
+    },
+    async createDJ() {
+      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+        alert('Please fill in all required fields.');
+        return;
+      }
 
-      goToAnotherPage() {
-        this.$router.push("/search");
-      },
 
-      async createLocation() {
-        if (!this.locationName || !this.smallDescription || !this.longDescription || !this.region || !this.address 
-            || !this.quantityPersons || !this.price || !this.size || !this.eventImage) {
-          alert('Please fill in all required fields.');
-          return;
-        }
-
-        let formData = {};
-        formData.name = this.locationName;
-        formData.kurzbeschreibung = this.smallDescription;
+      let formData = {};
+        formData.benutzername = this.djName;
+        formData.profilname = this.djName;
+        formData.email = this.djName;
+        formData.password = this.djName;
+        formData.profilbild = this.imagePreview;
+        formData.kurzbeschreibung = this.shortDescription;
         formData.beschreibung = this.longDescription;
         formData.region = this.region;
-        formData.adresse = this.address;
-        formData.kapazitaet = this.quantityPersons;
         formData.preis = this.price;
-        formData.flaeche = this.size;
-        formData.openair = this.openAir;
-        formData.bild = this.imagePreview;
+        formData.kategorie = this.category;
+        formData.erfahrung = this.experience;
+        formData.songs = this.songs;
+
         console.log('FormData:', formData); 
 
-        try {
-          const token = localStorage.getItem('authToken');
-          const response = await axios.post('/createLocation', formData,
-          {headers: {'auth':token}});
-          console.log('Location created:', response.data);
-          alert('Location created successfully!');
+
+      //const token = localStorage.getItem('authToken'); 
+
+      try {
+          const response = await axios.post('/createArtist', formData, { headers: { auth: localStorage.authToken } });
+          console.log('Artist created:', response.data);
+          localStorage.setItem('authToken', response.data);
+          alert('Artist created successfully!');
           this.reset();
-        } 
-        catch (error) {
-          console.error('Error with Location creation:', error);
-          alert('Error creating location. Please try again.');
+          this.$router.push("/search");
+        } catch (error) {
+          console.error('Error with Artist creation:', error);
+          alert('Error creating Artist. Please try again.');
         }
-      },
-      handleClick() {
+    },
+    handleClick() {
         if(this.menu) {
             this.menu = false;
         }
         else {
             this.menu = true;
         }
-      }
     }
   }
-  </script>
-  
+}
+</script>
+
 <style scoped>
 #main {
 
@@ -195,7 +209,6 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: left;
-    font-size: 13px;
     font-weight: bold;
 }
 
@@ -225,67 +238,66 @@ input {
     font-size: 11px;
 }
 
-::v-deep .switch {
-      position: relative;
-      display: inline-block;
-      width: 40px; /* Angepasst an die neue Höhe */
-      height: 20px;
-      margin-left: 37%;
-  }
-
-  ::v-deep .switch input { 
-      opacity: 0;
-      width: 0;
-      height: 0;
-  }
-
-  ::v-deep .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    background-color: var(--slider-background-color);
-      -webkit-transition: .4s;
-      transition: .4s;
-      border-radius: 20px; /* Angepasst an die neue Höhe */
-  }
-
-  ::v-deep .slider:before {
-      position: absolute;
-      content: "";
-      height: 16px; /* Angepasst an die neue Höhe */
-      width: 16px; /* Angepasst an die neue Höhe */
-      left: 2px; /* Angepasst an die neue Höhe */
-      bottom: 2px; /* Angepasst an die neue Höhe */
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-      border-radius: 50%;
-  }
-
-  ::v-deep input:checked + .slider {
-      background-color: var(--cyan);
-  }
-
-  ::v-deep input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-  }
-
-  ::v-deep input:checked + .slider:before {
-      -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
-      -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
-      transform: translateX(20px); /* Angepasst an die neue Höhe */
-  }
-
-  #headline-text {
-    font-size: 12px;
+#headline-text {
+    font-size: 15px;
     font-weight: bold;
     height: 15px;
     margin-top: 30px;
-    margin-right: 145px;
-  }
+    margin-right: 110px;
+    margin-bottom: 3px;
+}
+
+#songs-headline {
+    font-size: 15px;
+    font-weight: bold;
+    height: 15px;
+    margin-top: 30px;
+    margin-right: 155px;
+    margin-bottom: -2px;
+}
+
+#songs {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    margin: 0 auto;
+}
+
+#addcreator {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  align-items: center;
+  padding: 7px;
+}
+
+.dish-item {
+  display: inline-block;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+.add-dish-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+#add-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.dish-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
   #long-description-input {
   width: 265px;
@@ -392,4 +404,3 @@ input {
       height: 20px;
   }
 </style>
-  

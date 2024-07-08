@@ -15,7 +15,7 @@
               <div v-for="(song, index) in songs" :key="index" class="dish-item">
                 <div id="dish-form">
                   <div id="right">
-                    <div id="text">Lied:</div>
+                    <div id="text">Titel:</div>
                     <input v-model="song.songName" id="input" placeholder="z.B. Party-Song">
                     <div id="ingredients">Infos:</div>
                     <input v-model="song.songLength" id="input" placeholder="z.B. Länge: 3,41 min">
