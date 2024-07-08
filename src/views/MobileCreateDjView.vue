@@ -322,7 +322,8 @@ input {
   justify-content: center;
   align-items: center;
   gap: 50px;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-bottom: 20px;
 }
 
 #button-reset {
