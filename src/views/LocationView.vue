@@ -15,7 +15,12 @@
       </div>
       <div id="right-side">
         <div id="right-side-info">
-              <Bookmark :isFavorite="false" :id="id" type="location" />
+            <div id="info-bookmark">
+                <label id="info-headline">Infos</label>
+                <div id="div-bookmark">
+                    <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="location" width="10px" height="17px" wrappingDiv="div-bookmark" />
+                </div>
+            </div>
           <div class="infos">
             <label class="info-subheadline"><strong>Stadt:</strong> {{ region }}</label>
           </div>
@@ -46,7 +51,7 @@
 
 <script>
 import DishForm from '../components/ReviewComponent.vue';
-import Bookmark from '../components/ViewPageBookmark.vue';
+import Bookmark from '../components/BookmarkComponent.vue';
 import Header from '../components/ViewHeader.vue';
 import LongDescription from '../components/LongDescription.vue';
 import axios from 'axios';
@@ -79,8 +84,8 @@ export default {
       id:'',
       idSent: '',
       reviewType : 1,
-      isOwner: ''
-
+      isOwner: '',
+        hasBookmark: false,
     };
   },
 
@@ -230,6 +235,23 @@ body {
   border-radius: 10px;
   background-color: white;
   padding: 10px;
+}
+
+#info-bookmark {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#div-bookmark {
+    border-radius: 30px;
+    padding: 2px;
+    width: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding-left: 1px;
+    padding-top: 5px;
+    cursor: pointer;
 }
 
 .infos {

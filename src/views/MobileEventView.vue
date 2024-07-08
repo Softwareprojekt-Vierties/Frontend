@@ -4,7 +4,9 @@
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
-                <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="events" />
+                <div id="div-bookmark">
+                    <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="events" width="10px" height="17px" margin-left="1px" wrappingDiv="div-bookmark" />
+                </div>
             </div>
         </div>
         <div id="info">
@@ -75,7 +77,7 @@ import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventComponent from '@/components/MobileEventComponent.vue';
-import Bookmark from '@/components/MobileViewPageBookmark.vue';
+import Bookmark from '@/components/BookmarkComponent.vue';
 
 export default {
     components: {
@@ -257,6 +259,17 @@ export default {
     align-items: center;
     gap: 200px;
     margin-top: 20px;
+}
+
+#div-bookmark {
+    border-radius: 30px;
+    padding: 2px;
+    width: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding-left: 1px;
+    padding-top: 5px;
+    cursor: pointer;
+    margin-right: 10px;
 }
 
 #info-headline {

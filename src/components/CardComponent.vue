@@ -6,10 +6,7 @@
                 <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
-                <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
-                <img :alt="name" @click="changeBookmark" v-else-if="isDarkMode" :src="require('@/assets/bookmark-empty.png')" class="bookmark">
-                <img :alt="name" @click="changeBookmark" v-else-if="hasBookmark" :src="require('@/assets/bookmark-gray.jpg')" class="bookmark">
-                <img :alt="name" @click="changeBookmark" v-else :src="require('@/assets/bookmark-white.jpg')" class="bookmark">
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" width="20px" height="30px" />
             </div>
             <div class="line-div">
                 {{line1}}
@@ -29,11 +26,12 @@
 
 <script>
     import Image from './ImageComponent.vue';
-    import axios from 'axios';
+    import Bookmark from './BookmarkComponent.vue';
 
     export default {
         components: {
             Image,
+            Bookmark,
         },
         props: {
             name: {
@@ -93,21 +91,6 @@
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
         },
-        methods: {
-            changeBookmark() {
-                this.hasBookmark = !this.hasBookmark;
-                // send switch to server
-                axios.post("/changeFavorite/", {
-                    id: this.info.id,
-                    type: this.info.type,
-                    istfav: this.hasBookmark, 
-                },{
-                    headers: { "auth": localStorage.getItem("authToken")}
-                })
-                    .then(res => console.log("Success: ", res))
-                    .catch(err => console.error("Error: ", err));
-            }
-        },
         created() {
             this.hasBookmark = this.isBookmarked;
         }
@@ -133,11 +116,6 @@
         color: var(--textfield-font-color);
     }
     overflow: hidden;
-}
-
-.bookmark {
-    width: 20px;
-    height: 30px;
 }
 
 .line-div {

@@ -4,11 +4,8 @@
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
-                <div id="div-bookmark" @click="changeBookmark">
-                    <img v-if="isDarkMode && hasBookmark" src="../assets/bookmark-filled.png" id="bookmark">
-                    <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
-                    <img v-else-if="hasBookmark" src="../assets/bookmark-white.jpg" id="bookmark">
-                    <img v-else src="../assets/bookmark-gray.jpg" id="bookmark">
+                <div id="div-bookmark">
+                    <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="caterer" width="10px" height="17px" margin-left="1px" wrappingDiv="div-bookmark" />
                 </div>
             </div>
         </div>
@@ -106,6 +103,7 @@ import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
 import MobileReviewComponent from '@/components/MobileReviewComponent.vue';
 import MobileCatererComponenet from '@/components/MobileCatererComponenet.vue';
+import Bookmark from '@/components/BookmarkComponent.vue';
 
   
 export default {
@@ -113,7 +111,8 @@ export default {
         MobileHeaderComponent,
         MobileEventCardComponent,
         MobileReviewComponent,
-        MobileCatererComponenet
+        MobileCatererComponenet,
+        Bookmark,
     },
     data() {
       return {
@@ -134,7 +133,8 @@ export default {
         idSent:'',
         isOwner:'',
         dishes: [],
-        reviews : []
+        reviews : [],
+          hasBookmark: false,
         
       };
     },
