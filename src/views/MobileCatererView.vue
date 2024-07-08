@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" />
+        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -14,16 +14,24 @@
         </div>
         <div id="info">
             <div id="info-left">
-                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
-                <br>
-                <br>
-                <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
+                <pre>
+Location: {{location}}
+
+Datum: {{datum}}
+
+Zeit: {{startuhrzeit}}Uhr - {{enduhrzeit}}Uhr
+
+Eventgröße: {{anzahlPersonen}} Personen
+                </pre>
             </div>
             <div id="info-right">
-                <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
-                <br>
-                <br>
-                <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
+                <pre>
+Preis: {{preis}} €
+
+Altersfreigabe: {{alter}}+
+
+Open Air: {{openAir ? "Ja" : "Nein"}}
+                </pre>
             </div>
         </div>
         <div class="description-headline-div">
@@ -42,31 +50,15 @@
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent
-
-            v-for="(event, index) in events" 
-                    :key="index" 
-                    :name="event.name" 
-                    :line1="event.location" 
-                    :line2="event.datum"
-                    :line3="event.time"
-                    :bild="event.bild"
-            />
+            <MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/>
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
-                Playlist:
+                Gerichte:
             </div>
         </div>
         <div id="palylist-container">
-            <MobilePlaylistComponent
-            v-for="(song, index) in songs" 
-                    :key="index" 
-                    :songName="song.songName" 
-                    :songLength="song.songLength" 
-                    :songYear="song.songYear"
-
-            />
+            <MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/>
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -74,21 +66,15 @@
             </div>
         </div>
         <div id="review-div">
-            <MobileReviewComponent 
-                v-for="(review, index) in reviews" 
-                :key="index" 
-                :userName="review.userName" 
-                :rating="review.rating" 
-                :reviewText="review.reviewText"
-            />
+            <MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/>
         </div>
         <div id="button-div">
-            <div id="button" @click="weiter">
-                {{ buttonLabel }}
+            <div id="button">
+                Ticket buchen (20/50)
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
+            <img id="home-mobile" src="../assets/home-mobile.png" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -101,8 +87,8 @@ import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
-import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
-import MobilePlaylistComponent from '@/components/MobilePlaylistComponent.vue';
+import MobileReviewComponent from '@/components/MobileReviewComponent.vue';
+import MobileCatererComponenet from '@/components/MobileCatererComponenet.vue';
 
   
 export default {
@@ -110,12 +96,12 @@ export default {
         MobileHeaderComponent,
         MobileEventCardComponent,
         MobileReviewComponent,
-        MobilePlaylistComponent
+        MobileCatererComponenet
     },
     data() {
       return {
         menu: '',
-        name: '',
+        name : '',
         sterne: '',
         kurzbeschreibung:'',
         beschreibung: '',
@@ -125,124 +111,70 @@ export default {
         preis : '',
         imagePreview : null,
         id:'',
+        userId:'',
         reviewType :0,
-        events : [],
-        userid:'',
-        idSent : '',
-        isOwner: '',
-        songs: [],
-        reviews : []
-
+        events: [],
+        idSent:'',
+        isOwner:''
         
       };
     },
 
     computed: {
-      headerStyle() {
-        return {
-          backgroundImage: `url(${this.imagePreview})`,
-          backgroundPosition: 'center center',
-            backgroundSize: 'cover',
-          //filter:flur(8px);
-        };
-      },
-      fileDivStyle() {
-        return this.imagePreview
-          ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-          : {};
-      }, 
       buttonLabel() {
-        return this.isOwner ? 'Edit DJ' : 'Event Erstellen';
+        return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
       }
     },
 
     async created(){
-        this.idSent = this.$route.params.id;
-        const token = localStorage.getItem('authToken');
-        try {
-            const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});
-            console.log(response);
-            this.setFormData(response.data);
-            console.log('dj data received:', response.data);
-        } catch (error) {
-                console.error('Error with sending dj ID to DB :', error);
-        }
-        this.getReview();
+      this.idSent = this.$route.params.id;
+      const token = localStorage.getItem('authToken');
+
+      try {
+        const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
+        console.log(response);
+        this.setFormData(response.data);
+        console.log('dj data received:', response.data);
+      }
+      catch (error) {
+        console.error('Error with sending Caterer ID for caterer page to DB :', error);
+      }
     },
 
     methods: {
 
-        goToHomePage(){
-            this.$router.push('/search');
-        },
-
-        async getReview() {
-            try {
-                console.log("idSent",this.idSent);
-                const response = await axios.get(`/getPersonReview/${this.userid}`);
-                this.reviews = response.data.rows;
-                console.log("Review data received:", this.reviews);
-                this.setFormDataReview(this.reviews);
-            } catch (error) {
-                console.error('Error with sending review ID to DB:', error);
-            }
-        },
-
-        setFormDataReview(data) {
-            if(data.length > 0) {
-                this.reviews=[];
-                data.forEach(content => {this.reviews.push({
-
-                    userName : content.profilname,
-                    rating: content.sterne,
-                    reviewText : content.inhalt
-                });
-            
-            });
-            }
-        },  
-
       setFormData(data){
-
-        const myVar =data['artist'].rows[0].region.split(',');
+        const myVar =data['caterer'].rows[0].region.split(',');
         console.log(myVar[0]);
         console.log(myVar[1]);
-
-        this.name = data['artist'].rows[0].benutzername;
-        this.kurzbeschreibung = data['artist'].rows[0].kurzbeschreibung;
-        this.beschreibung = data['artist'].rows[0].beschreibung ;
+        this.name = data['caterer'].rows[0].profilname;
+        this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['caterer'].rows[0].beschreibung ;
         this.region =myVar[1] ;
-        this.kategorie = data['artist'].rows[0].kategorie;
-        this.erfahrung = data['artist'].rows[0].erfahrung;
-        this.preis = data['artist'].rows[0].preis;
-        this.imagePreview = data['artist'].rows[0].profilbild;
-        this.sterne = data['artist'].rows[0].sterne;
-        this.userid = data['artist'].rows[0].userid;
-        this.id = data['artist'].rows[0].id;
+        this.kategorie = data['caterer'].rows[0].kategorie;
+        this.erfahrung = data['caterer'].rows[0].erfahrung;
+        this.preis = data['caterer'].rows[0].preis;
+        this.imagePreview = data['caterer'].rows[0].profilbild;
+        this.sterne = data['caterer'].rows[0].sterne;
+        this.userId = data['caterer'].rows[0].userid;
+        this.id = data['caterer'].rows[0].id;
         this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
-
-        data['lieder'].rows.forEach(lied => {
-            this.songs.push({
-            id: lied['id'],
-            songName: lied['name'], 
-            songLength: lied['laenge'], 
-            songYear: lied['erscheinung'].substring(0, 10)
-            })
-        });
-      }
+        console.log("my events",this.events);
+      },
       
-      ,goToAnotherPage() {
+      goToAnotherPage() {
         this.$router.push('/search');
       }, 
       weiter(){
         if(this.isOwner === false){
-          this.$router.push('/createevent');
-        } else{
-          this.$router.push({ name : 'EditDjType', params: {id : this.idSent}});
+            this.$router.push('/createevent');
         }
-      },
-      handleClick() {
+        else{
+            this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
+        }
+    },
+    handleClick() {
             if(this.menu) {
                 this.menu = false;
             }
@@ -251,12 +183,10 @@ export default {
             }
         }
     }
-
-
   }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   #main {
   
   }
@@ -299,7 +229,7 @@ export default {
       justify-content: center;
       align-items: top;
       gap: 10px;
-      height: 60px;
+      height: 120px;
   }
   
   #info-left {
@@ -438,5 +368,3 @@ export default {
       height: 20px;
   }
     </style>
-    
-    

@@ -88,7 +88,7 @@
         },
         created() {
             this.hasBookmark = this.isBookmarked;
-            this.setScaleFactor(0.65); // Setzt den Skalierungsfaktor dynamisch
+            this.setScaleFactor(0.67); // Setzt den Skalierungsfaktor dynamisch
         }
     };
 </script>
@@ -106,8 +106,6 @@
     padding-bottom: 10px;
     padding-right: 7px;
     background-color: white;
-    margin-left: 2px;
-    margin-right: 2px;
 }
 
 #card {
