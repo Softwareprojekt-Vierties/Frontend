@@ -23,7 +23,11 @@
             </div>
         </div>
         <div id="description">
-          <div id="headline-text">Beschreibung hinzufügen:</div>
+          <div class="description-headline-div">
+              <div class="description-headline">
+                  Beschreibung hinzufügen:
+              </div>
+          </div>
           <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
         </div>
         <div id="songs-headline">Songs hinzufügen:</div>
@@ -222,7 +226,6 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: left;
-    font-size: 13px;
     font-weight: bold;
 }
 
@@ -235,7 +238,7 @@ export default {
 
 input {
     width: 125px;
-    height: 15px;
+    height: 20px;
     border-radius: 5px;
     text-align: center;
     border: 1px solid #000000;
@@ -247,7 +250,7 @@ input {
     font-weight: bold;
     height: 15px;
     margin-top: 30px;
-    margin-right: 110px;
+    margin-right: 100px;
     margin-bottom: 3px;
 }
 
@@ -288,8 +291,6 @@ input {
   align-items: center;
   justify-content: left;
   cursor: pointer;
-  width: 50px;
-  height: 50px;
 }
 
 #add-icon {

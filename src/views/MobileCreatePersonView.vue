@@ -10,33 +10,43 @@
             <div class="info">
                 <div id="left">
                     <div class="input-headline">Region:</div>
-                    <input placeholder="z.B. 32427 Minden"/>
-                    <div class="input-headline">Kategorie:</div>
-                    <input placeholder="z.B. Desserts"/>
+                    <input class="infos" placeholder="z.B. 32427 Minden"/>
                 </div>
                 <div id="right">
-                    <div class="input-headline">Erfahrung:</div>
-                    <input placeholder="z.B. 10 Jahre"/>
-                    <div class="input-headline">Preis:</div>
-                    <input placeholder="z.B. 50 €/Portion"/>
+                    <div class="input-headline">Alter:</div>
+                    <input class="infos" placeholder="z.B. 18 Jahre"/>
                 </div>
             </div>
         </div>
-        <div id="description">
-          <div class="description-headline-div">
-              <div class="description-headline">
-                  Beschreibung hinzufügen:
-              </div>
-          </div>
+        <div class="description-headline-div">
+            <div class="description-headline-more-infos">
+                Lieblings Eventarten hinzufügen:
+            </div>
+            <input class="more-infos" placeholder="z.B. Techno, Geburtstagsfeier"/>
+            <div class="description-headline-more-infos">
+                Lieblings Lieder hinzufügen:
+            </div>
+            <input class="more-infos" placeholder="z.B. Party-Song, Disco-Song"/>
+            <div class="description-headline-more-infos">
+                Lieblings Gerichte hinzufügen:
+            </div>
+            <input class="more-infos" placeholder="z.B. Kuchen, Eis"/>
+        </div>
+        <div id="description"> 
+            <div id="description-headline">
+                <div class="description-headline">
+                    Beschreibung hinzufügen:
+                </div>
+            </div>
           <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
         </div>
-        <div id="songs-headline">Gerichte hinzufügen:</div>
+        <div id="songs-headline">Bilder hinzufügen:</div>
         <div id="songs">
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
-                  <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                      <MobileDishFrom :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
-                  </div>
+                    <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+                        <MobilePictureComponent :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
+                    </div>
                 <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
             </div>
@@ -57,147 +67,127 @@
         </div>
     </div>
 </template>
-
-<script>
-import MobileDishFrom from '../components/MobileDishFrom.vue';
-import MobileEditHeader from '../components/MobileEditHeader.vue';
-import axios from 'axios'; 
-
-
-export default {
-  components: {
-    MobileDishFrom,
-    MobileEditHeader,
-  },
-
-  data() {
+  
+  <script>
+  import MobileEditHeader from '../components/MobileEditHeader.vue';
+  import MobilePictureComponent from '../components/MobilePictureComponent.vue'
+  import axios from 'axios';
+  
+  export default {
+    components: {
+        MobileEditHeader,
+        MobilePictureComponent
+    },
+    data() {
       return {
         menu: '',
-        catererName : '',
-        shortDescription : '',
-        longDescription : '',
-        region : '',
-        category : '',
-        experience : '',
-        price : '',
+        dishes: [null],
+        personName: "",
+        shortDescription: "",
+        longDescription: "",
+        region: "",
+        gender: "",
+        favoriteEventTypes: "",
+        favoriteDish: "",
+        favoriteSong: "",
         imagePreview: null,
-        uploadedImage: null,
-        dishes: [
-        { dishName: '', info1: '', info2: '', imagePreview: null }
-        ]
+        age: 0,
+        isModalVisible: false
       };
-  },
-
-  computed: {
-        isDarkMode() {
-            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-        }
-  },
-
-  methods: {
-
-    goToHomePage() {
-    this.$router.push('/search');
     },
-
-    onFileChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-          this.uploadedImage = file;
-          const reader = new FileReader();
-          reader.onload = e => {
-            this.imagePreview = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-    },
-
-    addDish() {
-        this.dishes.push({ name: '', ingredients: [] });
+      methods: {
+          addDish() {
+        this.dishes.push(null);
         this.$nextTick(() => {
-            const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-            container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
+          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
         });
-    },
-
-    removeDish(index) {
+      },
+      removeDish(index) {
         this.dishes.splice(index, 1);
-    },
-    resetDishForm(index) {
-      this.$refs.dishForm[index].clearFields();
-    },
+      },
+      openModal() {
+        this.isModalVisible = true;
+          console.log(this.dishes);
+      },
+      closeModal() {
+        this.isModalVisible = false;
+      },
+        decreaseAge() {
+            if (this.age > 0) {
+                this.age--;
+            }
+        },
+          increaseAge() {
+              if (this.age < 99) {
+                  this.age++;
+              }
+          },
+            async createPerson(isPrivate) {
+                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
+                    || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
 
-    default_values() {
-    this.catererName = '';
-    this.shortDescription = '';
-    this.longDescription = '';
-    this.region = '';
-    this.category = '';
-    this.experience = '';
-    this.price = '';
-    this.imagePreview = null;
-    this.uploadedImage = null;
+                let formData = {};
+                formData.profilname = this.personName;
+                formData.kurzbeschreibung = this.shortDescription;
+                formData.beschreibung = this.longDescription;
+                formData.region = this.region;
+                formData.alter = this.age;
+                formData.eventarten = this.favoriteEventTypes;
+                formData.lieblingslied = this.favoriteSong;
+                formData.lieblingsgericht = this.favoriteDish;
+                formData.geschlecht = this.gender;
+                formData.partybilder = [];
+                formData.privat = isPrivate;
+                this.dishes.forEach(image => {
+                    if (image) {
+                        formData.partybilder.push(image);
+                    }
+                });
 
-    this.dishes = [{ dishName: '',  info1: '', info2: '', imagePreview: null }];
-    this.$nextTick(() => {
-        if (this.$refs.dishForm && this.$refs.dishForm[0]) {
-          this.$refs.dishForm[0].clearFields();
-        }
-      });
-    },
-    async createCaterer(){
-      if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price) {
-        alert('Please fill in all required fields.');
-        return;
-      }
+                if (this.imagePreview) {
+                    formData.profilbild = this.imagePreview;
+                }
 
-      const dishForms = this.$refs.dishForm;
-      this.dishes = dishForms.map(form => form.getData());
+                const token = localStorage.getItem('authToken');
 
-      let formData = {};
-        formData.benutzername = this.catererName;
-        formData.profilname = this.catererName;
-        formData.email = this.catererName;
-        formData.password = this.catererName;
-        formData.profilbild = this.imagePreview;
-        formData.kurzbeschreibung = this.shortDescription;
-        formData.beschreibung = this.longDescription;
-        formData.region = this.region;
-        formData.preis = this.price;
-        formData.kategorie = this.category;
-        formData.erfahrung = this.experience;
-        formData.gerichte = this.dishes;
-
-        console.log('FormData:', formData); 
-
-
-      //const token = localStorage.getItem('authToken'); 
-
-      try {
-          const response = await axios.post('/createCaterer', formData, { headers: { auth: localStorage.authToken } });
-          console.log('Caterer created:', response.data);
-          localStorage.setItem('authToken', response.data);
-          alert('Caterer created successfully!');
-          this.default_values();
-          this.$router.push("/search");
-        } catch (error) {
-          console.error('Error with Caterer creation:', error);
-          alert('Error creating Caterer. Please try again.');
-        }
-    },
-    handleClick() {
-        if(this.menu) {
+                try {
+                    const response = await axios.post('/createEndnutzer', formData, {
+                        headers: {
+                            "auth": token,
+                        }
+                    });
+                    console.log('Person created:', response.data);
+                    localStorage.setItem('authToken', response.data);
+                    this.closeModal(); 
+                    this.$router.push("/");
+                } catch (error) {
+                    console.error('Error with Person creation:', error);
+                }
+            },
+          reset() {
+              this.$router.go();
+          },
+          handleClick() {
+            if(this.menu) {
             this.menu = false;
-        }
-        else {
+            }
+            else {
             this.menu = true;
-        }
-    }
+            }
+          }
+    },
+      computed: {
+          isDarkMode() {
+              return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+          },
+      }
   }
-}
+  </script>
 
-</script>
-    
 <style scoped>
 #main {
 
@@ -208,13 +198,29 @@ export default {
     grid-template-columns: auto;
     justify-content: center;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 20px;
+}
+
+#description-headline {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .description-headline {
     width: 287px;
     text-align: left;
     font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.description-headline-more-infos {
+    width: 287px;
+    text-align: left;
+    font-size: 12px;
     font-weight: bold;
     margin-bottom: 3px;
 }
@@ -257,7 +263,12 @@ export default {
     margin-top: 15px
 }
 
-input {
+#more-input-headline {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.infos {
     width: 125px;
     height: 20px;
     border-radius: 5px;
@@ -266,7 +277,19 @@ input {
     font-size: 11px;
 }
 
+.more-infos {
+    width: 265px;
+    height: 20px;
+    border-radius: 5px;
+    text-align: left;
+    border: 1px solid #000000;
+    font-size: 11px;
+    margin-bottom: 25px;
+    padding-left: 20px
+}
+
 #headline-text {
+    width: 220px;
     font-size: 15px;
     font-weight: bold;
     height: 15px;
@@ -289,7 +312,7 @@ input {
     grid-template-columns: 1fr;
     justify-content: center;
     align-items: center;
-    width: 305px;
+    width: 300px;
     margin: 0 auto;
 }
 
@@ -299,7 +322,6 @@ input {
   white-space: nowrap;
   align-items: center;
   padding: 7px;
-  padding-left: 5px;
 }
 
 .dish-item {
@@ -327,7 +349,7 @@ input {
 }
 
   #long-description-input {
-  width: 265px;
+  width: 267px;
   height: 150px;
   font-family: Arial, sans-serif;
   font-size: 12px;
