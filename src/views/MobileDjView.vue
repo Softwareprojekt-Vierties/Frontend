@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" />
+        <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -14,24 +14,16 @@
         </div>
         <div id="info">
             <div id="info-left">
-                <pre>
-Location: {{location}}
-
-Datum: {{datum}}
-
-Zeit: {{startuhrzeit}}Uhr - {{enduhrzeit}}Uhr
-
-Eventgröße: {{anzahlPersonen}} Personen
-                </pre>
+                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
             </div>
             <div id="info-right">
-                <pre>
-Preis: {{preis}} €
-
-Altersfreigabe: {{alter}}+
-
-Open Air: {{openAir ? "Ja" : "Nein"}}
-                </pre>
+                <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
         </div>
         <div class="description-headline-div">
@@ -50,7 +42,16 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/>
+            <MobileEventCardComponent
+
+            v-for="(event, index) in events" 
+                    :key="index" 
+                    :name="event.name" 
+                    :line1="event.location" 
+                    :line2="event.datum"
+                    :line3="event.time"
+                    :bild="event.bild"
+            />
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -58,7 +59,14 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="palylist-container">
-            <MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/><MobilePlaylistComponent/>
+            <MobilePlaylistComponent
+            v-for="(song, index) in songs" 
+                    :key="index" 
+                    :songName="song.songName" 
+                    :songLength="song.songLength" 
+                    :songYear="song.songYear"
+
+            />
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -66,15 +74,21 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="review-div">
-            <MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/>
+            <MobileReviewComponent 
+                v-for="(review, index) in reviews" 
+                :key="index" 
+                :userName="review.userName" 
+                :rating="review.rating" 
+                :reviewText="review.reviewText"
+            />
         </div>
         <div id="button-div">
-            <div id="button">
-                Ticket buchen (20/50)
+            <div id="button" @click="weiter">
+                {{ buttonLabel }}
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" />
+            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -87,7 +101,7 @@ import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
-import MobileReviewComponent from '@/components/MobileReviewComponent.vue';
+import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
 import MobilePlaylistComponent from '@/components/MobilePlaylistComponent.vue';
 
   
@@ -115,7 +129,10 @@ export default {
         events : [],
         userid:'',
         idSent : '',
-        isOwner: ''
+        isOwner: '',
+        songs: [],
+        reviews : []
+
         
       };
     },
@@ -140,19 +157,50 @@ export default {
     },
 
     async created(){
-    this.idSent = this.$route.params.id;
-    const token = localStorage.getItem('authToken');
-      try {
-          const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});
-          console.log(response);
-          this.setFormData(response.data);
-          console.log('dj data received:', response.data);
-      } catch (error) {
-          console.error('Error with sending dj ID to DB :', error);
+        this.idSent = this.$route.params.id;
+        const token = localStorage.getItem('authToken');
+        try {
+            const response = await axios.get(`/getArtistById/${this.idSent}`, {headers: {'auth':token}});
+            console.log(response);
+            this.setFormData(response.data);
+            console.log('dj data received:', response.data);
+        } catch (error) {
+                console.error('Error with sending dj ID to DB :', error);
         }
+        this.getReview();
     },
 
     methods: {
+
+        goToHomePage(){
+            this.$router.push('/search');
+        },
+
+        async getReview() {
+            try {
+                console.log("idSent",this.idSent);
+                const response = await axios.get(`/getPersonReview/${this.userid}`);
+                this.reviews = response.data.rows;
+                console.log("Review data received:", this.reviews);
+                this.setFormDataReview(this.reviews);
+            } catch (error) {
+                console.error('Error with sending review ID to DB:', error);
+            }
+        },
+
+        setFormDataReview(data) {
+            if(data.length > 0) {
+                this.reviews=[];
+                data.forEach(content => {this.reviews.push({
+
+                    userName : content.profilname,
+                    rating: content.sterne,
+                    reviewText : content.inhalt
+                });
+            
+            });
+            }
+        },  
 
       setFormData(data){
 
@@ -173,9 +221,18 @@ export default {
         this.id = data['artist'].rows[0].id;
         this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
-      },
+
+        data['lieder'].rows.forEach(lied => {
+            this.songs.push({
+            id: lied['id'],
+            songName: lied['name'], 
+            songLength: lied['laenge'], 
+            songYear: lied['erscheinung'].substring(0, 10)
+            })
+        });
+      }
       
-      goToAnotherPage() {
+      ,goToAnotherPage() {
         this.$router.push('/search');
       }, 
       weiter(){
@@ -193,7 +250,7 @@ export default {
                 this.menu = true;
             }
         }
-    }, 
+    }
 
 
   }
@@ -242,7 +299,7 @@ export default {
       justify-content: center;
       align-items: top;
       gap: 10px;
-      height: 120px;
+      height: 60px;
   }
   
   #info-left {

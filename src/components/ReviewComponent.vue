@@ -59,8 +59,11 @@ export default {
         async updateReviewToGet() {
             if (this.typeOfReview === 0) {
                 this.reviewToGet = "getPersonReview"; //dj
+                console.log("review type", this.typeOfReview);
             } else if (this.typeOfReview === 1) {
                 this.reviewToGet = "getLocationReview"; // location
+                console.log("review type", this.typeOfReview);
+
             }
 
             if (this.reviewToGet) {

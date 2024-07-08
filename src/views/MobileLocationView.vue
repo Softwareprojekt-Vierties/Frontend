@@ -150,7 +150,7 @@ export default {
 
         async getReview() {
             try {
-                const response = await axios.get(`/getLocationReview/${this.id}`);
+                const response = await axios.get(`/getLocationReview/${this.idSent}`);
                 this.reviews = response.data.rows;
                 console.log("Review data received:", this.reviews);
                 this.setFormDataReview(this.reviews);

@@ -33,23 +33,23 @@
         props: {
             name: {
                 type: String,
-                default: "UNI PARTY"
+                default: "TEST"
             }, 
             line1: {
                 type: String,
-                default: "Location: Campus Minden"
+                default: "Location: Test"
             },
             line2: {
                 type: String,
-                default: "Datum: 17.8.2024"
+                default: "Datum: 01.01.2001"
             },
             line3: {
                 type: String,
-                default: "Zeit: 19 Uhr – 2Uhr"
+                default: "Zeit: 29 Uhr"
             },
             buttonText: {
                 type: String,
-                default: "Ticket buchen (20/50)"
+                default: "Buchen Test"
             },
             imagePath: {
                 type: String,
