@@ -100,6 +100,10 @@ export default {
       },
     addSong() {
       this.songs.push({ songName: '', songLength: '', songYear: '' });
+        this.$nextTick(() => {
+          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
+          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+        });
     },
     removeSong(index) {
       this.songs.splice(index, 1);
