@@ -6,10 +6,7 @@
                 <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
-                <img :alt="name" @click="changeBookmark" v-if="hasBookmark && isDarkMode" :src="require('@/assets/bookmark-filled.png')" class="bookmark">
-                <img :alt="name" @click="changeBookmark" v-else-if="isDarkMode" :src="require('@/assets/bookmark-empty.png')" class="bookmark">
-                <img :alt="name" @click="changeBookmark" v-else-if="hasBookmark" :src="require('@/assets/bookmark-gray.jpg')" class="bookmark">
-                <img :alt="name" @click="changeBookmark" v-else :src="require('@/assets/bookmark-white.jpg')" class="bookmark">
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" width="calc(20px * var(--scale-factor))" height="calc(30px * var(--scale-factor))" />
             </div>
             <div class="line-div">
                 {{line1}}
@@ -29,11 +26,12 @@
 
 <script>
     import Image from './ImageComponent.vue';
-    import axios from 'axios';
+    import Bookmark from './BookmarkComponent.vue';
 
     export default {
         components: {
             Image,
+            Bookmark,
         },
         props: {
             name: {
@@ -94,18 +92,6 @@
         }
         },
         methods: {
-            changeBookmark() {
-                this.hasBookmark = !this.hasBookmark;
-                // send switch to server
-                axios.post("/changeFavorite/", {
-                    id: this.info.id,
-                    type: this.info.type,
-                },{
-                    headers: { "auth": localStorage.getItem("authToken")}
-                })
-                    .then(res => console.log("Success: ", res))
-                    .catch(err => console.error("Error: ", err));
-            },
             setScaleFactor(factor) {
                 document.documentElement.style.setProperty('--scale-factor', factor);
             }
@@ -158,11 +144,6 @@
     width: calc(170px * var(--scale-factor));
     height: calc(135px * var(--scale-factor));
     border-radius: 5px;
-}
-
-.bookmark {
-    width: calc(20px * var(--scale-factor));
-    height: calc(30px * var(--scale-factor));
 }
 
 .line-div {
