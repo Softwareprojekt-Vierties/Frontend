@@ -14,32 +14,7 @@
         </div>
       </div>
       <div id="right-side">
-        <div id="right-side-info">
-            <div id="info-bookmark">
-                <label id="info-headline">Infos</label>
-                <div id="div-bookmark">
-                    <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="location" width="10px" height="17px" wrappingDiv="div-bookmark" />
-                </div>
-            </div>
-          <div class="infos">
-            <label class="info-subheadline"><strong>Stadt:</strong> {{ region }}</label>
-          </div>
-          <div class="infos">
-            <label class="info-subheadline"><strong>Straße:</strong> {{ addresse }}</label>
-          </div>
-          <div class="infos">
-            <label class="info-subheadline"><strong>Kapazität:</strong> {{ kapazitaet }} Personen</label>
-          </div>
-          <div class="infos">
-            <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
-          </div>
-          <div class="infos">
-            <label class="info-subheadline"><strong>Größe:</strong> {{ flaeche }} ha</label>
-          </div>
-          <div class="infos">
-            <label class="info-subheadline"><strong>Open Air:</strong> {{ openair }}</label>
-          </div>
-        </div>
+            <Info v-model:hasBookmark="hasBookmark" :city="region" :address="addresse" :capacity="kapazitaet" :price="preis" :locationSize="flaeche" :openAir="openAir" />
         <div id="ticket" @click="weiter" >
           <!-- create event or edit location button-->
           {{ buttonLabel }}
@@ -51,9 +26,9 @@
 
 <script>
 import DishForm from '../components/ReviewComponent.vue';
-import Bookmark from '../components/BookmarkComponent.vue';
 import Header from '../components/ViewHeader.vue';
 import LongDescription from '../components/LongDescription.vue';
+import Info from '../components/RightSideInfo.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -61,9 +36,9 @@ import 'leaflet/dist/leaflet.css';
 export default {
   components: {
     DishForm,
-      Bookmark,
       Header,
       LongDescription,
+      Info,
   },
   data() {
     return {
@@ -231,95 +206,11 @@ body {
   font-weight: bold;
 }
 
-#right-side-info {
-  border-radius: 10px;
-  background-color: white;
-  padding: 10px;
-}
-
-#info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-    cursor: pointer;
-}
-
-.infos {
-  display: grid;
-  margin-top: 20px;
-  margin-right: 10px;
-}
-
-.time-value-left {
-  width: 71.9px;
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  margin-right: 5px;
-}
-
 .description {
     text-align: left;
     margin-bottom: 3px;
     font-size: 13px;
     font-weight: bold;
-}
-
-.time-value-right {
-  width: 71.9px;
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  margin-left: 5px;
-}
-
-.info-subheadline {
-  text-align: left;
-  font-size: 12px;
-}
-
-#long-description-text {
-  width: 580px;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  border-radius: 8px;
-  resize: none;
-  text-align: left;
-  text-decoration: none;
-  font-weight: lighter;
-}
-
-#add-location-icon {
-  width: 25px;
-  height: 25px;
-  margin-top: 4px;
-}
-
-#add-location {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: white;
-}
-
-#info-headline {
-  display: block; /* Als Block-Element anzeigen */
-  text-align: left; /* Text links ausrichten */
-  font-family: Arial, sans-serif; /* Schriftart festlegen */
-  font-size: 18px; /* Schriftgröße festlegen */
-  font-weight: bold;
 }
 
 #ticket {
@@ -335,21 +226,6 @@ body {
   margin-top: 10px;
 }
 
-#add-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.long-description {
-  border-radius: 10px;
-  background-color: white;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 580px;
-  justify-content: left;
-  font-weight: bold;
-}
-
 #maps {
   border-radius: 8px;
 }
@@ -359,35 +235,4 @@ body {
   border-radius: 8px;
   margin-top: 15px;
 }
-
-
-.stars {
-  margin-bottom: 10px;
-}
-
-.star {
-  color: #ccc;
-  font-size: 36px;
-}
-
-.star.filled {
-  color: #f3c809;
-}
-
-#name-stars {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: left;
-  align-items: center;
-  gap: 10px;
-}
-
-.upload-icon {
-  max-width: 50%;
-  max-height: 50%;
-  margin-bottom: -10px; /* Adjust margin to bring the text closer */
-  margin-left: 10px;
-  margin-top: -10px;
-}
 </style>
-

@@ -26,35 +26,7 @@
         </div>
         </div>
         <div id="right-side">
-          <div id="right-side-info">
-              <div id="info-bookmark">
-                  <label id="info-headline">Infos</label>
-                  <div id="div-bookmark">
-                      <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="events" width="10px" height="17px" wrappingDiv="div-bookmark" />
-                  </div>
-              </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Location:</strong> {{ location }}</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Datum:</strong> {{ formattedEventDate }}</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Startzeit:</strong> {{ zeit }} Uhr</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Eventgröße:</strong> {{anzahlPersonen }} Personen</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> {{preis}}€</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Altersfreigabe:</strong> {{alter}}+</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Open Air:</strong> {{openAir}}</label>
-            </div>
-          </div>
+            <Info v-model:hasBookmark="hasBookmark" :location="location" :date="formattedEventDate" :startTime="zeit" :price="preis" :ageLimit="alter" :openAir="openAir" />
           <div id="ticket">
             Event buchen 
           </div>
@@ -69,16 +41,16 @@
   import axios from 'axios';
   import Leaflet from 'leaflet';
   import 'leaflet/dist/leaflet.css';
-  import Bookmark from '../components/BookmarkComponent.vue';
   import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
+  import Info from '../components/RightSideInfo.vue';
 
   export default {
     components: {
       DishForm,
-        Bookmark,
         Header,
         LongDescription,
+        Info,
     },
 
     data(){
@@ -238,19 +210,6 @@
     font-weight: bold;
   }
   
-  #file-div {
-    width: 250px;
-    height: 180px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -225px;
-  }
-  
-
   #main {
     display: grid;
     grid-template-columns: auto auto;
@@ -273,65 +232,6 @@
     font-weight: bold;
   }
   
-  #right-side-info {
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    padding: 10px;
-  }
-  
-  .infos {
-    display: grid;
-    margin-top: 20px;
-    margin-right: 10px;
-  }
-
-#info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-    cursor: pointer;
-}
-  
-  .time-value-left {
-    width: 71.9px;
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-    margin-right: 5px;
-  }
-  
-  .time-value-right {
-    width: 71.9px;
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-    margin-left: 5px;
-  }
-  
-  .info-subheadline {
-    text-align: left;
-    font-size: 12px;
-  }
-
-  .description {
-    text-align: left;
-    margin-bottom: 3px;
-    font-size: 13px;
-    font-weight: bold;
-  }
-  
   #long-description-text {
     width: 580px;
     font-family: Arial, sans-serif;
@@ -343,27 +243,6 @@
     font-weight: lighter;
     background-color: var(--textfield-background);
     color: var(--textfield-font-color);
-  }
-  
-  #add-location-icon {
-    width: 25px;
-    height: 25px;
-    margin-top: 4px;
-  }
-  
-  #add-location {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-  }
-  
-  #info-headline {
-    display: block; /* Als Block-Element anzeigen */
-    text-align: left; /* Text links ausrichten */
-    font-family: Arial, sans-serif; /* Schriftart festlegen */
-    font-size: 18px; /* Schriftgröße festlegen */
-    font-weight: bold;
   }
   
   #ticket {
@@ -379,15 +258,6 @@
     cursor: pointer;
     margin-top: 10px;
   }
-
-  #addcreator {
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
-  align-items: center;
-  padding: 20px 0;
-  margin-top: -25px;
-}
 
 .dish-item {
   display: inline-block;
@@ -416,16 +286,6 @@
   gap: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
-}
-
-.long-description {
-  border-radius: 10px;
-    background-color: var(--textfield-background);
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 580px;
-  justify-content: left;
-  font-weight: bold;
 }
 
 #maps {

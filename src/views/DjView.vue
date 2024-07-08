@@ -22,26 +22,7 @@
         </div>
         </div>
         <div id="right-side">
-          <div id="right-side-info">
-              <div id="info-bookmark">
-                  <label id="info-headline">Infos</label>
-                  <div id="div-bookmark">
-                      <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="artist" width="10px" height="17px" wrappingDiv="div-bookmark" />
-                  </div>
-              </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
-            </div>
-          </div>
+            <Info v-model:hasBookmark="hasBookmark" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
           <div id="ticket" @click="weiter">
             {{ buttonLabel }}
           </div>
@@ -56,7 +37,7 @@
   import Dj from '../components/DjComponent.vue';
   import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
-  import Bookmark from '../components/BookmarkComponent.vue';
+  import Info from '../components/RightSideInfo.vue';
   import axios from 'axios'; 
 
 
@@ -67,7 +48,7 @@
       Dj,
         Header,
         LongDescription,
-        Bookmark,
+        Info,
     },
     data() {
       return {
@@ -252,58 +233,6 @@
     font-weight: bold;
 }
 
-#right-side-info {
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    padding: 10px;
-}
-
-#info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-    cursor: pointer;
-}
-
-.infos {
-    display: grid;
-    margin-top: 20px;
-    margin-right: 10px;
-}
-
-.time-value-left {
-    width: 71.9px;
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-    margin-right: 5px;
-}
-
-.time-value-right {
-    width: 71.9px;
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-    margin-left: 5px;
-}
-
-.info-subheadline {
-    text-align: left;
-    font-size: 12px;
-}
-
 #long-description-text {
     width: 580px;
     font-family: Arial, sans-serif;
@@ -315,27 +244,6 @@
     font-weight: lighter;
     background-color: var(--textfield-background);
     color: var(--textfield-font-color);
-}
-
-#add-location-icon {
-    width: 25px;
-    height: 25px;
-    margin-top: 4px;
-}
-
-#add-location {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--textfield-background);
-}
-
-#info-headline {
-    display: block; /* Als Block-Element anzeigen */
-    text-align: left; /* Text links ausrichten */
-    font-family: Arial, sans-serif; /* Schriftart festlegen */
-    font-size: 18px; /* Schriftgröße festlegen */
-    font-weight: bold;
 }
 
 #ticket {
@@ -352,43 +260,6 @@
     margin-top: 10px;
 }
 
-#addcreator {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    align-items: center;
-    padding: 20px 0;
-    margin-top: -25px;
-}
-
-.dish-item {
-    display: inline-block;
-    margin-right: 10px;
-    flex: 0 0 auto;
-    margin-left: 10px;
-}
-
-#add-icon {
-    width: 24px;
-    height: 24px;
-}
-
-.dish-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.long-description {
-    border-radius: 10px;
-    background-color: var(--textfield-background);
-    padding: 10px;
-    display: grid;
-    grid-template-columns: 580px;
-    justify-content: left;
-    font-weight: bold;
-}
-
 #maps {
     border-radius: 8px;
 }
@@ -399,7 +270,6 @@
     margin-top: 15px;
 }
 
-
 #event-dish {
     display: grid;
     grid-template-columns: auto auto;
@@ -407,28 +277,6 @@
     align-items: center;
     gap: 10px;
     margin-top: 15px;
-}
-
-.stars{
-    margin-bottom: 10px;
-}
-
-.star {
-    color: #ccc; 
-    font-size: 27px; 
-}
-
-.star.filled {
-    color: #f5d130; 
-
-}
-
-#name-stars {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: left;
-    align-items: center;
-    gap: 10px;
 }
 
 #event {
