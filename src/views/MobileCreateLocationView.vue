@@ -26,6 +26,24 @@
                 </div>
             </div>
         </div>
+        <div id="description">
+          <div id="headline-text">Beschreibung hinzufügen:</div>
+          <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
+        </div>
+        <div id="button-div">
+            <div id="button-reset">
+              erstellen
+            </div>
+            <div id="button-create">
+              zurücksetzten
+            </div>
+        </div>
+        <div id="home-button" v-if="menu">
+            <img id="home-mobile" src="../assets/home-mobile.png" />
+        </div>
+        <div id="menu-button" @click="handleClick">
+            <img id="menu-mobile" src="../assets/menu-mobile.png" />
+        </div>
     </div>
 </template>
   
@@ -40,6 +58,7 @@ export default {
 
     data() {
       return {
+        menu: '',
         locationName: '',
         smallDescription: '',
         longDescription: '',
@@ -123,7 +142,15 @@ export default {
           console.error('Error with Location creation:', error);
           alert('Error creating location. Please try again.');
         }
-      }
+      },
+      handleClick() {
+            if(this.menu) {
+                this.menu = false;
+            }
+            else {
+                this.menu = true;
+            }
+        }
     }
   }
   </script>
@@ -138,7 +165,7 @@ export default {
     grid-template-columns: auto;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .description-headline {
@@ -250,6 +277,120 @@ input {
       -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
       -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
       transform: translateX(20px); /* Angepasst an die neue Höhe */
+  }
+
+  #headline-text {
+    font-size: 12px;
+    font-weight: bold;
+    height: 15px;
+    margin-top: 30px;
+    margin-right: 145px;
+  }
+
+  #long-description-input {
+  width: 265px;
+  height: 150px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  resize: none;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
+}
+
+#long-description-input::placeholder {
+  color: var(--placeholder-color);
+}
+
+#button-div {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding-bottom: 20px;
+  margin-top: 20px;
+}
+
+#button-reset {
+  background-color: var(--red);
+  width: 115px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#button-create {
+  background-color: var(--green);
+  width: 115px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+  
+  #button {
+      background-color: var(--green);
+      width: 285px;
+      height: 30px;
+      border-radius: 5px;
+      border: 1.5px solid #000000;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  
+  #home-button {
+      position: fixed;
+      bottom: 70px; /* Abstand vom unteren Rand */
+      right: 20px; /* Abstand vom rechten Rand */
+      color: white; /* Button Textfarbe */
+      border: none; /* Keine Rahmen */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+      cursor: pointer; /* Zeiger ändern bei Hover */
+      z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+      border-radius: 30px;
+      background-color: white;
+  }
+  
+  #home-mobile {
+      margin-bottom: -3px;
+      width: 35px;
+      height: 35px;
+  }
+  
+  #menu-button {
+      position: fixed;
+      bottom: 20px; /* Abstand vom unteren Rand */
+      right: 20px; /* Abstand vom rechten Rand */
+      color: white; /* Button Textfarbe */
+      border: none; /* Keine Rahmen */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+      cursor: pointer; /* Zeiger ändern bei Hover */
+      z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+      border-radius: 30px;
+      padding: 7.5px;
+      background-color: white;
+  }
+  
+  #menu-mobile {
+      margin-bottom: -3px;
+      width: 20px;
+      height: 20px;
   }
 </style>
   
