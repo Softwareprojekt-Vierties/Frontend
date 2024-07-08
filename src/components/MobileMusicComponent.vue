@@ -4,12 +4,12 @@
         <div id="text">
           Titel:
         </div>
-        <input v-model="songName" id="input" placeholder="z.B. Party-Song">
+        <input v-model="songName" class="input" placeholder="z.B. Party-Song">
         <div id="infos">
           Infos:
         </div>
-        <input v-model="songLength" id="input" placeholder="z.B. Länge: 3,41 min">
-        <input v-model="songYear" id="input" placeholder="z.B. Jahr: 2024">
+        <input v-model="songLength" class="input" placeholder="z.B. Länge: 3,41 min">
+        <input v-model="songYear" class="input" placeholder="z.B. Jahr: 2024">
       </div>
     </div>
   </template>
@@ -69,7 +69,7 @@
       margin-top: 5px;
     }
     
-    #input {
+    .input {
       width: 100px;
       border-radius: 5px;
       border: 1px solid #000;
