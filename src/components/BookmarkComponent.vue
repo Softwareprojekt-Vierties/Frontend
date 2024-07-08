@@ -1,5 +1,5 @@
 <template>
-    <div id="bookmark-wrapper" @click="wrappingDiv ? () => {} : changeBookmark()">
+    <div id="bookmark-wrapper" @click="wrappingDiv ? () => {} : changeBookmark()" :disabled="pending">
         <img v-if="isDarkMode && hasBookmark" src="../assets/bookmark-filled.png" id="bookmark">
         <img v-else-if="isDarkMode" src="../assets/bookmark-empty.png" id="bookmark">
         <img v-else-if="hasBookmark" src="../assets/bookmark-gray.jpg" id="bookmark">
@@ -11,6 +11,11 @@
 import axios from 'axios';
 
 export default {
+    data() {
+        return {
+            pending: false,
+        }
+    },
     props: {
         hasBookmark: {
             type: Boolean,
@@ -134,7 +139,10 @@ export default {
         }
     },
     methods: {
-        changeBookmark() {
+        async changeBookmark() {
+            if (this.pending) return;
+            this.pending = true;
+            this.$forceUpdate();
             // send switch to server
             axios.post("/changeFavorite/", {
                 id: this.id,
@@ -147,7 +155,10 @@ export default {
                     console.log("Success: ", res);
                     this.$emit("update:hasBookmark", !this.hasBookmark);
                 })
-                .catch(err => console.error("Error: ", err));
+                .catch(err => console.error("Error: ", err))
+                .finally(() => {
+                    this.pending = false;
+                });
         },
     },
     computed: {

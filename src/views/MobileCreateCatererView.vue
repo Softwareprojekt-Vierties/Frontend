@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileEditHeader></MobileEditHeader>
+        <MobileEditHeader v-model:name="catererName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
         <div class="description-headline-div">
             <div class="description-headline">
                 Infos hinzufügen:
@@ -10,15 +10,15 @@
             <div class="info">
                 <div id="left">
                     <div class="input-headline">Region:</div>
-                    <input placeholder="z.B. 32427 Minden"/>
+                    <input v-model="region" placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Kategorie:</div>
-                    <input placeholder="z.B. Desserts"/>
+                    <input v-model="category" placeholder="z.B. Desserts"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Erfahrung:</div>
-                    <input placeholder="z.B. 10 Jahre"/>
+                    <input v-model="experience" placeholder="z.B. 10 Jahre"/>
                     <div class="input-headline">Preis:</div>
-                    <input placeholder="z.B. 50 €/Portion"/>
+                    <input v-model="price" placeholder="z.B. 50 €/Portion"/>
                 </div>
             </div>
         </div>
@@ -35,22 +35,22 @@
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
                   <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                      <MobileDishFrom :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
+                      <MobileDishFrom ref="dishForm" :dish="dish" @remove="removeDish(index)" :imageGrabber="image => {dishes[index] = image;}" />
                   </div>
                 <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
             </div>
         </div>
         <div id="button-div">
-            <div id="button-reset">
+            <div id="button-reset" @click="default_values">
               zurücksetzten
             </div>
-            <div id="button-create">
+            <div id="button-create" @click="createCaterer">
               erstellen
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" />
+            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -171,10 +171,10 @@ export default {
         console.log('FormData:', formData); 
 
 
-      //const token = localStorage.getItem('authToken'); 
+      const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createCaterer', formData, { headers: { auth: localStorage.authToken } });
+          const response = await axios.post('/createCaterer', formData, { headers: { auth: token } });
           console.log('Caterer created:', response.data);
           localStorage.setItem('authToken', response.data);
           alert('Caterer created successfully!');

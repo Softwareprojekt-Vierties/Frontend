@@ -36,6 +36,8 @@ import MobileCreateCatererView from '@/views/MobileCreateCatererView.vue'
 import MobileCreatePersonView from '@/views/MobileCreatePersonView.vue'
 import MobilePersonView from '@/views/MobilePersonView.vue'
 import MobileCreateEventPage from '@/views/MobileCreateEventPage.vue'
+import MobileEditPersonView from '@/views/MobileEditPerson.vue'
+
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -120,7 +122,7 @@ const routes = [
 },  {
     path: '/editPerson',
     name: 'EditPersonType',
-    component: EditPersonView
+    component: isMobile() ? MobileEditPersonView : EditPersonView,
 },
   {
     path: '/person/:id',

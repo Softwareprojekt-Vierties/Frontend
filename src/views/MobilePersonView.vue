@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" :sterne="sterne" />
+        <MobileHeaderComponent :imagePreview="profilePicture" :name="userName" :kurzbeschreibung="shortDescription" :sterne="-1" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -14,7 +14,7 @@
                 <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
             </div>
             <div id="info-right">
-                <label class="info-subheadline"><strong>Alter:</strong> {{erfahrung }} Jahre</label>
+                <label class="info-subheadline"><strong>Alter:</strong> {{age}} Jahre</label>
             </div>
         </div>
         <div class="description-headline-div">
@@ -24,7 +24,7 @@
         </div>
         <div id="description-div">
             <div id="description">
-                {{beschreibung}}
+                {{description}}
             </div>
         </div>
         <div class="description-headline-div">
@@ -35,12 +35,6 @@
         <div id="pictures">
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
-                    <MobilePictureComponent/>
-                    <MobilePictureComponent/>
-                    <MobilePictureComponent/>
-                    <MobilePictureComponent/>
-                    <MobilePictureComponent/>
-                    <MobilePictureComponent/>
                     <MobilePictureComponent v-for="picture in pictures" :imagePath="picture.partybild_data" :mutable="false" :key="picture" />
                 </div>
             </div>
@@ -51,16 +45,13 @@
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent/>
-            <MobileEventCardComponent/>
-            <MobileEventCardComponent/>
             <MobileEventCardComponent
-            v-for="(event, index) in events" 
+            v-for="(event, index) in myEventsLocations" 
                     :key="index" 
-                    :name="event.name" 
-                    :line1="event.adresse" 
-                    :line2="event.datum"
-                    :line3="event.startuhrzeit"
+                    :name="event.header" 
+                    :line1="event.line1" 
+                    :line2="event.line2"
+                    :line3="event.line3"
                     :imagePath="event.bild"
             />
         </div>
@@ -70,26 +61,26 @@
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent/>
-            <MobileEventCardComponent/>
-            <MobileEventCardComponent/>
             <MobileEventCardComponent
-            v-for="(event, index) in events" 
+            v-for="(event, index) in myIntrests" 
                     :key="index" 
-                    :name="event.name" 
-                    :line1="event.adresse" 
-                    :line2="event.datum"
-                    :line3="event.startuhrzeit"
+                    :name="event.header" 
+                    :line1="event.line1" 
+                    :line2="event.line2"
+                    :line3="event.line3"
                     :imagePath="event.bild"
             />
         </div>
         <div id="button-div">
-            <div id="button" @click="weiter">
+            <div v-if="!isFriend" id="button" @click="isMe ? $router.push('/editPerson') : sendFriendRequest()">
+                {{ buttonLabel }}
+            </div>
+            <div v-else id="break" @click="unfriend">
                 {{ buttonLabel }}
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
+            <img v-if="isDarkMode" id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -132,6 +123,8 @@
           intrestsIndex: 0,
           isFriend: false,
           hasBookmark: false,
+          isMe: false,
+          buttonLabel: "Freundschaftsanfrage",
       };
     },
     methods: {
@@ -184,6 +177,9 @@
                     this.age = res.data.user.rows[0].alter;
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.profilePicture = res.data.user.rows[0].profilbild;
+                    this.hasBookmark = res.data.isFavorite;
+                    this.isMe = res.data.isMe;
+                    this.isFriend = res.data.isFriend;
                     res.data.owenevents.rows?.forEach(event => {
                         this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
                     });
@@ -193,6 +189,13 @@
                     res.data.tickets.rows?.forEach(event => {
                         this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
                     });
+
+                    if (this.isMe) {
+                        this.buttonLabel = "Bearbeiten";
+                    }
+                    if (this.isFriend) {
+                        this.buttonLabel = "Freundschaft beenden";
+                    }
 
                     // to be implemented
                     this.isFriend = false;
@@ -413,6 +416,18 @@
       justify-content: center;
       align-items: center;
   }
+
+#break {
+    background-color: var(--red);
+    width: 285px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1.5px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
   
   #home-button {
       position: fixed;
@@ -424,7 +439,7 @@
       cursor: pointer; /* Zeiger ändern bei Hover */
       z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
       border-radius: 30px;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
   
   #home-mobile {
@@ -444,7 +459,7 @@
       z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
       border-radius: 30px;
       padding: 7.5px;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
   
   #menu-mobile {
