@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileEditHeader></MobileEditHeader>
+      <MobileEditHeader v-model:name="djName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
         <div class="description-headline-div">
             <div class="description-headline">
                 Infos hinzufügen:
@@ -10,15 +10,15 @@
             <div class="info">
                 <div id="left">
                     <div class="input-headline">Region:</div>
-                    <input placeholder="z.B. 32427 Minden"/>
+                    <input v-model="region" placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Kategorie:</div>
-                    <input placeholder="z.B. Techno"/>
+                    <input v-model="category" placeholder="z.B. Techno"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Erfahrung:</div>
-                    <input placeholder="z.B. 10 Jahre"/>
+                    <input v-model="experience" type="number" min ="0" placeholder="z.B. 10 Jahre"/>
                     <div class="input-headline">Preis:</div>
-                    <input placeholder="z.B. 50 €/h"/>
+                    <input  v-model="price" type="number" min ="0"  placeholder="z.B. 50 €/h"/>
                 </div>
             </div>
         </div>
@@ -35,22 +35,22 @@
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
                 <div v-for="(song, index) in songs" :key="index" class="dish-item">
-                    <MobileMusicComponent/>
+                  <MobileMusicComponent ref="musicForm" :song="song" />
                 </div>
                 <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
             </div>
         </div>
         <div id="button-div">
-            <div id="button-reset">
+            <div id="button-reset" @click="reset">
               zurücksetzten
             </div>
-            <div id="button-create">
-              erstellen
+            <div id="button-create" @click="createDJ">
+              erstellen   
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" />
+            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -123,15 +123,19 @@ export default {
       this.imagePreview = null;
       this.uploadedImage = null;
       this.songs = [{ songName: '', songLength: '', songYear: '' }];
+
+      this.$nextTick(() => {
+            if (this.$refs.musicForm) {
+                this.$refs.musicForm.forEach(form => form.clearFields());
+            }
+        });
+
     },
     goToHomePage() {
       this.$router.push('/search');
     },
     async createDJ() {
-      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
-        alert('Please fill in all required fields.');
-        return;
-      }
+
 
 
       let formData = {};

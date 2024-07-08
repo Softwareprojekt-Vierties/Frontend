@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileEditHeader></MobileEditHeader>
+        <MobileEditHeader v-model:name="locationName" v-model:kurzbeschreibung="smallDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
         <div class="description-headline-div">
             <div class="description-headline">
                 Infos hinzufügen:
@@ -10,19 +10,19 @@
             <div class="info">
                 <div id="left">
                     <div class="input-headline">Stadt:</div>
-                    <input placeholder="z.B. 32427 Minden"/>
+                    <input v-model="region" type="text" placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Straße:</div>
-                    <input placeholder="z.B. Artilleriestraße 9"/>
+                    <input v-model="address" type="text" placeholder="z.B. Artilleriestraße 9"/>
                     <div class="input-headline">Kapazität:</div>
-                    <input placeholder="z.B. 200 Personen"/>
+                    <input v-model="quantityPersons" type="number" min="0" placeholder="z.B. 200 Personen"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Preis:</div>
-                    <input placeholder="z.B. 50 €/h"/>
+                    <input v-model="price" class="input" type="number" min="0" placeholder="z.B. 50 €/h"/>
                     <div class="input-headline">Größe:</div>
-                    <input placeholder="z.B. 50 ha"/>
+                    <input v-model="size" type="number" min ="0" placeholder="z.B. 50 ha"/>
                     <div class="input-headline">Open Air:</div>
-                    <label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label>
+                    <label class="switch"> <input v-model="openAir" type="checkbox"> <span class="slider round"> </span> </label>
                 </div>
             </div>
         </div>
@@ -35,10 +35,10 @@
           <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
         </div>
         <div id="button-div">
-            <div id="button-reset">
+            <div id="button-reset" @click="reset">
               erstellen
             </div>
-            <div id="button-create">
+            <div id="button-create" @click="createLocation">
               zurücksetzten
             </div>
         </div>
