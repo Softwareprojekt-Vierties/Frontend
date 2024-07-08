@@ -139,6 +139,14 @@
                     this.isFriend = false;
                 })
                 .catch(err => console.log("Error: ", err));
+                axios.get("/getPartybilder/45" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+                    .then(res => {
+                        console.log("Bilder: ", res);
+                        res.data.rows?.forEach(bild => {
+                            this.dishes.push(bild);
+                        })
+                    })
+                    .catch(err => console.log("Error: ", err));
             },
             reset() {
               this.$router.go();

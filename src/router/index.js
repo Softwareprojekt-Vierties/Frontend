@@ -35,6 +35,7 @@ import MobileCreateDjView from '@/views/MobileCreateDjView.vue'
 import MobileCreateCatererView from '@/views/MobileCreateCatererView.vue'
 import MobileCreatePersonView from '@/views/MobileCreatePersonView.vue'
 import MobilePersonView from '@/views/MobilePersonView.vue'
+import MobileEditPersonView from '@/views/MobileEditPerson.vue'
 
 
 function isMobile() {
@@ -120,7 +121,7 @@ const routes = [
 },  {
     path: '/editPerson',
     name: 'EditPersonType',
-    component: EditPersonView
+    component: isMobile() ? MobileEditPersonView : EditPersonView,
 },
   {
     path: '/person/:id',
