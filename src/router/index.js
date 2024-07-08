@@ -35,7 +35,7 @@ import MobileCreateDjView from '@/views/MobileCreateDjView.vue'
 import MobileCreateCatererView from '@/views/MobileCreateCatererView.vue'
 import MobileCreatePersonView from '@/views/MobileCreatePersonView.vue'
 import MobilePersonView from '@/views/MobilePersonView.vue'
-
+import MobileCreateEventPage from '@/views/MobileCreateEventPage.vue'
 
 function isMobile() {
     const MAX_MOBILE_WIDTH = 800;
@@ -79,7 +79,7 @@ const routes = [
 {
     path: '/createevent',
     name: 'CreateEventType',
-    component: CreateEvent 
+    component: isMobile() ? MobileCreateEventPage : CreateEvent 
 },
     {
     path: '/createcaterer',
