@@ -21,26 +21,7 @@
         </div>
         </div>
         <div id="right-side">
-          <div id="right-side-info">
-              <div id="info-bookmark">
-                  <label id="info-headline">Infos</label>
-                  <div id="div-bookmark">
-                      <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="caterer" width="10px" height="17px" wrappingDiv="div-bookmark" />
-                  </div>
-              </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
-            </div>
-            <div class="infos">
-              <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
-            </div>
-          </div>
+            <Info v-model:hasBookmark="hasBookmark" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
           <div id="ticket" @click="weiter">
             {{ buttonLabel }}
           </div>
@@ -53,9 +34,9 @@
   import DishForm from '../components/ReviewComponent.vue';
   import ArtistCard from '../components/ArtistCardComponent.vue';
   import Caterer from '../components/CatererComponent.vue';
-  import Bookmark from '../components/BookmarkComponent.vue';
   import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
+  import Info from '../components/RightSideInfo.vue';
   import axios from 'axios'; 
 
 
@@ -64,9 +45,9 @@
       DishForm,
       ArtistCard,
       Caterer,
-        Bookmark,
         Header,
         LongDescription,
+        Info,
     },
     data() {
       return {
@@ -183,90 +164,6 @@
     font-weight: bold;
   }
   
-  #right-side-info {
-    border-radius: 10px;
-    background-color: white;
-    padding: 10px;
-  }
-
-#info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-    cursor: pointer;
-}
-  
-  .infos {
-    display: grid;
-    margin-top: 20px;
-    margin-right: 10px;
-  }
-  
-  .time-value-left {
-    width: 71.9px;
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-    margin-right: 5px;
-  }
-  
-  .time-value-right {
-    width: 71.9px;
-    text-align: center;
-    border: 1px solid #000000; /* Rahmenstil */
-    border-radius: 5px; /* Abgerundete Ecken */
-    height: 25px;
-    margin-left: 5px;
-  }
-  
-  .info-subheadline {
-    text-align: left;
-    font-size: 12px;
-  }
-  
-  #long-description-text {
-    width: 580px;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    border-radius: 8px;
-    resize: none;
-    text-align: left;
-    text-decoration: none;
-    font-weight: lighter;
-  }
-  
-  #add-location-icon {
-    width: 25px;
-    height: 25px;
-    margin-top: 4px;
-  }
-  
-  #add-location {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: white;
-  }
-  
-  #info-headline {
-    display: block; /* Als Block-Element anzeigen */
-    text-align: left; /* Text links ausrichten */
-    font-family: Arial, sans-serif; /* Schriftart festlegen */
-    font-size: 18px; /* Schriftgröße festlegen */
-    font-weight: bold;
-  }
-  
   #ticket {
     background-color: rgb(146, 208, 80);
     height: 30px;
@@ -279,11 +176,6 @@
     cursor: pointer;
     margin-top: 10px;
   }
-
-#add-icon {
-  width: 24px;
-  height: 24px;
-}
 
 .long-description {
   border-radius: 10px;

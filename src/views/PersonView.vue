@@ -25,23 +25,7 @@
         </div>
         </div>
         <div id="right-side">
-          <div id="right-side-info">
-            <div id="info-bookmark">
-                <label id="info-headline">Infos</label>
-                <div id="div-bookmark">
-                    <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="person" width="10px" height="17px" wrappingDiv="div-bookmark" />
-                </div>
-            </div>
-            <div class="infos">
-                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
-            </div>
-            <div class="infos">
-                <label class="info-subheadline"><strong>Alter:</strong> {{age}} Jahre</label>
-            </div>
-            <div class="infos">
-                <label class="info-subheadline"><strong>Geschlecht:</strong> {{gender}}</label>
-            </div>
-          </div>
+            <Info v-model:hasBookmark="hasBookmark" :region="region" :age="age" :gender="gender" />
           <div id="break" v-if="isFriend" @click="unfriend">Freundschaft beenden</div>
           <div id="continue" v-else @click="sendFriendRequest">Freundschaftsanfrage</div>
         </div>
@@ -55,9 +39,9 @@
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
   import ArtistCard from '../components/ArtistCardComponent.vue';
-  import Bookmark from '../components/BookmarkComponent.vue';
   import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
+  import Info from '../components/RightSideInfo.vue';
   import axios from 'axios';
   
   export default {
@@ -65,9 +49,9 @@
       DishForm,
       PopupModal,
       ArtistCard,
-        Bookmark,
         Header,
         LongDescription,
+        Info,
     },
     data() {
       return {
@@ -204,61 +188,6 @@
       margin-bottom: 3px;
   }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px; /* Angepasst an die neue Höhe */
-  height: 20px;
-  margin-left: 20px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-  margin-left: 70px;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--slider-background-color);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 20px; /* Angepasst an die neue Höhe */
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px; /* Angepasst an die neue Höhe */
-  width: 16px; /* Angepasst an die neue Höhe */
-  left: 2px; /* Angepasst an die neue Höhe */
-  bottom: 2px; /* Angepasst an die neue Höhe */
-  background-color: var(--create-page-background);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--cyan);
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px var(--cyan);
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(20px); /* Angepasst an die neue Höhe */
-  -ms-transform: translateX(20px); /* Angepasst an die neue Höhe */
-  transform: translateX(20px); /* Angepasst an die neue Höhe */
-}
-
 #main {
   display: grid;
   grid-template-columns: auto auto;
@@ -281,94 +210,6 @@ input:checked + .slider:before {
 
 .long-description::placeholder {
     color: var(--placeholder-color);
-}
-
-#right-side-info {
-  border-radius: 10px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-  padding: 10px;
-}
-
-#right-side-info::placeholder {
-    color: var(--placeholder-color);
-}
-
-#info-bookmark {
-    display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#div-bookmark {
-    border-radius: 30px;
-    padding: 2px;
-    width: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    padding-left: 1px;
-    padding-top: 5px;
-    cursor: pointer;
-}
-
-.infos {
-  display: grid;
-  grid-template-columns: 150px;
-  margin-top: 20px;
-}
-
-.time-value-left {
-  width: 71.9px;
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  margin-right: 5px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.time-value-left::placeholder {
-    color: var(--placeholder-color);
-}
-
-.time-value-right {
-  width: 71.9px;
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  margin-left: 5px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.time-value-right::placeholder {
-    color: var(--placeholder-color);
-}
-
-.info-subheadline {
-  text-align: left;
-  font-size: 12px;
-}
-
-.input {
-  text-align: center;
-  border: 1px solid #000000; /* Rahmenstil */
-  border-radius: 5px; /* Abgerundete Ecken */
-  height: 25px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
-}
-
-.input::placeholder {
-    color: var(--placeholder-color);
-}
-
-#open-air {
-  display: block;
-  text-align: left;
-  margin-top: 20px;
 }
 
 #buttons {
@@ -416,27 +257,6 @@ input:checked + .slider:before {
   padding: 20px 0;
 }
 
-.dish-item {
-  display: inline-block;
-  margin-right: 10px;
-  flex: 0 0 auto;
-}
-
-.add-dish-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
-  margin-top: 10px;
-}
-
-#add-icon {
-  width: 24px;
-  height: 24px;
-}
-
 .dish-container {
   display: flex;
   align-items: center;
@@ -473,10 +293,6 @@ input:checked + .slider:before {
     font-weight: bold;
 }
 
-footer {
-  background-color: var(--create-page-background);
-}
-
 #dish-form {
       display: grid;
       grid-template-columns: auto auto;
@@ -491,74 +307,4 @@ footer {
       margin-left: 5px;
   }
 
-  .upload-icon {
-      max-width: 50%;
-      max-height: 50%;
-      margin-bottom: -10px; /* Adjust margin to bring the text closer */
-      margin-left: 5px;
-      margin-top: -5px;
-  }
-  
-  #right {
-      display: grid;
-      grid-template-columns: auto;
-  }
-  
-  #text {
-    text-align: left;
-    font-size: 11px;
-    margin-top: 5px;
-  }
-  
-  #input {
-    width: 130px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    margin-top: 5px;
-    font-size: 10px;
-    padding: 3px;
-    padding-left: 10px;
-    background-color: var(--textfield-background);
-    color: var(--textfield-font-color);
-}
-
-#input::placeholder {
-    color: var(--placeholder-color);
-}
-  
-  #ingredients {
-    text-align: left;
-    font-size: 10px;
-    margin-top: 5px;
-    border-top: 1px solid rgb(200, 200, 200);
-    padding-top: 5px;
-  }
-
-  #info-headline {
-  display: block; /* Als Block-Element anzeigen */
-  text-align: left; /* Text links ausrichten */
-  font-family: Arial, sans-serif; /* Schriftart festlegen */
-  font-size: 18px; /* Schriftgröße festlegen */
-  font-weight: bold;
-}
-
-#age-input {
-    border: 1px solid #000000;
-    border-radius: 5px;
-    width: 50px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: gray;
-}
-
-#age {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
   </style>
-  
