@@ -39,10 +39,10 @@
         </div>
         <div id="button-div">
             <div id="button-reset">
-              erstellen
+              zurücksetzten
             </div>
             <div id="button-create">
-              zurücksetzten
+              erstellen
             </div>
         </div>
         <div id="home-button" v-if="menu">
