@@ -45,7 +45,7 @@
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
                     <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
-                        <MobilePictureComponent :dish="dish" @remove="removeDish(index)" :imagePath="dish.partybild_data" :imageGrabber="image => {dishes[index] = image;}" />
+                        <MobilePictureComponent :dish="dish" @remove="removeDish(index)" :imagePath="dish?.partybild_data" :imageGrabber="image => {dishes[index] = image;}" />
                     </div>
                 <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
@@ -91,7 +91,8 @@
         favoriteSong: "",
         imagePreview: null,
         age: 0,
-        isModalVisible: false
+        isModalVisible: false,
+          userId: -1,
       };
     },
       methods: {
@@ -105,15 +106,8 @@
       removeDish(index) {
         this.dishes.splice(index, 1);
       },
-      openModal() {
-        this.isModalVisible = true;
-          console.log(this.dishes);
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      },
           getInfo() {
-              axios.get("/getUserById/45", { headers: { auth: localStorage.getItem("authToken") }})
+              axios.get("/me", { headers: { auth: localStorage.getItem("authToken") }})
                   .then(res => {
                       console.log("Success: ", res);
                       this.personName = res.data.user.rows[0].profilname;
@@ -127,6 +121,7 @@
                       this.gender = res.data.user.rows[0].geschlecht;
                       this.imagePreview = res.data.user.rows[0].profilbild;
                       this.email = res.data.user.rows[0].emailfk;
+                      this.userId = res.data.user.rows[0].userid;
                       res.data.partybilder?.forEach(bild => {
                           this.dishes.push(bild);
                       });
@@ -135,17 +130,17 @@
 
                       // to be implemented
                       this.isFriend = false;
-                  })
-                  .catch(err => console.log("Error: ", err));
-              axios.get("/getPartybilder/45", { headers: { auth: localStorage.getItem("authToken") }})
-                  .then(res => {
-                      console.log("Bilder: ", res);
-                      if ((res.data.rows?.length ?? 0) == 0) {
-                          this.dishes.push(null);
-                      }
-                      res.data.rows?.forEach(bild => {
-                          this.dishes.push(bild);
-                      })
+                      axios.get("/getPartybilder/" + this.userId, { headers: { auth: localStorage.getItem("authToken") }})
+                          .then(res => {
+                              console.log("Bilder: ", res);
+                              if ((res.data.rows?.length ?? 0) == 0) {
+                                  this.dishes.push(null);
+                              }
+                              res.data.rows?.forEach(bild => {
+                                  this.dishes.push(bild);
+                              })
+                          })
+                          .catch(err => console.log("Error: ", err));
                   })
                   .catch(err => console.log("Error: ", err));
           },
@@ -196,8 +191,6 @@
                     });
                     console.log('Person created:', response.data);
                     localStorage.setItem('authToken', response.data);
-                    this.closeModal(); 
-                    this.$router.push("/");
                 } catch (error) {
                     console.error('Error with Person creation:', error);
                 }

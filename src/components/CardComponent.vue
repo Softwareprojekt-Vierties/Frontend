@@ -1,12 +1,12 @@
 <template>
     <div id="card">
-        <Image :url="computedImagePath" width="170px" height="135px" border-radius="5px" background-color="none" />
+        <Image :url="computedImagePath" width="calc(170px * var(--scale-factor))" height="calc(135px * var(--scale-factor))" border-radius="5px" background-color="none" />
         <div id="details">
             <div id="name-bookmark">
                 <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
-                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" width="20px" height="30px" />
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" width="calc(20px * var(--scale-factor))" height="calc(30px * var(--scale-factor))" />
             </div>
             <div class="line-div">
                 {{line1}}
@@ -73,7 +73,11 @@
             info: {
                 type: Object,
                 default: null,
-            }
+            },
+            scaleFactor: {
+                type: Number,
+                default: 1,
+            },
         },
         data() {
             return {
@@ -93,21 +97,26 @@
         },
         created() {
             this.hasBookmark = this.isBookmarked;
+            document.documentElement.style.setProperty('--scale-factor', this.scaleFactor);
         }
     };
 </script>
 
 <style scoped>
+:root {
+    --scale-factor: 1; /* Standardwert */
+}
+
 #card {
     display: grid;
     grid-template-columns: auto auto;
     align-items: top;
     justify-content: center;
-    padding: 10px;
+    padding: calc(10px * var(--scale-factor));
     border: 1px solid #000;
     border-radius: 5px;
-    gap: 15px;
-    width: 380px;
+    gap: calc(15px * var(--scale-factor));
+    width: calc(380px * var(--scale-factor));
     background-color: var(--textfield-background);
 }
 
@@ -124,9 +133,9 @@
     align-items: center;
     justify-content: left;
     text-align: left;
-    margin-bottom: 11px;
-    font-size: 10px;
-    height: 10px;
+    margin-bottom: calc(11px * var(--scale-factor));
+    font-size: calc(10px * var(--scale-factor));
+    height: calc(10px * var(--scale-factor));
     overflow: hidden;
     color: var(--textfield-font-color);
 }
@@ -139,30 +148,27 @@
     justify-content: space-between;
 }
 
-#details {
-}
-
 #name-bookmark {
-    margin-bottom: 10px;
+    margin-bottom: calc(10px * var(--scale-factor));
     cursor: pointer;
-    font-size: 18px;
+    font-size: calc(18px * var(--scale-factor));
     color: black;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: calc(2px * var(--scale-factor)) calc(2px * var(--scale-factor)) calc(4px * var(--scale-factor)) rgba(0, 0, 0, 0.5);
 }
 
 #button {
-    font-size: 11px;
+    font-size: calc(11px * var(--scale-factor));
     cursor: pointer;
     background-color: var(--green);
     color: var(--simple-font-color);
-    padding: 5px;
+    padding: calc(5px * var(--scale-factor));
     border: var(--button-border);
     border-radius: 5px;
-    width: 180px;
-    height: 15px;
+    width: calc(180px * var(--scale-factor));
+    height: calc(15px * var(--scale-factor));
     display: grid;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: calc(15px * var(--scale-factor));
 }
 </style>
