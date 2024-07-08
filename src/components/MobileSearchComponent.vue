@@ -659,7 +659,6 @@ export default {
                                         "line3": "Geschlecht: " + item?.geschlecht ?? "male" == "male" ? "Männlich" : "Weiblich",
                                         "buttonText": "Freundschftsanfrage",
                                         "imagePath": item.profilbild,
-                                        "isBookmarked": item.favorit ?? 0,
                                         "info": item,
                                         "buttonClickFunction": this.buttonClickFunctions.person,
                                         "titleClickFunction": this.titleClickFunctions.person,
@@ -799,6 +798,7 @@ export default {
         },
         toggleBookmark() {
             this.bookmarked = !this.bookmarked;
+            this.search();
             // TODO: filter for bookmarked elements
         },
         openSelect() {
