@@ -70,7 +70,7 @@
     </div>
     <div id="buttons">
         <div id="break" @click="resetForm">
-            abbrechen  
+            zurücksetzten  
         </div>
         <div id="continue" @click="openModal">
             anlegen
