@@ -12,7 +12,7 @@
                     <div class="input-headline">Region:</div>
                     <input placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Kategorie:</div>
-                    <input placeholder="z.B. Techno"/>
+                    <input placeholder="z.B. Desserts"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Erfahrung:</div>
