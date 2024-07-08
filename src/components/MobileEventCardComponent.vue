@@ -11,13 +11,13 @@
                         <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
                     </div>
                     <div class="line-div">
-                        {{line1}}
+                        Adresse: {{line1}}
                     </div>
                     <div class="line-div">
-                        {{line2}}
+                        Datum: {{line2}}
                     </div>
                     <div class="line-div">
-                        {{line3}}
+                        Zeit: {{line3}}
                     </div>
                     <div id="button" @click="clickFuntion">
                         {{buttonText}}

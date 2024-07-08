@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="eventName" :kurzbeschreibung="kurzbeschreibung" />
+        <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" :sterne="sterne" />
         <div>
             <div id="info-bookmark">
                 <div id="info-headline">Infos</div>
@@ -14,24 +14,16 @@
         </div>
         <div id="info">
             <div id="info-left">
-                <pre>
-Location: {{location}}
-
-Datum: {{datum}}
-
-Zeit: {{startuhrzeit}}Uhr - {{enduhrzeit}}Uhr
-
-Eventgröße: {{anzahlPersonen}} Personen
-                </pre>
+                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
             </div>
             <div id="info-right">
-                <pre>
-Preis: {{preis}} €
-
-Altersfreigabe: {{alter}}+
-
-Open Air: {{openAir ? "Ja" : "Nein"}}
-                </pre>
+                <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
+                <br>
+                <br>
+                <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
             </div>
         </div>
         <div class="description-headline-div">
@@ -50,7 +42,16 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/><MobileEventCardComponent/>
+            <MobileEventCardComponent
+
+            v-for="(event, index) in events" 
+                    :key="index" 
+                    :name="event.name" 
+                    :line1="event.adresse" 
+                    :line2="event.datum"
+                    :line3="event.startuhrzeit"
+                    :imagePath="event.bild"
+            />
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -58,7 +59,15 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="palylist-container">
-            <MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/><MobileCatererComponenet/>
+            <MobileCatererComponenet
+            v-for="(dish, index) in dishes" 
+                    :key="index" 
+                    :dishName="dish.dishName" 
+                    :dishDescription1="dish.dishDescription1" 
+                    :dishDescription2="dish.dishDescription1"
+                    :imagePreview="dish.imagePreview"
+
+            />
         </div>
         <div class="description-headline-div">
             <div class="description-headline">
@@ -66,15 +75,23 @@ Open Air: {{openAir ? "Ja" : "Nein"}}
             </div>
         </div>
         <div id="review-div">
-            <MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/><MobileReviewComponent/>
+
+            <MobileReviewComponent 
+                v-for="(review, index) in reviews" 
+                :key="index" 
+                :userName="review.userName" 
+                :rating="review.rating" 
+                :reviewText="review.reviewText"
+            />
+
         </div>
         <div id="button-div">
-            <div id="button">
-                Ticket buchen (20/50)
+            <div id="button" @click="weiter">
+                {{ buttonLabel }}
             </div>
         </div>
         <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" />
+            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -115,7 +132,9 @@ export default {
         reviewType :0,
         events: [],
         idSent:'',
-        isOwner:''
+        isOwner:'',
+        dishes: [],
+        reviews : []
         
       };
     },
@@ -139,9 +158,39 @@ export default {
       catch (error) {
         console.error('Error with sending Caterer ID for caterer page to DB :', error);
       }
+      this.getReview();
     },
 
     methods: {
+
+        goToHomePage(){
+            this.$router.push('/search');
+        },
+
+        async getReview() {
+            try {
+                const response = await axios.get(`/getPersonReview/${this.userid}`);
+                this.reviews = response.data.rows;
+                console.log("Review data received:", this.reviews);
+                this.setFormDataReview(this.reviews);
+            } catch (error) {
+                console.error('Error with sending review ID to DB:', error);
+            }
+        },
+
+        setFormDataReview(data) {
+            if(data.length > 0) {
+                this.reviews=[];
+                data.forEach(content => {this.reviews.push({
+
+                    userName : content.profilname,
+                    rating: content.sterne,
+                    reviewText : content.inhalt
+                });
+            
+            });
+            }
+        },
 
       setFormData(data){
         const myVar =data['caterer'].rows[0].region.split(',');
@@ -161,6 +210,16 @@ export default {
         this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
         console.log("my events",this.events);
+
+        data['gerichte'].rows.forEach(dish => {
+            this.dishes.push({
+            dishName: dish['name'], 
+            dishDescription1: dish['beschreibung'], 
+            dishDescription2: dish['beschreibung'],
+            imagePreview: dish['bild']
+            })
+        });
+
       },
       
       goToAnotherPage() {
@@ -229,7 +288,7 @@ export default {
       justify-content: center;
       align-items: top;
       gap: 10px;
-      height: 120px;
+      height: 60px;
   }
   
   #info-left {

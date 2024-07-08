@@ -2,97 +2,46 @@
 
     <div id="artist-div">
         <div id="dish-form">
-            <img :alt="name" src="../assets/cake.png" id="music-image">
+            <img :alt="name" :src="imagePreview" id="music-image">
             <div id="right">
-                <div id="text">Kuchen</div>
-                <div id="info-one">1. Erdbeeren</div>
-                <div id="info-two">2. Schokolade</div>
+                <div id="text">{{dishName}}</div>
+                <div id="info-one">1. {{ descriptionParts[0] }}</div>
+                <div id="info-two">2. {{ descriptionParts[1] }}</div>
             </div>
         </div>
     </div>
   </template>
   
   <script>
-  import axios from 'axios'; 
   
   export default {
     
     props:{
-          idFromFather:{
-              type:Number
+      dishName:{
+              type:String
+          },
+        dishDescription1:{
+              type:String
+          },
+          dishDescription2:{
+              type:String
+          }, 
+          imagePreview:{
+              type:String
           }
-    },
-    
-    data() {
-      return {
-        songs: [],
-        songsSize : '',
-        songsIndex : 0,
-        sname:'',
-        slength : '',
-        sYear: '',
-      };
-    },
-  
-    async created(){
-    let id = this.idFromFather;
-    const token = localStorage.getItem('authToken');
-    console.log("id from father",id);
-      try {
-          const response = await axios.get(`/getArtistById/${id}`, {headers: {'auth':token}});
-          console.log(response);
-          this.setFormData(response.data);
-          console.log('dj songs data received:', response.data);
-      } catch (error) {
-          console.error('Error with sending dj ID for songs to DB :', error);
+
+    }, 
+
+    computed: {
+        descriptionParts() {
+            const parts = this.dishDescription1.split(',');
+            return [
+                parts[0] || '',
+                parts[1] || ''
+            ];
         }
-    },
-  
-    methods: {
-      
-      previousMusic(){
-        if(this.songsIndex>0){
-            this.songsIndex -= 1;
-        } else{
-            this.songsIndex = 0;
-        } 
-        this.refreshSong(this.songs[this.songsIndex]);
-      },
-  
-      nextMusic(){
-        if(this.songsIndex >= 0 && this.songsIndex < this.songsSize -1){
-            this.songsIndex += 1;
-        } else{
-            this.songsIndex = this.songsSize - 1;
-        }
-        this.refreshSong(this.songs[this.songsIndex]);
-      },
-  
-      setFormData(data) {
-        data['lieder'].rows.forEach(lied => {
-          this.songs.push({
-            id: lied['id'],
-            songName: lied['name'], 
-            songLength: lied['laenge'], 
-            songYear: lied['erscheinung'].substring(0, 10)
-          })
-        });
-        console.log("songs ->",this.songs);
-        this.songsSize = this.songs.length;   
-        
-        if (this.songs.length > 0) {
-          this.refreshSong(this.songs[this.songsIndex]);
-        } 
-      },
-  
-      refreshSong(data){
-        this.sName = data.songName;
-        this.slength = data.songLength;
-        let myVar = data.songYear.split('-');
-        this.sYear = myVar[0];
-      }
-  
     }
+  
   
   }
   </script>

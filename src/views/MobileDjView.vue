@@ -47,10 +47,10 @@
             v-for="(event, index) in events" 
                     :key="index" 
                     :name="event.name" 
-                    :line1="event.location" 
+                    :line1="event.adresse" 
                     :line2="event.datum"
-                    :line3="event.time"
-                    :bild="event.bild"
+                    :line3="event.startuhrzeit"
+                    :imagePath="event.bild"
             />
         </div>
         <div class="description-headline-div">
