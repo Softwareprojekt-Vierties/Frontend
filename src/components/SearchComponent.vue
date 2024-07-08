@@ -60,25 +60,25 @@
         <div>
             <div v-if="hasSearchResults">
                 <div v-if="searchType==0" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.combined : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.isBookmarked" :buttonClickFunction="result.buttonClickFunction" :titleClickFunction="result.titleClickFunction" :info="result.info" :key="result.key"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.combined.filter(item => item.info.favorit == true) : searchResults.combined" :name="result.name" :line1="result.line1" :line2="result.line2" :line3="result.line3" :buttonText="result.buttonText" :imagePath="result.imagePath" :isBookmarked="result.info.favorit ?? 0" :buttonClickFunction="result.buttonClickFunction" :titleClickFunction="result.titleClickFunction" :info="result.info" :key="result.key"/>
                 </div>
                 <div v-else-if="searchType == 4 || searchType == 6" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.events : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.startuhrzeit ?? '--:--'}Uhr - ${result.enduhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.events.filter(item => item.favorit == true) : searchResults.events" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.startuhrzeit ?? '--:--'}Uhr - ${result.enduhrzeit ?? '--:--'}Uhr`" :buttonText="buttonTexts.event" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.event" :titleClickFunction="titleClickFunctions.event" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 1 || searchType == 9" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.location : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.location" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.location.filter(item => item.favorit == true) : searchResults.location" :name="result.name" :line1="`Addresse: ${result.adresse}`" :line2="`Kapazität: ${result.kapazitaet}`" :line3="`Preis: ${result.preis}`" :buttonText="buttonTexts.location" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.location" :titleClickFunction="titleClickFunctions.location" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 2" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.artist : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.artist" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.artist" :titleClickFunction="titleClickFunctions.artist" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.artist.filter(item => item.favorit == true) : searchResults.artist" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.artist" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.artist" :titleClickFunction="titleClickFunctions.artist" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 3" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.caterer : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.caterer" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.caterer.filter(item => item.favorit == true) : searchResults.caterer" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.caterer" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 5 || searchType == 8" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.person : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.person.filter(item => item.favorit == true) : searchResults.person" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 7" id="results">
-                    <CardComponent v-for="result in bookmarked ? filteredSearchResults.tickets : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.ticket" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.tickets.filter(item => item.favorit == true) : searchResults.tickets" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.ticket" :info="result" :key="result.id"/>
                 </div>
             </div>
             <div v-else>
@@ -238,7 +238,6 @@
                 searchType: "0",
                 sortType: "unsortiert",
                 searchResults: [],
-                filteredSearchResults: [],
                 searchError: false,
                 hasSearchResults: false,
                 sortAscending: false,
@@ -478,11 +477,12 @@
                 axios.post(destination, this.packageFilters(), { headers: { "auth": localStorage.getItem("authToken")}})
                     .then(response => {
                         console.log("Successful search:", response);
+                        this.searchResults[field] = [];
+                        this.searchResults.combined = this.searchResults.combined.filter(item => item.info.type != field);
                         this.searchResults[field] = response.data.rows;
                         this.searchResults[field].forEach(result => {
                             result.type = field;
                         });
-                        this.filteredSearchResults[field] = response.data.rows.filter(item => item.favorit == true);
                         this.hasSearchResults |= response.data.rows.length > 0;
                         if (this.searchType == 0) {
                             this.searchResults[field].forEach(item => {
@@ -510,7 +510,6 @@
                                             "line3": "Preis: " + item.preis,
                                             "buttonText": "Event erstellen",
                                             "imagePath": item.bild,
-                                            "isBookmarked": item.favorit ?? 0,
                                             "info": item,
                                             "buttonClickFunction": this.buttonClickFunctions.location,
                                             "titleClickFunction": this.titleClickFunctions.location,
@@ -526,7 +525,6 @@
                                             "line3": "Preis: " + item.preis,
                                             "buttonText": "Event erstellen",
                                             "imagePath": item.profilbild,
-                                            "isBookmarked": item.favorit ?? 0,
                                             "info": item,
                                             "buttonClickFunction": field == "artist" ? this.buttonClickFunctions.artist : this.buttonClickFunctions.caterer,
                                             "titleClickFunction": field == "artist" ? this.titleClickFunctions.artist : this.titleClickFunctions.caterer,
@@ -542,7 +540,6 @@
                                             "line3": "Zeit: " + (item.startuhrzeit ?? "--:--") + "Uhr - " + (item.enduhrzeit ?? "--:--") + "Uhr",
                                             "buttonText": field == "events" ? "Ticket buchen" : "Eventinfo",
                                             "imagePath": item.bild,
-                                            "isBookmarked": item.favorit ?? 0,
                                             "info": item,
                                             "buttonClickFunction": field == "events" ? this.buttonClickFunctions.event : this.buttonClickFunctions.ticket,
                                             "titleClickFunction": field == "events" ? this.titleClickFunctions.event : this.titleClickFunctions.ticket,
@@ -553,8 +550,7 @@
                                     default:
                                         break;
                                 }
-                            })
-                            this.filteredSearchResults.combined = this.searchResults.combined.filter(item => item.isBookmarked);
+                            });
                         } 
                     })
                     .catch(error => {
@@ -564,10 +560,6 @@
             },
             search() {
                 this.hideTooltip();
-                this.searchResults = [];
-                this.filteredSearchResults = [];
-                this.searchResults.combined = [];
-                this.filteredSearchResults.combined = [];
                 this.hasSearchResults = false;
                 this.searchError = false;
                 switch (this.searchType) {
@@ -602,6 +594,7 @@
 
                     default: break;
                 }
+                this.sortContent();
             },
             sortArrowClick() {
                 this.sortAscending = !this.sortAscending;
@@ -630,6 +623,7 @@
             },
             toggleBookmark() {
                 this.bookmarked = !this.bookmarked;
+                this.search();
                 // TODO: filter for bookmarked elements
             },
         },
@@ -660,6 +654,7 @@
             };
             this.appliedSearchTypes = this.allowedSearchTypes ?? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
             this.searchType = this.startValue ?? this.appliedSearchTypes[0];
+            this.searchResults.combined = [];
             this.toggleSearchType();
         },
     computed: {
