@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <MobileEditHeader></MobileEditHeader>
+        <MobileEditHeader v-model:name="personName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" />
         <div class="description-headline-div">
             <div class="description-headline">
                 Infos hinzufügen:
@@ -10,11 +10,11 @@
             <div class="info">
                 <div id="left">
                     <div class="input-headline">Region:</div>
-                    <input class="infos" placeholder="z.B. 32427 Minden"/>
+                    <input v-model="region" class="infos" placeholder="z.B. 32427 Minden"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Alter:</div>
-                    <input class="infos" placeholder="z.B. 18 Jahre"/>
+                    <input v-model="age" type="number" class="infos" placeholder="z.B. 18 Jahre"/>
                 </div>
             </div>
         </div>
@@ -22,15 +22,15 @@
             <div class="description-headline-more-infos">
                 Lieblings Eventarten hinzufügen:
             </div>
-            <input class="more-infos" placeholder="z.B. Techno, Geburtstagsfeier"/>
+            <input v-model="favoriteEventTypes" class="more-infos" placeholder="z.B. Techno, Geburtstagsfeier"/>
             <div class="description-headline-more-infos">
                 Lieblings Lieder hinzufügen:
             </div>
-            <input class="more-infos" placeholder="z.B. Party-Song, Disco-Song"/>
+            <input v-model="favoriteSong" class="more-infos" placeholder="z.B. Party-Song, Disco-Song"/>
             <div class="description-headline-more-infos">
                 Lieblings Gerichte hinzufügen:
             </div>
-            <input class="more-infos" placeholder="z.B. Kuchen, Eis"/>
+            <input v-model="favoriteDish" class="more-infos" placeholder="z.B. Kuchen, Eis"/>
         </div>
         <div id="description"> 
             <div id="description-headline">
@@ -52,10 +52,10 @@
             </div>
         </div>
         <div id="button-div">
-            <div id="button-reset">
+            <div id="button-reset" @click="reset">
               zurücksetzten
             </div>
-            <div id="button-create">
+            <div id="button-create" @click="createPerson">
               erstellen
             </div>
         </div>
@@ -86,7 +86,6 @@
         shortDescription: "",
         longDescription: "",
         region: "",
-        gender: "",
         favoriteEventTypes: "",
         favoriteDish: "",
         favoriteSong: "",
@@ -123,8 +122,8 @@
                   this.age++;
               }
           },
-            async createPerson(isPrivate) {
-                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
+            async createPerson() {
+                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region
                     || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
                     alert('Please fill in all required fields.');
                     return;
@@ -139,9 +138,7 @@
                 formData.eventarten = this.favoriteEventTypes;
                 formData.lieblingslied = this.favoriteSong;
                 formData.lieblingsgericht = this.favoriteDish;
-                formData.geschlecht = this.gender;
                 formData.partybilder = [];
-                formData.privat = isPrivate;
                 this.dishes.forEach(image => {
                     if (image) {
                         formData.partybilder.push(image);
@@ -357,13 +354,25 @@
   border: 1px solid #000000;
   border-radius: 8px;
   resize: none;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
 }
 
-#long-description-input::placeholder {
-  color: var(--placeholder-color);
-}
+  input {
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
+  }
+
+  input::placeholder {
+      color: var(--placeholder-color);
+  }
+
+  textarea {
+      background-color: var(--textfield-background);
+      color: var(--textfield-font-color);
+  }
+
+  textarea::placeholder {
+      color: var(--placeholder-color);
+  }
 
 #button-div {
   display: grid;
@@ -425,7 +434,7 @@
       cursor: pointer; /* Zeiger ändern bei Hover */
       z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
       border-radius: 30px;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
   
   #home-mobile {
@@ -445,7 +454,7 @@
       z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
       border-radius: 30px;
       padding: 7.5px;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
   
   #menu-mobile {
