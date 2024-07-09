@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <MobileEditHeader v-model:name="djName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+        <MobileEditHeader v-model:name="catererName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
         <div class="description-headline-div">
             <div class="description-headline">
                 Infos hinzufügen:
@@ -12,13 +12,13 @@
                     <div class="input-headline">Region:</div>
                     <input v-model="region" placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Kategorie:</div>
-                    <input v-model="category" placeholder="z.B. Techno"/>
+                    <input v-model="category" placeholder="z.B. Desserts"/>
                 </div>
                 <div id="right">
                     <div class="input-headline">Erfahrung:</div>
-                    <input v-model="experience" type="number" min ="0" placeholder="z.B. 10 Jahre"/>
+                    <input v-model="experience" placeholder="z.B. 10 Jahre"/>
                     <div class="input-headline">Preis:</div>
-                    <input  v-model="price" type="number" min ="0"  placeholder="z.B. 50 €/h"/>
+                    <input v-model="price" placeholder="z.B. 50 €/Portion"/>
                 </div>
             </div>
         </div>
@@ -30,23 +30,28 @@
           </div>
           <textarea v-model="longDescription" id="long-description-input" type="text" placeholder="Hier einfügen…"></textarea>
         </div>
-        <div id="songs-headline">Songs hinzufügen:</div>
+        <div id="songs-headline">Gerichte hinzufügen:</div>
         <div id="songs">
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
-                <div v-for="(song, index) in songs" :key="index" class="dish-item">
-                  <MobileMusicComponent ref="musicForm" :song="song" />
+                  <div v-for="(dish, index) in dishes" :key="index" class="dish-item">
+                    <MobileDishFrom 
+                    ref="dishForm" 
+                    :dish="dish" 
+                    @remove="removeDish(index)" 
+                    @update-dish="updateDish(index, $event)"
+                />                
                 </div>
-                <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
+                <div class="add-dish-button" @click="addDish"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
             </div>
         </div>
         <div id="button-div">
-            <div id="button-reset" @click="reset">
+            <div id="button-reset" @click="default_values">
               zurücksetzten
             </div>
-            <div id="button-create" @click="createDJ">
-              erstellen   
+            <div id="button-create" @click="updateCaterer">
+              aktualisieren
             </div>
         </div>
         <div id="home-button" v-if="menu">
@@ -59,38 +64,96 @@
 </template>
 
 <script>
-import axios from 'axios';
-import MobileEditHeader from '@/components/MobileEditHeader.vue';
-import MobileMusicComponent from '@/components/MobileMusicComponent.vue';
+import MobileDishFrom from '../components/MobileDishFrom.vue';
+import MobileEditHeader from '../components/MobileEditHeader.vue';
+import axios from 'axios'; 
+
 
 export default {
-    components: {
-        MobileEditHeader,
-        MobileMusicComponent
-    },
-  data() {
-    return {
-      menu: '',
-      djName: '',
-      shortDescription: '',
-      longDescription: '',
-      region: '',
-      category: '',
-      experience: '',
-      price: '',
-      imagePreview: null,
-      uploadedImage: null,
-      songs: [
-        { songName: '', songLength: '', songYear: '' }
-      ]
-    };
+  components: {
+    MobileDishFrom,
+    MobileEditHeader,
   },
+
+  data() {
+      return {
+        menu: '',
+        catererName : '',
+        shortDescription : '',
+        longDescription : '',
+        region : '',
+        category : '',
+        experience : '',
+        price : '',
+        imagePreview: null,
+        uploadedImage: null,
+        dishes: [
+        { dishName: '', info1: '', info2: '', imagePreview: null }
+        ],
+        id:''
+      };
+  },
+
   computed: {
         isDarkMode() {
             return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
         }
   },
+
+  async created(){
+        let id = this.$route.params.id;
+        const token = localStorage.getItem('authToken');
+
+        try {
+            const response = await axios.get(`/getCatererById/${id}`,{headers: {'auth':token}});
+            console.log(response);
+            this.originalData = { ...response.data };
+            this.setFormData(response.data);
+            console.log('Caterer data received:', response.data);
+        } 
+        catch (error) {
+            console.error('Error with sending Caterer ID to DB :', error);
+        }
+    },
+
   methods: {
+
+    updateDish(index, updatedDish) {
+        this.dishes.splice(index, 1, updatedDish);
+    },
+
+    setFormData(data) {
+
+        const myVar = data["caterer"].rows[0].region.split(',');
+
+
+        this.catererName = data["caterer"].rows[0].profilname;
+        this.imagePreview = data["caterer"].rows[0].profilbild;
+        this.shortDescription = data["caterer"].rows[0].kurzbeschreibung;
+        this.longDescription = data["caterer"].rows[0].beschreibung;
+        this.region = myVar[1];
+        this.street = myVar[0];
+        this.category = data["caterer"].rows[0].kategorie;
+        this.experience = data["caterer"].rows[0].erfahrung;
+        this.price = data["caterer"].rows[0].preis;
+
+        this.uploadedImage = data["caterer"].rows[0].profilbild;
+        this.dishes = [];
+        data['gerichte'].rows.forEach(gericht => {
+            this.dishes.push({
+            id: gericht['id'],
+            dishName: gericht['name'], 
+            info1: gericht['beschreibung'].split(", ")[0],
+            info2: gericht['beschreibung'].split(", ")[1],  
+            imagePreview: gericht['bild']
+            })
+    });
+    },
+
+    goToHomePage() {
+    this.$router.push('/search');
+    },
+
     onFileChange(event) {
         const file = event.target.files[0];
         if (file) {
@@ -101,71 +164,83 @@ export default {
           };
           reader.readAsDataURL(file);
         }
-      },
-    addSong() {
-      this.songs.push({ songName: '', songLength: '', songYear: '' });
+    },
+
+    addDish() {
+        this.dishes.push({ name: '', ingredients: [] });
         this.$nextTick(() => {
-          const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
-          container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
+            const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
+            container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
         });
     },
-    removeSong(index) {
-      this.songs.splice(index, 1);
-    },
-    reset() {
-      this.djName = '';
-      this.shortDescription = '';
-      this.longDescription = '';
-      this.region = '';
-      this.category = '';
-      this.experience = '';
-      this.price = '';
-      this.imagePreview = null;
-      this.uploadedImage = null;
-      this.songs = [{ songName: '', songLength: '', songYear: '' }];
 
-      this.$nextTick(() => {
-            if (this.$refs.musicForm) {
-                this.$refs.musicForm.forEach(form => form.clearFields());
-            }
+    removeDish(index) {
+        this.dishes.splice(index, 1);
+    },
+    resetDishForm(index) {
+      this.$refs.dishForm[index].clearFields();
+    },
+
+    default_values() {
+        this.catererName = this.originalData["caterer"].rows[0]["profilname"] ;
+        this.shortDescription = this.originalData["caterer"].rows[0]["kurzbeschreibung"];
+        this.longDescription = this.originalData["caterer"].rows[0]["beschreibung"];
+        const myVar = this.originalData["caterer"].rows[0].region.split(',');
+        this.region = myVar[1];
+        this.category = this.originalData["caterer"].rows[0]["kategorie"];
+        this.experience = this.originalData["caterer"].rows[0]["erfahrung"];
+        this.price = this.originalData["caterer"].rows[0]["preis"];
+        this.imagePreview = this.originalData["caterer"].rows[0]["profilbild"];
+        this.uploadedImage = this.originalData["caterer"].rows[0]["profilbild"];
+        this.street = myVar[0];
+        this.dishes = [];
+        this.originalData['gerichte'].rows.forEach(gericht => {
+            this.dishes.push({
+              id: gericht['id'],
+              dishName: gericht['name'], 
+              info1: gericht['beschreibung'].split(", ")[0],
+              info2: gericht['beschreibung'].split(", ")[1],  
+              imagePreview: gericht['bild']
+            })
         });
-
+  
     },
-    goToHomePage() {
-      this.$router.push('/search');
-    },
-    async createDJ() {
-
-
-
-      let formData = {};
-        formData.profilname = this.djName;
-        formData.profilbild = this.imagePreview;
-        formData.kurzbeschreibung = this.shortDescription;
-        formData.beschreibung = this.longDescription;
-        formData.region = this.region;
-        formData.preis = this.price;
-        formData.kategorie = this.category;
-        formData.erfahrung = this.experience;
-        formData.songs = this.songs;
-
-        console.log('FormData:', formData); 
-
-
-      //const token = localStorage.getItem('authToken'); 
-
-      try {
-          const response = await axios.post('/createArtist', formData, { headers: { auth: localStorage.authToken } });
-          console.log('Artist created:', response.data);
-          localStorage.setItem('authToken', response.data);
-          alert('Artist created successfully!');
-          this.reset();
-          this.$router.push("/search");
-        } catch (error) {
-          console.error('Error with Artist creation:', error);
-          alert('Error creating Artist. Please try again.');
+    async updateCaterer(){
+        if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+          alert('Please fill in all required fields.');
+          return;
         }
-    },
+
+
+  
+        let formData = {};
+          //formData.benutzername = this.catererName;
+          formData.profilname = this.catererName;
+          //formData.email = this.catererName;
+          //formData.password = this.catererName;
+          formData.profilbild = this.imagePreview;
+          formData.kurzbeschreibung = this.shortDescription;
+          formData.beschreibung = this.longDescription;
+          formData.region = this.street +','+ this.region; 
+          formData.preis = this.price;
+          formData.kategorie = this.category;
+          formData.erfahrung = this.experience;
+          formData.gerichte = this.dishes;
+  
+          console.log('FormData:', formData); 
+  
+  
+        const token = localStorage.getItem('authToken'); 
+  
+        try {
+            const response = await axios.post('/updateCaterer', formData, {headers: {'auth':token}});
+            console.log('Caterer updated:', response.data);
+            alert('Caterer updated successfully!');
+          } catch (error) {
+            console.error('Error with Caterer update:', error);
+            alert('Error updating Caterer. Please try again.');
+        }
+      },
     handleClick() {
         if(this.menu) {
             this.menu = false;
@@ -176,8 +251,9 @@ export default {
     }
   }
 }
-</script>
 
+</script>
+    
 <style scoped>
 #main {
 
@@ -269,7 +345,7 @@ input {
     grid-template-columns: 1fr;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 305px;
     margin: 0 auto;
 }
 
@@ -279,6 +355,7 @@ input {
   white-space: nowrap;
   align-items: center;
   padding: 7px;
+  padding-left: 5px;
 }
 
 .dish-item {

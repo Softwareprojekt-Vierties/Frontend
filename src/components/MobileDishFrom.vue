@@ -1,82 +1,94 @@
 <template>
-    <div id="dish-form">
-      <div id="file-div-comp" :style="fileDivStyleComponent">
-        <div id="file-upload">
-          <label id="image-text" for="fileToUpload">
-            <img v-if="!imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon-comp" />
-            <img v-else-if="!imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon-comp" />
-            <span id="upload-text-comp" v-if="!imagePreview">Bild hochladen</span>
-          </label>
-          <input class="input-comp" type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChangeComponent">
-        </div>
-      </div>
-      <div id="right">
-        <div id="text">
-          Gericht:
-        </div>
-        <input class="input-comp"  v-model="dishName" id="input" placeholder="z.B. Kuchen">
-        <div id="ingredients">
-          Hauptzutaten:
-        </div>
-        <input class="input-comp" v-model="info1" id="input" placeholder="z.B. Erdbeeren">
-        <input class="input-comp" v-model="info2" id="input" placeholder="z.B. Sahne">
+  <div id="dish-form">
+    <div id="file-div-comp" :style="fileDivStyleComponent">
+      <div id="file-upload">
+        <label id="image-text" for="fileToUpload">
+          <img v-if="!localDish.imagePreview && isDarkMode" src="../assets/addpicture.png" alt="Bild hochladen" class="upload-icon-comp" />
+          <img v-else-if="!localDish.imagePreview" src="../assets/addpicture.jpg" alt="Bild hochladen" class="upload-icon-comp" />
+          <span id="upload-text-comp" v-if="!localDish.imagePreview">Bild hochladen</span>
+        </label>
+        <input class="input-comp" type="file" name="fileToUpload" id="fileToUpload" accept="image/*" @change="onFileChangeComponent">
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return { 
-        dishName : '',
-        info1 : '',
-        info2: '',
-        imagePreview : null,
-        uploadedImage : null
-  
+    <div id="right">
+      <div id="text">
+        Gericht:
+      </div>
+      <input class="input-comp" v-model="localDish.dishName" id="input" placeholder="z.B. Kuchen" @input="emitDishUpdate">
+      <div id="ingredients">
+        Hauptzutaten:
+      </div>
+      <input class="input-comp" v-model="localDish.info1" id="input" placeholder="z.B. Erdbeeren" @input="emitDishUpdate">
+      <input class="input-comp" v-model="localDish.info2" id="input" placeholder="z.B. Sahne" @input="emitDishUpdate">
+    </div>
+  </div>
+</template>
+
+
+<script>
+export default {
+  props: {
+    dish: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      localDish: { ...this.dish }
+    };
+  },
+  watch: {
+    dish: {
+      handler(newDish) {
+        this.localDish = { ...newDish };
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  computed: {
+    fileDivStyleComponent() {
+      return this.localDish.imagePreview ? { backgroundImage: `url(${this.localDish.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
+    },
+    isDarkMode() {
+      return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+    }
+  },
+  methods: {
+    emitDishUpdate() {
+      this.$emit('update-dish', this.localDish);
+    },
+    onFileChangeComponent(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.localDish.imagePreview = e.target.result;
+          this.$emit('update-dish', this.localDish);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    getData() {
+      return {
+        dishName: this.localDish.dishName,
+        info1: this.localDish.info1,
+        info2: this.localDish.info2,
+        imagePreview: this.localDish.imagePreview
       };
     },
-    computed: {
-      fileDivStyleComponent() {
-        return this.imagePreview ? { backgroundImage: `url(${this.imagePreview})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
-      },
-          isDarkMode() {
-              return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-          }
-    },
-    methods: {
-      onFileChangeComponent(event) {
-          const file = event.target.files[0];
-          if (file) {
-            this.uploadedImage = file;
-            const reader = new FileReader();
-            reader.onload = e => {
-              this.imagePreview = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          }
-      },
-  
-      getData() {
-        return {
-          dishName: this.dishName,
-          info1: this.info1,
-          info2: this.info2,
-          imagePreview : this.imagePreview
-        };
-      },
-      clearFields() {
-        this.dishName = '';
-        this.info1 = '';
-        this.info2 = '';
-        this.uploadedImage = null;
-        this.imagePreview = null;
-      }
-     }
+    clearFields() {
+      this.localDish.dishName = '';
+      this.localDish.info1 = '';
+      this.localDish.info2 = '';
+      this.localDish.imagePreview = null;
+    }
   }
-  
-  
-  </script>
+};
+</script>
+
+
   
   <style scoped>
   #dish-form {
