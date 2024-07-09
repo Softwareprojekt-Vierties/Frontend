@@ -26,7 +26,7 @@
         </div>
         </div>
         <div id="right-side">
-            <Info v-model:hasBookmark="hasBookmark" :location="location" :date="formattedEventDate" :startTime="zeit" :price="preis" :ageLimit="alter" :openAir="openAir" />
+            <Info v-model:hasBookmark="hasBookmark" type="events" :location="location" :date="formattedEventDate" :startTime="zeit" :price="preis" :ageLimit="alter" :openAir="openAir" />
           <div id="ticket">
             Event buchen 
           </div>
@@ -116,6 +116,7 @@
         this.location = data.event.rows[0].locationname;
         this.anzahlPersonen = data.event.rows[0].eventgroesse;
         this.datum = data.event.rows[0].datum;
+          this.hasBookmark = data.event.rows[0].favorit;
         let openair = data.event.rows[0].openair;
         if(openair === true){
           this.openAir = "Ja";

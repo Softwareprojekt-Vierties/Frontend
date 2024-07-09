@@ -3,7 +3,7 @@
         <div id="info-bookmark">
             <label id="info-headline">Infos</label>
             <div id="div-bookmark">
-                <Bookmark v-model:hasBookmark="isBookmarked" :id="$route.params.id" type="person" width="10px" height="17px" wrappingDiv="div-bookmark" />
+                <Bookmark v-model:hasBookmark="isBookmarked" :id="$route.params.id" :type="type" width="10px" height="17px" wrappingDiv="div-bookmark" />
             </div>
         </div>
         <div v-if="region" class="infos">
@@ -70,6 +70,10 @@
             Bookmark,
         },
         props: {
+            type: {
+                type: String,
+                default: "",
+            },
             hasBookmark: {
                 type: Boolean,
                 default: false,
@@ -152,6 +156,9 @@
         watch: {
             isBookmarked(newVal) {
                 this.$emit("update:hasBookmark", newVal);
+            },
+            hasBookmark(newVal) {
+                this.isBookmarked = newVal;
             }
         },
     }

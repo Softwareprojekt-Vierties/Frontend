@@ -1,6 +1,6 @@
 <template>
   <div id="CreateCatererView">
-      <Header v-model:name="catererName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+      <Header v-model:name="catererName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" />
     <div id="main">
       <div id="left-side">
         <div class="long-description">
@@ -76,7 +76,6 @@ export default {
       experience : '',
       price : '',
       imagePreview: null,
-      uploadedImage: null,
       dishes: [
       { dishName: '', info1: '', info2: '', imagePreview: null }
       ]
@@ -94,18 +93,6 @@ export default {
 
     goToHomePage() {
     this.$router.push('/search');
-    },
-
-    onFileChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-          this.uploadedImage = file;
-          const reader = new FileReader();
-          reader.onload = e => {
-            this.imagePreview = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
     },
 
     addDish() {
@@ -132,7 +119,6 @@ export default {
     this.experience = '';
     this.price = '';
     this.imagePreview = null;
-    this.uploadedImage = null;
 
     this.dishes = [{ dishName: '',  info1: '', info2: '', imagePreview: null }];
     this.$nextTick(() => {

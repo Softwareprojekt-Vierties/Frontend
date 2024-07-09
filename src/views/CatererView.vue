@@ -21,7 +21,7 @@
         </div>
         </div>
         <div id="right-side">
-            <Info v-model:hasBookmark="hasBookmark" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
+            <Info v-model:hasBookmark="hasBookmark" type="caterer" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
           <div id="ticket" @click="weiter">
             {{ buttonLabel }}
           </div>
@@ -112,6 +112,7 @@
         this.id = data['caterer'].rows[0].id;
         this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
+        this.hasBookmark = data.caterer.rows[0].favorit;
         console.log("my events",this.events);
       },
       

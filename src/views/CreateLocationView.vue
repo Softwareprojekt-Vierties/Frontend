@@ -71,7 +71,6 @@
       size: '',
       openAir: false,
       imagePreview: null,
-
       };
     },
 

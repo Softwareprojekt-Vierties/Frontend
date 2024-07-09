@@ -1,6 +1,6 @@
 <template>
   <div id="CreateEventView">
-      <Header :isLoggedIn="true" v-model:name="eventName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+      <Header :isLoggedIn="true" v-model:name="eventName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" />
         <div id="main">
             <div id="left-side">
                 <div class="long-description">
@@ -146,7 +146,6 @@
                 eventName: '',
                 shortDescription: '',
                 longDescription: '',
-                eventImage: null,
                 imagePreview: null, 
                 eventDate: '',
                 eventStartTime: '',
@@ -172,17 +171,6 @@
             }
         },
         methods: {
-            onFileChange(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    this.eventImage = file;
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        this.imagePreview = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            },
             addProvider() {
                 this.serviceProvider.push({ name: '', details: null });
                 this.$nextTick(() => {
@@ -221,7 +209,6 @@
                 this.eventName = '';
                 this.shortDescription = '';
                 this.longDescription = '';
-                this.eventImage = null;
                 this.imagePreview = null; 
                 this.eventDate = '';
                 this.eventStartTime = '';
@@ -237,7 +224,7 @@
             async createEvent() {
                 if (!this.eventName || !this.shortDescription || !this.longDescription || !this.eventDate || !this.eventStartTime 
                     || !this.eventEndTime || !this.eventSize || !this.price || !this.ageLimit
-                    || !this.selectedEventType || !this.location) {
+                    || !this.selectedEventType || !this.location || !this.imagePreview) {
                     alert('Please fill in all required fields.');
                     return;
                 }
