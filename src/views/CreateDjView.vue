@@ -129,10 +129,10 @@ export default {
       this.$router.push('/search');
     },
     async createDJ() {
-      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+     /* if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
         alert('Please fill in all required fields.');
         return;
-      }
+      }*/
 
 
       let formData = {};
@@ -152,10 +152,10 @@ export default {
         console.log('FormData:', formData); 
 
 
-      //const token = localStorage.getItem('authToken'); 
+        const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createArtist', formData, { headers: { auth: localStorage.authToken } });
+          const response = await axios.post('/createArtist', formData, { headers: {headers: {'auth':token}} });
           console.log('Artist created:', response.data);
           localStorage.setItem('authToken', response.data);
           alert('Artist created successfully!');
@@ -504,7 +504,7 @@ footer {
     padding-top: 5px;
   }
 
-#CreateDjView, {
+#CreateDjView {
     min-height: 100vh;
     background-color: var(--create-page-background);
 }

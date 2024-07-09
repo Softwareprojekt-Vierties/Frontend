@@ -35,6 +35,8 @@ import MobileCreateDjView from '@/views/MobileCreateDjView.vue'
 import MobileCreateCatererView from '@/views/MobileCreateCatererView.vue'
 import MobileCreatePersonView from '@/views/MobileCreatePersonView.vue'
 import MobilePersonView from '@/views/MobilePersonView.vue'
+import MobileEditCaterer from '@/views/MobileEditCatererView.vue'
+import MobileEditDJ from '@/views/MobileEditDjView.vue'
 
 
 function isMobile() {
@@ -46,7 +48,7 @@ const routes = [
     {
         path: '/',
         name: 'login',
-        component: isMobile() ? MobileLoginView : LoginView // Corrigido para usar AnmeldungView
+        component: isMobile() ? MobileLoginView : LoginView 
     },  { //                    󱞩 MobileView    󱞩 DesktopView
         path: '/signup',
         name: 'signupSeite',
@@ -96,11 +98,11 @@ const routes = [
 }, {
     path: '/editcaterer/:id',
     name: 'EditCatererType',
-    component: EditCatererView 
+    component: isMobile() ? MobileEditCaterer : EditCatererView 
 }, {
     path: '/editdj/:id',
     name: 'EditDjType',
-    component: EditDjView 
+    component: isMobile() ?  MobileEditDJ  : EditDjView
 },  {
     path: '/editlocation/:id',
     name: 'EditLocationType',

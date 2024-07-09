@@ -35,7 +35,7 @@
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
                 <div v-for="(song, index) in songs" :key="index" class="dish-item">
-                  <MobileMusicComponent ref="musicForm" :song="song" />
+                    <MobileMusicComponent :song="song" @update:song="updateSong(index, $event)" />
                 </div>
                 <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
@@ -45,7 +45,7 @@
             <div id="button-reset" @click="reset">
               zurücksetzten
             </div>
-            <div id="button-create" @click="createDJ">
+            <div id="button-create" @click="updateDJ">
               erstellen   
             </div>
         </div>
@@ -82,7 +82,9 @@ export default {
       uploadedImage: null,
       songs: [
         { songName: '', songLength: '', songYear: '' }
-      ]
+      ],
+      id:'',
+      originalData : {}
     };
   },
   computed: {
@@ -91,6 +93,43 @@ export default {
         }
   },
   methods: {
+
+    updateSong(index, updatedSong) {
+        this.songs.splice(index, 1, updatedSong);
+    },
+
+    async updateDJ() {
+      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+          alert('Please fill in all required fields.');
+          return;
+      }
+
+      let formData = {};
+      formData.profilname = this.djName;
+      formData.kurzbeschreibung = this.shortDescription;
+      formData.beschreibung = this.longDescription;
+      formData.region = this.region;
+      formData.kategorie = this.category;
+      formData.erfahrung = this.experience;
+      formData.preis = this.price;
+      formData.email = this.email;
+      formData.profilbild = this.imagePreview;
+      formData.songs = this.songs;
+      formData.id = this.id;
+      console.log('FormData:', formData); 
+
+      const token = localStorage.getItem('authToken'); 
+
+      try {
+        const response = await axios.post('/updateArtist', formData, {headers: {'auth':token}});
+        console.log('Artist updated:', response.data);
+        alert('Artist updated successfully!');
+      } catch (error) {
+        console.error('Error with Artist update:', error);
+        alert('Error with Artist update. Please try again.');
+      }
+    },
+
     onFileChange(event) {
         const file = event.target.files[0];
         if (file) {
@@ -113,68 +152,70 @@ export default {
       this.songs.splice(index, 1);
     },
     reset() {
-      this.djName = '';
-      this.shortDescription = '';
-      this.longDescription = '';
-      this.region = '';
-      this.category = '';
-      this.experience = '';
-      this.price = '';
-      this.imagePreview = null;
-      this.uploadedImage = null;
-      this.songs = [{ songName: '', songLength: '', songYear: '' }];
-
-      this.$nextTick(() => {
-            if (this.$refs.musicForm) {
-                this.$refs.musicForm.forEach(form => form.clearFields());
-            }
-        });
-
+      this.djName = this.originalData["artist"].rows[0]["benutzername"];
+      this.shortDescription =this.originalData["artist"].rows[0]["kurzbeschreibung"];
+      this.longDescription = this.originalData["artist"].rows[0]["beschreibung"] ;
+      this.region = this.originalData["artist"].rows[0]["region"];
+      this.category = this.originalData["artist"].rows[0]["kategorie"];
+      this.experience =  this.originalData["artist"].rows[0]["erfahrung"];
+      this.price = this.originalData["artist"].rows[0]["preis"];
+      this.imagePreview = this.originalData["artist"].rows[0]["profilbild"];
+      this.uploadedImage = this.originalData["artist"].rows[0]["profilbild"];
+      this.email = this.originalData["artist"].rows[0]["emailfk"];
+      this.songs  =[];
+      this.originalData["lieder"].rows.forEach(lied => {
+        this.songs.push({
+          id: lied['id'],
+          songName: lied['name'], 
+          songLength: lied['laenge'], 
+          songYear: lied['erscheinung'].substring(0, 10)
+        })
+      });
     },
+
+    setFormData(data) {
+      this.djName = data['artist'].rows[0].benutzername;
+      this.shortDescription = data['artist'].rows[0].kurzbeschreibung;
+      this.longDescription = data['artist'].rows[0].beschreibung ;
+      this.region = data['artist'].rows[0].region;
+      this.category = data['artist'].rows[0].kategorie;
+      this.experience =  data['artist'].rows[0].erfahrung;
+      this.price = data['artist'].rows[0].preis;
+      this.imagePreview = data['artist'].rows[0].profilbild;
+      this.uploadedImage = data['artist'].rows[0].profilbild;
+      this.email = data['artist'].rows[0].emailfk;
+      this.songs = []; // use empty Array to remove example container
+      data['lieder'].rows.forEach(lied => {
+        this.songs.push({
+          id: lied['id'],
+          songName: lied['name'], 
+          songLength: lied['laenge'], 
+          songYear: lied['erscheinung'].substring(0, 10)
+        })
+      });
+    },
+
     goToHomePage() {
       this.$router.push('/search');
     },
-    async createDJ() {
-
-
-
-      let formData = {};
-        formData.profilname = this.djName;
-        formData.profilbild = this.imagePreview;
-        formData.kurzbeschreibung = this.shortDescription;
-        formData.beschreibung = this.longDescription;
-        formData.region = this.region;
-        formData.preis = this.price;
-        formData.kategorie = this.category;
-        formData.erfahrung = this.experience;
-        formData.songs = this.songs;
-
-        console.log('FormData:', formData); 
-
-
-      //const token = localStorage.getItem('authToken'); 
+    
+  }
+  ,
+  async created(){
+    this.id = this.$route.params.id;
+    const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createArtist', formData, { headers: { auth: localStorage.authToken } });
-          console.log('Artist created:', response.data);
-          localStorage.setItem('authToken', response.data);
-          alert('Artist created successfully!');
-          this.reset();
-          this.$router.push("/search");
-        } catch (error) {
-          console.error('Error with Artist creation:', error);
-          alert('Error creating Artist. Please try again.');
-        }
-    },
-    handleClick() {
-        if(this.menu) {
-            this.menu = false;
-        }
-        else {
-            this.menu = true;
+        console.log("i'm here");
+          const response = await axios.get(`/getArtistById/${this.id}`,{headers: {'auth':token}});
+          console.log(response);
+          this.originalData = { ...response.data };
+          this.setFormData(response.data);
+          console.log('dj data received:', response.data);
+      } catch (error) {
+          console.error('Error with sending dj ID to DB :', error);
         }
     }
-  }
 }
 </script>
 
