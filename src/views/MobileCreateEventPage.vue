@@ -57,7 +57,7 @@
     <div class="songs">
         <div id="addcreator" ref="addCreator" class="scroll-container">
             <div class="dish-container">
-                <div v-for="(serviceProvider, index) in serviceProvider" :key="index" class="dish-item">
+                <div v-for="(serviceProvider, index) in serviceProviders" :key="index" class="dish-item">
                     <EventCard v-if="(serviceProvider?.name ?? '') != ''" :label="serviceProvider?.name" :imagePath="serviceProvider?.details?.profilbild" @click="openModalService(index)" @remove="removeProvider(index)" />
                     <dish-form v-else @click="openModalService(index)" @remove="removeProvider(index)"></dish-form>
                 </div>
@@ -152,7 +152,7 @@
                   price: '',
                   ageLimit: '',
                   openAir: false,
-                  serviceProvider: [{ name: '', details: null }],
+                  serviceProviders: [{ name: '', details: null }],
                   isModalVisible: false,
                   isLocationModalVisible : false,
                   selectedEventType: null,
@@ -181,14 +181,14 @@
                   }
               },
               addProvider() {
-                  this.serviceProvider.push({ name: '', details: null });
+                  this.serviceProviders.push({ name: '', details: null });
                   this.$nextTick(() => {
                       const container = this.$refs.addCreator;
                       container.scrollLeft = container.scrollWidth - container.clientWidth;
                   });
               },
               removeProvider(index) {
-                  this.serviceProvider.splice(index, 1);
+                  this.serviceProviders.splice(index, 1);
               },
               openModal() {
                   this.isModalVisible = true;
@@ -227,7 +227,7 @@
                   this.price = '';
                   this.ageLimit = '';
                   this.openAir = false;
-                  this.serviceProvider = [{ name: '', details: null }];
+                  this.serviceProviders = [{ name: '', details: null }];
                   this.selectedEventType= null; 
                   this.location = null;
               },
@@ -253,7 +253,7 @@
                   formData.privat = this.selectedEventType === "private"; 
                   formData.locationid = this.location.id;
                   formData.serviceProviders = [];
-                  this.serviceProvider.forEach(sp => {
+                  this.serviceProviders.forEach(sp => {
                       if (sp.name != "") {
                           formData.serviceProviders.push({id: sp.details.id, type: sp.details.type});
                       }
@@ -299,9 +299,9 @@
                   this.closeModalLocation();
               },
               selectService() {
-                  this.serviceProvider[this.currentProviderIndex] = this.currentProvider;
+                  this.serviceProviders[this.currentProviderIndex] = this.currentProvider;
                   this.closeModalLocation();
-                  console.log(this.serviceProvider);
+                  console.log(this.serviceProviders);
               },
               handleClick() {
                 if(this.menu) {

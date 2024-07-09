@@ -78,6 +78,10 @@
                 type: Number,
                 default: 1,
             },
+            buttonColor: {
+                type: String,
+                default: "var(--green)",
+            }
         },
         data() {
             return {
@@ -155,7 +159,7 @@
 #button {
     font-size: calc(11px * v-bind("scaleFactor"));
     cursor: pointer;
-    background-color: var(--green);
+    background-color: v-bind("buttonColor");
     color: var(--simple-font-color);
     padding: calc(5px * v-bind("scaleFactor"));
     border: var(--button-border);

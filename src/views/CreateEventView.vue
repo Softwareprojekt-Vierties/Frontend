@@ -13,7 +13,7 @@
                     <div id="addcreator" ref="addCreator" class="scroll-container">
                         <div class="dish-container">
                             <div v-for="(serviceProvider, index) in serviceProviders" :key="index" class="dish-item">
-                                <EventCard v-if="(serviceProvider?.name ?? '') != ''" :scaleFactor=".56" :name="serviceProvider?.name" :line1="serviceProvider?.details?.line1" :line2="serviceProvider?.details?.line2" :line3="serviceProvider?.details?.line3" :info="serviceProvider?.details" buttonText="Entfernen" :buttonClickFunction="() => {serviceProviders.splice(index, 1)}" :imagePath="serviceProvider?.details?.profilbild" :isBookmarked="serviceProvider?.details?.favorit ?? 0" @remove="removeProvider(index)" />
+                                <EventCard v-if="(serviceProvider?.name ?? '') != ''" :scaleFactor=".56" :name="serviceProvider?.name" :line1="serviceProvider?.details?.line1" :line2="serviceProvider?.details?.line2" :line3="serviceProvider?.details?.line3" :info="serviceProvider?.details" buttonText="Entfernen" :buttonClickFunction="() => {serviceProviders.splice(index, 1)}" :imagePath="serviceProvider?.details?.profilbild" :isBookmarked="serviceProvider?.details?.favorit ?? 0" buttonColor="var(--red)" @remove="removeProvider(index)" />
                                 <dish-form v-else @click="openModalService(index)" @remove="removeProvider(index)"></dish-form>
                             </div>
                             <div class="add-dish-button" @click="addProvider">
@@ -44,26 +44,26 @@
                     </div>
                     <div class="infos">
                         <label class="info-subheadline">Datum:</label>
-                        <input class="input" v-model="eventDate" type="text" placeholder="z.B. 17.08.2024">
+                        <input class="input" v-model="eventDate" type="date" placeholder="z.B. 17.08.2024">
                     </div>
                     <div class="infos">
                         <label class="info-subheadline">Zeit:</label>
                         <div class="time">
-                            <input class="time-value-left" v-model="eventStartTime" placeholder="z.B. 17Uhr"> - 
-                            <input class="time-value-right" v-model="eventEndTime" placeholder="z.B. 20Uhr">
+                            <input type="time" class="time-value-left" v-model="eventStartTime" placeholder="z.B. 17Uhr"> - 
+                            <input type="time" class="time-value-right" v-model="eventEndTime" placeholder="z.B. 20Uhr">
                         </div>
                     </div>
                     <div class="infos">
                         <label class="info-subheadline">Eventgröße:</label>
-                        <input class="input" v-model="eventSize" type="text" placeholder="z.B. 50 Personen">
+                        <input class="input" v-model="eventSize" type="number" min="0" :max="2**32" placeholder="z.B. 50 Personen">
                     </div>
                     <div class="infos">
                         <label class="info-subheadline">Preis:</label>
-                        <input class="input" v-model="price" type="text" placeholder="z.B. 50€">
+                        <input class="input" v-model="price" type="number" min="0" :max="2**32" placeholder="z.B. 50€">
                     </div>
                     <div class="infos">
                         <label class="info-subheadline">Alter:</label>
-                        <input class="input" v-model="ageLimit" type="text" placeholder="z.B. 18 Jahre">
+                        <input class="input" v-model="ageLimit" type="number" min="0" :max="2**32" placeholder="z.B. 18 Jahre">
                     </div>
                     <div id="open-air">
                         <label class="info-subheadline">Open Air:</label>
