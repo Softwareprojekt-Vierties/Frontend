@@ -99,7 +99,7 @@ export default {
     },
 
     async updateDJ() {
-      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.imagePreview) {
           alert('Please fill in all required fields.');
           return;
       }

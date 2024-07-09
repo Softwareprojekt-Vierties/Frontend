@@ -206,7 +206,7 @@ export default {
   
     },
     async updateCaterer(){
-        if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+        if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.imagePreview) {
           alert('Please fill in all required fields.');
           return;
         }
