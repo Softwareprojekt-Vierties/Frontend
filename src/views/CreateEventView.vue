@@ -13,7 +13,11 @@
                     <div id="addcreator" ref="addCreator" class="scroll-container">
                         <div class="dish-container">
                             <div v-for="(serviceProvider, index) in serviceProviders" :key="index" class="dish-item">
-                                <EventCard v-if="(serviceProvider?.name ?? '') != ''" :scaleFactor=".56" :name="serviceProvider?.name" :line1="serviceProvider?.details?.line1" :line2="serviceProvider?.details?.line2" :line3="serviceProvider?.details?.line3" :info="serviceProvider?.details" buttonText="Entfernen" :buttonClickFunction="() => {serviceProviders.splice(index, 1)}" :imagePath="serviceProvider?.details?.profilbild" :isBookmarked="serviceProvider?.details?.favorit ?? 0" buttonColor="var(--red)" @remove="removeProvider(index)" />
+                                <div v-if="(serviceProvider?.name ?? '') != ''" id="artist-div">
+                                    <div id="background">
+                                        <EventCard :scaleFactor=".5" :name="serviceProvider?.name" :line1="serviceProvider?.details?.line1" :line2="serviceProvider?.details?.line2" :line3="serviceProvider?.details?.line3" :info="serviceProvider?.details" buttonText="Entfernen" :buttonClickFunction="() => {serviceProviders.splice(index, 1)}" :imagePath="serviceProvider?.details?.profilbild" :isBookmarked="serviceProvider?.details?.favorit ?? 0" buttonColor="var(--red)" @remove="removeProvider(index)" />
+                                    </div>
+                                </div>
                                 <dish-form v-else @click="openModalService(index)" @remove="removeProvider(index)"></dish-form>
                             </div>
                             <div class="add-dish-button" @click="addProvider">
@@ -746,4 +750,24 @@ footer {
     height: 60vh;
     overflow-y: scroll;
 }
+
+#artist-div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    align-items: center;
+}
+
+#background {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding-left: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 7px;
+    background-color: var(--textfield-background);
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
 </style>

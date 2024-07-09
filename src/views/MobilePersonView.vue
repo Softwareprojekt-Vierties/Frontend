@@ -18,13 +18,36 @@
             </div>
         </div>
         <div class="description-headline-div">
+            <div class="description-headline-more-infos">
+                Lieblings Eventarten:
+            </div>
+            <div class="description-headline-more-infos-infos">
+                {{favoriteEventTypes}}
+            </div>
+            <br>
+            <div class="description-headline-more-infos">
+                Lieblings Lieder:
+            </div>
+            <div class="description-headline-more-infos-infos">
+                {{favoriteSong}}
+            </div>
+            <br>
+            <div class="description-headline-more-infos">
+                Lieblings Gerichte:
+            </div>
+            <div class="description-headline-more-infos-infos">
+                {{favoriteDish}}
+            </div>
+            <br>
+        </div>
+        <div class="description-headline-div">
             <div class="description-headline">
                 Beschreibung:
             </div>
         </div>
         <div id="description-div">
             <div id="description">
-                {{description}}
+                {{longDescription}}
             </div>
         </div>
         <div class="description-headline-div">
@@ -324,6 +347,21 @@
       font-weight: bold;
       margin-bottom: 3px;
   }
+
+.description-headline-more-infos {
+    width: 287px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.description-headline-more-infos-infos {
+    width: 287px;
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
 
   #pictures {
     display: grid;

@@ -113,7 +113,7 @@
     align-items: top;
     justify-content: center;
     padding: calc(10px * v-bind("scaleFactor"));
-    border: 1px solid #000;
+    border: var(--button-border);
     border-radius: 5px;
     gap: calc(15px * v-bind("scaleFactor"));
     width: calc(380px * v-bind("scaleFactor"));

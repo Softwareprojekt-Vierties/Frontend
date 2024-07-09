@@ -100,6 +100,7 @@
     text-align: left;
     margin-top: 11px;
     overflow: hidden;
+    width: 90px;
 }
 
 #short-decription {
@@ -109,7 +110,7 @@
     overflow: hidden;
 }
 .stars{
-    margin-bottom: 10px;
+    margin-top: 8px;
 }
 
 .star {
@@ -120,6 +121,14 @@
 .star.filled {
     color: var(--yellow); 
 
+}
+
+#name-stars {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: left;
+    align-items: center;
+    gap: 5px;
 }
 
 </style>
