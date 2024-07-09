@@ -12,8 +12,8 @@
                     <label class="description">Dienstleister hinzufügen:</label>
                     <div id="addcreator" ref="addCreator" class="scroll-container">
                         <div class="dish-container">
-                            <div v-for="(serviceProvider, index) in serviceProvider" :key="index" class="dish-item">
-                                <EventCard v-if="(serviceProvider?.name ?? '') != ''" :label="serviceProvider?.name" :imagePath="serviceProvider?.details?.profilbild" @click="openModalService(index)" @remove="removeProvider(index)" />
+                            <div v-for="(serviceProvider, index) in serviceProviders" :key="index" class="dish-item">
+                                <EventCard v-if="(serviceProvider?.name ?? '') != ''" :scaleFactor=".56" :name="serviceProvider?.name" :line1="serviceProvider?.details?.line1" :line2="serviceProvider?.details?.line2" :line3="serviceProvider?.details?.line3" :info="serviceProvider?.details" buttonText="Entfernen" :buttonClickFunction="() => {serviceProviders.splice(index, 1)}" :imagePath="serviceProvider?.details?.profilbild" :isBookmarked="serviceProvider?.details?.favorit ?? 0" @remove="removeProvider(index)" />
                                 <dish-form v-else @click="openModalService(index)" @remove="removeProvider(index)"></dish-form>
                             </div>
                             <div class="add-dish-button" @click="addProvider">
@@ -109,10 +109,10 @@
                 </div>
                 <!--  Auflistung der Events--> 
                 <div class="event-div" v-if="searchLocation">
-                    <SearchComponent :mutable="false" startValue="1" locationButtonText="Zum Event hinzufügen" :locationButtonFunction="setTmpLocationId" :locationTitleFunction="(info) => {}"/>
+                    <SearchComponent :mutable="false" startValue="1" locationButtonText="Zum Event hinzufügen" :locationButtonFunction="setTmpLocationId" :locationTitleFunction="() => {}"/>
                 </div>
                 <div class="event-div" v-else>
-                    <SearchComponent :allowedSearchTypes="['2', '3']" artistButtonText="Zum Event hinzufügen" catererButtonText="Zum Event hinzufügen" :artistButtonFunction="setCurrentProvider" :catererButtonFunction="setCurrentProvider" :locationTitleFunction="(info) => {}"/>
+                    <SearchComponent :allowedSearchTypes="['2', '3']" artistButtonText="Zum Event hinzufügen" catererButtonText="Zum Event hinzufügen" :artistButtonFunction="setCurrentProvider" :catererButtonFunction="setCurrentProvider" :artistTitleFunction="() => {}" :catererTitleFunction="() => {}"/>
                 </div>
                 <div id="action-buttons">
                     <button id="cancel-button" @click="closeModalLocation">abbrechen</button>
@@ -130,7 +130,7 @@
     import SearchComponent from '../components/SearchComponent.vue';
     import DishForm from '../components/ArtistComponent.vue';
     import LocationCard from '../components/EventComponenet.vue'
-    import EventCard from '../components/EventCardComponent.vue';
+    import EventCard from '../components/CardComponent.vue';
     import Header from '../components/EditHeader.vue';
 
     export default {
@@ -154,7 +154,7 @@
                 price: '',
                 ageLimit: '',
                 openAir: false,
-                serviceProvider: [{ name: '', details: null }],
+                serviceProviders: [{ name: '', details: null }],
                 isModalVisible: false,
                 isLocationModalVisible : false,
                 selectedEventType: null,
@@ -172,14 +172,14 @@
         },
         methods: {
             addProvider() {
-                this.serviceProvider.push({ name: '', details: null });
+                this.serviceProviders.push({ name: '', details: null });
                 this.$nextTick(() => {
                     const container = this.$refs.addCreator;
                     container.scrollLeft = container.scrollWidth - container.clientWidth;
                 });
             },
             removeProvider(index) {
-                this.serviceProvider.splice(index, 1);
+                this.serviceProviders.splice(index, 1);
             },
             openModal() {
                 this.isModalVisible = true;
@@ -217,7 +217,7 @@
                 this.price = '';
                 this.ageLimit = '';
                 this.openAir = false;
-                this.serviceProvider = [{ name: '', details: null }];
+                this.serviceProviders = [{ name: '', details: null }];
                 this.selectedEventType= null; 
                 this.location = null;
             },
@@ -243,7 +243,7 @@
                 formData.privat = this.selectedEventType === "private"; 
                 formData.locationid = this.location.id;
                 formData.serviceProviders = [];
-                this.serviceProvider.forEach(sp => {
+                this.serviceProviders.forEach(sp => {
                     if (sp.name != "") {
                         formData.serviceProviders.push({id: sp.details.id, type: sp.details.type});
                     }
@@ -282,16 +282,17 @@
                         this.currentProvider.details[key] = info[key];
                     }
                 });
-                console.log(this.currentProvider);
+                this.currentProvider.details.line1 = `Stadt: ${this.currentProvider.details.region}`;
+                this.currentProvider.details.line2 = `Kategorie: ${this.currentProvider.details.kategorie}`;
+                this.currentProvider.details.line3 = `Preis: ${this.currentProvider.details.preis}€/h`;
             },
             selectLocation() {
                 this.location = this.tmpLocation;
                 this.closeModalLocation();
             },
             selectService() {
-                this.serviceProvider[this.currentProviderIndex] = this.currentProvider;
+                this.serviceProviders[this.currentProviderIndex] = this.currentProvider;
                 this.closeModalLocation();
-                console.log(this.serviceProvider);
             },
         },
     }

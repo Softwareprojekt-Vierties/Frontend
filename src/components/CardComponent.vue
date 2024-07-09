@@ -1,12 +1,12 @@
 <template>
     <div id="card">
-        <Image :url="computedImagePath" width="calc(170px * var(--scale-factor))" height="calc(135px * var(--scale-factor))" border-radius="5px" background-color="none" />
+        <Image :url="computedImagePath" :width="`calc(170px * ${scaleFactor})`" :height="`calc(135px * ${scaleFactor})`" border-radius="5px" background-color="none" />
         <div id="details">
             <div id="name-bookmark">
                 <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
-                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" width="calc(20px * var(--scale-factor))" height="calc(30px * var(--scale-factor))" />
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
             </div>
             <div class="line-div">
                 {{line1}}
@@ -97,26 +97,22 @@
         },
         created() {
             this.hasBookmark = this.isBookmarked;
-            document.documentElement.style.setProperty('--scale-factor', this.scaleFactor);
         }
     };
 </script>
 
 <style scoped>
-:root {
-    --scale-factor: 1; /* Standardwert */
-}
 
 #card {
     display: grid;
     grid-template-columns: auto auto;
     align-items: top;
     justify-content: center;
-    padding: calc(10px * var(--scale-factor));
+    padding: calc(10px * v-bind("scaleFactor"));
     border: 1px solid #000;
     border-radius: 5px;
-    gap: calc(15px * var(--scale-factor));
-    width: calc(380px * var(--scale-factor));
+    gap: calc(15px * v-bind("scaleFactor"));
+    width: calc(380px * v-bind("scaleFactor"));
     background-color: var(--textfield-background);
 }
 
@@ -133,9 +129,9 @@
     align-items: center;
     justify-content: left;
     text-align: left;
-    margin-bottom: calc(11px * var(--scale-factor));
-    font-size: calc(10px * var(--scale-factor));
-    height: calc(10px * var(--scale-factor));
+    margin-bottom: calc(11px * v-bind("scaleFactor"));
+    font-size: calc(10px * v-bind("scaleFactor"));
+    height: calc(10px * v-bind("scaleFactor"));
     overflow: hidden;
     color: var(--textfield-font-color);
 }
@@ -149,26 +145,26 @@
 }
 
 #name-bookmark {
-    margin-bottom: calc(10px * var(--scale-factor));
+    margin-bottom: calc(10px * v-bind("scaleFactor"));
     cursor: pointer;
-    font-size: calc(18px * var(--scale-factor));
+    font-size: calc(18px * v-bind("scaleFactor"));
     color: black;
-    text-shadow: calc(2px * var(--scale-factor)) calc(2px * var(--scale-factor)) calc(4px * var(--scale-factor)) rgba(0, 0, 0, 0.5);
+    text-shadow: calc(2px * v-bind("scaleFactor")) calc(2px * v-bind("scaleFactor")) calc(4px * v-bind("scaleFactor")) rgba(0, 0, 0, 0.5);
 }
 
 #button {
-    font-size: calc(11px * var(--scale-factor));
+    font-size: calc(11px * v-bind("scaleFactor"));
     cursor: pointer;
     background-color: var(--green);
     color: var(--simple-font-color);
-    padding: calc(5px * var(--scale-factor));
+    padding: calc(5px * v-bind("scaleFactor"));
     border: var(--button-border);
     border-radius: 5px;
-    width: calc(180px * var(--scale-factor));
-    height: calc(15px * var(--scale-factor));
+    width: calc(180px * v-bind("scaleFactor"));
+    height: calc(15px * v-bind("scaleFactor"));
     display: grid;
     justify-content: center;
     align-items: center;
-    margin-top: calc(15px * var(--scale-factor));
+    margin-top: calc(15px * v-bind("scaleFactor"));
 }
 </style>

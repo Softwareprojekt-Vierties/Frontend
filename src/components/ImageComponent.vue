@@ -68,6 +68,7 @@
         },
         computed: {
             imageURL() {
+                console.log(this.width);
                 return `url(${this.url})`;
             },
         },
