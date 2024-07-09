@@ -103,6 +103,7 @@ export default {
             }));
 
             if (this.events.length > 0) {
+                this.eventsIndex = 0; // Reiniciar o índice para o primeiro evento
                 this.eventName = this.events[this.eventsIndex].name;
                 this.eventLocation = this.events[this.eventsIndex].location;
                 this.eventDate = this.events[this.eventsIndex].datum;
@@ -117,26 +118,32 @@ export default {
             return `${day}/${month}/${year}`;
         },
 
-        previousEvent(){
-            if(this.eventsIndex >0){
-                this.eventsIndex -= 1 ;
-            } else{
-                this.eventsIndex = 0;
+        previousEvent() {
+            if (this.events.length > 0) {
+                if (this.eventsIndex > 0) {
+                    this.eventsIndex -= 1;
+                } else {
+                    this.eventsIndex = 0;
+                }
+                this.refreshEvents(this.events[this.eventsIndex]);
+            } else {
+                console.warn('No events available to show previous event.');
             }
-
-            this.refreshEvents(this.events[this.eventsIndex]);
         },
 
-        nextEvent(){
-
-            if(this.eventsIndex >= 0 && this.eventsIndex < this.events.length -1){
-                this.eventsIndex += 1;
-            } else{
-                this.eventsIndex = this.events.length -1;
+        nextEvent() {
+            if (this.events.length > 0) {
+                if (this.eventsIndex < this.events.length - 1) {
+                    this.eventsIndex += 1;
+                } else {
+                    this.eventsIndex = this.events.length - 1;
+                }
+                this.refreshEvents(this.events[this.eventsIndex]);
+            } else {
+                console.warn('No events available to show next event.');
             }
-            this.refreshEvents(this.events[this.eventsIndex]);
-
-        },
+        }
+        ,
 
         refreshEvents(data){
             this.eventName = data.name;

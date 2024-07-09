@@ -10,7 +10,7 @@
                 <div id="info"> {{beschreibung2}}</div>
             </div>
         </div>
-        <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px" @click="nextMusic">
+        <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px" @click="nextDish">
     </div>
   </template>
   
@@ -57,22 +57,30 @@
   
     methods: {
       
-      previousDish(){
-        if(this.dishesIndex>0){
-            this.dishesIndex -= 1;
-        } else{
-            this.dishesIndex = 0;
-        } 
-        this.refreshDishes(this.dishes[this.dishesIndex]);
+      previousDish() {
+          if (this.dishes.length > 0) {
+              if (this.dishesIndex > 0) {
+                  this.dishesIndex -= 1;
+              } else {
+                  this.dishesIndex = 0;
+              }
+              this.refreshDishes(this.dishes[this.dishesIndex]);
+          } else {
+              console.warn('No dishes available to show previous dish.');
+          }
       },
-  
-      nextMusic(){
-        if(this.dishesIndex >= 0 && this.dishesIndex < this.dishesSize -1){
-            this.dishesIndex += 1;
-        } else{
-            this.dishesIndex = this.dishesSize - 1;
-        }
-        this.refreshDishes(this.dishes[this.dishesIndex]);
+
+      nextDish() {
+          if (this.dishes.length > 0) {
+              if (this.dishesIndex < this.dishes.length - 1) {
+                  this.dishesIndex += 1;
+              } else {
+                  this.dishesIndex = this.dishes.length - 1;
+              }
+              this.refreshDishes(this.dishes[this.dishesIndex]);
+          } else {
+              console.warn('No dishes available to show next dish.');
+          }
       },
   
       setFormData(data) {
@@ -90,6 +98,7 @@
         this.dishesSize = this.dishes.length;   
         
         if (this.dishes.length > 0) {
+          this.dishesIndex = 0; 
           this.refreshDishes(this.dishes[this.dishesIndex]);
         } 
       },

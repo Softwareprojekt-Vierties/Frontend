@@ -53,22 +53,30 @@ export default {
 
   methods: {
     
-    previousMusic(){
-      if(this.songsIndex>0){
-          this.songsIndex -= 1;
-      } else{
-          this.songsIndex = 0;
-      } 
-      this.refreshSong(this.songs[this.songsIndex]);
+    previousMusic() {
+        if (this.songs.length > 0) {
+            if (this.songsIndex > 0) {
+                this.songsIndex -= 1;
+            } else {
+                this.songsIndex = 0;
+            }
+            this.refreshSong(this.songs[this.songsIndex]);
+        } else {
+            console.warn('No songs available to show previous song.');
+        }
     },
 
-    nextMusic(){
-      if(this.songsIndex >= 0 && this.songsIndex < this.songsSize -1){
-          this.songsIndex += 1;
-      } else{
-          this.songsIndex = this.songsSize - 1;
-      }
-      this.refreshSong(this.songs[this.songsIndex]);
+    nextMusic() {
+        if (this.songs.length > 0) {
+            if (this.songsIndex < this.songs.length - 1) {
+                this.songsIndex += 1;
+            } else {
+                this.songsIndex = this.songs.length - 1;
+            }
+            this.refreshSong(this.songs[this.songsIndex]);
+        } else {
+            console.warn('No songs available to show next song.');
+        }
     },
 
     setFormData(data) {
@@ -84,6 +92,7 @@ export default {
       this.songsSize = this.songs.length;   
       
       if (this.songs.length > 0) {
+        this.songsIndex = 0;
         this.refreshSong(this.songs[this.songsIndex]);
       } 
     },
