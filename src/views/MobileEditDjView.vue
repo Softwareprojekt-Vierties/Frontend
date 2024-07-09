@@ -94,12 +94,21 @@ export default {
   },
   methods: {
 
+    handleClick() {
+        if(this.menu) {
+            this.menu = false;
+        }
+        else {
+            this.menu = true;
+        }
+    },
+
     updateSong(index, updatedSong) {
         this.songs.splice(index, 1, updatedSong);
     },
 
     async updateDJ() {
-      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+      if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.imagePreview) {
           alert('Please fill in all required fields.');
           return;
       }
