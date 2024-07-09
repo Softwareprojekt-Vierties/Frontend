@@ -24,7 +24,7 @@
         </div>
         <div id="description-div">
             <div id="description">
-                {{description}}
+                {{longDescription}}
             </div>
         </div>
         <div class="description-headline-div">
