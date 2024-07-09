@@ -21,15 +21,6 @@
             return {};
         },
         methods: {
-            gotoProfilePage() {
-                // go to the profile page
-            },
-            gotoMailPage() {
-                // go to the mail page
-            },
-            gotoEventCreation() {
-                // go to the event creation page
-            },
         },
     computed: {
         isDarkMode() {

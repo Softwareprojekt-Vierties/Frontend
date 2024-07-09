@@ -99,6 +99,10 @@
                 </div>
             </div>
         </div>
+        <div id="newlocation-button" v-if="menu" @click="$router.push('/createlocation')">
+            <img v-if="isDarkMode" id="newlocation-mobile" src="../assets/menu-mobile-createlocation.png" />
+            <img v-else id="newlocation-mobile" src="../assets/menu-mobile-createlocation.png" />
+        </div>
         <div id="newevent-button" v-if="menu" @click="$router.push('/createEvent')">
             <img v-if="isDarkMode" id="newevent-mobile" src="../assets/newevent-mobile-dark.png" />
             <img v-else id="newevent-mobile" src="../assets/newevent-mobile.png" />
@@ -1356,6 +1360,26 @@ option {
     overflow-y: auto;
     padding-top: 0;
     margin-top: 20px;
+}
+
+#newlocation-button {
+    position: fixed;
+    bottom: 220px; /* Abstand vom unteren Rand */
+    right: 20px; /* Abstand vom rechten Rand */
+    color: white; /* Button Textfarbe */
+    border: none; /* Keine Rahmen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
+    cursor: pointer; /* Zeiger ändern bei Hover */
+    z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+    border-radius: 30px;
+    padding: 2.5px;
+    background-color: var(--textfield-background);
+}
+
+#newlocation-mobile {
+    margin-bottom: -3px;
+    width: 30px;
+    height: 30px;
 }
 
 #newevent-button {
