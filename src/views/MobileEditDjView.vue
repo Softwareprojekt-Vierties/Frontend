@@ -94,6 +94,15 @@ export default {
   },
   methods: {
 
+    handleClick() {
+        if(this.menu) {
+            this.menu = false;
+        }
+        else {
+            this.menu = true;
+        }
+    },
+
     updateSong(index, updatedSong) {
         this.songs.splice(index, 1, updatedSong);
     },
