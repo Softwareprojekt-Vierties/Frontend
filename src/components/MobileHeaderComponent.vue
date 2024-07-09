@@ -122,4 +122,12 @@
 
 }
 
+#name-stars {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
 </style>
