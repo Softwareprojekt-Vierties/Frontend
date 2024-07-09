@@ -25,6 +25,7 @@
                 :imagePath = "mail.senderprofilbild"
                 :isSelected="selectedMailId === mail.id"
                 :gelesen ="mail.gelesen" 
+                :angenommen ="mail.angenommen" 
                 @click="handleClick(mail)"
                 @email-selected="updateFormattedText(mail)"
               />
@@ -74,16 +75,21 @@ export default {
       mailId : '' ,
       selectedMailId: null,
       selectedMailStatus: null,
-      showInnerContent : false 
+      showInnerContent : false,
+      angenommen: null
     };
   },
 
   async created(){
     //45, 56, 67
     //let id = 56; // id muss von eingeloggtem User sein
+    console.log("hallo");
     const token = localStorage.getItem('authToken');
+    console.log("hallo2");
 
     const response = await axios.get(`/getMails`,{ headers: {'auth': token }});
+    console.log("hallo3");
+
     console.log(response.data);
     this.setFormData(response.data);
 
@@ -131,15 +137,16 @@ export default {
     async akzeptieren(){
 
       const token = localStorage.getItem('authToken');
-      for(let varId in this.mailList){
-        if(this.mailList[varId].id == this.mailId){
-          await axios.post('/updateMail',{
-          id : this.mailList[varId].id,
-          gelesen : true,
-          angenommen : true
-        }, { headers: {'auth': token }} );
-        }
-        this.mailList[varId].angenommen = true;
+      const selectedMail = this.mailList.find(mail => mail.id === this.selectedMailId);
+
+      if (selectedMail) {
+        await axios.post('/updateMail', {
+          id: selectedMail.id,
+          gelesen: true,
+          angenommen: true
+        }, { headers: { 'auth': token } });
+
+        selectedMail.angenommen = true;
         this.selectedMailStatus = true;
       }
 
@@ -149,15 +156,16 @@ export default {
     async ablehnen(){
 
       const token = localStorage.getItem('authToken');
-      for(let varId in this.mailList){
-        if(this.mailList[varId].id == this.mailId){
-          await axios.post('/updateMail',{
-          id : this.mailList[varId].id,
-          gelesen : true,
-          angenommen : false
-          },{ headers: {'auth': token }});
-        }
-        this.mailList[varId].angenommen = false;
+      const selectedMail = this.mailList.find(mail => mail.id === this.selectedMailId);
+
+      if (selectedMail) {
+        await axios.post('/updateMail', {
+          id: selectedMail.id,
+          gelesen: true,
+          angenommen: false
+        }, { headers: { 'auth': token } });
+
+        selectedMail.angenommen = false;
         this.selectedMailStatus = false;
       }
     },

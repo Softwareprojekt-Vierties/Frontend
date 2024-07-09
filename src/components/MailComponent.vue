@@ -33,7 +33,11 @@
                 gelesen:{
                     type: Boolean,
                     default :false
-                }
+                },
+                angenommen: {
+                type: [Boolean, null],
+                required: true
+            }
             },
             
             computed: {
