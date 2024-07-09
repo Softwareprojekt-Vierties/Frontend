@@ -81,6 +81,7 @@
         </div>
         <div id="home-button" v-if="menu">
             <img v-if="isDarkMode" id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
+            <img v-else id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />

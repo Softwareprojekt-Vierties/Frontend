@@ -23,6 +23,7 @@
   
 <style scoped>
 .dish-form {
+    background-color: var(--textfield-background);
     cursor: pointer;
     display: flex;
     flex-direction: column;

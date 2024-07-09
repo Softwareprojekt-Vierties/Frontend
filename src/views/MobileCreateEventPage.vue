@@ -21,21 +21,21 @@
                     </div>
                 </div>
                 <div class="input-headline">Datum:</div>
-                <input placeholder="z.B. 17.08.2024"/>
+                <input type="date" placeholder="z.B. 17.08.2024"/>
                 <div class="input-headline">Kapazität:</div>
-                <input placeholder="z.B. 200 Personen"/>
+                <input type="number" min="0" :max="2**32" placeholder="z.B. 200 Personen"/>
                 <div class="input-headline">Zeit:</div>
-                <div id="time-div"><input class="time" placeholder="z.B. 17 Uhr"/> - 
-                    <input class="time" placeholder="z.B. 20 Uhr"/>
+                <div id="time-div"><input type="time" class="time" placeholder="z.B. 17 Uhr"/> - 
+                    <input type="time" class="time" placeholder="z.B. 20 Uhr"/>
                 </div>
             </div>
             <div id="right">
                 <div class="input-headline">Eventgröße: </div>
-                <input placeholder="z.B. 200 Personen"/>
+                <input type="number" min="0" placeholder="z.B. 200 Personen"/>
                 <div class="input-headline">Preis: </div>
-                <input placeholder="z.B. 20€"/>
+                <input type="number" min="0" placeholder="z.B. 20€"/>
                 <div class="input-headline">Altersfreigabe: </div>
-                <input placeholder="z.B. 18 Jahre"/>
+                <input type="number" min="0" placeholder="z.B. 18 Jahre"/>
                 <div class="input-headline">Open Air:</div>
                 <div id="switch-div"><label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label></div>
             </div>
@@ -58,7 +58,11 @@
         <div id="addcreator" ref="addCreator" class="scroll-container">
             <div class="dish-container">
                 <div v-for="(serviceProvider, index) in serviceProviders" :key="index" class="dish-item">
-                    <EventCard v-if="(serviceProvider?.name ?? '') != ''" :label="serviceProvider?.name" :imagePath="serviceProvider?.details?.profilbild" @click="openModalService(index)" @remove="removeProvider(index)" />
+                    <div v-if="(serviceProvider?.name ?? '') != ''" id="artist-div">
+                        <div id="background">
+                            <EventCard :scaleFactor=".67" :name="serviceProvider?.name" :line1="serviceProvider?.details?.line1" :line2="serviceProvider?.details?.line2" :line3="serviceProvider?.details?.line3" :info="serviceProvider?.details" buttonText="Entfernen" :buttonClickFunction="() => {serviceProviders.splice(index, 1)}" :imagePath="serviceProvider?.details?.profilbild" :isBookmarked="serviceProvider?.details?.favorit ?? 0" buttonColor="var(--red)" @remove="removeProvider(index)" />
+                        </div>
+                    </div>
                     <dish-form v-else @click="openModalService(index)" @remove="removeProvider(index)"></dish-form>
                 </div>
                 <div class="add-dish-button" @click="addProvider">
@@ -126,7 +130,7 @@
       import SearchComponent from '../components/MobileSearchComponent.vue';
       import DishForm from '../components/MobileArtistComponent.vue';
       import LocationCard from '../components/MobileAddLocationComponent.vue';
-      import EventCard from '../components/MobileEventCardComponent.vue';
+      import EventCard from '../components/CardComponent.vue';
       import Header from '../components/MobileEditHeader.vue';
   
       export default {
@@ -292,7 +296,9 @@
                           this.currentProvider.details[key] = info[key];
                       }
                   });
-                  console.log(this.currentProvider);
+                  this.currentProvider.details.line1 = `Stadt: ${this.currentProvider.details.region}`;
+                  this.currentProvider.details.line2 = `Kategorie: ${this.currentProvider.details.kategorie}`;
+                  this.currentProvider.details.line3 = `Preis: ${this.currentProvider.details.preis}€/h`;
               },
               selectLocation() {
                   this.location = this.tmpLocation;
@@ -376,6 +382,12 @@ input {
     text-align: center;
     border: 1px solid #000000;
     font-size: 11px;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
+}
+
+.input::placeholder {
+    color: var(--placeholder-color);
 }
 
 #switch-div {
@@ -965,7 +977,7 @@ input:checked + .slider:before {
       cursor: pointer; /* Zeiger ändern bei Hover */
       z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
       border-radius: 30px;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
   
   #home-mobile {
@@ -985,7 +997,7 @@ input:checked + .slider:before {
       z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
       border-radius: 30px;
       padding: 7.5px;
-      background-color: white;
+      background-color: var(--textfield-background);
   }
   
   #menu-mobile {
@@ -993,5 +1005,24 @@ input:checked + .slider:before {
       width: 20px;
       height: 20px;
   }
+
+#artist-div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#background {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding-left: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 7px;
+    background-color: var(--textfield-background);
+}
+
   </style>
   
