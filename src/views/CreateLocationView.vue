@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <Header :isLoggedIn="true" v-model:name="locationName" v-model:kurzbeschreibung="smallDescription" v-model:imagePreview="imagePreview" :onFileChange="onFileChange" />
+      <Header :isLoggedIn="true" v-model:name="locationName" v-model:kurzbeschreibung="smallDescription" v-model:imagePreview="imagePreview" />
       <div id="main">
         <div id="left-side">
           <div class="long-description">
@@ -71,8 +71,6 @@
       size: '',
       openAir: false,
       imagePreview: null,
-      eventImage:null        
-
       };
     },
 
@@ -83,17 +81,6 @@
     },
 
     methods: {
-      onFileChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-          this.eventImage = file;
-          const reader = new FileReader();
-          reader.onload = e => {
-            this.imagePreview = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      },
       reset(){
         this.locationName = '';
         this.smallDescription = '';
@@ -105,7 +92,6 @@
         this.size = '';
         this.openAir = false;
         this.imagePreview = null;
-        this.eventImage = null;
         console.log("values turned into default");
       },
 
@@ -114,8 +100,9 @@
       },
 
       async createLocation() {
+          console.log(this.size);
         if (!this.locationName || !this.smallDescription || !this.longDescription || !this.region || !this.address 
-            || !this.quantityPersons || !this.price || !this.size || !this.eventImage) {
+            || !this.quantityPersons || !this.price || !this.size) {
           alert('Please fill in all required fields.');
           return;
         }

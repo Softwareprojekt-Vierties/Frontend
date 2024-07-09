@@ -14,7 +14,7 @@
         </div>
       </div>
       <div id="right-side">
-            <Info v-model:hasBookmark="hasBookmark" :city="region" :address="addresse" :capacity="kapazitaet" :price="preis" :locationSize="flaeche" :openAir="openAir" />
+            <Info v-model:hasBookmark="hasBookmark" type="location" :city="region" :address="addresse" :capacity="kapazitaet" :price="preis" :locationSize="flaeche" :openAir="openAir" />
         <div id="ticket" @click="weiter" >
           <!-- create event or edit location button-->
           {{ buttonLabel }}
@@ -118,6 +118,7 @@ export default {
       this.kapazitaet = data['result'].rows[0].kapazitaet;
       this.preis = data['result'].rows[0].preis;
       this.flaeche = data['result'].rows[0].flaeche;
+        this.hasBookmark = data.result.rows[0].favorit;
 
       if (data['result'].rows[0].openair == true) {
         this.openair = 'Ja';
