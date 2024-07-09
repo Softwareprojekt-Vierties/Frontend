@@ -1,10 +1,13 @@
 <template>
         <div id="mail-div" :class="{ read: isSelected, gelesenMail: gelesen, unreadMail: !gelesen }" @click="handleClick">
-            <div id="mail-card">
-                <img :alt="name" :src="computedImagePath" id="mail-image">
-                <label id="name">{{ name }}</label>
+            <div id="icon-text">
+                <div id="mail-card">
+                    <img :alt="name" :src="computedImagePath" id="mail-image">
+                    <label id="name">{{ name }}</label>
+                </div>
+                <div id="info">Betreff: {{ auftrag }}</div>
             </div>
-            <div id="info">Betreff: {{ auftrag }}</div>
+            <div id="status" :class="{status_color_accept : angenommen, status_color_notaccept :!angenommen, status_color_new: angenommen === null}"></div>
         </div>
     </template>
     
@@ -58,6 +61,10 @@
     
     <style scoped>
     #mail-div {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+        align-items: top;
         width: 184px;
         height: 50px;
         /*border: 1px solid rgb(100, 100, 100);*/
@@ -113,6 +120,25 @@
     .read {
         box-shadow: 0 0 12px rgb(111, 112, 111);
     }
-    
+
+    #status {
+        width: 8px;
+        height: 8px;
+        border-radius: 10px;
+        border: 1.5px solid #000000;
+    }
+
+    .status_color_accept{
+        background-color:var(--green);
+    }
+
+    .status_color_notaccept{
+        background-color:var(--red);
+    }
+
+    .status_color_new{
+        background-color:grey;
+    }
+        
     </style>
     
