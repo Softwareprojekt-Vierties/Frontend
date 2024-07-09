@@ -16,9 +16,13 @@
         </div>
         <br>
           <div class="long-description">
-          <label class="description">Bewertungen:</label>
-            <DishForm v-if="idSent" :idFromFather="idSent" :typeOfReview="reviewType"/>
-        </div>
+           <label class="description">Bewertungen:</label>
+            <DishForm v-if="userId" :idFromFather="userId" :typeOfReview="reviewType"/>
+         </div>
+         <div class="long-description">
+           <label class="description">Kommentar einfügen:</label>
+            <CommentComponent v-if="userId" :idFromFather="userId" :typeOfReview="kindOfReview"/>
+         </div>
         </div>
         <div id="right-side">
             <Info v-model:hasBookmark="hasBookmark" type="caterer" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
@@ -38,6 +42,7 @@
   import LongDescription from '../components/LongDescription.vue';
   import Info from '../components/RightSideInfo.vue';
   import axios from 'axios'; 
+  import CommentComponent from '../components/CommentComponent.vue'
 
 
   export default {
@@ -48,6 +53,7 @@
         Header,
         LongDescription,
         Info,
+        CommentComponent
     },
     data() {
       return {
@@ -67,6 +73,7 @@
         idSent:'',
         isOwner:'',
           hasBookmark: false,
+          kindOfReview : 'user'
         
       };
     },
