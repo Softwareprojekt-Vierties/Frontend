@@ -132,6 +132,10 @@ const routes = [
     path: '/email',
     name: 'EmailType',
     component: isMobile() ? MobileEmailView  : EmailView 
+}, {
+    path: '/me',
+    name: 'MyPage',
+    component: isMobile() ? MobilePersonView : PersonView,
 }
 
 

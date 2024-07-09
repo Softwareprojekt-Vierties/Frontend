@@ -1,7 +1,7 @@
 <template>
     <div id="header">
         <div id="header-inner">
-            <HomeButton :isLoggedIn="true" />
+            <HomeButton :isLoggedIn="isLoggedIn" />
             <div id="picture-name">
                 <Image :url="imagePreview" width="250px" height="180px" marginLeft="-225px" borderRadius="10px" boxShadow="0 0 10px rgba(0, 0, 0, 0.8)" :onFileChange="onFileChange" />
                 <div id="name-description">

@@ -45,6 +45,7 @@
     grid-template-columns: 580px;
     justify-content: left;
     font-weight: bold;
+    overflow-wrap: break-word;
 }
 
 .long-description::placeholder {

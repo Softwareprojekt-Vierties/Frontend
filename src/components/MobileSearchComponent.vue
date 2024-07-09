@@ -99,15 +99,15 @@
                 </div>
             </div>
         </div>
-        <div id="newevent-button" v-if="menu">
-            <img v-if="isDarkMode" id="newevent-mobile" src="../assets/menu-mobile-dark.png" />
+        <div id="newevent-button" v-if="menu" @click="$router.push('/createEvent')">
+            <img v-if="isDarkMode" id="newevent-mobile" src="../assets/newevent-mobile-dark.png" />
             <img v-else id="newevent-mobile" src="../assets/newevent-mobile.png" />
         </div>
-        <div id="email-button" v-if="menu">
+        <div id="email-button" v-if="menu" @click="$router.push('/email')">
             <img v-if="isDarkMode" id="email-mobile" src="../assets/email-mobile-dark.png" />
             <img v-else id="email-mobile" src="../assets/email-mobile.png" />
         </div>
-        <div id="profile-button" v-if="menu">
+        <div id="profile-button" v-if="menu" @click="$router.push('/me')">
             <img v-if="isDarkMode" id="profile-mobile" src="../assets/profile-icon-dark.png" />
             <img v-else id="profile-mobile" src="../assets/profile-mobile.png" />
         </div>
