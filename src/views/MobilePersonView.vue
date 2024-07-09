@@ -50,7 +50,7 @@
                 {{longDescription}}
             </div>
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="pictures.length > 0">
             <div class="description-headline">
                 Bilder:
             </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="myEventsLocations.length > 0" >
             <div class="description-headline">
                 Meine Events/Locations:
             </div>
@@ -78,7 +78,7 @@
                     :imagePath="event.bild"
             />
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="myIntrests.length > 0">
             <div class="description-headline">
                 Meine Interessen:
             </div>
@@ -158,6 +158,9 @@
           const container = this.$refs.addCreator; // Verwendet ref, um den Container zu referenzieren
           container.scrollLeft = container.scrollWidth - container.clientWidth; // Scrollt zum rechten Ende des Containers
         });
+      },
+      goToHomePage(){
+        this.$router.push('/search');
       },
       handleClick() {
         if(this.menu) {

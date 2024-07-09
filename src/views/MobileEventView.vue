@@ -43,12 +43,12 @@
                 {{beschreibung}}
             </div>
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="currentProviders.length > 0">
             <div class="description-headline">
                 Dienstleister:
             </div>
         </div>
-        <div id="event-container">
+        <div id="event-container" >
             <MobileEventComponent v-for="(provider, index) in currentProviders" :key="index" :componentName="provider.nameCaterer || provider.nameArtist" :imagePath="provider.imageCaterer || provider.imageArtist" />
         </div>
         <div class="description-headline-div">

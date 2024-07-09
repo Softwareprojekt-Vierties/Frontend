@@ -33,7 +33,7 @@
                 {{beschreibung}}
             </div>
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="events.length > 0">
             <div class="description-headline">
                 Nächste Events:
             </div>
@@ -50,7 +50,7 @@
                     :imagePath="event.bild"
             />
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="songs.length > 0">
             <div class="description-headline">
                 Playlist:
             </div>
@@ -65,7 +65,7 @@
 
             />
         </div>
-        <div class="description-headline-div">
+        <div class="description-headline-div" v-if="reviews.length > 0">
             <div class="description-headline">
                 Bewertungen:
             </div>
