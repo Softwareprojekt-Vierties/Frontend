@@ -41,6 +41,7 @@ import MobileEditDJ from '@/views/MobileEditDjView.vue'
 
 import MobileCreateEventPage from '@/views/MobileCreateEventPage.vue'
 import MobileEditPersonView from '@/views/MobileEditPerson.vue'
+import MobileEditLocationView from '@/views/MobileEditLocationView.vue'
 
 
 
@@ -111,7 +112,7 @@ const routes = [
 },  {
     path: '/editlocation/:id',
     name: 'EditLocationType',
-    component: EditLocationView 
+    component: isMobile() ? MobileEditLocationView :EditLocationView 
 },  {
     path: '/event/:id',
     name: 'EventType',
