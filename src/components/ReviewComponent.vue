@@ -68,6 +68,7 @@ export default {
 
             if (this.reviewToGet) {
                 try {
+                    console.log("id ->" , this.idFromFather);
                     const response = await axios.get(`/${this.reviewToGet}/${this.idFromFather}`);
                     this.reviews = response.data.rows;
                     this.reviewSize = this.reviews.length;
