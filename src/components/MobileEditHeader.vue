@@ -98,8 +98,8 @@ export default {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     @media (prefers-color-scheme: dark) {
-        backdrop-filter: brightness(50%) blur(10px);
-        -webkit-backdrop-filter: brightness(50%) blur(10px);
+        backdrop-filter: brightness(v-bind("brightnessFilter")) blur(10px);
+        -webkit-backdrop-filter: brightness(v-bind("brightnessFilter")) blur(10px);
     }
   }
 
@@ -118,7 +118,7 @@ export default {
     grid-template-columns: auto;
     justify-content: left;
     align-items: end;
-    background-color: white;
+    background-color: var(--textfield-background);
     padding: 10px;
     border-radius: 10px;
   }

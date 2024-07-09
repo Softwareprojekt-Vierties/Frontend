@@ -90,6 +90,7 @@
                 imagePreview: null,
                 age: 0,
                 isModalVisible: false,
+                userId: -1,
             };
         },
         methods: {
@@ -126,6 +127,7 @@
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.imagePreview = res.data.user.rows[0].profilbild;
                     this.email = res.data.user.rows[0].emailfk;
+                    this.userId = res.data.user.rows[0].userid;
                     res.data.partybilder?.forEach(bild => {
                         this.dishes.push(bild);
                     });
@@ -137,6 +139,14 @@
 
                     // to be implemented
                     this.isFriend = false;
+                    axios.get("/getPartybilder/" + this.userId, { headers: { auth: localStorage.getItem("authToken") }})
+                        .then(res => {
+                            console.log("Bilder: ", res);
+                            res.data.rows?.forEach(bild => {
+                                this.dishes.push(bild);
+                            })
+                        })
+                        .catch(err => console.log("Error: ", err));
                 })
                 .catch(err => console.log("Error: ", err));
             },

@@ -38,7 +38,7 @@
         },
         methods: {
             gotoProfilePage() {
-                // go to the profile page
+                this.$router.push('/me');
             },
             gotoMailPage() {
                 this.$router.push('/email');

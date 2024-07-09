@@ -16,11 +16,11 @@
           <div id="event-dish">
             <div id="event">
               <label class="description">Meine Events/Locations:</label>
-              <ArtistCard v-if="myEventsLocations.length" :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
+              <UserCard v-if="myEventsLocations.length" :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
             </div>
             <div id="dish">
               <label class="description">Meine Interessen:</label>
-              <ArtistCard v-if="myIntrests.length" :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
+              <UserCard v-if="myIntrests.length" :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
             </div>
         </div>
         </div>
@@ -38,7 +38,7 @@
   <script>
   import DishForm from '../components/PictureComponent.vue';
   import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
-  import ArtistCard from '../components/ArtistCardComponent.vue';
+  import UserCard from '../components/UserCardComponent.vue';
   import Header from '../components/ViewHeader.vue';
   import LongDescription from '../components/LongDescription.vue';
   import Info from '../components/RightSideInfo.vue';
@@ -48,7 +48,7 @@
     components: {
       DishForm,
       PopupModal,
-      ArtistCard,
+      UserCard,
         Header,
         LongDescription,
         Info,
@@ -104,7 +104,9 @@
                 .catch(err => console.log("Error: ", err));
         },
         getInfo() {
-              axios.get("/getUserById/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+            console.log(this.$route);
+            const destination = (this.$route.name === "MyPage") ? "/me" : ("/getUserById/" + this.$route.params.id);
+              axios.get(destination, { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
                     console.log("Success: ", res);
                     this.userName = res.data.user.rows[0].profilname;

@@ -103,6 +103,7 @@
     font-size: 35px;
     color: white;
     margin-bottom: 10px;
+    overflow: hidden;
 }
 
 #description-short {
@@ -110,6 +111,7 @@
     font-size: 18px;
     color: white;
     margin-bottom: -10px;
+    overflow: hidden;
 }
 
 .name-description-input {

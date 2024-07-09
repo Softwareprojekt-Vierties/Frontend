@@ -35,8 +35,13 @@ import MobileCreateDjView from '@/views/MobileCreateDjView.vue'
 import MobileCreateCatererView from '@/views/MobileCreateCatererView.vue'
 import MobileCreatePersonView from '@/views/MobileCreatePersonView.vue'
 import MobilePersonView from '@/views/MobilePersonView.vue'
+
 import MobileEditCaterer from '@/views/MobileEditCatererView.vue'
 import MobileEditDJ from '@/views/MobileEditDjView.vue'
+
+import MobileCreateEventPage from '@/views/MobileCreateEventPage.vue'
+import MobileEditPersonView from '@/views/MobileEditPerson.vue'
+
 
 
 function isMobile() {
@@ -81,7 +86,7 @@ const routes = [
 {
     path: '/createevent',
     name: 'CreateEventType',
-    component: CreateEvent 
+    component: isMobile() ? MobileCreateEventPage : CreateEvent 
 },
     {
     path: '/createcaterer',
@@ -122,7 +127,7 @@ const routes = [
 },  {
     path: '/editPerson',
     name: 'EditPersonType',
-    component: EditPersonView
+    component: isMobile() ? MobileEditPersonView : EditPersonView,
 },
   {
     path: '/person/:id',
@@ -132,6 +137,10 @@ const routes = [
     path: '/email',
     name: 'EmailType',
     component: isMobile() ? MobileEmailView  : EmailView 
+}, {
+    path: '/me',
+    name: 'MyPage',
+    component: isMobile() ? MobilePersonView : PersonView,
 }
 
 
