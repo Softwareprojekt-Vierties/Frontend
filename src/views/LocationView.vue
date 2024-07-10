@@ -11,6 +11,12 @@
         <div class="long-description">
           <label class="description">Bewertungen:</label>
           <DishForm v-if="id" :idFromFather="id" :typeOfReview="reviewType"/>
+          <div id="newcomment" @click="togglePopup">
+            <div id="newcomment-text">
+              Kommentar hinzufügen:
+            </div>
+            <img id="newcomment-img" src="../assets/plus.png">
+          </div>
         </div>
       </div>
       <div id="right-side">
@@ -19,6 +25,12 @@
           <!-- create event or edit location button-->
           {{ buttonLabel }}
         </div>
+      </div>
+    </div>
+    <div v-if="showPopup" class="popup-overlay">
+      <div class="popup-content">
+        <span class="close-button" @click="togglePopup">&times;</span>
+        <CommentComponent v-if="id" :idFromFather="id" :typeOfReview="kindOfReview"/>
       </div>
     </div>
   </div>
@@ -32,6 +44,8 @@ import Info from '../components/RightSideInfo.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import CommentComponent from '../components/CommentComponent.vue'
+
 
 export default {
   components: {
@@ -39,6 +53,7 @@ export default {
       Header,
       LongDescription,
       Info,
+      CommentComponent
   },
   data() {
     return {
@@ -60,7 +75,9 @@ export default {
       idSent: '',
       reviewType : 1,
       isOwner: '',
-        hasBookmark: false,
+      hasBookmark: false,
+      showPopup: false, // Popup anfangs nicht anzeigen
+      kindOfReview:'location'
     };
   },
 
@@ -106,6 +123,10 @@ export default {
         };
         reader.readAsDataURL(file);
       }
+    },
+
+    togglePopup() {
+      this.showPopup = !this.showPopup;
     },
 
     setFormData(data) {
@@ -198,6 +219,45 @@ body {
   margin-left: -20px;
 }
 
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#newcomment {
+  display: grid;
+  grid-template-columns: auto;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#newcomment-text {
+  font-size: 10px;
+  font-weight: normal;
+}
+
+#newcomment-img {
+  cursor: pointer;
+  margin-left: 40px;
+}
+
 .long-description {
   border-radius: 10px;
   background-color: white;
@@ -212,6 +272,15 @@ body {
     margin-bottom: 3px;
     font-size: 13px;
     font-weight: bold;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
 }
 
 #ticket {
