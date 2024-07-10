@@ -219,7 +219,8 @@ export default {
           enduhrzeit : details.enduhrzeit,
           gelesen : details.gelesen,
           angenommen : details.angenommen,
-          empfaengername : details.empfaengername
+          empfaengername : details.empfaengername,
+          ticketdata : details.ticketdata
 
          })
          this.mailList.sort((a,b) => b.id - a.id );
@@ -301,15 +302,15 @@ export default {
         this.mailHeadline = mail.anfragetyp;
         if(mail.anfragetyp === "LOCATION"){
           this.formattedText = `
-Hallo ${mail.empfaengername},
+  Hallo ${mail.empfaengername},
 
-es liegt eine Anfrage des Events 
-<b>${mail.eventname}</b> vor.
-Wir würden gerne 
-Ihre Location buchen.
+  es liegt eine Anfrage des Events 
+  <b>${mail.eventname}</b> vor.
+  Wir würden gerne 
+  Ihre Location buchen.
 
 
-<b>Infos:</b>
+  <b>Infos:</b>
         <b>Location:</b> ${mail.locationname || 'N/A'}
 
         <b>Datum:</b> ${formattedDate}
@@ -327,26 +328,26 @@ Ihre Location buchen.
         <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
 
 
-<b>Kontakt:</b> 
+  <b>Kontakt:</b> 
         <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         } else if(mail.anfragetyp === "FREUNDSCHAFT"){
           this.formattedText = `
-    Hallo ${mail.empfaengername},
-    es liegt eine Freundschaftsanfrage 
-    von <b>${mail.sendername}</b>  vor.
+  Hallo ${mail.empfaengername},
+  es liegt eine Freundschaftsanfrage 
+  von <b>${mail.sendername}</b>  vor.
 
   <b>Kontakt:</b> 
-            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+        <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         } else if(mail.anfragetyp === "INFO"){
           this.formattedText = `
-Hallo ${mail.empfaengername},
+  Hallo ${mail.empfaengername},
 
-dein Freund <b>${mail.sendername}</b> 
-hat das neue Event <b>${mail.eventname}</b> erstellt.
+  dein Freund <b>${mail.sendername}</b> 
+  hat das neue Event <b>${mail.eventname}</b> erstellt.
 
-<b>Infos:</b>
+  <b>Infos:</b>
         <b>Location:</b> ${mail.locationname || 'N/A'}
 
         <b>Datum:</b> ${formattedDate}
@@ -363,20 +364,20 @@ hat das neue Event <b>${mail.eventname}</b> erstellt.
         
         <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
 
-<b>Kontakt:</b> 
+  <b>Kontakt:</b> 
         <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         } else if(mail.anfragetyp === "SERVICE"){
           this.formattedText = `
-Hallo ${mail.empfaengername},
+  Hallo ${mail.empfaengername},
 
-es liegt eine Anfrage des Events 
-<b>${mail.eventname}</b> vor.
-Wir würden gerne Ihre Dienstleistung 
-buchen.
+  es liegt eine Anfrage des Events 
+  <b>${mail.eventname}</b> vor.
+  Wir würden gerne Ihre Dienstleistung 
+  buchen.
 
 
-<b>Infos:</b>
+  <b>Infos:</b>
         <b>Location:</b> ${mail.locationname || 'N/A'}
 
         <b>Datum:</b> ${formattedDate}
@@ -394,10 +395,19 @@ buchen.
         <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
 
 
-<b>Kontakt:</b> 
+  <b>Kontakt:</b> 
         <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         }
+else if(mail.anfragetyp === "TICKET"){
+          this.formattedText = `
+  Hallo ${mail.empfaengername},
+
+  danke für den Kauf eines Tickets 
+  für das Event <b>${mail.eventname}</b>.
+
+  Hier ist Ihr Code:
+  <b>${mail.ticketdata}</b>`}
 
         this.mailId = mail.id;
     }
