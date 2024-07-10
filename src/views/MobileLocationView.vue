@@ -62,6 +62,12 @@
                 :reviewText="review.reviewText"
             />
         </div>
+        <div id="newcomment" @click="togglePopup">
+            <div id="newcomment-text">
+                Kommentar hinzufügen:
+            </div>
+            <img id="newcomment-img" src="../assets/plus.png">
+        </div>
         <div id="button-div">
             <div id="button" @click="weiter">
                 {{ buttonLabel }}
@@ -73,6 +79,12 @@
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
         </div>
+        <div v-if="showPopup" class="popup-overlay">
+        <div class="popup-content">
+          <span class="close-button" @click="togglePopup">&times;</span>
+          <CommentComponent v-if="id" :idFromFather="id" :typeOfReview="kindOfReview"/>
+        </div>
+      </div>
     </div>
 </template>
   
@@ -83,6 +95,8 @@ import 'leaflet/dist/leaflet.css';
 import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
 import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
 import Bookmark from '@/components/BookmarkComponent.vue';
+import CommentComponent from '../components/CommentComponent.vue';
+
 
   
 export default {
@@ -90,6 +104,7 @@ export default {
         MobileHeaderComponent,
         MobileReviewComponent,
         Bookmark,
+        CommentComponent
     },
     data() {
         return {
@@ -114,6 +129,8 @@ export default {
         isOwner: '',
         reviews : [],
         hasBookmark: false,
+        showPopup: false, // Popup anfangs nicht anzeigen,
+        kindOfReview:'location'
         };
     },
 
@@ -147,6 +164,10 @@ export default {
         }
     },
     methods: {
+
+        togglePopup() {
+          this.showPopup = !this.showPopup;
+        },
 
         async getReview() {
             try {
@@ -270,6 +291,23 @@ export default {
 
 }
 
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+  }
+
 #info-bookmark {
     display: grid;
     grid-template-columns: auto auto;
@@ -285,6 +323,19 @@ export default {
     font-weight: bold;
 }
 
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
 #div-bookmark {
     border-radius: 30px;
     padding: 2px;
@@ -295,6 +346,24 @@ export default {
     cursor: pointer;
     margin-right: 10px;
 }
+
+#newcomment {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  #newcomment-text {
+    font-size: 10px;
+    font-weight: normal;
+  }
+  
+  #newcomment-img {
+    cursor: pointer;
+    margin-left: 40px;
+  }
 
 #info {
     display: grid;

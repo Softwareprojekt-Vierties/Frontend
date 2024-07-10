@@ -148,19 +148,19 @@ export default {
         formData.kategorie = this.category;
         formData.erfahrung = this.experience;
         formData.songs = this.songs;
-
+        formData.adresse = this.region;
         console.log('FormData:', formData); 
 
 
         const token = localStorage.getItem('authToken'); 
 
       try {
-          const response = await axios.post('/createArtist', formData, { headers: {headers: {'auth':token}} });
+          const response = await axios.post('/createArtist', formData,  {headers: {'auth':token} });
           console.log('Artist created:', response.data);
           localStorage.setItem('authToken', response.data);
           alert('Artist created successfully!');
           this.reset();
-          this.$router.push("/search");
+          this.$router.push("/");
         } catch (error) {
           console.error('Error with Artist creation:', error);
           alert('Error creating Artist. Please try again.');
