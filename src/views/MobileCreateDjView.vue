@@ -132,7 +132,7 @@ export default {
 
     },
     goToHomePage() {
-      this.$router.push('/search');
+      this.$router.push('/');
     },
     async createDJ() {
 
@@ -160,7 +160,7 @@ export default {
           localStorage.setItem('authToken', response.data);
           alert('Artist created successfully!');
           this.reset();
-          this.$router.push("/search");
+          this.$router.push("/");
         } catch (error) {
           console.error('Error with Artist creation:', error);
           alert('Error creating Artist. Please try again.');

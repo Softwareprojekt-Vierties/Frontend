@@ -140,6 +140,7 @@ export default {
           {headers: {'auth':token}});
           console.log('Location created:', response.data);
           alert('Location created successfully!');
+            this.$router.push("/search");
           this.reset();
         } 
         catch (error) {
