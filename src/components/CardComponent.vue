@@ -12,7 +12,7 @@
                 {{line1}}
             </div>
             <div class="line-div">
-                {{line2}}
+                 {{ line2 }}  
             </div>
             <div class="line-div">
                 {{line3}}
@@ -95,14 +95,35 @@
                 }
                 return this.imagePath;
             },
-        isDarkMode() {
-            return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
-        }
+            isDarkMode() {
+                return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+            },
+            formattedEventDate() {
+                console.log("Recalculating date for:", this.line2);
+                return this.formatDate(this.line2);
+            }
         },
         created() {
             this.hasBookmark = this.isBookmarked;
-        }
-    };
+        },
+
+        watch: {
+    line2(newValue, oldValue) {
+        console.log('line2 updated from:', oldValue, 'to:', newValue);
+    }
+},
+
+methods: {
+    formatDate(isoDateString) {
+        console.log("Received ISO Date String:", isoDateString);  
+        const date = new Date(isoDateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // JavaScript months are 0-indexed
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`; // Formats date as DD/MM/YYYY
+    }
+}
+}
 </script>
 
 <style scoped>

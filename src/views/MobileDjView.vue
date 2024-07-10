@@ -212,6 +212,16 @@
           });
         }
       },
+
+      formatDate(dateString) {
+        console.log("converting data");
+        const date = new Date(dateString);
+        const day = date.getUTCDate().toString().padStart(2, '0');
+        const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+        const year = date.getUTCFullYear();
+        return `${day}/${month}/${year}`;
+      },
+
       setFormData(data) {
         const myVar = data['artist'].rows[0].region.split(',');
         console.log(myVar[0]);
@@ -231,7 +241,7 @@
         this.isOwner = data['isOwner'];
           data.events.rows?.forEach(event => {
               event.type = "events";
-              this.events.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
+              this.events.push({header: event.name, line1: "Location: " + event.adresse, line2: 'Datum: ' + this.formatDate(event.datum), line3: "Zeit: " + event.startuhrzeit, info: event});
           });
         data['lieder'].rows.forEach(lied => {
           this.songs.push({
