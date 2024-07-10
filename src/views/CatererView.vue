@@ -2,20 +2,20 @@
   <div id="app">
       <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
       <div id="main">
-          <div id="left-side">
-              <LongDescription :description="beschreibung" />
-              <div id="event-dish">
-                  <div id="event">
-                      <label class="description">Nächste Events:</label>
-                      <ArtistCard v-if="events" :eventsFromFather="events"/>
-                  </div>
-                  <div id="dish">
-                      <label class="description">Aktuelle Gerichte:</label>
-                      <Caterer v-if="id" :idFromFather="id"/>
-                  </div>
-              </div>
-              <br>
-              <div class="long-description">
+        <div id="left-side">
+          <LongDescription :description="beschreibung" />
+            <div id="event-dish">
+                <div id="event">
+                  <label class="description">Nächste Events:</label>
+                  <ArtistCard v-if="events" :eventsFromFather="events" :clickFuntion="(id) => {$router.push(`/event/${id}`)}" />
+                </div>
+                <div id="dish">
+                  <label class="description">Aktuelle Gerichte:</label>
+                  <Caterer v-if="id" :idFromFather="id" :clickFuntion="id => {$router.push(`/event/${id}`)}" />
+                </div>
+            </div>
+            <br>
+            <div class="long-description">
                   <label class="description">Bewertungen:</label>
                   <DishForm v-if="userId" :idFromFather="userId" :typeOfReview="reviewType"/>
                   <div id="newcomment" @click="togglePopup">
@@ -27,10 +27,9 @@
               </div>
           </div>
           <div id="right-side">
-              <Info v-model:hasBookmark="hasBookmark" type="caterer" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
-              <div id="ticket" @click="weiter">
-                  {{ buttonLabel }}
-              </div>
+            <Info v-model:hasBookmark="hasBookmark" type="caterer" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
+          <div id="ticket" @click="weiter">
+            {{ buttonLabel }}
           </div>
       </div>
       <div v-if="showPopup" class="popup-overlay">
@@ -39,6 +38,7 @@
               <CommentComponent v-if="userId" :idFromFather="userId" :typeOfReview="kindOfReview"/>
           </div>
       </div>
+  </div>
   </div>
 </template>
 
