@@ -43,36 +43,29 @@
                 <img v-else @click="increaseAge" src="../assets/plus.png"/>
               </div>
             </div>
-            <div class="infos">
-              <label class="info-subheadline">Geschlecht:</label>
-              <input v-model="gender" class="input" type="text" placeholder="z.B. M">
-            </div>
           </div>
           <div id="buttons">
             <div id="break" @click="reset">
               zurücksetzen
             </div>
-            <div id="continue" @click="openModal">
+            <div id="continue" @click="createPerson">
               anlegen
             </div>
           </div>
         </div>
       </div>
   
-      <PopupModal :onCreate="createPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
     </div>
   </template>
   
   <script>
   import DishForm from '../components/PictureComponent.vue';
-  import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
   import Header from '../components/EditHeader.vue';
   import axios from 'axios';
   
   export default {
     components: {
       DishForm,
-      PopupModal,
         Header,
     },
     data() {
@@ -82,7 +75,6 @@
           shortDescription: "",
           longDescription: "",
           region: "",
-          gender: "",
           favoriteEventTypes: "",
           favoriteDish: "",
           favoriteSong: "",
@@ -119,8 +111,8 @@
                   this.age++;
               }
           },
-            async createPerson(isPrivate) {
-                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
+            async createPerson() {
+                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region
                     || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
                     alert('Please fill in all required fields.');
                     return;
@@ -135,9 +127,7 @@
                 formData.eventarten = this.favoriteEventTypes;
                 formData.lieblingslied = this.favoriteSong;
                 formData.lieblingsgericht = this.favoriteDish;
-                formData.geschlecht = this.gender;
                 formData.partybilder = [];
-                formData.privat = isPrivate;
                 this.dishes.forEach(image => {
                     if (image) {
                         formData.partybilder.push(image);
