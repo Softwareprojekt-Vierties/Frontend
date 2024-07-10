@@ -149,7 +149,7 @@ export default {
         formData.kategorie = this.category;
         formData.erfahrung = this.experience;
         formData.gerichte = this.dishes;
-
+        formData.adresse = this.region;
         console.log('FormData:', formData); 
 
 
@@ -161,7 +161,7 @@ export default {
           localStorage.setItem('authToken', response.data);
           alert('Caterer created successfully!');
           this.default_values();
-          this.$router.push("/search");
+          this.$router.push("/");
         } catch (error) {
           console.error('Error with Caterer creation:', error);
           alert('Error creating Caterer. Please try again.');
