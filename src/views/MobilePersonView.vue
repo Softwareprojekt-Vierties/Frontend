@@ -78,7 +78,7 @@
                     :info="event.info"
                     :hasBookmark="event.info.favorit"
                     :scaleFactor=".67"
-                    :imagePath="event.bild"
+                    :imagePath="event.info.profilbild"
                     :buttonClickFunction="event.info.type === 'events' ? () => $router.push(`/event/${event.info.id}`) : () => $router.push(`/location/${event.info.id}`)"
                     buttonText="Mehr Infos"
                     />
@@ -100,7 +100,7 @@
                     :line3="event.line3"
                     :info="event.info"
                     :scaleFactor=".67"
-                    :imagePath="event.bild"
+                    :imagePath="event.info.profilbild"
                     :buttonClickFunction="() => $router.push(`/event/${event.info.id}`)"
                     buttonText="Mehr Infos"
                     />

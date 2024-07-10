@@ -49,7 +49,7 @@
                     :info="event.info"
                     :hasBookmark="event.info.favorit"
                     :scaleFactor=".67"
-                    :imagePath="event.bild"
+                    :imagePath="event.info.bild"
                     :buttonClickFunction="() => $router.push(`/event/${event.info.id}`)"
                     buttonText="Mehr Infos"
                     />

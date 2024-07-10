@@ -49,7 +49,7 @@
                     :info="event.info"
                     :hasBookmark="event.info.favorit"
                     :scaleFactor=".67"
-                    :imagePath="event.bild"
+                    :imagePath="event.info.bild"
                     :buttonClickFunction="() => $router.push(`/event/${event.info.id}`)"
                     buttonText="Mehr Infos"
                     />
@@ -217,12 +217,12 @@
         this.userId = data['caterer'].rows[0].userid;
         this.id = data['caterer'].rows[0].id;
         this.isOwner = data['isOwner'];
-        console.log("my events", this.events);
 
           data.events.rows?.forEach(event => {
               event.type = "events";
               this.events.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
           });
+        console.log("my events", this.events);
   
         data['gerichte'].rows.forEach(dish => {
           this.dishes.push({
