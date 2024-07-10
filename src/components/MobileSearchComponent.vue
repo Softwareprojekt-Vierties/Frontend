@@ -327,7 +327,7 @@ export default {
                 .map((filter) => {
                     switch (filter) {
                         case "region":
-                            return `<div class="filter-item"><div id="filter-item-text">Region: </div><input id="filter-region" class="filter" type="text" placeholder="z.B. 32427 Minden"></div>`;
+                            return `<div class="filter-item"><div id="filter-item-text">Addresse: </div><input id="filter-region" class="filter" type="text" placeholder="z.B. 32427 Minden"></div>`;
                         case "date":
                             return `<div class="filter-item"><div id="filter-item-text">Datum: </div><input id="filter-date" class="filter" type="date" placeholder="z.B. 17.08.2024"></div>`;
                         case "distance":

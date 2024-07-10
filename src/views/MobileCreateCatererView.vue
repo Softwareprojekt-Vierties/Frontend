@@ -9,7 +9,7 @@
         <div id="infos">
             <div class="info">
                 <div id="left">
-                    <div class="input-headline">Region:</div>
+                    <div class="input-headline">Addresse:</div>
                     <input v-model="region" placeholder="z.B. 32427 Minden"/>
                     <div class="input-headline">Kategorie:</div>
                     <input v-model="category" placeholder="z.B. Desserts"/>

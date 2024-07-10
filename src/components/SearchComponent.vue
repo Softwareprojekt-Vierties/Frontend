@@ -284,7 +284,7 @@
                     .map((filter) => {
                         switch (filter) {
                             case "region":
-                                return `<div class="filter-item">Region: <input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
+                                return `<div class="filter-item">Addresse: <input class="filter-region" type="text" placeholder="z.B. 32427 Minden"></div>`;
                             case "date":
                                 return `<div class="filter-item">Datum: <input class="filter-date" type="date" placeholder="z.B. 17.08.2024"></div>`;
                             case "distance":

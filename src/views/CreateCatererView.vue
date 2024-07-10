@@ -24,7 +24,7 @@
         <div id="right-side-info">
           <label id="info-headline">Infos hinzufügen:</label>
           <div class="infos">
-            <label  class="info-subheadline">Region:</label>
+            <label  class="info-subheadline">Addresse:</label>
             <input v-model="region" class="input" type="text" placeholder="z.B. 32427 Minden">
           </div>
           <div class="infos">
@@ -306,6 +306,7 @@ input:checked + .slider:before {
 .info-subheadline {
   text-align: left;
   font-size: 12px;
+  overflow: hidden;
 }
 
 .input {

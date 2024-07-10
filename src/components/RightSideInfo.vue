@@ -7,7 +7,7 @@
             </div>
         </div>
         <div v-if="region" class="infos">
-            <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
+            <label class="info-subheadline"><strong>Addresse:</strong> {{region}}</label>
         </div>
         <div v-if="age" class="infos">
             <label class="info-subheadline"><strong>Alter:</strong> {{age}} Jahre</label>
