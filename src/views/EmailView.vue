@@ -196,11 +196,13 @@ export default {
 
             <b>Datum:</b> ${formattedDate}
 
-            <b>Zeit:</b> ${mail.uhrzeit  || 'N/A'}
+            <b>Startzeit:</b> ${mail.startuhrzeit || 'N/A'}
+
+            <b>Startzeit:</b> ${mail.enduhrzeit || 'N/A'}
 
             <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
 
-            <b>Ticketpreis:</b> ${mail.preis || 'N/A'}
+            <b>Ticketpreis:</b> ${mail.ticketpreis || 'N/A'}
 
             <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
             
@@ -215,6 +217,32 @@ export default {
     Hallo ${mail.empfaengername},
     es liegt eine Freundschaftsanfrage von <b>${mail.sendername}</b>  vor.
 
+<b>Kontakt:</b> 
+            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+    `;
+        } else if(mail.anfragetyp === "INFO"){
+          this.formattedText = `
+    Hallo ${mail.empfaengername},
+
+    dein Freund <b>${mail.sendername}</b> 
+    hat das neue Event <b>${mail.eventname}</b> erstellt.
+
+     <b>Infos:</b>
+            <b>Location:</b> ${mail.locationname || 'N/A'}
+
+            <b>Datum:</b> ${formattedDate}
+
+            <b>Startzeit:</b> ${mail.startuhrzeit || 'N/A'}
+
+            <b>Startzeit:</b> ${mail.enduhrzeit || 'N/A'}
+
+            <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
+
+            <b>Ticketpreis:</b> ${mail.ticketpreis || 'N/A'}
+
+            <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
+            
+            <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
     
     <b>Kontakt:</b> 
             <b>E-mail:</b> ${mail.senderemail || 'N/A'}
@@ -232,11 +260,13 @@ export default {
 
             <b>Datum:</b> ${formattedDate}
 
-            <b>Zeit:</b> ${mail.uhrzeit || 'N/A'}
+            <b>Startzeit:</b> ${mail.startuhrzeit || 'N/A'}
 
+            <b>Startzeit:</b> ${mail.enduhrzeit || 'N/A'}
+            
             <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
 
-            <b>Ticketpreis:</b> ${mail.preis || 'N/A'}
+            <b>Ticketpreis:</b> ${mail.ticketpreis || 'N/A'}
 
             <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
             
@@ -247,7 +277,14 @@ export default {
             <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         }
+          else if(mail.anfragetyp === "TICKET"){
+                    this.formattedText = `
+    Hallo ${mail.empfaengername},
 
+    danke für den Kauf eines Tickets 
+    für das Event <b>${mail.eventname}</b>.
+
+    Hier ist Ihr Code: <b>${mail.ticketdata}</b>`}
         this.mailId = mail.id;
     },
 
@@ -255,6 +292,8 @@ export default {
       data.rows.forEach(details => 
         {
           this.mailList.push({
+          ticketpreis : details.ticketpreis,
+          altersfreigabe : details.altersfreigabe,
           anfragetyp : details.anfragetyp.toUpperCase(),
           datum : details.datum,
           dauer : details.dauer,
@@ -262,16 +301,18 @@ export default {
           id : details.id,
           locationadresse : details.locationadresse,
           locationflaeche : details.locationflaeche,
-          locationkapazitaet : details.locationkapazitaet,
+          locationkapazitaet : details.eventgoesse,
           locationname : details.locationname,
           locationopenair : details.locationopenair,
           senderemail : details.senderemail,
           sendername : details.sendername,
           senderprofilbild : details.senderprofilbild,
-          uhrzeit : details.uhrzeit,
+          startuhrzeit : details.startuhrzeit,
+          enduhrzeit : details.enduhrzeit,
           gelesen : details.gelesen,
           angenommen : details.angenommen,
-          empfaengername : details.empfaengername
+          empfaengername : details.empfaengername,
+          ticketdata : details.ticketdata
 
          })
          this.mailList.sort((a,b) => b.id - a.id );
