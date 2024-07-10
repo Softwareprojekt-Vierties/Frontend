@@ -200,6 +200,8 @@ export default {
       data.rows.forEach(details => 
         {
           this.mailList.push({
+          ticketpreis : details.ticketpreis,
+          altersfreigabe : details.altersfreigabe,
           anfragetyp : details.anfragetyp.toUpperCase(),
           datum : details.datum,
           dauer : details.dauer,
@@ -213,7 +215,8 @@ export default {
           senderemail : details.senderemail,
           sendername : details.sendername,
           senderprofilbild : details.senderprofilbild,
-          uhrzeit : details.uhrzeit,
+          startuhrzeit : details.startuhrzeit,
+          enduhrzeit : details.enduhrzeit,
           gelesen : details.gelesen,
           angenommen : details.angenommen,
           empfaengername : details.empfaengername
@@ -298,32 +301,34 @@ export default {
         this.mailHeadline = mail.anfragetyp;
         if(mail.anfragetyp === "LOCATION"){
           this.formattedText = `
-    Hallo ${mail.empfaengername},
+Hallo ${mail.empfaengername},
 
-    es liegt eine Anfrage des Events 
-    <b>${mail.eventname}</b> vor.
-    Wir würden gerne 
-    Ihre Location buchen.
-
-
-    <b>Infos:</b>
-            <b>Location:</b> ${mail.locationname || 'N/A'}
-
-            <b>Datum:</b> ${formattedDate}
-
-            <b>Zeit:</b> ${mail.uhrzeit  || 'N/A'}
-
-            <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
-
-            <b>Ticketpreis:</b> ${mail.preis || 'N/A'}
-
-            <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
-            
-            <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+es liegt eine Anfrage des Events 
+<b>${mail.eventname}</b> vor.
+Wir würden gerne 
+Ihre Location buchen.
 
 
-    <b>Kontakt:</b> 
-            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+<b>Infos:</b>
+        <b>Location:</b> ${mail.locationname || 'N/A'}
+
+        <b>Datum:</b> ${formattedDate}
+
+        <b>Startzeit:</b> ${mail.startuhrzeit || 'N/A'}
+
+        <b>enduhrzeit:</b> ${mail.enduhrzeit || 'N/A'}
+        
+        <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
+
+        <b>Ticketpreis:</b> ${mail.ticketpreis || 'N/A'}
+
+        <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
+        
+        <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+
+
+<b>Kontakt:</b> 
+        <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         } else if(mail.anfragetyp === "FREUNDSCHAFT"){
           this.formattedText = `
@@ -331,38 +336,66 @@ export default {
     es liegt eine Freundschaftsanfrage 
     von <b>${mail.sendername}</b>  vor.
 
-    
-    <b>Kontakt:</b> 
+  <b>Kontakt:</b> 
             <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+    `;
+        } else if(mail.anfragetyp === "INFO"){
+          this.formattedText = `
+Hallo ${mail.empfaengername},
+
+dein Freund <b>${mail.sendername}</b> 
+hat das neue Event <b>${mail.eventname}</b> erstellt.
+
+<b>Infos:</b>
+        <b>Location:</b> ${mail.locationname || 'N/A'}
+
+        <b>Datum:</b> ${formattedDate}
+
+        <b>Startzeit:</b> ${mail.startuhrzeit || 'N/A'}
+
+        <b>Startzeit:</b> ${mail.enduhrzeit || 'N/A'}
+
+        <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
+
+        <b>Ticketpreis:</b> ${mail.ticketpreis || 'N/A'}
+
+        <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
+        
+        <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+
+<b>Kontakt:</b> 
+        <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         } else if(mail.anfragetyp === "SERVICE"){
           this.formattedText = `
-    Hallo ${mail.empfaengername},
+Hallo ${mail.empfaengername},
 
-    es liegt eine Anfrage des Events 
-    <b>${mail.eventname}</b> vor.
-    Wir würden gerne Ihre Dienstleistung 
-    buchen.
-
-
-    <b>Infos:</b>
-            <b>Location:</b> ${mail.locationname || 'N/A'}
-
-            <b>Datum:</b> ${formattedDate}
-
-            <b>Zeit:</b> ${mail.uhrzeit || 'N/A'}
-
-            <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
-
-            <b>Ticketpreis:</b> ${mail.preis || 'N/A'}
-
-            <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
-            
-            <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+es liegt eine Anfrage des Events 
+<b>${mail.eventname}</b> vor.
+Wir würden gerne Ihre Dienstleistung 
+buchen.
 
 
-    <b>Kontakt:</b> 
-            <b>E-mail:</b> ${mail.senderemail || 'N/A'}
+<b>Infos:</b>
+        <b>Location:</b> ${mail.locationname || 'N/A'}
+
+        <b>Datum:</b> ${formattedDate}
+
+        <b>Startzeit:</b> ${mail.startuhrzeit || 'N/A'}
+
+        <b>enduhrzeit:</b> ${mail.enduhrzeit || 'N/A'}
+
+        <b>Eventgröße:</b> ${mail.locationkapazitaet || 'N/A'} Personen
+
+        <b>Ticketpreis:</b> ${mail.ticketpreis || 'N/A'}
+
+        <b>Altersfreigabe:</b> ${mail.altersfreigabe || 'N/A'}
+        
+        <b>Open Air:</b> ${mail.locationopenair ? 'Ja' : 'Nein'}
+
+
+<b>Kontakt:</b> 
+        <b>E-mail:</b> ${mail.senderemail || 'N/A'}
     `;
         }
 
