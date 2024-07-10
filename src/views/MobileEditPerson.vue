@@ -118,7 +118,6 @@
                       this.favoriteDish = res.data.user.rows[0].gericht;
                       this.region = res.data.user.rows[0].region;
                       this.age = res.data.user.rows[0].alter;
-                      this.gender = res.data.user.rows[0].geschlecht;
                       this.imagePreview = res.data.user.rows[0].profilbild;
                       this.email = res.data.user.rows[0].emailfk;
                       this.userId = res.data.user.rows[0].userid;

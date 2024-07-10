@@ -44,36 +44,29 @@
                             <img v-else @click="increaseAge" src="../assets/plus.png"/>
                         </div>
                     </div>
-                    <div class="infos">
-                        <label class="info-subheadline">Geschlecht:</label>
-                        <input v-model="gender" class="input" type="text" placeholder="z.B. M">
-                    </div>
                 </div>
                 <div id="buttons">
                     <div @click="reset" id="break">
                         zurücksetzen 
                     </div>
-                    <div id="continue" @click="openModal">
+                    <div id="continue" @click="editPerson">
                         speichern
                     </div>
                 </div>
             </div>
         </div>
 
-        <PopupModal :onCreate="editPerson" privateText="privates Profil" publicText="öffentliches Profil" :show="isModalVisible" @close="closeModal"/>
     </div>
 </template>
 
 <script>
     import DishForm from '../components/PictureComponent.vue';
-    import PopupModal from '../components/PopupModal.vue'; // Importiere die neue Komponente
     import Header from '../components/EditHeader.vue';
     import axios from 'axios';
 
     export default {
         components: {
             DishForm,
-            PopupModal,
             Header,
         },
         data() {
@@ -83,7 +76,6 @@
                 shortDescription: "",
                 longDescription: "",
                 region: "",
-                gender: "",
                 favoriteEventTypes: "",
                 favoriteDish: "",
                 favoriteSong: "",
@@ -113,7 +105,7 @@
                 });
             },
             getInfo() {
-              axios.get("/getUserById/45", { headers: { auth: localStorage.getItem("authToken") }})
+              axios.get("/me", { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
                     console.log("Success: ", res);
                     this.personName = res.data.user.rows[0].profilname;
@@ -124,7 +116,6 @@
                     this.favoriteDish = res.data.user.rows[0].gericht;
                     this.region = res.data.user.rows[0].region;
                     this.age = res.data.user.rows[0].alter;
-                    this.gender = res.data.user.rows[0].geschlecht;
                     this.imagePreview = res.data.user.rows[0].profilbild;
                     this.email = res.data.user.rows[0].emailfk;
                     this.userId = res.data.user.rows[0].userid;
@@ -173,8 +164,8 @@
                     this.age++;
                 }
             },
-            async editPerson(isPrivate) {
-                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region || !this.gender 
+            async editPerson() {
+                if (!this.personName || !this.shortDescription || !this.longDescription || !this.region
                     || !this.favoriteEventTypes || !this.favoriteDish || !this.favoriteSong) {
                     alert('Please fill in all required fields.');
                     return;
@@ -189,9 +180,7 @@
                 formData.arten = this.favoriteEventTypes;
                 formData.lied = this.favoriteSong;
                 formData.gericht = this.favoriteDish;
-                formData.geschlecht = this.gender;
                 formData.partybilder = [];
-                formData.privat = isPrivate;
                 formData.email = this.email;
                 this.dishes.forEach(image => {
                     if (image) {

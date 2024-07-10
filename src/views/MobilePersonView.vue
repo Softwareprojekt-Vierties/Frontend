@@ -204,7 +204,8 @@
                 .catch(err => console.log("Error: ", err));
         },
         getInfo() {
-              axios.get("/getUserById/" + this.$route.params.id, { headers: { auth: localStorage.getItem("authToken") }})
+            const destination = (this.$route.name === "MyPage") ? "/me" : ("/getUserById/" + this.$route.params.id);
+              axios.get(destination, { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
                     console.log("Success: ", res);
                     this.userName = res.data.user.rows[0].profilname;
@@ -418,6 +419,7 @@
       width: 287px;
       text-align: left;
       font-size: 13px;
+      overflow-wrap: break-word;
   }
   
   #event-container {
