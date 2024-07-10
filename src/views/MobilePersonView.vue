@@ -224,9 +224,9 @@
                     this.age = res.data.user.rows[0].alter;
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.profilePicture = res.data.user.rows[0].profilbild;
-                    this.hasBookmark = res.data.isFavorite;
+                    this.hasBookmark = res.data.user.rows[0].favorit;
                     this.isMe = res.data.isMe;
-                    this.isFriend = res.data.isFriend;
+                    this.isFriend = res.data.isfriend;
                     res.data.owenevents.rows?.forEach(event => {
                         event.type = "events";
                         this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
