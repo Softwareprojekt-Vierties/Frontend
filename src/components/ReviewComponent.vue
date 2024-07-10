@@ -5,7 +5,7 @@
             <div class="user-info">
                 <div class="user-info-details">
                     <div class="user-logo">
-                        <img class="user-avatar" src="../assets/user_logo.png" width="30px" height="30px" alt="User Avatar">
+                        <ImageComponent :url="image" width="25px" height="25px" border-radius="5px" background-color="none" />
                     </div>
                     <div class="user-name">
                         {{ userName }}
@@ -26,7 +26,12 @@
 
 <script>
 import axios from 'axios'; 
+import ImageComponent from './ImageComponent.vue';
+
 export default {
+    components: {
+        ImageComponent
+    },
     data(){
         return {
             userName : '',
@@ -36,7 +41,8 @@ export default {
             reviews : [],
             reviewSize : '',
             reviewIndex : 0,
-            reviewToGet: ''
+            reviewToGet: '',
+            image:''
         };
     },
 
@@ -86,6 +92,7 @@ export default {
                 this.userName = data[this.reviewIndex]["profilname"];
                 this.rating = data[this.reviewIndex]["sterne"];
                 this.reviewText = data[this.reviewIndex]["inhalt"];
+                this.image = data[this.reviewIndex]["bild"];
             }
         },
 
@@ -153,6 +160,7 @@ export default {
 
 .user-logo{
     margin-left:5px;
+    margin-bottom: 5px;
 }
 
 .stars{

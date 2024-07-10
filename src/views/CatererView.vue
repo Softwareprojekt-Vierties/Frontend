@@ -1,178 +1,187 @@
 <template>
-    <div id="app">
-        <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
+  <div id="app">
+      <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
       <div id="main">
-        <div id="left-side">
-          <LongDescription :description="beschreibung" />
-        <div id="event-dish">
-            <div id="event">
-              <label class="description">Nächste Events:</label>
-              <ArtistCard v-if="events" :eventsFromFather="events"/>
-            </div>
-            <div id="dish">
-              <label class="description">Aktuelle Gerichte:</label>
-              <Caterer v-if="id" :idFromFather="id"/>
-            </div>
-        </div>
-        <br>
-          <div class="long-description">
-           <label class="description">Bewertungen:</label>
-            <DishForm v-if="userId" :idFromFather="userId" :typeOfReview="reviewType"/>
-         </div>
-         <div class="long-description">
-           <label class="description">Kommentar einfügen:</label>
-            <CommentComponent v-if="userId" :idFromFather="userId" :typeOfReview="kindOfReview"/>
-         </div>
-        </div>
-        <div id="right-side">
-            <Info v-model:hasBookmark="hasBookmark" type="caterer" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
-          <div id="ticket" @click="weiter">
-            {{ buttonLabel }}
+          <div id="left-side">
+              <LongDescription :description="beschreibung" />
+              <div id="event-dish">
+                  <div id="event">
+                      <label class="description">Nächste Events:</label>
+                      <ArtistCard v-if="events" :eventsFromFather="events"/>
+                  </div>
+                  <div id="dish">
+                      <label class="description">Aktuelle Gerichte:</label>
+                      <Caterer v-if="id" :idFromFather="id"/>
+                  </div>
+              </div>
+              <br>
+              <div class="long-description">
+                  <label class="description">Bewertungen:</label>
+                  <DishForm v-if="userId" :idFromFather="userId" :typeOfReview="reviewType"/>
+                  <div id="newcomment" @click="togglePopup">
+                      <div id="newcomment-text">
+                          Kommentar hinzufügen:
+                      </div>
+                      <img id="newcomment-img" src="../assets/plus.png">
+                  </div>
+              </div>
           </div>
-        </div>
+          <div id="right-side">
+              <Info v-model:hasBookmark="hasBookmark" type="caterer" :region="region" :category="kategorie" :experience="erfahrung" :price="preis" />
+              <div id="ticket" @click="weiter">
+                  {{ buttonLabel }}
+              </div>
+          </div>
       </div>
-    </div>
-  </template>
-  
-  <script>
-  import DishForm from '../components/ReviewComponent.vue';
-  import ArtistCard from '../components/ArtistCardComponent.vue';
-  import Caterer from '../components/CatererComponent.vue';
-  import Header from '../components/ViewHeader.vue';
-  import LongDescription from '../components/LongDescription.vue';
-  import Info from '../components/RightSideInfo.vue';
-  import axios from 'axios'; 
-  import CommentComponent from '../components/CommentComponent.vue'
+      <div v-if="showPopup" class="popup-overlay">
+          <div class="popup-content">
+              <span class="close-button" @click="togglePopup">&times;</span>
+              <CommentComponent v-if="userId" :idFromFather="userId" :typeOfReview="kindOfReview"/>
+          </div>
+      </div>
+  </div>
+</template>
 
+<script>
+import DishForm from '../components/ReviewComponent.vue';
+import ArtistCard from '../components/ArtistCardComponent.vue';
+import Caterer from '../components/CatererComponent.vue';
+import Header from '../components/ViewHeader.vue';
+import LongDescription from '../components/LongDescription.vue';
+import Info from '../components/RightSideInfo.vue';
+import axios from 'axios'; 
+import CommentComponent from '../components/CommentComponent.vue'
 
-  export default {
+export default {
     components: {
-      DishForm,
-      ArtistCard,
-      Caterer,
+        DishForm,
+        ArtistCard,
+        Caterer,
         Header,
         LongDescription,
         Info,
         CommentComponent
     },
     data() {
-      return {
-        name : '',
-        sterne: '',
-        kurzbeschreibung:'',
-        beschreibung: '',
-        region: '',
-        kategorie : '',
-        erfahrung  :'',
-        preis : '',
-        imagePreview : null,
-        id:'',
-        userId:'',
-        reviewType :0,
-        events: [],
-        idSent:'',
-        isOwner:'',
-          hasBookmark: false,
-          kindOfReview : 'user'
-        
-      };
+        return {
+            name: '',
+            sterne: '',
+            kurzbeschreibung: '',
+            beschreibung: '',
+            region: '',
+            kategorie: '',
+            erfahrung: '',
+            preis: '',
+            imagePreview: null,
+            id: '',
+            userId: '',
+            reviewType: 0,
+            events: [],
+            idSent: '',
+            isOwner: '',
+            hasBookmark: false,
+            kindOfReview: 'user',
+            showPopup: false // Popup anfangs nicht anzeigen
+        };
     },
-
     computed: {
-      buttonLabel() {
-      return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
-    }
-    },
-
-    async created(){
-    this.idSent = this.$route.params.id;
-    const token = localStorage.getItem('authToken');
-
-      try {
-          const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
-          console.log(response);
-          this.setFormData(response.data);
-          console.log('dj data received:', response.data);
-      } catch (error) {
-          console.error('Error with sending Caterer ID for caterer page to DB :', error);
+        buttonLabel() {
+            return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
         }
     },
+    async created() {
+        this.idSent = this.$route.params.id;
+        const token = localStorage.getItem('authToken');
 
+        try {
+            const response = await axios.get(`/getCatererById/${this.idSent}`, { headers: { 'auth': token } });
+            console.log(response);
+            this.setFormData(response.data);
+            console.log('dj data received:', response.data);
+        } catch (error) {
+            console.error('Error with sending Caterer ID for caterer page to DB :', error);
+        }
+    },
     methods: {
+        setFormData(data) {
+            const myVar = data['caterer'].rows[0].region.split(',');
+            console.log(myVar[0]);
+            console.log(myVar[1]);
 
-      setFormData(data){
-
-        const myVar =data['caterer'].rows[0].region.split(',');
-        console.log(myVar[0]);
-        console.log(myVar[1]);
-
-        this.name = data['caterer'].rows[0].profilname;
-        this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
-        this.beschreibung = data['caterer'].rows[0].beschreibung ;
-        this.region =myVar[1] ;
-        this.kategorie = data['caterer'].rows[0].kategorie;
-        this.erfahrung = data['caterer'].rows[0].erfahrung;
-        this.preis = data['caterer'].rows[0].preis;
-        this.imagePreview = data['caterer'].rows[0].profilbild;
-        this.sterne = data['caterer'].rows[0].sterne;
-        this.userId = data['caterer'].rows[0].userid;
-        this.id = data['caterer'].rows[0].id;
-        this.events = data['events'].rows;
-        this.isOwner = data['isOwner'];
-        this.hasBookmark = data.caterer.rows[0].favorit;
-        console.log("my events",this.events);
-      },
-      
-      goToAnotherPage() {
-        this.$router.push('/search');
-      }, 
-      weiter(){
-      if(this.isOwner === false){
-        this.$router.push('/createevent');
-      } else{
-        this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
-      }
+            this.name = data['caterer'].rows[0].profilname;
+            this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
+            this.beschreibung = data['caterer'].rows[0].beschreibung;
+            this.region = myVar[1];
+            this.kategorie = data['caterer'].rows[0].kategorie;
+            this.erfahrung = data['caterer'].rows[0].erfahrung;
+            this.preis = data['caterer'].rows[0].preis;
+            this.imagePreview = data['caterer'].rows[0].profilbild;
+            this.sterne = data['caterer'].rows[0].sterne;
+            this.userId = data['caterer'].rows[0].userid;
+            this.id = data['caterer'].rows[0].id;
+            this.events = data['events'].rows;
+            this.isOwner = data['isOwner'];
+            this.hasBookmark = data.caterer.rows[0].favorit;
+            console.log("my events", this.events);
+        },
+        goToAnotherPage() {
+            this.$router.push('/search');
+        },
+        weiter() {
+            if (this.isOwner === false) {
+                this.$router.push('/createevent');
+            } else {
+                this.$router.push({ name: 'EditCatererType', params: { id: this.idSent } });
+            }
+        },
+        togglePopup() {
+            this.showPopup = !this.showPopup;
+        },
+        submitComment() {
+            // Logik zum Absenden des Kommentars hinzufügen
+            console.log('Kommentar abgesendet');
+            this.togglePopup();
+        }
     }
-    }
-  }
-  </script>
-  
-  <style scoped>
-  :root html, body {
+}
+</script>
+
+<style scoped>
+:root html, body {
     width: 100%;
     height: 100%;
     background-color: rgb(242, 242, 242);
-  }
-  
-  .description {
-      text-align: left;
-      font-size: 12px;
-      margin-bottom: 3px;
-  }
+}
 
-  #main {
+.description {
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+#main {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
     background-color: rgb(242, 242, 242);
     padding-top: 30px;
     gap: 20px;
-  }
+}
 
-  #left-side {
+#left-side {
     margin-left: -20px;
-  }
-  
-  .long-description {
+}
+
+.long-description {
     border-radius: 10px;
     background-color: white;
     padding: 10px;
     display: grid;
     justify-content: left;
     font-weight: bold;
-  }
-  
-  #ticket {
+}
+
+#ticket {
     background-color: rgb(146, 208, 80);
     height: 30px;
     border-radius: 7px;
@@ -183,20 +192,20 @@
     align-items: center;
     cursor: pointer;
     margin-top: 10px;
-  }
+}
 
 .long-description {
-  border-radius: 10px;
-  background-color: white;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 580px;
-  justify-content: left;
-  font-weight: bold;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 580px;
+    justify-content: left;
+    font-weight: bold;
 }
 
 #maps {
-  border-radius: 8px;
+    border-radius: 8px;
 }
 
 #event-dish {
@@ -225,5 +234,52 @@
     justify-content: left;
     font-weight: bold;
 }
-  </style>
-  
+
+#newcomment {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#newcomment-text {
+    font-size: 10px;
+    font-weight: normal;
+}
+
+#newcomment-img {
+    cursor: pointer;
+    margin-left: 40px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative; /* Position relativ für die Schließen-Schaltfläche */
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+</style>
