@@ -26,10 +26,13 @@
         </div>
         </div>
         <div id="right-side">
-            <Info v-model:hasBookmark="hasBookmark" type="events" :location="location" :date="formattedEventDate" :startTime="zeit" :price="preis" :ageLimit="alter" :openAir="openAir" />
-          <div id="ticket">
-            Event buchen 
-          </div>
+            <Info v-model:hasBookmark="hasBookmark" type="events" :location="location" :date="formattedEventDate" :startTime="zeit" :endTime="endzeit" :price="preis" :ageLimit="alter" :openAir="openAir" />
+            <div id="ticket" 
+              :class="{ 'disabled': hasTickets || isOwner }"  
+              :style="{ 'cursor': (hasTickets || isOwner) ? 'not-allowed' : 'pointer' }"
+              @click="bookEvent">
+              Event buchen ({{freietickets }}/{{ maxtickets }})
+            </div>
         </div>
         </div>
       </div>
@@ -61,6 +64,7 @@
           location : '',
           datum : '',
           zeit : '',
+          endzeit:'',
           anzahlPersonen : '',
           preis : '',
           alter : '',
@@ -72,8 +76,13 @@
           map: null,
           marker : null,
           currentIndex: 0,
+          hasTickets:'',
           combinedProviders: [],
-            hasBookmark: false,
+          hasBookmark: false,
+          id : '',
+          isOwner : '',
+          maxtickets : '',
+          freietickets : ''
         };
     },
 
@@ -103,8 +112,34 @@
 
     methods: {
 
+      bookEvent() {
+        if (this.hasTickets || this.isOwner) {
+          console.log("not allowed to buy tickets");
+          return; 
+        }
+        this.bookEventAction(); 
+      },
+      
+      async bookEventAction() {
+        try {
+          console.log("Trying to book tickets...");
+          const token = localStorage.getItem('authToken');
+          const response = await axios.post('/createTicket', {
+            eventid: this.id
+          }, { headers: { 'auth': token } });
+          console.log('Ticket successfully booked:', response.data);
+          this.hasTickets = true;
+        } catch (error) {
+          console.error('Error booking ticket:', error);
+        }
+      },
+
       setFormData(data){
+        this.maxtickets = data.event.rows[0].maxtickets,
+        this.freietickets = data.event.rows[0].freietickets,
         this.eventName = data.event.rows[0].name;
+        let endzeit1 = data.event.rows[0].enduhrzeit.split(":");
+        this.endzeit = endzeit1[0]+":"+endzeit1[1];
         this.kurzbeschreibung = data.event.rows[0].kurzbeschreibung;
         this.imagePreview = data.event.rows[0].bild;
         this.beschreibung = data.event.rows[0].beschreibung;
@@ -116,6 +151,11 @@
         this.location = data.event.rows[0].locationname;
         this.anzahlPersonen = data.event.rows[0].eventgroesse;
         this.datum = data.event.rows[0].datum;
+        this.hasTickets = data.hasTicket;
+        console.log("hasTicket->",this.hasTickets);
+        this.id = data.event.rows[0].id;
+        this.isOwner = data.isOwner
+        console.log("owner->",this.isOwner);
           this.hasBookmark = data.event.rows[0].favorit;
         let openair = data.event.rows[0].openair;
         if(openair === true){
@@ -228,6 +268,11 @@
 
   #left-side {
     margin-left: -20px;
+  }
+
+  .disabled {
+    background-color: grey !important;
+    pointer-events: none;
   }
   
   .long-description {
