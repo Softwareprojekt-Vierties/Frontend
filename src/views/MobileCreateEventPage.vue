@@ -117,7 +117,7 @@
         </div>
     </div>
     <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" />
+            <img id="home-mobile" @click="$router.push('/search')" src="../assets/home-mobile.png" />
         </div>
         <div id="menu-button" @click="handleClick">
             <img id="menu-mobile" src="../assets/menu-mobile.png" />
@@ -156,7 +156,7 @@
                   price: '',
                   ageLimit: '',
                   openAir: false,
-                  serviceProviders: [{ name: '', details: null }],
+                  serviceProviders: [],
                   isModalVisible: false,
                   isLocationModalVisible : false,
                   selectedEventType: null,
@@ -171,6 +171,67 @@
               isDarkMode() {
                   return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
               }
+          },
+          async created() {
+              console.log(this.$route);
+              const token = localStorage.getItem('authToken');
+              if (this.$route.query.artist) {
+                  const response = await axios.get(`/getArtistById/${this.$route.query.artist}`,{headers: {'auth':token}});
+                  try {
+                      let artist = response.data.artist.rows[0];
+                      let provider = { name: "",  details: [] };
+                      Object.keys(artist).forEach(key => {
+                          if (key == "profilname") {
+                              provider.name = artist.profilname;
+                          } else {
+                              provider.details[key] = artist[key];
+                          }
+                      });
+                      provider.details.line1 = `Stadt: ${provider.details.region}`;
+                      provider.details.line2 = `Kategorie: ${provider.details.kategorie}`;
+                      provider.details.line3 = `Preis: ${provider.details.preis}€/h`;
+                      provider.details.type = "artist";
+                      provider.details.immutable = true;
+                      provider.details.app_user_id = -1;
+                      this.serviceProviders.push(provider);
+                  } catch (err) {
+                      console.log("Error: ", err);
+                  }
+              }
+              if (this.$route.query.caterer) {
+                  const response = await axios.get(`/getCatererById/${this.$route.query.caterer}`,{headers: {'auth':token}});
+                  try {
+                      let caterer = response.data.caterer.rows[0];
+                      let provider = { name: "",  details: [] };
+                      Object.keys(caterer).forEach(key => {
+                          if (key == "profilname") {
+                              provider.name = caterer.profilname;
+                          } else {
+                              provider.details[key] = caterer[key];
+                          }
+                      });
+                      provider.details.line1 = `Stadt: ${provider.details.region}`;
+                      provider.details.line2 = `Kategorie: ${provider.details.kategorie}`;
+                      provider.details.line3 = `Preis: ${provider.details.preis}€/h`;
+                      provider.details.type = "caterer";
+                      provider.details.immutable = true;
+                      provider.details.app_user_id = -1;
+                      this.serviceProviders.push(provider);
+                  } catch (err) {
+                      console.log("Error: ", err);
+                  }
+              }
+              if (this.$route.query.location) {
+                  const response = await axios.get(`/getLocation/${this.$route.query.location}`,{headers: {'auth':token}});
+                  try {
+                      let location = response.data.result.rows[0];
+                      this.location = location;
+                  } catch (err) {
+                      console.log("Error: ", err);
+                  }
+              }
+
+              this.addProvider();
           },
           methods: {
               onFileChange(event) {

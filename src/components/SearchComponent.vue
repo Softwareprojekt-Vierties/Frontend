@@ -630,9 +630,9 @@
         created() {
             this.buttonClickFunctions = {
                 event: this.eventButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
-                caterer: this.catererButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
-                location: this.locationButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
-                artist: this.artistButtonFunction ?? (() => { this.$router.push("/createEvent"); }),
+                caterer: this.catererButtonFunction ?? ((info) => { this.$router.push({path: "/createEvent", query: {caterer: info.id}}); }),
+                location: this.locationButtonFunction ?? ((info) => { this.$router.push({path: "/createEvent", query: {location: info.id}}); }),
+                artist: this.artistButtonFunction ?? ((info) => { this.$router.push({path: "/createEvent", query: {artist: info.id}}); }),
                 ticket: this.ticketButtonFunction ?? ((info) => { this.$router.push("/event/" + info.id); }),
                 person: this.personButtonFunction ?? ((info) => { this.$router.push("/person/" + info.app_user_id); }),
             };
