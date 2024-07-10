@@ -144,6 +144,7 @@
                     this.age = res.data.user.rows[0].alter;
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.profilePicture = res.data.user.rows[0].profilbild;
+                    this.hasBookmark = res.data.user.rows[0].favorit;
                     this.isMe = res.data.isMe;
                     this.isFriend = res.data.isfriend;
                     res.data.owenevents.rows?.forEach(event => {
