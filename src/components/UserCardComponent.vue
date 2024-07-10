@@ -3,7 +3,7 @@
         <img class="user-avatar" src="../assets/left.jpg" style="cursor:pointer" width="20px" height="20px" @click="$emit('decreaseEventLocationsIndex')">
         <div id="background">
             <div id="card">
-                <img :alt="name" :src="computedImagePath" class="image">
+                <Image :url="info.profilbild" :width="`calc(170px * ${scaleFactor})`" :height="`calc(140px * ${scaleFactor})`" border-radius="5px" background-color="none" />
                 <div id="details">
                     <div id="name-bookmark">
                         <div id="headline">
@@ -32,10 +32,12 @@
 
 <script>
     import Bookmark from './BookmarkComponent.vue';
+    import Image from './ImageComponent.vue';
 
     export default {
         components: {
             Bookmark,
+            Image,
         },
         props: {
             name: {
