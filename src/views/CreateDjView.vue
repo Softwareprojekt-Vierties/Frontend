@@ -145,7 +145,6 @@ export default {
         formData.kategorie = this.category;
         formData.erfahrung = this.experience;
         formData.songs = this.songs;
-        formData.adresse = this.region;
         console.log('FormData:', formData); 
 
 
