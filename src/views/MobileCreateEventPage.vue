@@ -21,23 +21,23 @@
                     </div>
                 </div>
                 <div class="input-headline">Datum:</div>
-                <input type="date" placeholder="z.B. 17.08.2024"/>
+                <input v-model="eventDate" type="date" placeholder="z.B. 17.08.2024"/>
                 <div class="input-headline">Kapazität:</div>
-                <input type="number" min="0" :max="2**32" placeholder="z.B. 200 Personen"/>
+                <input v-model="eventSize" type="number" min="0" :max="2**32" placeholder="z.B. 200 Personen"/>
                 <div class="input-headline">Zeit:</div>
-                <div id="time-div"><input type="time" class="time" placeholder="z.B. 17 Uhr"/> - 
-                    <input type="time" class="time" placeholder="z.B. 20 Uhr"/>
+                <div id="time-div"><input v-model="eventStartTime" type="time" class="time" placeholder="z.B. 17 Uhr"/> - 
+                    <input v-model="eventEndTime"  type="time" class="time" placeholder="z.B. 20 Uhr"/>
                 </div>
             </div>
             <div id="right">
                 <div class="input-headline">Eventgröße: </div>
-                <input type="number" min="0" placeholder="z.B. 200 Personen"/>
+                <input v-model="eventSize" type="number" min="0" placeholder="z.B. 200 Personen"/>
                 <div class="input-headline">Preis: </div>
-                <input type="number" min="0" placeholder="z.B. 20€"/>
+                <input v-model="price" type="number" min="0" placeholder="z.B. 20€"/>
                 <div class="input-headline">Altersfreigabe: </div>
-                <input type="number" min="0" placeholder="z.B. 18 Jahre"/>
+                <input v-model="ageLimit" type="number" min="0" placeholder="z.B. 18 Jahre"/>
                 <div class="input-headline">Open Air:</div>
-                <div id="switch-div"><label class="switch"> <input type="checkbox"> <span class="slider round"> </span> </label></div>
+                <div id="switch-div"><label class="switch"> <input type="checkbox"  v-model="openAir"> <span class="slider round"> </span> </label></div>
             </div>
         </div>
     </div>
