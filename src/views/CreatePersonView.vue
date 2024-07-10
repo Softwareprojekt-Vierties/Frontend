@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="createPerson">
       <Header v-model:name="personName" v-model:kurzbeschreibung="shortDescription" v-model:imagePreview="imagePreview" />
       <div id="main">
         <div id="left-side">
@@ -172,6 +172,12 @@
   width: 100%;
   height: 100%;
   background-color: var(--create-page-background);
+}
+
+#createPerson {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--create-page-background);
 }
 
 .switch {
