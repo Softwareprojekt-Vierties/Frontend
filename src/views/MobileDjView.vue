@@ -237,7 +237,7 @@
       },
       weiter() {
         if (this.isOwner === false) {
-          this.$router.push('/createevent');
+            this.$router.push({path: "/createEvent", query: {artist: this.id}});
         } else {
           this.$router.push({ name: 'EditDjType', params: { id: this.idSent } });
         }
