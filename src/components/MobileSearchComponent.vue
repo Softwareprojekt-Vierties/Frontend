@@ -84,7 +84,7 @@
                     <CardComponent v-for="result in bookmarked ? searchResults.caterer.filter(item => item.favorit == true) : searchResults.caterer" :scaleFactor="scaleFactor" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Kategorie: ${result.kategorie}`" :line3="`Preis: ${result.preis}€/h`" :buttonText="buttonTexts.caterer" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.caterer" :titleClickFunction="titleClickFunctions.caterer" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 5 || searchType == 8" id="results">
-                    <CardComponent v-for="result in bookmarked ? searchResults.person.filter(item => item.favorit == true) : searchResults.person" :scaleFactor="scaleFactor" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" :line3="`Geschlecht: ${(result?.geschlecht ?? 'male') == 'male' ? 'Männlich' : 'Weiblich'}`" :buttonText="buttonTexts.person" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
+                    <CardComponent v-for="result in bookmarked ? searchResults.person.filter(item => item.favorit == true) : searchResults.person" :scaleFactor="scaleFactor" :name="result.name" :line1="`Stadt: ${result.region}`" :line2="`Alter: ${result.alter}`" line3="" :buttonText="buttonTexts.person" :imagePath="result.profilbild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.person" :titleClickFunction="titleClickFunctions.person" :info="result" :key="result.id"/>
                 </div>
                 <div v-else-if="searchType == 7" id="results">
                     <CardComponent v-for="result in bookmarked ? searchResults.tickets.filter(item => item.favorit == true) : searchResults.tickets" :scaleFactor="scaleFactor" :name="result.name" :line1="`Location: ${result.locationname}`" :line2="`Datum: ${new Date(result.datum).toDateString()}`" :line3="`Zeit: ${result.uhrzeit?.[0] ?? '--:--'}Uhr - ${result.uhrzeit?.[1] ?? '-'}Uhr`" :buttonText="buttonTexts.ticket" :imagePath="result.bild" :isBookmarked="result.favorit ?? 0" :buttonClickFunction="buttonClickFunctions.ticket" :titleClickFunction="titleClickFunctions.ticket" :info="result" :key="result.id"/>
@@ -230,10 +230,10 @@ export default {
                 '2': { name: 'djBand', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
                 '3': { name: 'caterer', filters: ['region', 'distance', 'category', 'rating', 'experience', 'price'] },
                 '4': { name: 'event', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
-                '5': { name: 'person', filters: ['region', 'age', 'gender'] },
+                '5': { name: 'person', filters: ['region', 'age'] },
                 '6': { name: 'myEvents', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
                 '7': { name: 'myTickets', filters: ['region', 'eventSize', 'ticketPrice', 'distance', 'age', 'date', 'startTime', 'duration', 'openAir'] },
-                '8': { name: 'myFriends', filters: ['region', 'age', 'gender'] },
+                '8': { name: 'myFriends', filters: ['region', 'age'] },
                 '9': { name: 'myLocation', filters: ['region', 'distance', 'capacity', 'rating', 'openAir', 'price'] },
             },
             sortingOptions: {
@@ -242,10 +242,10 @@ export default {
                 "2": { name: "djBand", filters: ["unsortiert", "name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
                 "3": { name: "caterer", filters: ["unsortiert", "name", "adresse", "entfernung", "kategorie", "sterne", "experience", "preis"] },
                 "4": { name: "event", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                "5": { name: "person", filters: ["unsortiert", "name", "adresse", "altersfreigabe", "gender"] },
+                "5": { name: "person", filters: ["unsortiert", "name", "adresse", "altersfreigabe"] },
                 "6": { name: "myEvents", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
                 "7": { name: "myTickets", filters: ["unsortiert", "name", "adresse", "eventgroesse", "preis", "entfernung", "altersfreigabe", "datum", "uhrzeit", "dauer"] },
-                "8": { name: "myFriends", filters: ["unsortiert", "name", "adresse", "altersfreigabe", "gender"] },
+                "8": { name: "myFriends", filters: ["unsortiert", "name", "adresse", "altersfreigabe"] },
                 "9": { name: "myLocation", filters: ["unsortiert", "name", "adresse", "entfernung", "kapazitaet", "sterne", "preis"] },
             },
             translations: {
@@ -260,7 +260,6 @@ export default {
                 experience: "Erfahrung",
                 kategorie: "Kategorie",
                 altersfreigabe: "Alter",
-                gender: "Geschlecht",
                 eventgroesse: "Eventgröße",
                 preis: "Preis",
             },
@@ -355,8 +354,6 @@ export default {
                             return `<div class="filter-item"><div id="filter-item-text">Ticketpreis: </div><input id="filter-ticket-price" class="filter" type="number" min="0" placeholder="Ticketpreis"></div>`;
                         case "age":
                             return `<div class="filter-item"><div id="filter-item-text">Alter: </div><input id="filter-age" class="filter" type="number" min="0" placeholder="Alter"></div>`;
-                        case "gender":
-                            return `<div class="filter-item"><div id="filter-item-text">Geschlecht: </div><select class="filter-gender filter"><option value="male">Männlich</option><option value="female">Weiblich</option></select></div>`;
                         default:
                             return "";
                     }
@@ -552,9 +549,6 @@ export default {
                     case "age":
                         filterValues.age = filtersContainer.querySelector("#filter-age")?.value ?? "";
                         break;
-                    case "gender":
-                        filterValues.gender = filtersContainer.querySelector(".filter-gender")?.value ?? "";
-                        break;
                 }
             });
 
@@ -624,9 +618,6 @@ export default {
                         packet.altersfreigabe = filterResults.age;
                     }
                 }
-                if (filterResults.gender != null && filterResults.gender != 0) {
-                    packet.geschlecht = filterResults.gender;
-                }
                 if (this.searchType == 6) {
                     packet.istbesitzer = true;
                 }
@@ -651,6 +642,9 @@ export default {
                     this.searchResults[field] = response.data.rows;
                     this.searchResults[field].forEach(result => {
                         result.type = field;
+                        if (field === "tickets") {
+                            result.type = "events";
+                        }
                     });
                     this.hasSearchResults |= response.data.rows.length > 0;
                     if (this.searchType == 0) {
@@ -944,14 +938,6 @@ export default {
 
 ::v-deep #filter-region {
     width: 300px;
-    height: 20px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-::v-deep .filter-gender {
-    width: 305px;
     height: 20px;
     border-radius: 5px;
     border: 1px solid #ccc;

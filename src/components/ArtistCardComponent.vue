@@ -10,7 +10,7 @@
                         <div id="headline">
                             {{ eventName }}
                         </div>
-                        <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
+                        <Bookmark v-model:hasBookmark="hasBookmark" :id="events[eventsIndex]?.id ?? -1" type="events" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
                     </div>
                     <div class="line-div">
                         Location: {{ eventLocation }}
@@ -36,8 +36,12 @@
 </template>
 
 <script>
+    import Bookmark from './BookmarkComponent.vue';
 
 export default {
+        components: {
+            Bookmark,
+        },
     props: {
         eventsFromFather: {
             type: Array,
@@ -69,7 +73,8 @@ export default {
             eventName: '',
             eventLocation: '',
             eventDate: '',
-            eventTime: ''
+            eventTime: '',
+            scaleFactor: .56,
         };
     },
     computed: {
@@ -84,10 +89,6 @@ export default {
         }
     },
     methods: {
-        changeBookmark() {
-            this.hasBookmark = !this.hasBookmark;
-            // send switch to server
-        },
         setScaleFactor(factor) {
             document.documentElement.style.setProperty('--scale-factor', factor);
         },

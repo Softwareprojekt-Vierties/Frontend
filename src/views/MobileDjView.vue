@@ -39,15 +39,22 @@
         </div>
       </div>
       <div id="event-container">
-        <MobileEventCardComponent
-          v-for="(event, index) in events" 
-          :key="index" 
-          :name="event.name" 
-          :line1="event.adresse" 
-          :line2="event.datum"
-          :line3="event.startuhrzeit"
-          :imagePath="event.bild"
-        />
+            <div id="artist-div" v-for="(event, index) in events" :key="index">
+                <div id="background">
+                    <CardComponent
+                    :name="event.header" 
+                    :line1="event.line1" 
+                    :line2="event.line2"
+                    :line3="event.line3"
+                    :info="event.info"
+                    :hasBookmark="event.info.favorit"
+                    :scaleFactor=".67"
+                    :imagePath="event.bild"
+                    :buttonClickFunction="() => $router.push(`/event/${event.info.id}`)"
+                    buttonText="Mehr Infos"
+                    />
+                </div>
+            </div>
       </div>
       <div class="description-headline-div" v-if="songs.length > 0">
         <div class="description-headline">
@@ -108,7 +115,7 @@
   import axios from 'axios';
   import 'leaflet/dist/leaflet.css';
   import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
-  import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
+  import CardComponent from '@/components/CardComponent.vue';
   import MobileReviewComponent from '@/components/MobileReviewComponent.vue'
   import MobilePlaylistComponent from '@/components/MobilePlaylistComponent.vue';
   import Bookmark from '@/components/BookmarkComponent.vue';
@@ -117,7 +124,7 @@
   export default {
     components: {
       MobileHeaderComponent,
-      MobileEventCardComponent,
+      CardComponent,
       MobileReviewComponent,
       MobilePlaylistComponent,
       Bookmark,
@@ -221,8 +228,11 @@
         this.sterne = data['artist'].rows[0].sterne;
         this.userId = data['artist'].rows[0].userid;
         this.id = data['artist'].rows[0].id;
-        this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
+          data.events.rows?.forEach(event => {
+              event.type = "events";
+              this.events.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
+          });
         data['lieder'].rows.forEach(lied => {
           this.songs.push({
             id: lied['id'],
@@ -481,5 +491,24 @@
     width: 20px;
     height: 20px;
   }
+
+#background {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding-left: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 7px;
+    background-color: var(--textfield-background);
+}
+
+#artist-div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
   </style>
   

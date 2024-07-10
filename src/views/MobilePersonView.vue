@@ -68,15 +68,22 @@
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent
-            v-for="(event, index) in myEventsLocations" 
-                    :key="index" 
+            <div id="artist-div" v-for="(event, index) in myEventsLocations" :key="index">
+                <div id="background">
+                    <CardComponent
                     :name="event.header" 
                     :line1="event.line1" 
                     :line2="event.line2"
                     :line3="event.line3"
+                    :info="event.info"
+                    :hasBookmark="event.info.favorit"
+                    :scaleFactor=".67"
                     :imagePath="event.bild"
-            />
+                    :buttonClickFunction="event.info.type === 'events' ? () => $router.push(`/event/${event.info.id}`) : () => $router.push(`/location/${event.info.id}`)"
+                    buttonText="Mehr Infos"
+                    />
+                </div>
+            </div>
         </div>
         <div class="description-headline-div" v-if="myIntrests.length > 0">
             <div class="description-headline">
@@ -84,15 +91,21 @@
             </div>
         </div>
         <div id="event-container">
-            <MobileEventCardComponent
-            v-for="(event, index) in myIntrests" 
-                    :key="index" 
+            <div id="artist-div" v-for="(event, index) in myIntrests" :key="index">
+                <div id="background">
+                    <CardComponent
                     :name="event.header" 
                     :line1="event.line1" 
                     :line2="event.line2"
                     :line3="event.line3"
+                    :info="event.info"
+                    :scaleFactor=".67"
                     :imagePath="event.bild"
-            />
+                    :buttonClickFunction="() => $router.push(`/event/${event.info.id}`)"
+                    buttonText="Mehr Infos"
+                    />
+                </div>
+            </div>
         </div>
         <div id="button-div">
             <div v-if="!isFriend" id="button" @click="isMe ? $router.push('/editPerson') : sendFriendRequest()">
@@ -116,14 +129,14 @@
   import axios from 'axios';
   import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue'
   import BookmarkComponent from '@/components/BookmarkComponent.vue'
-  import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue'
+  import CardComponent from '@/components/CardComponent.vue'
   import MobilePictureComponent from '@/components/MobilePictureComponent.vue';
   
   export default {
     components: {
         MobileHeaderComponent,
         BookmarkComponent,
-        MobileEventCardComponent,
+        CardComponent,
         MobilePictureComponent
     },
     data() {
@@ -208,13 +221,16 @@
                     this.isMe = res.data.isMe;
                     this.isFriend = res.data.isFriend;
                     res.data.owenevents.rows?.forEach(event => {
-                        this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                        event.type = "events";
+                        this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
                     });
                     res.data.locations.rows?.forEach(event => {
-                        this.myEventsLocations.push({header: event.name, line1: "Addresse: " + event.addresse, line2: "Kapazität: " + event.kapazitaet, line3: "Preis: " + event.preis, id: event.id});
+                        event.type = "location";
+                        this.myEventsLocations.push({header: event.name, line1: "Addresse: " + event.addresse, line2: "Kapazität: " + event.kapazitaet, line3: "Preis: " + event.preis, info: event});
                     });
                     res.data.tickets.rows?.forEach(event => {
-                        this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                        event.type = "events";
+                        this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
                     });
 
                     if (this.isMe) {
@@ -509,4 +525,23 @@
       width: 20px;
       height: 20px;
   }
+
+#background {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding-left: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 7px;
+    background-color: var(--textfield-background);
+}
+
+#artist-div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
     </style>
