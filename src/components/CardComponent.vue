@@ -1,6 +1,6 @@
 <template>
     <div id="card">
-        <Image :url="computedImagePath" :width="`calc(170px * ${scaleFactor})`" :height="`calc(135px * ${scaleFactor})`" border-radius="5px" background-color="none" />
+        <Image :url="computedImagePath" :width="`calc(170px * ${scaleFactor})`" :height="`calc(140px * ${scaleFactor})`" border-radius="5px" background-color="none" />
         <div id="details">
             <div id="name-bookmark">
                 <div id="headline" @click="titleClickFunction(info)">
