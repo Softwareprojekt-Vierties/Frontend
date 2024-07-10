@@ -640,6 +640,9 @@ export default {
                     this.searchResults[field] = [];
                     this.searchResults.combined = this.searchResults.combined.filter(item => item.info.type != field);
                     this.searchResults[field] = response.data.rows;
+                    if (field === "events") {
+                        this.searchResults[field] = this.searchResults[field].filter(item => item.isvalid);
+                    }
                     this.searchResults[field].forEach(result => {
                         result.type = field;
                         if (field === "tickets") {
