@@ -313,12 +313,15 @@ input:checked + .slider:before {
   border: 1px solid #000000; /* Rahmenstil */
   border-radius: 5px; /* Abgerundete Ecken */
   height: 25px;
-  background-color: var(--textfield-background);
-  color: var(--textfield-font-color);
 }
 
-.input::placeholder {
+input::placeholder {
     color: var(--placeholder-color);
+}
+
+input {
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
 }
 
 #long-description-input {

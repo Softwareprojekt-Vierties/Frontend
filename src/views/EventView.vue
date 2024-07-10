@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="EventView">
       <Header :imagePreview="imagePreview" :name="eventName" :sterne=-1 :kurzbeschreibung="kurzbeschreibung"/>
 
       <div id="main">
@@ -250,6 +250,12 @@
     font-size: 13px;
     font-weight: bold;
   }
+
+#EventView {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--create-page-background);
+}
   
   #main {
     display: grid;

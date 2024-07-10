@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="PersonView">
         <Header :imagePreview="profilePicture" :name="userName" :sterne="-1" :kurzbeschreibung="shortDescription" />
       <div id="main">
         <div id="left-side">
@@ -45,6 +45,7 @@
         <div id="right-side">
             <Info v-model:hasBookmark="hasBookmark" :region="region" :age="age" :gender="gender" />
           <div id="break" v-if="isFriend" @click="unfriend">Freundschaft beenden</div>
+          <div id="continue" v-else-if="isMe" @click="() => {$router.push('/editPerson');}">Bearbeiten</div>
           <div id="continue" v-else @click="sendFriendRequest">Freundschaftsanfrage</div>
         </div>
       </div>
@@ -90,6 +91,7 @@
           myIntrests: [],
           intrestsIndex: 0,
           isFriend: false,
+          isMe: false,
           hasBookmark: false,
       };
     },
@@ -112,13 +114,19 @@
       },
         sendFriendRequest() {
             console.log(this.id);
-            axios.get("/friendrequest/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
-                .then(res => console.log("Success: ", res))
+            axios.post("/setFriend",{ freundid: this.id }, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.$router.go();
+                })
                 .catch(err => console.log("Error: ", err));
         },
         unfriend() {
-            axios.get("/unfriend/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
-                .then(res => console.log("Success: ", res))
+            axios.get("/deleteFriend/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.$router.go();
+                })
                 .catch(err => console.log("Error: ", err));
         },
         getInfo() {
@@ -136,6 +144,8 @@
                     this.age = res.data.user.rows[0].alter;
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.profilePicture = res.data.user.rows[0].profilbild;
+                    this.isMe = res.data.isMe;
+                    this.isFriend = res.data.isfriend;
                     res.data.owenevents.rows?.forEach(event => {
                         event.type = "events";
                         let time = event.startuhrzeit.split(":");
@@ -152,8 +162,6 @@
                     });
                     console.log(this.myEventsLocations);
 
-                    // to be implemented
-                    this.isFriend = false;
                 })
                 .catch(err => console.log("Error: ", err));
                 const bilderDestination = (this.$route.name === "MyPage") ? "/mePartyBilder" : ("/getPartybilder/" + this.$route.params.id);
@@ -208,6 +216,12 @@
   background-color: var(--create-page-background);
 }
 
+#PersonView {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--create-page-background);
+}
+
   .description {
       text-align: left;
       font-size: 12px;
@@ -250,7 +264,7 @@
 
 #break {
   background-color: var(--red);
-  width: 88px;
+  width: 170px;
   height: 25px;
   border-radius: 5px;
   border: 1px solid #000000;
@@ -259,6 +273,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 #continue {
@@ -303,7 +318,8 @@
 
 #event {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 10px;
     display: grid;
     justify-content: left;
@@ -312,7 +328,8 @@
 
 #dish {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 10px;
     display: grid;
     justify-content: left;

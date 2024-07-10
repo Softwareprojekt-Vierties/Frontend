@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="CatererView">
       <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
       <div id="main">
         <div id="left-side">
@@ -150,7 +150,13 @@ export default {
 :root html, body {
     width: 100%;
     height: 100%;
-    background-color: rgb(242, 242, 242);
+    background-color: var(--create-page-background);
+}
+
+#CatererView {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--create-page-background);
 }
 
 .description {
@@ -163,7 +169,7 @@ export default {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
-    background-color: rgb(242, 242, 242);
+    background-color: var(--create-page-background);
     padding-top: 30px;
     gap: 20px;
 }
@@ -174,7 +180,8 @@ export default {
 
 .long-description {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 10px;
     display: grid;
     justify-content: left;
@@ -182,7 +189,7 @@ export default {
 }
 
 #ticket {
-    background-color: rgb(146, 208, 80);
+    background-color: var(--green);
     height: 30px;
     border-radius: 7px;
     border: 1px solid #000000;
@@ -196,7 +203,8 @@ export default {
 
 .long-description {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 10px;
     display: grid;
     grid-template-columns: 580px;
@@ -219,7 +227,8 @@ export default {
 
 #event {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 10px;
     display: grid;
     justify-content: left;
@@ -228,7 +237,8 @@ export default {
 
 #dish {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 10px;
     display: grid;
     justify-content: left;
@@ -267,7 +277,8 @@ export default {
 }
 
 .popup-content {
-    background-color: white;
+    background-color: var(--textfield-background);
+    color: var(--textfield-font-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

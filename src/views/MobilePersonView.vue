@@ -194,13 +194,19 @@
       },
         sendFriendRequest() {
             console.log(this.id);
-            axios.get("/friendrequest/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
-                .then(res => console.log("Success: ", res))
+            axios.post("/setFriend",{ freundid: this.id }, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.isFriend = true;
+                })
                 .catch(err => console.log("Error: ", err));
         },
         unfriend() {
-            axios.get("/unfriend/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
-                .then(res => console.log("Success: ", res))
+            axios.get("/deleteFriend/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
+                .then(res => {
+                    console.log("Success: ", res);
+                    this.isFriend = false;
+                })
                 .catch(err => console.log("Error: ", err));
         },
         getInfo() {

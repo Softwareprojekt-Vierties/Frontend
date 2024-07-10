@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="LocationView">
         <Header :imagePreview="imagePreview" :name="name" :sterne="sterne" :kurzbeschreibung="kurzbeschreibung" />
     <div id="main">
       <div id="left-side">
@@ -203,14 +203,20 @@ html,
 body {
   width: 100%;
   height: 100%;
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
+}
+
+#LocationView {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--create-page-background);
 }
 
 #main {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: center;
-  background-color: rgb(242, 242, 242);
+  background-color: var(--create-page-background);
   padding-top: 30px;
   gap: 20px;
 }
@@ -260,7 +266,8 @@ body {
 
 .long-description {
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
   padding: 10px;
   display: grid;
   justify-content: left;
@@ -275,7 +282,8 @@ body {
 }
 
 .popup-content {
-  background-color: white;
+  background-color: var(--textfield-background);
+  color: var(--textfield-font-color);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -284,7 +292,7 @@ body {
 }
 
 #ticket {
-  background-color: rgb(146, 208, 80);
+  background-color: var(--green);
   height: 30px;
   border-radius: 7px;
   border: 1px solid #000000;
