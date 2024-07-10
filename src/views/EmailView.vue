@@ -39,15 +39,15 @@
         </div>
         <div id="buttons" v-if="showInnerContent">
           <div id="ablehnen"
-            :class="{ disabled: selectedMailStatus !== null }"
-            :style="{ cursor: selectedMailStatus !== null ? 'not-allowed' : 'pointer' }"
-            @click="selectedMailStatus === null && ablehnen()">
+            :class="{ disabled: selectedMailStatus !== null || buttonsDisabled }"
+            :style="{ cursor: selectedMailStatus !== null || buttonsDisabled ? 'not-allowed' : 'pointer' }"
+            @click="(selectedMailStatus === null && !buttonsDisabled) && ablehnen()">
             ablehnen
           </div>
           <div id="annehmen"
-              :class="{ disabled: selectedMailStatus !== null }"
-              :style="{ cursor: selectedMailStatus !== null ? 'not-allowed' : 'pointer' }"
-              @click="selectedMailStatus === null && akzeptieren()">
+              :class="{ disabled: selectedMailStatus !== null || buttonsDisabled }"
+              :style="{ cursor: selectedMailStatus !== null || buttonsDisabled ? 'not-allowed' : 'pointer' }"
+              @click="(selectedMailStatus === null && !buttonsDisabled) && akzeptieren()">
             annehmen
           </div>
         </div>
@@ -76,7 +76,9 @@ export default {
       selectedMailId: null,
       selectedMailStatus: null,
       showInnerContent : false,
-      angenommen: null
+      angenommen: null, 
+      buttonsDisabled: false 
+
     };
   },
 
@@ -284,8 +286,10 @@ export default {
     danke für den Kauf eines Tickets 
     für das Event <b>${mail.eventname}</b>.
 
-    Hier ist Ihr Code: <b>${mail.ticketdata}</b>`}
-        this.mailId = mail.id;
+    Hier ist Ihr Code: <b>${mail.ticketdata}</b>`
+  }
+    this.buttonsDisabled = mail.anfragetyp === "INFO" || mail.anfragetyp === "TICKET";
+    this.mailId = mail.id;
     },
 
     setFormData(data){
