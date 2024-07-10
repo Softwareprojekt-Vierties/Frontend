@@ -1,6 +1,6 @@
 <template>
     <div id="artist-div">
-        <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px">
+        <img class="user-avatar" src="../assets/left.jpg" style="cursor:pointer" width="20px" height="20px" @click="$emit('decreaseEventLocationsIndex')">
         <div id="background">
             <div id="card">
                 <img :alt="name" :src="computedImagePath" class="image">
@@ -15,7 +15,7 @@
                         {{line1}}
                     </div>
                     <div class="line-div">
-                        {{line2}}
+                        Datum: {{formatedDatum}}
                     </div>
                     <div class="line-div">
                         {{line3}}
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px">
+        <img class="user-avatar" src="../assets/right.jpg" style="cursor:pointer" width="20px" height="20px" @click="$emit('increaseEventLocationsIndex')">
     </div>
 </template>
 
@@ -87,7 +87,22 @@
                     return require("@/assets/bild-hsbi.jpg");
                 }
                 return this.imagePath;
+            
             },
+
+            formatedDatum() {
+                if (this.line2 && this.line2.includes("Datum: ")) {
+                    let datumPart = this.line2.split("Datum: ")[1].trim();
+                    let isoDate = new Date(datumPart);
+                    if (!isNaN(isoDate)) {
+                        let day = String(isoDate.getDate()).padStart(2, '0');
+                        let month = String(isoDate.getMonth() + 1).padStart(2, '0');
+                        let year = isoDate.getFullYear();
+                        return `${day}-${month}-${year}`;
+                    }
+                }
+                return this.line2; 
+            }
         },
         methods: {
             setScaleFactor(factor) {
