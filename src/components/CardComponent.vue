@@ -6,7 +6,7 @@
                 <div id="headline" @click="titleClickFunction(info)">
                     {{name}}
                 </div>
-                <Bookmark v-model:hasBookmark="hasBookmark" :id="info.id" :type="info.type" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
+                <Bookmark v-model:hasBookmark="hasBookmark" :id="info?.id ?? -1" :type="info?.type ?? ''" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
             </div>
             <div class="line-div">
                 {{line1}}

@@ -9,7 +9,7 @@
                         <div id="headline">
                             {{name}}
                         </div>
-                        <img :alt="name" @click="changeBookmark" :src="require(hasBookmark ? '@/assets/bookmark-gray.jpg' : '@/assets/bookmark-white.jpg')" class="bookmark">
+                        <Bookmark v-model:hasBookmark="hasBookmark" :id="info?.id ?? -1" :type="info?.type ?? ''" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
                     </div>
                     <div class="line-div">
                         {{line1}}
@@ -31,7 +31,12 @@
 </template>
 
 <script>
+    import Bookmark from './BookmarkComponent.vue';
+
     export default {
+        components: {
+            Bookmark,
+        },
         props: {
             name: {
                 type: String,
@@ -69,6 +74,7 @@
         data() {
             return {
                 hasBookmark: false,
+                scaleFactor: .56,
             }
         },
         computed: {
@@ -80,10 +86,6 @@
             },
         },
         methods: {
-            changeBookmark() {
-                this.hasBookmark = !this.hasBookmark;
-                // send switch to server
-            },
             setScaleFactor(factor) {
                 document.documentElement.style.setProperty('--scale-factor', factor);
             }
