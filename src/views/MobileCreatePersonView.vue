@@ -59,7 +59,7 @@
               erstellen
             </div>
         </div>
-        <div id="home-button" v-if="menu">
+        <div id="home-button" v-if="menu" @click="$router.push('/')">
             <img id="home-mobile" src="../assets/home-mobile.png" />
         </div>
         <div id="menu-button" @click="handleClick">
