@@ -16,7 +16,7 @@
                             <img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-location-icon" />
                         </div>
                         <div v-else>
-                            <LocationCard :label="location?.name" :imagePath="location?.bild" />
+                            <LocationCard :componentName="location.name" :imagePath="location.bild" />
                         </div>
                     </div>
                 </div>
