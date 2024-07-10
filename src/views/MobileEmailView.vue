@@ -63,17 +63,16 @@
             <pre v-html="formattedText"></pre>
           </div>
           <div id="buttons">
-            <div id="reject-button" :class="{ disabled: selectedMailStatus !== null }"
-            :style="{ cursor: selectedMailStatus !== null ? 'not-allowed' : 'pointer' }"
-            @click="selectedMailStatus === null && ablehnen()">
-            ablehnen
-          </div>
-            <div id="accept-button" :class="{ disabled: selectedMailStatus !== null }"
-              :style="{ cursor: selectedMailStatus !== null ? 'not-allowed' : 'pointer' }"
-              @click="selectedMailStatus === null && akzeptieren()">
-            annehmen
+            <div id="reject-button" :class="{ disabled: selectedMailStatus !== null || buttonsDisabled }"
+              :style="{ cursor: selectedMailStatus !== null || buttonsDisabled ? 'not-allowed' : 'pointer' }"
+              @click="(selectedMailStatus === null && !buttonsDisabled) && ablehnen()">
+              ablehnen
             </div>
-
+            <div id="accept-button" :class="{ disabled: selectedMailStatus !== null || buttonsDisabled }"
+              :style="{ cursor: selectedMailStatus !== null || buttonsDisabled ? 'not-allowed' : 'pointer' }"
+              @click="(selectedMailStatus === null && !buttonsDisabled) && akzeptieren()">
+              annehmen
+            </div>
           </div>
         </div>
       </div>
@@ -114,7 +113,9 @@ export default {
       selectedMailId: null,
       selectedMailStatus: null,
       showInnerContent : false ,
-      angenommen: null
+      angenommen: null ,
+      buttonsDisabled: false 
+
     };
   },
   methods: {
@@ -409,7 +410,8 @@ else if(mail.anfragetyp === "TICKET"){
   Hier ist Ihr Code:
   <b>${mail.ticketdata}</b>`}
 
-        this.mailId = mail.id;
+  this.buttonsDisabled = mail.anfragetyp === "INFO" || mail.anfragetyp === "TICKET";
+  this.mailId = mail.id;
     }
   },
   async created() {
