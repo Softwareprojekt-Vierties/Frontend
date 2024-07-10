@@ -1,205 +1,207 @@
 <template>
     <div id="app">
-        <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" :sterne="sterne" />
-        <div>
-            <div id="info-bookmark">
-                <div id="info-headline">Infos</div>
-                <div id="div-bookmark">
-                    <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="caterer" width="10px" height="17px" margin-left="1px" wrappingDiv="div-bookmark" />
-                </div>
-            </div>
+      <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" :sterne="sterne" />
+      <div>
+        <div id="info-bookmark">
+          <div id="info-headline">Infos</div>
+          <div id="div-bookmark">
+            <Bookmark v-model:hasBookmark="hasBookmark" :id="$route.params.id" type="caterer" width="10px" height="17px" margin-left="1px" wrappingDiv="div-bookmark" />
+          </div>
         </div>
-        <div id="info">
-            <div id="info-left">
-                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
-                <br>
-                <br>
-                <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
-            </div>
-            <div id="info-right">
-                <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung }} Jahre</label>
-                <br>
-                <br>
-                <label class="info-subheadline"><strong>Preis:</strong> {{ preis }} €/h</label>
-            </div>
+      </div>
+      <div id="info">
+        <div id="info-left">
+          <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
+          <br>
+          <br>
+          <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
         </div>
-        <div class="description-headline-div">
-            <div class="description-headline">
-                Beschreibung:
-            </div>
+        <div id="info-right">
+          <label class="info-subheadline"><strong>Erfahrung:</strong> {{erfahrung}} Jahre</label>
+          <br>
+          <br>
+          <label class="info-subheadline"><strong>Preis:</strong> {{preis}} €/h</label>
         </div>
-        <div id="description-div">
-            <div id="description">
-                {{beschreibung}}
-            </div>
+      </div>
+      <div class="description-headline-div">
+        <div class="description-headline">
+          Beschreibung:
         </div>
-        <div class="description-headline-div"  v-if="events.length > 0">
-            <div class="description-headline">
-                Nächste Events:
-            </div>
+      </div>
+      <div id="description-div">
+        <div id="description">
+          {{beschreibung}}
         </div>
-        <div id="event-container">
-            <MobileEventCardComponent
-
-            v-for="(event, index) in events" 
-                    :key="index" 
-                    :name="event.name" 
-                    :line1="event.adresse" 
-                    :line2="event.datum"
-                    :line3="event.startuhrzeit"
-                    :imagePath="event.bild"
-            />
+      </div>
+      <div class="description-headline-div" v-if="events.length > 0">
+        <div class="description-headline">
+          Nächste Events:
         </div>
-        <div class="description-headline-div" v-if="events.dishes > 0">
-            <div class="description-headline">
-                Gerichte:
-            </div>
+      </div>
+      <div id="event-container">
+        <MobileEventCardComponent
+          v-for="(event, index) in events" 
+          :key="index" 
+          :name="event.name" 
+          :line1="event.adresse" 
+          :line2="event.datum"
+          :line3="event.startuhrzeit"
+          :imagePath="event.bild"
+        />
+      </div>
+      <div class="description-headline-div" v-if="dishes.length > 0">
+        <div class="description-headline">
+          Gerichte:
         </div>
-        <div id="palylist-container">
-            <MobileCatererComponenet
-            v-for="(dish, index) in dishes" 
-                    :key="index" 
-                    :dishName="dish.dishName" 
-                    :dishDescription1="dish.dishDescription1" 
-                    :dishDescription2="dish.dishDescription1"
-                    :imagePreview="dish.imagePreview"
-
-            />
+      </div>
+      <div id="palylist-container">
+        <MobileCatererComponenet
+          v-for="(dish, index) in dishes" 
+          :key="index" 
+          :dishName="dish.dishName" 
+          :dishDescription1="dish.dishDescription1" 
+          :dishDescription2="dish.dishDescription1"
+          :imagePreview="dish.imagePreview"
+        />
+      </div>
+      <div class="description-headline-div" v-if="reviews.length > 0">
+        <div class="description-headline">
+          Bewertungen:
         </div>
-        <div class="description-headline-div" v-if="reviews.length > 0">
-            <div class="description-headline">
-                Bewertungen:
-            </div>
+      </div>
+      <div id="review-div">
+        <MobileReviewComponent 
+          v-for="(review, index) in reviews" 
+          :key="index" 
+          :userName="review.userName" 
+          :rating="review.rating" 
+          :reviewText="review.reviewText"
+        />
+      </div>
+      <div id="newcomment" @click="togglePopup">
+        <div id="newcomment-text">
+          Kommentar hinzufügen:
         </div>
-        <div id="review-div">
-
-            <MobileReviewComponent 
-                v-for="(review, index) in reviews" 
-                :key="index" 
-                :userName="review.userName" 
-                :rating="review.rating" 
-                :reviewText="review.reviewText"
-            />
-
+        <img id="newcomment-img" src="../assets/plus.png">
+      </div>
+      <div id="button-div">
+        <div id="button" @click="weiter">
+          {{ buttonLabel }}
         </div>
-        <div id="button-div">
-            <div id="button" @click="weiter">
-                {{ buttonLabel }}
-            </div>
+      </div>
+      <div id="home-button" v-if="menu">
+        <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
+      </div>
+      <div id="menu-button" @click="handleClick">
+        <img id="menu-mobile" src="../assets/menu-mobile.png" />
+      </div>
+      <div v-if="showPopup" class="popup-overlay">
+        <div class="popup-content">
+          <span class="close-button" @click="togglePopup">&times;</span>
+          <CommentComponent v-if="userId" :idFromFather="userId" :typeOfReview="kindOfReview"/>
         </div>
-        <div id="home-button" v-if="menu">
-            <img id="home-mobile" src="../assets/home-mobile.png" @click="goToHomePage" />
-        </div>
-        <div id="menu-button" @click="handleClick">
-            <img id="menu-mobile" src="../assets/menu-mobile.png" />
-        </div>
+      </div>
     </div>
-</template>
+  </template>
   
-<script>
-import axios from 'axios';
-import 'leaflet/dist/leaflet.css';
-import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
-import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
-import MobileReviewComponent from '@/components/MobileReviewComponent.vue';
-import MobileCatererComponenet from '@/components/MobileCatererComponenet.vue';
-import Bookmark from '@/components/BookmarkComponent.vue';
-
   
-export default {
+  <script>
+  import axios from 'axios';
+  import 'leaflet/dist/leaflet.css';
+  import MobileHeaderComponent from '@/components/MobileHeaderComponent.vue';
+  import MobileEventCardComponent from '@/components/MobileEventCardComponent.vue';
+  import MobileReviewComponent from '@/components/MobileReviewComponent.vue';
+  import MobileCatererComponenet from '@/components/MobileCatererComponenet.vue';
+  import Bookmark from '@/components/BookmarkComponent.vue';
+  import CommentComponent from '@/components/CommentComponent.vue';
+  
+  export default {
     components: {
-        MobileHeaderComponent,
-        MobileEventCardComponent,
-        MobileReviewComponent,
-        MobileCatererComponenet,
-        Bookmark,
+      MobileHeaderComponent,
+      MobileEventCardComponent,
+      MobileReviewComponent,
+      MobileCatererComponenet,
+      Bookmark,
+      CommentComponent
     },
     data() {
       return {
         menu: '',
-        name : '',
+        name: '',
         sterne: '',
-        kurzbeschreibung:'',
+        kurzbeschreibung: '',
         beschreibung: '',
         region: '',
-        kategorie : '',
-        erfahrung  :'',
-        preis : '',
-        imagePreview : null,
-        id:'',
-        userId:'',
-        reviewType :0,
+        kategorie: '',
+        erfahrung: '',
+        preis: '',
+        imagePreview: null,
+        id: '',
+        userId: '',
+        reviewType: 0,
         events: [],
-        idSent:'',
-        isOwner:'',
+        idSent: '',
+        isOwner: '',
         dishes: [],
-        reviews : [],
-          hasBookmark: false,
-        
+        reviews: [],
+        hasBookmark: false,
+        showPopup: false,
+        kindOfReview: 'user',
       };
     },
-
     computed: {
       buttonLabel() {
         return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
       }
     },
-
-    async created(){
+    async created() {
       this.idSent = this.$route.params.id;
       const token = localStorage.getItem('authToken');
-
+  
       try {
-        const response = await axios.get(`/getCatererById/${this.idSent}`,{headers: {'auth':token}});
+        const response = await axios.get(`/getCatererById/${this.idSent}`, { headers: { 'auth': token } });
         console.log(response);
         this.setFormData(response.data);
         console.log('dj data received:', response.data);
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error with sending Caterer ID for caterer page to DB :', error);
       }
       this.getReview();
     },
-
     methods: {
-
-        goToHomePage(){
-            this.$router.push('/search');
-        },
-
-        async getReview() {
-            try {
-                const response = await axios.get(`/getPersonReview/${this.userid}`);
-                this.reviews = response.data.rows;
-                console.log("Review data received:", this.reviews);
-                this.setFormDataReview(this.reviews);
-            } catch (error) {
-                console.error('Error with sending review ID to DB:', error);
-            }
-        },
-
-        setFormDataReview(data) {
-            if(data.length > 0) {
-                this.reviews=[];
-                data.forEach(content => {this.reviews.push({
-
-                    userName : content.profilname,
-                    rating: content.sterne,
-                    reviewText : content.inhalt
-                });
-            
+      goToHomePage() {
+        this.$router.push('/search');
+      },
+      async getReview() {
+        try {
+          const response = await axios.get(`/getPersonReview/${this.userId}`);
+          this.reviews = response.data.rows;
+          console.log("Review data received:", this.reviews);
+          this.setFormDataReview(this.reviews);
+        } catch (error) {
+          console.error('Error with sending review ID to DB:', error);
+        }
+      },
+      setFormDataReview(data) {
+        if (data.length > 0) {
+          this.reviews = [];
+          data.forEach(content => {
+            this.reviews.push({
+              userName: content.profilname,
+              rating: content.sterne,
+              reviewText: content.inhalt
             });
-            }
-        },
-
-      setFormData(data){
-        const myVar =data['caterer'].rows[0].region.split(',');
+          });
+        }
+      },
+      setFormData(data) {
+        const myVar = data['caterer'].rows[0].region.split(',');
         console.log(myVar[0]);
         console.log(myVar[1]);
         this.name = data['caterer'].rows[0].profilname;
         this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
-        this.beschreibung = data['caterer'].rows[0].beschreibung ;
-        this.region =myVar[1] ;
+        this.beschreibung = data['caterer'].rows[0].beschreibung;
+        this.region = myVar[1];
         this.kategorie = data['caterer'].rows[0].kategorie;
         this.erfahrung = data['caterer'].rows[0].erfahrung;
         this.preis = data['caterer'].rows[0].preis;
@@ -209,221 +211,266 @@ export default {
         this.id = data['caterer'].rows[0].id;
         this.events = data['events'].rows;
         this.isOwner = data['isOwner'];
-        console.log("my events",this.events);
-
+        console.log("my events", this.events);
+  
         data['gerichte'].rows.forEach(dish => {
-            this.dishes.push({
-            dishName: dish['name'], 
-            dishDescription1: dish['beschreibung'], 
+          this.dishes.push({
+            dishName: dish['name'],
+            dishDescription1: dish['beschreibung'],
             dishDescription2: dish['beschreibung'],
             imagePreview: dish['bild']
-            })
+          });
         });
-
       },
-      
       goToAnotherPage() {
         this.$router.push('/search');
-      }, 
-      weiter(){
-        if(this.isOwner === false){
-            this.$router.push('/createevent');
+      },
+      weiter() {
+        if (this.isOwner === false) {
+          this.$router.push('/createevent');
+        } else {
+          this.$router.push({ name: 'EditCatererType', params: { id: this.idSent } });
         }
-        else{
-            this.$router.push({ name : 'EditCatererType', params: {id : this.idSent}});
-        }
-    },
-    handleClick() {
-            if(this.menu) {
-                this.menu = false;
-            }
-            else {
-                this.menu = true;
-            }
-        }
+      },
+      handleClick() {
+        this.menu = !this.menu;
+      },
+      togglePopup() {
+        this.showPopup = !this.showPopup;
+      }
     }
   }
-</script>
+  </script>
   
-<style scoped>
+  
+  <style scoped>
   #main {
   
   }
   
   #info-bookmark {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: center;
-      align-items: center;
-      gap: 200px;
-      margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    gap: 200px;
+    margin-top: 20px;
   }
   
   #info-headline {
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
   }
   
   #div-bookmark {
-      border-radius: 30px;
-      padding: 2px;
-      width: 25px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      padding-left: 1px;
-      padding-top: 5px;
-      cursor: pointer;
-      margin-right: 10px;
+    border-radius: 30px;
+    padding: 2px;
+    width: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding-left: 1px;
+    padding-top: 5px;
+    cursor: pointer;
+    margin-right: 10px;
   }
   
   #bookmark {
-      width: 10px;
-      height: 17px;
-      margin-left: 2px;
+    width: 10px;
+    height: 17px;
+    margin-left: 2px;
   }
   
   #info {
-      display: grid;
-      grid-template-columns: auto auto;
-      justify-content: center;
-      align-items: top;
-      gap: 10px;
-      height: 60px;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: top;
+    gap: 10px;
+    height: 60px;
   }
   
   #info-left {
-      text-align: left;
-      font-size: 10px;
-      width: 155px;
+    text-align: left;
+    font-size: 10px;
+    width: 155px;
   }
   
   #info-right {
-      text-align: left;
-      font-size: 10px;
-      width: 105px;
-      margin-right: 15px;
+    text-align: left;
+    font-size: 10px;
+    width: 105px;
+    margin-right: 15px;
   }
   
   .description-headline-div {
-      display: grid;
-      grid-template-columns: auto;
-      justify-content: center;
-      align-items: center;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
   }
   
   .description-headline {
-      width: 287px;
-      text-align: left;
-      font-size: 15px;
-      font-weight: bold;
-      margin-bottom: 3px;
+    width: 287px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 3px;
   }
   
   #description-div {
-      display: grid;
-      grid-template-columns: auto;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
   }
   
   #description {
-      width: 287px;
-      text-align: left;
-      font-size: 13px;
+    width: 287px;
+    text-align: left;
+    font-size: 13px;
   }
   
   #event-container {
-      display: flex;
-      overflow-x: auto;
-      white-space: nowrap;
-      width: 280px; /* Feste Breite, die du anpassen kannst */
-      margin: 0 auto; /* Zentriert den Container horizontal */
-      gap: 15px;
-      padding: 10px;
-      margin-top: -15px;
-      margin-bottom: 20px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 280px;
+    margin: 0 auto;
+    gap: 15px;
+    padding: 10px;
+    margin-top: -15px;
+    margin-bottom: 20px;
   }
-
+  
   #palylist-container {
-      display: flex;
-      overflow-x: auto;
-      white-space: nowrap;
-      width: 280px; /* Feste Breite, die du anpassen kannst */
-      margin: 0 auto; /* Zentriert den Container horizontal */
-      gap: 10px;
-      padding: 10px;
-      margin-top: -15px;
-      margin-bottom: 20px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 280px;
+    margin: 0 auto;
+    gap: 10px;
+    padding: 10px;
+    margin-top: -15px;
+    margin-bottom: 20px;
   }
   
   #review-div {
-      display: flex;
-      overflow-x: auto;
-      width: 280px;
-      margin: 0 auto;
-      gap: 10px;
-      padding: 10px;
-      margin-bottom: 20px;
-      margin-top: -7px;
+    display: flex;
+    overflow-x: auto;
+    width: 280px;
+    margin: 0 auto;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 0px;
+    margin-top: -7px;
   }
   
   #button-div {
-      display: grid;
-      grid-template-columns: auto;
-      justify-content: center;
-      align-items: center;
-      padding-bottom: 20px;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
   }
   
   #button {
-      background-color: var(--green);
-      width: 285px;
-      height: 30px;
-      border-radius: 5px;
-      border: 1.5px solid #000000;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    background-color: var(--green);
+    width: 285px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1.5px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   #home-button {
-      position: fixed;
-      bottom: 70px; /* Abstand vom unteren Rand */
-      right: 20px; /* Abstand vom rechten Rand */
-      color: white; /* Button Textfarbe */
-      border: none; /* Keine Rahmen */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
-      cursor: pointer; /* Zeiger ändern bei Hover */
-      z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
-      border-radius: 30px;
-      background-color: white;
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 30px;
+    background-color: white;
   }
   
   #home-mobile {
-      margin-bottom: -3px;
-      width: 35px;
-      height: 35px;
+    margin-bottom: -3px;
+    width: 35px;
+    height: 35px;
   }
   
   #menu-button {
-      position: fixed;
-      bottom: 20px; /* Abstand vom unteren Rand */
-      right: 20px; /* Abstand vom rechten Rand */
-      color: white; /* Button Textfarbe */
-      border: none; /* Keine Rahmen */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1); /* Schattierung */
-      cursor: pointer; /* Zeiger ändern bei Hover */
-      z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
-      border-radius: 30px;
-      padding: 7.5px;
-      background-color: white;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 30px;
+    padding: 7.5px;
+    background-color: white;
   }
   
   #menu-mobile {
-      margin-bottom: -3px;
-      width: 20px;
-      height: 20px;
+    margin-bottom: -3px;
+    width: 20px;
+    height: 20px;
   }
-    </style>
+  
+  #newcomment {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  #newcomment-text {
+    font-size: 10px;
+    font-weight: normal;
+  }
+  
+  #newcomment-img {
+    cursor: pointer;
+    margin-left: 40px;
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  </style>
+  

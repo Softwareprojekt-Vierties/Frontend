@@ -11,8 +11,9 @@
                     <img @click="gotoMailPage" alt="Dein Postfach" class="icon" v-else src="../assets/mail-icon.png" />
                 </div>
             </div>
-            <div id="new-event">
-                <button @click="gotoEventCreation" id="new-event-button">Event erstellen</button>
+            <div id="new">
+                <button @click="gotoCreateLocation" id="new-button">Location erstellen</button>
+                <button @click="gotoEventCreation" id="new-button">Event erstellen</button>
             </div>
         </div>
         <div id="login-component">
@@ -46,6 +47,9 @@
             gotoEventCreation() {
                 this.$router.push('/createevent');
             },
+            gotoCreateLocation() {
+                this.$router.push('/createlocation');
+            }
         },
     computed: {
         isDarkMode() {
@@ -90,7 +94,7 @@
       font-weight: 600;
   }
 
-  #new-event-button {
+  #new-button {
       border-radius: 5px;
       width: 160px;
       height: 42.5px;
@@ -102,6 +106,7 @@
       margin-right: 100px;
       background-color: var(--backround);
       color: var(--font-color);
+      margin-left: -50px;
   }
 
   #profile-mail {
@@ -115,6 +120,11 @@
 
   #login-component {
       margin-top: 50px;
+  }
+
+  #new {
+    display: grid;
+    grid-template-columns: auto auto;
   }
 
 </style>

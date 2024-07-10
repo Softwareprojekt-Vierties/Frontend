@@ -1,15 +1,15 @@
 <template>
-    <div id="comment-div">
-        <div class="review">
-            <div class="user-info">
-                <div class="stars">
-                    <span v-for="star in totalStars" :key="star" class="star" :class="{ 'filled': star <= rating }" @click="setRating(star)">★</span>
-                </div>
-            </div>
-            <div class="comment">
-                <textarea v-model="comment" class="comment_input" type="text" placeholder="Kommentar Hier einfügen…"></textarea>
-            </div>
+    <div class="comment">
+        <div id="headline">
+            Kommentar hinzufügen
         </div>
+        <div id="star-div">
+            <div id="star-headline"><div>Bewertung:</div><div id="stars"><span v-for="star in totalStars" :key="star" class="star" :class="{ 'filled': star <= rating }" @click="setRating(star)">★</span></div></div>
+        </div>
+        <div id="comment-headline">
+            Begründung:
+        </div>
+        <textarea v-model="comment" class="comment_input" type="text" placeholder="Hier kommentieren…"></textarea>
         <button @click="saveReview">Senden</button>
     </div>
 </template>
@@ -68,92 +68,68 @@ export default {
 
 <style scoped>
 
-.comment_input{
-    width: 100%;
-}
-
-.review{
-    display:flex;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-    background-color: white;
-    border-radius: 18px;
-    margin:2px;
-    max-height: 110px;
-    width: 530px;
-}
-
-.user-info{
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-    margin-left: -5px;
-}
-
-.other-review{
-    cursor:pointer;
-}
-
-.user-info-details{
-    display: flex;
-    flex-direction: row;
-    align-items:start;
-    justify-content: space-around;
-    flex:1;
-    max-height: 55px;
-    margin:10px;
-    margin-bottom: 0px;
-    gap:7.5px;
-}
-
-.user-logo{
-    margin-left:5px;
-}
-
-.stars{
-    display:flex;
-    flex:2;
+.comment{
+    display: grid;
+    grid-template-columns: auto;
     justify-content: center;
     align-items: center;
-    margin-bottom: 8px;
-    margin-top:-7px;
-    margin-left:5px;
-}
-
-.user-name{
-    font-size: 13px; 
-    font-weight: bold;
-    margin-top:5px;
-}
-
-.comment{
-    display:flex;
-    justify-content:left;
-    border-left: 1px solid black;
-    flex:5;
-    font-size: 12px;
-    text-align: left;
-    margin-top: 10px;
-    padding-left: 10px;
-    padding-right: 7px;
-    margin-bottom: 10px;
+    gap: 10px;
 }
 
 .star {
     color: #ccc; 
     font-size: 22px; 
     cursor : pointer;
+    margin-left: 10px;
 }
 
 .star.filled {
     color: #f5d130; 
 }
 
-#comment-div {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    justify-content: center;
-    align-items: center;
+textarea {
+    width: 250px;
+    height: 70px;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+button {
+    width: 130px;
+    height: 25px;
+    margin-left: 153px;
     margin-top: 10px;
+    border-radius: 7px;
+    background-color: var(--green);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #000000;
+}
+
+#headline {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+#star-div {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+#star-headline {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#comment-headline {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: -5px;
+    margin-top: -5px;
 }
 
 </style>
