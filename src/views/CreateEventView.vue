@@ -133,7 +133,7 @@
     import axios from 'axios';
     import SearchComponent from '../components/SearchComponent.vue';
     import DishForm from '../components/ArtistComponent.vue';
-    import LocationCard from '../components/EventComponenet.vue'
+    import LocationCard from '../components/LocationComponent.vue'
     import EventCard from '../components/CardComponent.vue';
     import Header from '../components/EditHeader.vue';
 
