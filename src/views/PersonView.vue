@@ -14,13 +14,13 @@
             </div>
           </div>
           <div id="event-dish">
-            <div id="event">
+            <div id="event" v-if="myEventsLocations.length">
               <label class="description">Meine Events/Locations:</label>
-              <UserCard v-if="myEventsLocations.length" :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
+              <UserCard :name="myEventsLocations[eventsLocationsIndex].header" :line1="myEventsLocations[eventsLocationsIndex].line1" :line2="myEventsLocations[eventsLocationsIndex].line2" :line3="myEventsLocations[eventsLocationsIndex].line3" :isBookmarked="myEventsLocations[eventsLocationsIndex].favorit" :info="myEventsLocations[eventsLocationsIndex].info" :rightFunction="increaseEventLocationsIndex" :leftFunction="decreaseEventLocationsIndex" />
             </div>
-            <div id="dish">
+            <div id="dish" v-if="myIntrests.length">
               <label class="description">Meine Interessen:</label>
-              <UserCard v-if="myIntrests.length" :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
+              <UserCard :name="myIntrests[intrestsIndex].header" :line1="myIntrests[intrestsIndex].line1" :line2="myIntrests[intrestsIndex].line2" :line3="myIntrests[intrestsIndex].line3" :isBookmarked="myIntrests[intrestsIndex].favorit" :info="myIntrests[intrestsIndex].info" :rightFunction="increaseIntrestsIndex" :leftFunction="decreaseIntrestsIndex" />
             </div>
         </div>
         </div>
@@ -104,7 +104,6 @@
                 .catch(err => console.log("Error: ", err));
         },
         getInfo() {
-            console.log(this.$route);
             const destination = (this.$route.name === "MyPage") ? "/me" : ("/getUserById/" + this.$route.params.id);
               axios.get(destination, { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
@@ -120,13 +119,16 @@
                     this.gender = res.data.user.rows[0].geschlecht;
                     this.profilePicture = res.data.user.rows[0].profilbild;
                     res.data.owenevents.rows?.forEach(event => {
-                        this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                        event.type = "events";
+                        this.myEventsLocations.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
                     });
                     res.data.locations.rows?.forEach(event => {
-                        this.myEventsLocations.push({header: event.name, line1: "Addresse: " + event.addresse, line2: "Kapazität: " + event.kapazitaet, line3: "Preis: " + event.preis, id: event.id});
+                        event.type = "location";
+                        this.myEventsLocations.push({header: event.name, line1: "Addresse: " + event.addresse, line2: "Kapazität: " + event.kapazitaet, line3: "Preis: " + event.preis, info: event});
                     });
                     res.data.tickets.rows?.forEach(event => {
-                        this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, id: event.id});
+                        event.type = "events";
+                        this.myIntrests.push({header: event.name, line1: "Location: " + event.locationname, line2: "Datum: " + event.datum, line3: "Zeit: " + event.uhrzeit, info: event});
                     });
 
                     // to be implemented

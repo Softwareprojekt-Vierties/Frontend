@@ -10,7 +10,7 @@
                         <div id="headline">
                             {{ eventName }}
                         </div>
-                        <Bookmark v-model:hasBookmark="hasBookmark" :id="events[eventsIndex]?.id ?? -1" type="events" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
+                        <Bookmark v-model:hasBookmark="events[eventsIndex].favorit" :id="events[eventsIndex]?.id ?? -1" type="events" :width="`calc(20px * ${scaleFactor})`" :height="`calc(30px * ${scaleFactor})`" />
                     </div>
                     <div class="line-div">
                         Location: {{ eventLocation }}
@@ -100,7 +100,8 @@ export default {
                 name: event['name'],
                 location: event['location'],
                 datum: event['datum'],
-                time: event['uhrzeit']
+                time: event['uhrzeit'],
+                favorit: event?.favorit ?? false,
             }));
 
             if (this.events.length > 0) {

@@ -62,6 +62,10 @@
                 type: String,
                 default : require("@/assets/bild-hsbi.jpg")
             },
+            info: {
+                type: Object,
+                default: null,
+            },
             isBookmarked: {
                 type: Boolean,
                 default: false

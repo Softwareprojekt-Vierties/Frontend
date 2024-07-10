@@ -5,9 +5,9 @@
         <div id="left-side">
           <LongDescription :description="beschreibung" />
             <div id="event-dish">
-                <div id="event">
+                <div id="event" v-if="events.length > 0">
                   <label class="description">Nächste Events:</label>
-                  <ArtistCard v-if="events" :eventsFromFather="events" :clickFuntion="(id) => {$router.push(`/event/${id}`)}" />
+                  <ArtistCard :eventsFromFather="events" :clickFuntion="(id) => {$router.push(`/event/${id}`)}" />
                 </div>
                 <div id="dish">
                   <label class="description">Aktuelle Gerichte:</label>
