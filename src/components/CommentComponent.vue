@@ -48,7 +48,7 @@ export default {
                     id: this.idFromFather, 
                     sterne: this.rating,
                     inhalt: this.comment,
-                    intention: "user"
+                    intention: this.typeOfReview
                 },
                 {headers: {'auth':token}}
                 );
