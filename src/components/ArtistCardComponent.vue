@@ -100,18 +100,19 @@ export default {
             this.eventsFromFather.forEach(event => this.events.push({
                 id: event['id'],
                 name: event['name'],
-                location: event['location'],
+                location: event['adresse'],
                 datum: event['datum'],
-                time: event['uhrzeit'],
+                time: event['startuhrzeit'],
                 favorit: event?.favorit ?? false,
             }));
 
             if (this.events.length > 0) {
-                this.eventsIndex = 0; // Reiniciar o índice para o primeiro evento
+                this.eventsIndex = 0; 
                 this.eventName = this.events[this.eventsIndex].name;
                 this.eventLocation = this.events[this.eventsIndex].location;
                 this.eventDate = this.events[this.eventsIndex].datum;
-                this.eventTime = this.events[this.eventsIndex].time;
+                let newTime = this.events[this.eventsIndex].time.split(":");
+                this.eventTime = newTime[0]+ ":"+ newTime[1];
             }
         }, 
         formatDate(dateString) {
