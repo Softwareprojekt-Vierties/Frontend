@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" />
+      <MobileHeaderComponent :imagePreview="imagePreview" :name="name" :kurzbeschreibung="kurzbeschreibung" :sterne="sterne" />
       <div>
         <div id="info-bookmark">
           <div id="info-headline">Infos</div>

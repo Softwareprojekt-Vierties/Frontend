@@ -1,113 +1,65 @@
 <template>
-
   <div id="artist-div">
-      <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px" @click="previousMusic">
-      <div id="dish-form">
-          <img :alt="name" src="../assets/music.jpg" id="music-image">
-          <div id="right">
-              <div id="text">{{sName}}</div>
-              <div id="ingredients">Infos:</div>
-              <div id="info">Länge: {{slength}} min</div>
-              <div id="info">Jahr: {{sYear}}</div>
-          </div>
+    <img class="user-avatar" src="../assets/left.jpg" width="20px" height="20px" @click="previousMusic">
+    <div id="dish-form">
+      <img :alt="currentSong.songName" src="../assets/music.jpg" id="music-image">
+      <div id="right">
+        <div id="text">{{ currentSong.songName }}</div>
+        <div id="ingredients">Infos:</div>
+        <div id="info">Länge: {{ currentSong.songLength }} min</div>
+        <div id="info">Jahr: {{ formattedYear }}</div>
       </div>
-      <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px" @click="nextMusic">
+    </div>
+    <img class="user-avatar" src="../assets/right.jpg" width="20px" height="20px" @click="nextMusic">
   </div>
 </template>
 
-<script>
-import axios from 'axios'; 
 
+<script>
 export default {
-  
-  props:{
-        idFromFather:{
-            type:Number
-        }
+  props: {
+    songs: {
+      type: Array,
+      required: true
+    }
   },
-  
   data() {
     return {
-      songs: [],
-      songsSize : '',
-      songsIndex : 0,
-      sname:'',
-      slength : '',
-      sYear: '',
+      songsIndex: 0
     };
   },
-
-  async created(){
-  let id = this.idFromFather;
-  const token = localStorage.getItem('authToken');
-  console.log("id from father",id);
-    try {
-        const response = await axios.get(`/getArtistById/${id}`, {headers: {'auth':token}});
-        console.log(response);
-        this.setFormData(response.data);
-        console.log('dj songs data received:', response.data);
-    } catch (error) {
-        console.error('Error with sending dj ID for songs to DB :', error);
-      }
-  },
-
-  methods: {
-    
-    previousMusic() {
-        if (this.songs.length > 0) {
-            if (this.songsIndex > 0) {
-                this.songsIndex -= 1;
-            } else {
-                this.songsIndex = 0;
-            }
-            this.refreshSong(this.songs[this.songsIndex]);
-        } else {
-            console.warn('No songs available to show previous song.');
-        }
-    },
-
-    nextMusic() {
-        if (this.songs.length > 0) {
-            if (this.songsIndex < this.songs.length - 1) {
-                this.songsIndex += 1;
-            } else {
-                this.songsIndex = this.songs.length - 1;
-            }
-            this.refreshSong(this.songs[this.songsIndex]);
-        } else {
-            console.warn('No songs available to show next song.');
-        }
-    },
-
-    setFormData(data) {
-      data['lieder'].rows.forEach(lied => {
-        this.songs.push({
-          id: lied['id'],
-          songName: lied['name'], 
-          songLength: lied['laenge'], 
-          songYear: lied['erscheinung'].substring(0, 10)
-        })
-      });
-      console.log("songs ->",this.songs);
-      this.songsSize = this.songs.length;   
-      
+  computed: {
+    currentSong() {
       if (this.songs.length > 0) {
-        this.songsIndex = 0;
-        this.refreshSong(this.songs[this.songsIndex]);
-      } 
+        return this.songs[this.songsIndex];
+      } else {
+        return {};
+      }
     },
-
-    refreshSong(data){
-      this.sName = data.songName;
-      this.slength = data.songLength;
-      let myVar = data.songYear.split('-');
-      this.sYear = myVar[0];
+    formattedYear() {
+      if (this.currentSong.songYear) {
+        return this.currentSong.songYear.split('-')[0];
+      } else {
+        return '';
+      }
     }
-
+  },
+  methods: {
+    previousMusic() {
+      if (this.songsIndex > 0) {
+        this.songsIndex -= 1;
+      }
+    },
+    nextMusic() {
+      if (this.songsIndex < this.songs.length - 1) {
+        this.songsIndex += 1;
+      }
+    }
   }
-
 }
 </script>
+
+
   
   <style scoped>
 

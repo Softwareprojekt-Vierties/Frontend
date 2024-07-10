@@ -10,8 +10,8 @@
             <ArtistCard v-if="events" :eventsFromFather="events"/>
           </div>
           <div id="dish">
-            <label class="description">Aktuelle Gerichte:</label>
-            <Caterer v-if="id" :idFromFather="id"/>
+            <label class="description">Playlist:</label>
+            <DJ  :songs="songs"/>
           </div>
         </div>
         <br>
@@ -46,7 +46,7 @@
 <script>
 import DishForm from '../components/ReviewComponent.vue';
 import ArtistCard from '../components/ArtistCardComponent.vue';
-import Caterer from '../components/CatererComponent.vue';
+import DJ from '../components/DjComponent.vue';
 import Header from '../components/ViewHeader.vue';
 import LongDescription from '../components/LongDescription.vue';
 import Info from '../components/RightSideInfo.vue';
@@ -57,7 +57,7 @@ export default {
   components: {
     DishForm,
     ArtistCard,
-    Caterer,
+    DJ,
     Header,
     LongDescription,
     Info,
@@ -78,6 +78,8 @@ export default {
       userId: '',
       reviewType: 0,
       events: [],
+      songs: [],
+      reviews: [],
       idSent: '',
       isOwner: '',
       hasBookmark: false,
@@ -87,44 +89,51 @@ export default {
   },
   computed: {
     buttonLabel() {
-      return this.isOwner ? 'Edit Caterer' : 'Event Erstellen';
+      return this.isOwner ? 'Edit DJ' : 'Event Erstellen';
     }
   },
   async created() {
     this.idSent = this.$route.params.id;
+    console.log("here is the id received ->", this.idSent);
     const token = localStorage.getItem('authToken');
 
     try {
-      const response = await axios.get(`/getCatererById/${this.idSent}`, { headers: { 'auth': token } });
-      console.log(response);
+      const response = await axios.get(`/getArtistById/${this.idSent}`, { headers: { 'auth': token } });
+      console.log(response.data);
       this.setFormData(response.data);
       console.log('dj data received:', response.data);
     } catch (error) {
-      console.error('Error with sending Caterer ID for caterer page to DB :', error);
+      console.error('Error with sending Caterer dj for dj page to DB :', error);
     }
   },
   methods: {
     setFormData(data) {
-      const myVar = data['caterer'].rows[0].region.split(',');
-      console.log(myVar[0]);
-      console.log(myVar[1]);
-
-      this.name = data['caterer'].rows[0].profilname;
-      this.kurzbeschreibung = data['caterer'].rows[0].kurzbeschreibung;
-      this.beschreibung = data['caterer'].rows[0].beschreibung;
-      this.region = myVar[1];
-      this.kategorie = data['caterer'].rows[0].kategorie;
-      this.erfahrung = data['caterer'].rows[0].erfahrung;
-      this.preis = data['caterer'].rows[0].preis;
-      this.imagePreview = data['caterer'].rows[0].profilbild;
-      this.sterne = data['caterer'].rows[0].sterne;
-      this.userId = data['caterer'].rows[0].userid;
-      this.id = data['caterer'].rows[0].id;
-      this.events = data['events'].rows;
-      this.isOwner = data['isOwner'];
-      this.hasBookmark = data.caterer.rows[0].favorit;
-      console.log("my events", this.events);
-    },
+        const myVar = data['artist'].rows[0].region.split(',');
+        console.log(myVar[0]);
+        console.log(myVar[1]);
+  
+        this.name = data['artist'].rows[0].benutzername;
+        this.kurzbeschreibung = data['artist'].rows[0].kurzbeschreibung;
+        this.beschreibung = data['artist'].rows[0].beschreibung;
+        this.region = myVar[1];
+        this.kategorie = data['artist'].rows[0].kategorie;
+        this.erfahrung = data['artist'].rows[0].erfahrung;
+        this.preis = data['artist'].rows[0].preis;
+        this.imagePreview = data['artist'].rows[0].profilbild;
+        this.sterne = data['artist'].rows[0].sterne;
+        this.userId = data['artist'].rows[0].userid;
+        this.id = data['artist'].rows[0].id;
+        this.events = data['events'].rows;
+        this.isOwner = data['isOwner'];
+        data['lieder'].rows.forEach(lied => {
+          this.songs.push({
+            id: lied['id'],
+            songName: lied['name'],
+            songLength: lied['laenge'],
+            songYear: lied['erscheinung'].substring(0, 10)
+          });
+        });
+      },
     goToAnotherPage() {
       this.$router.push('/search');
     },
