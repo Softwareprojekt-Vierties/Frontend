@@ -22,7 +22,7 @@
                         Uhrzeit: {{ eventTime }}
                     </div>
 
-                    <div id="button" @click="clickFuntion">
+                    <div id="button" @click="() => {clickFuntion(events[eventsIndex].id)}">
                         {{ buttonText }}
 
                     </div>

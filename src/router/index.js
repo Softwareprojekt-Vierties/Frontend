@@ -11,6 +11,7 @@ import CreateDjView from '@/views/CreateDjView.vue'
 import EditCatererView from '@/views/EditCatererView.vue'
 import EditDjView from '@/views/EditDjView.vue'
 import EditLocationView from '@/views/EditLocationView.vue'
+import EditEventView from '@/views/EditEventView.vue';
 import EventView from '@/views/EventView.vue'
 import LocationView from '@/views/LocationView.vue'
 import CatererView from '@/views/CatererView.vue'
@@ -42,6 +43,7 @@ import MobileEditDJ from '@/views/MobileEditDjView.vue'
 import MobileCreateEventPage from '@/views/MobileCreateEventPage.vue'
 import MobileEditPersonView from '@/views/MobileEditPerson.vue'
 import MobileEditLocationView from '@/views/MobileEditLocationView.vue'
+import MobileEditEventView from '@/views/MobileEditEventView.vue'
 
 
 
@@ -113,6 +115,10 @@ const routes = [
     path: '/editlocation/:id',
     name: 'EditLocationType',
     component: isMobile() ? MobileEditLocationView :EditLocationView 
+},  {
+    path: '/editevent/:id',
+    name: 'EditEventType',
+    component: isMobile() ? MobileEditEventView : EditEventView,
 },  {
     path: '/event/:id',
     name: 'EventType',

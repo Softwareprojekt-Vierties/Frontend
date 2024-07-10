@@ -7,11 +7,11 @@
         <div id="event-dish">
             <div id="event">
               <label class="description">Nächste Events:</label>
-              <ArtistCard v-if="events" :eventsFromFather="events"/>
+              <ArtistCard v-if="events" :eventsFromFather="events" :clickFuntion="(id) => {$router.push(`/event/${id}`)}" />
             </div>
             <div id="dish">
               <label class="description">Aktuelle Gerichte:</label>
-              <Caterer v-if="id" :idFromFather="id"/>
+              <Caterer v-if="id" :idFromFather="id" :clickFuntion="id => {$router.push(`/event/${id}`)}" />
             </div>
         </div>
         <br>
