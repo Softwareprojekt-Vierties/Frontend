@@ -36,6 +36,8 @@ import MobileCreateDjView from '@/views/MobileCreateDjView.vue'
 import MobileCreateCatererView from '@/views/MobileCreateCatererView.vue'
 import MobileCreatePersonView from '@/views/MobileCreatePersonView.vue'
 import MobilePersonView from '@/views/MobilePersonView.vue'
+import MobileNutzerUnterscheidungView from '../views/MobileNutzerUnterscheidungView.vue'
+import MobileServiceTypeView from '../views/MobileServiceTypeView.vue'
 
 import MobileEditCaterer from '@/views/MobileEditCatererView.vue'
 import MobileEditDJ from '@/views/MobileEditDjView.vue'
@@ -65,11 +67,11 @@ const routes = [
     ,  {
         path: '/usertype',
         name: 'SelectingUserType',
-        component: isMobile() ? NutzerUnterscheidungView  : NutzerUnterscheidungView 
+        component: isMobile() ? NutzerUnterscheidungView  : MobileNutzerUnterscheidungView 
     },  {
         path: '/servicetype',
         name: 'SelectingServiceType',
-        component: isMobile() ? ServiceTypeView  : ServiceTypeView 
+        component: isMobile() ? ServiceTypeView  : MobileServiceTypeView 
     },  {
         path: '/search',
         name: 'SucheViewType',

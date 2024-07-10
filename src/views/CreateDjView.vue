@@ -125,9 +125,6 @@ export default {
       this.uploadedImage = null;
       this.songs = [{ songName: '', songLength: '', songYear: '' }];
     },
-    goToHomePage() {
-      this.$router.push('/search');
-    },
     async createDJ() {
      /* if (!this.djName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
         alert('Please fill in all required fields.');
@@ -160,6 +157,7 @@ export default {
           localStorage.setItem('authToken', response.data);
           alert('Artist created successfully!');
           this.reset();
+          alert("Ihr Account wurde erfolgreich erstellt.\nBitte melden sie sich jetzt an.");
           this.$router.push("/");
         } catch (error) {
           console.error('Error with Artist creation:', error);

@@ -90,11 +90,6 @@ export default {
   },
 
   methods: {
-
-    goToHomePage() {
-    this.$router.push('/search');
-    },
-
     addDish() {
         this.dishes.push({ name: '', ingredients: [] });
         this.$nextTick(() => {
@@ -161,6 +156,7 @@ export default {
           localStorage.setItem('authToken', response.data);
           alert('Caterer created successfully!');
           this.default_values();
+          alert("Ihr Account wurde erfolgreich erstellt.\nBitte melden sie sich jetzt an.");
           this.$router.push("/");
         } catch (error) {
           console.error('Error with Caterer creation:', error);

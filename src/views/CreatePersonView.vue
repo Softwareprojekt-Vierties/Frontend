@@ -149,6 +149,7 @@
                     console.log('Person created:', response.data);
                     localStorage.setItem('authToken', response.data);
                     this.closeModal(); 
+                    alert("Ihr Account wurde erfolgreich erstellt.\nBitte melden sie sich jetzt an.");
                     this.$router.push("/");
                 } catch (error) {
                     console.error('Error with Person creation:', error);

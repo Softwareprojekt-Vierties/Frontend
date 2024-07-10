@@ -127,6 +127,7 @@
           console.log('Location created:', response.data);
           alert('Location created successfully!');
           this.reset();
+            this.$router.push("/search");
         } catch (error) {
           console.error('Error with Location creation:', error);
           alert('Error creating location. Please try again.');
