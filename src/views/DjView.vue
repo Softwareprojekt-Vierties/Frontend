@@ -103,7 +103,7 @@ export default {
       this.setFormData(response.data);
       console.log('dj data received:', response.data);
     } catch (error) {
-      console.error('Error with sending Caterer dj for dj page to DB :', error);
+     // console.log('Error with sending Caterer dj for dj page to DB :', error);
     }
   },
   methods: {

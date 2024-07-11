@@ -43,7 +43,7 @@ import LongDescription from '../components/LongDescription.vue';
 import Info from '../components/RightSideInfo.vue';
 import axios from 'axios';
 import Leaflet from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+//import 'leaflet/dist/leaflet.css';
 import CommentComponent from '../components/CommentComponent.vue'
 
 
