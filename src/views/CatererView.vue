@@ -154,8 +154,7 @@ export default {
 }
 
 #CatererView {
-    width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--create-page-background);
 }
 

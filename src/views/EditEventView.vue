@@ -148,7 +148,7 @@
                 this.selectedEventType = type;
             },
             resetForm() {
-                this.$router.go();
+                this.$router.push();
             },
             async createEvent() {
                 let formData = {};

@@ -136,7 +136,7 @@
                 .catch(err => console.log("Error: ", err));
             },
             reset() {
-              this.$router.go();
+              this.$router.push();
             },
             removeDish(index) {
                 this.dishes.splice(index, 1);
