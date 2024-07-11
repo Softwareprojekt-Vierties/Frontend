@@ -141,7 +141,7 @@ export default {
       if (this.isOwner === false) {
           this.$router.push({path: "/createEvent", query: {artist: this.id}});
       } else {
-        this.$router.push({ name: 'EditCatererType', params: { id: this.idSent } });
+        this.$router.push({ name: 'EditDjType', params: { id: this.idSent } });
       }
     },
     togglePopup() {

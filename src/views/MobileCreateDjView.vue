@@ -40,8 +40,8 @@
                       <div id="text">Titel:</div>
                       <input v-model="song.songName" @input="handleSongUpdate(index, song)" class="input" placeholder="z.B. Party-Song">
                       <div id="infos">Infos:</div>
-                      <input v-model="song.songLength" @input="handleSongUpdate(index, song)" class="input" placeholder="z.B. Länge: 3,41 min">
-                      <input v-model="song.songYear" @input="handleSongUpdate(index, song)" class="input" placeholder="z.B. Jahr: 2024">
+                      <input v-model="song.songLength" @input="handleSongUpdate(index, song)" class="input" type="number" placeholder="z.B. Länge: 3,41 min">
+                      <input v-model="song.songYear" @input="handleSongUpdate(index, song)" class="input" type="date" placeholder="z.B. Jahr: 2024">
                     </div>
                   </div>
                 </div>

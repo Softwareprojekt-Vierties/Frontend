@@ -19,8 +19,8 @@
                     <div id="text">Lied:</div>
                     <input v-model="song.songName" id="input" placeholder="z.B. Party-Song">
                     <div id="ingredients">Infos:</div>
-                    <input v-model="song.songLength" id="input" placeholder="z.B. Länge: 3,41 min">
-                    <input v-model="song.songYear" id="input" placeholder="z.B. Jahr: 06-12-2024">
+                    <input v-model="song.songLength" id="input" type="number" placeholder="z.B. Länge: 3,41 min">
+                    <input v-model="song.songYear" id="input" type="date" placeholder="z.B. Jahr: 06-12-2024">
                   </div>
                 </div>
               </div>
