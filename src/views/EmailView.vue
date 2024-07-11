@@ -352,7 +352,7 @@ export default {
 }
 
 #mails {
-    display: flex;
+    display: grid;
     grid-template-columns: auto auto;
     align-items: top;
     justify-content: center;
