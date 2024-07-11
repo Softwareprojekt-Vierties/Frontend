@@ -22,15 +22,15 @@
             </div>
             <div class="infos">
               <label class="info-subheadline">Kapazität:</label>
-              <input v-model="quantityPersons" class="input" type="text" placeholder="z.B. 50 Personen">
+              <input v-model="quantityPersons" class="input" type="number" placeholder="z.B. 50 Personen">
             </div>
             <div class="infos">
               <label class="info-subheadline">Preis:</label>
-              <input v-model="price" class="input" type="text" placeholder="z.B. 50€">
+              <input v-model="price" class="input" type="number" placeholder="z.B. 50€">
             </div>
             <div class="infos">
               <label class="info-subheadline">Größe:</label>
-              <input v-model="size" class="input" type="text" placeholder="z.B. 50 ha">
+              <input v-model="size" class="input" type="number" placeholder="z.B. 50 ha">
             </div>
             <div id="open-air">
               <label class="info-subheadline">Open Air:</label>
@@ -39,10 +39,10 @@
           </div>
           <div id="buttons">
             <div id="break" @click="reset">
-              erstellen
+              zurücksetzen
             </div>
             <div id="continue" @click="createLocation">
-              zurücksetzen
+              erstellen
             </div>
           </div>
         </div>

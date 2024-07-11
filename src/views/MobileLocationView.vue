@@ -28,7 +28,7 @@
                 <label class="info-subheadline"><strong>Fläche:</strong> {{ flaeche }} ha.</label>
                 <br>
                 <br>
-                <label class="info-subheadline"><strong>Open Air:</strong> {{openair ? "Ja" : "Nein"}}</label>
+                <label class="info-subheadline"><strong>Open Air:</strong> {{openair}}</label>
 
             </div>
         </div>
@@ -229,7 +229,7 @@ export default {
             this.preis = data['result'].rows[0].preis;
             this.flaeche = data['result'].rows[0].flaeche;
 
-            if (data['result'].rows[0].openair == true) {
+            if (data['result'].rows[0].openair) {
                 this.openair = 'Ja';
             } else {
                 this.openair = 'Nein';

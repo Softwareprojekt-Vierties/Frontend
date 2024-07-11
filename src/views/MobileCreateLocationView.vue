@@ -36,10 +36,10 @@
         </div>
         <div id="button-div">
             <div id="button-reset" @click="reset">
-              erstellen
+              zurücksetzten
             </div>
             <div id="button-create" @click="createLocation">
-              zurücksetzten
+              erstellen
             </div>
         </div>
         <div id="home-button" v-if="menu" @click="$router.push('/search')">
@@ -73,7 +73,6 @@ export default {
         size: '',
         openAir: false,
         imagePreview: null,
-        eventImage: null        
       };
     },
 
@@ -87,7 +86,6 @@ export default {
       onFileChange(event) {
         const file = event.target.files[0];
         if (file) {
-          this.eventImage = file;
           const reader = new FileReader();
           reader.onload = e => {
             this.imagePreview = e.target.result;
@@ -106,7 +104,6 @@ export default {
         this.size = '';
         this.openAir = false;
         this.imagePreview = null;
-        this.eventImage = null;
         console.log("values turned into default");
       },
 
@@ -116,7 +113,7 @@ export default {
 
       async createLocation() {
         if (!this.locationName || !this.smallDescription || !this.longDescription || !this.region || !this.address 
-            || !this.quantityPersons || !this.price || !this.size || !this.eventImage) {
+            || !this.quantityPersons || !this.price || !this.size || !this.imagePreview) {
           alert('Please fill in all required fields.');
           return;
         }

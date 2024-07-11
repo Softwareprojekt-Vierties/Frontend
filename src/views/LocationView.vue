@@ -20,7 +20,7 @@
         </div>
       </div>
       <div id="right-side">
-            <Info v-model:hasBookmark="hasBookmark" type="location" :city="region" :address="addresse" :capacity="kapazitaet" :price="preis" :locationSize="flaeche" :openAir="openAir" />
+            <Info v-model:hasBookmark="hasBookmark" type="location" :city="region" :address="addresse" :capacity="kapazitaet" :price="preis" :locationSize="flaeche" :openAir="openAir ? 'Ja' : 'Nein'" />
         <div id="ticket" @click="weiter" >
           <!-- create event or edit location button-->
           {{ buttonLabel }}
