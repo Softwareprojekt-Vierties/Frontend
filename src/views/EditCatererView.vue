@@ -96,7 +96,6 @@
         experience : '',
         price : '',
         imagePreview: null,
-        uploadedImage: null,
         street : null,
         dishes: [
           { id: '',dishName: '', info1: '', info2: '', imagePreview: null }
@@ -147,7 +146,6 @@
           const reader = new FileReader();
           reader.onload = e => {
             this.dishes[index].imagePreview = e.target.result;
-            this.dishes[index].uploadedImage = file; // Manter a referência ao arquivo, se necessário
           };
           reader.readAsDataURL(file);
         }
@@ -156,7 +154,6 @@
       onFileChange(event) {
         const file = event.target.files[0];
         if (file) {
-          this.uploadedImage = file;
           const reader = new FileReader();
           reader.onload = e => {
             this.imagePreview = e.target.result;
@@ -190,7 +187,6 @@
         this.experience = this.originalData["caterer"].rows[0]["erfahrung"];
         this.price = this.originalData["caterer"].rows[0]["preis"];
         this.imagePreview = this.originalData["caterer"].rows[0]["profilbild"];
-        this.uploadedImage = this.originalData["caterer"].rows[0]["profilbild"];
         this.street = myVar[0];
         this.dishes = [];
         this.originalData['gerichte'].rows.forEach(gericht => {
@@ -205,7 +201,7 @@
   
       },
       async createCaterer(){
-        if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price || !this.uploadedImage) {
+        if (!this.catererName || !this.shortDescription || !this.longDescription || !this.region || !this.category || !this.experience || !this.price) {
           alert('Please fill in all required fields.');
           return;
         }
@@ -223,7 +219,7 @@
           formData.region = this.street +','+ this.region; 
           formData.preis = +this.price;
           formData.kategorie = this.category;
-          formData.erfahrung = this.experience;
+          formData.erfahrung = +this.experience;
           formData.gerichte = this.dishes;
   
           console.log('FormData:', formData); 
@@ -256,7 +252,6 @@
         this.experience = data["caterer"].rows[0].erfahrung;
         this.price = data["caterer"].rows[0].preis;
 
-        this.uploadedImage = data["caterer"].rows[0].profilbild;
         this.dishes = [];
         data['gerichte'].rows.forEach(gericht => {
             this.dishes.push({
