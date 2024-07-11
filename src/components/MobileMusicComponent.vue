@@ -4,12 +4,12 @@
       <div id="text">
         Titel:
       </div>
-      <input v-model="localSong.songName" @input="updateSong('songName', $event.target.value)" class="input" placeholder="z.B. Party-Song">
+      <input v-model="localSong.songName" @input="updateSong" class="input" placeholder="z.B. Party-Song">
       <div id="infos">
         Infos:
       </div>
-      <input v-model="localSong.songLength" @input="updateSong('songLength', $event.target.value)" class="input" placeholder="z.B. Länge: 3,41 min">
-      <input v-model="localSong.songYear" @input="updateSong('songYear', $event.target.value)" class="input" placeholder="z.B. Jahr: 2024">
+      <input v-model="localSong.songLength" @input="updateSong" class="input" placeholder="z.B. Länge: 3,41 min">
+      <input v-model="localSong.songYear" @input="updateSong" class="input" placeholder="z.B. Jahr: 2024">
     </div>
   </div>
 </template>
@@ -28,19 +28,21 @@ export default {
     };
   },
   methods: {
-    updateSong(field, value) {
-      this.$emit('update:song', { ...this.localSong, [field]: value });
+    updateSong() {
+      this.$emit('update-song', this.localSong);
     },
     getData() {
-      return this.localSong;
+      return {
+        songName: this.localSong.songName,
+        localSong: this.localSong.localSong,
+        songYear: this.localSong.songYear,
+        imagePreview: this.localDish.imagePreview
+      };
     },
     clearFields() {
       this.localSong.songName = '';
       this.localSong.songLength = '';
       this.localSong.songYear = '';
-      this.updateSong('songName', '');
-      this.updateSong('songLength', '');
-      this.updateSong('songYear', '');
     }
   },
   watch: {

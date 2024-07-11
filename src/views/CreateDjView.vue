@@ -45,7 +45,7 @@
           </div>
           <div class="infos">
             <label class="info-subheadline">Preis:</label>
-            <input v-model="price" class="input" type="text" placeholder="z.B. 50€">
+            <input v-model="price" class="input" type="number" placeholder="z.B. 50€">
           </div>
         </div>
         <div id="buttons">

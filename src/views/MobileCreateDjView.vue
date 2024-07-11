@@ -35,7 +35,12 @@
             <div id="addcreator" ref="addCreator" class="scroll-container">
                 <div class="dish-container">
                 <div v-for="(song, index) in songs" :key="index" class="dish-item">
-                  <MobileMusicComponent ref="musicForm" :song="song" />
+                  <MobileMusicComponent
+                      ref="musicForm"
+                      :dish="dish"
+                      @update-song="handleSongUpdate(index, $event)"
+                      @remove="removeSong(index)"
+                  />
                 </div>
                 <div class="add-dish-button" @click="addSong"><img v-if="isDarkMode" src="../assets/addlocation.png" alt="Bild hochladen" id="add-icon" /><img v-else src="../assets/addlocation.jpg" alt="Bild hochladen" id="add-icon" /></div>
                 </div>
@@ -91,6 +96,12 @@ export default {
         }
   },
   methods: {
+
+    handleSongUpdate(index, updatedDish) {
+      this.songs[index] = updatedDish; 
+    },
+
+
     onFileChange(event) {
         const file = event.target.files[0];
         if (file) {
