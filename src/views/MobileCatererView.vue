@@ -11,7 +11,7 @@
       </div>
       <div id="info">
         <div id="info-left">
-          <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
+          <label class="info-subheadline"><strong>Addresse:</strong> {{region}}</label>
           <br>
           <br>
           <label class="info-subheadline"><strong>Kategorie:</strong> {{kategorie}}</label>
@@ -500,6 +500,10 @@
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+}
+
+.info-subheadline {
+    overflow: hidden;
 }
 
   </style>

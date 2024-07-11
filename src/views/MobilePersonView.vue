@@ -11,7 +11,7 @@
         </div>
         <div id="info">
             <div id="info-left">
-                <label class="info-subheadline"><strong>Region:</strong> {{region}}</label>
+                <label class="info-subheadline"><strong>Addresse:</strong> {{region}}</label>
             </div>
             <div id="info-right">
                 <label class="info-subheadline"><strong>Alter:</strong> {{age}} Jahre</label>
