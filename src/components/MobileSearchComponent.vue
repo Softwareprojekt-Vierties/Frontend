@@ -835,12 +835,12 @@ export default {
             person: this.personTitleFunction ?? ((info) => { this.$router.push("/person/" + info.app_user_id); }),
         };
         this.buttonTexts = {
-            event: this.eventButtonText ?? "Ticket buchen",
+            event: this.eventButtonText ?? "Eventinfo",
             caterer: this.catererButtonText ?? "Event erstellen",
             location: this.locationButtonText ?? "Event erstellen",
             artist: this.artistButtonText ?? "Event erstellen",
             ticket: this.ticketButtonText ?? "Eventinfo",
-            person: this.personButtonText ?? "Freundschaftsanfrage",
+            person: this.personButtonText ?? "Profil ansehen",
         };
         this.appliedSearchTypes = this.allowedSearchTypes ?? ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
         this.searchType = this.startValue ?? this.appliedSearchTypes[0];

@@ -27,11 +27,14 @@
         </div>
         <div id="right-side">
             <Info v-model:hasBookmark="hasBookmark" type="events" :location="location" :date="formattedEventDate" :startTime="zeit" :endTime="endzeit" :price="preis" :ageLimit="alter" :openAir="openAir" />
-            <div id="ticket" 
+            <div v-if="!isOwner" id="ticket" 
               :class="{ 'disabled': hasTickets || isOwner }"  
               :style="{ 'cursor': (hasTickets || isOwner) ? 'not-allowed' : 'pointer' }"
               @click="bookEvent">
               Event buchen ({{freietickets }}/{{ maxtickets }})
+            </div>
+            <div v-if="isOwner" id="ticket" @click="$router.push(`/editEvent/${$route.params.id}`)">
+              Bearbeiten
             </div>
         </div>
         </div>

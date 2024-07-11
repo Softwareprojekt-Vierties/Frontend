@@ -223,8 +223,10 @@
                       });
                       console.log('Event created:', response.data);
                       this.closeModal(); 
+                      this.$router.push(`/event/${this.$route.params.id}`);
                   } catch (error) {
                       console.error('Error with Event creation:', error);
+                      alert("Das Event conte nicht aktualisiert werden!");
                   }
               },
               setFormData(data){
