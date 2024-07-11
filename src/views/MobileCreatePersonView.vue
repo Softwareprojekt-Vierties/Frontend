@@ -167,7 +167,7 @@
                 }
             },
           reset() {
-              this.$router.push();
+              this.$router.go();
           },
           handleClick() {
             if(this.menu) {

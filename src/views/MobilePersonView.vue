@@ -197,7 +197,7 @@
             axios.post("/setFriend",{ freundid: this.id }, { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
                     console.log("Success: ", res);
-                    this.$router.push();
+                    this.$router.go();
                 })
                 .catch(err => console.log("Error: ", err));
         },
@@ -205,7 +205,7 @@
             axios.get("/deleteFriend/" + this.id, { headers: { auth: localStorage.getItem("authToken") }})
                 .then(res => {
                     console.log("Success: ", res);
-                    this.$router.push();
+                    this.$router.go();
                 })
                 .catch(err => console.log("Error: ", err));
         },

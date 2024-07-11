@@ -156,7 +156,7 @@
                 }
             },
           reset() {
-              this.$router.push();
+              this.$router.go();
           },
     },
       computed: {
