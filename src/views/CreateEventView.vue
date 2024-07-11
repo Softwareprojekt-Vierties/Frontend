@@ -328,7 +328,7 @@
                     });
                     console.log('Event created:', response.data);
                     this.closeModal(); 
-                    alert("Ihr Even wurde Erfolgreich erstellt");
+                    alert("Ihr Event wurde Erfolgreich erstellt");
                     this.$router.push("/search");
                 } catch (error) {
                     console.error('Error with Event creation:', error);
