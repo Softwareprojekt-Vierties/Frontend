@@ -34,10 +34,5 @@
     "eslint-plugin-vue": "^8.0.3",
     "jest": "^27.5.1",
     "vue-svg-loader": "^0.16.0"
-  },
-    "scripts": {
-      "test:unit": "jest"
-    }
-
-  
+  }
 }
