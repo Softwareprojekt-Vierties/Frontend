@@ -161,9 +161,9 @@
                 formData.beschreibung = this.longDescription;
                 formData.region = this.region;
                 formData.alter = this.age;
-                formData.eventarten = this.favoriteEventTypes;
-                formData.lieblingslied = this.favoriteSong;
-                formData.lieblingsgericht = this.favoriteDish;
+                formData.arten = this.favoriteEventTypes;
+                formData.lied = this.favoriteSong;
+                formData.gericht = this.favoriteDish;
                 formData.partybilder = [];
                 this.dishes.forEach(image => {
                     if (image) {
