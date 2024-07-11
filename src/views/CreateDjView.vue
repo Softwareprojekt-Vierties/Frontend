@@ -41,7 +41,7 @@
           </div>
           <div class="infos">
             <label class="info-subheadline">Erfahrung:</label>
-            <input v-model="experience" class="input" type="text" placeholder="z.B. 10 Jahre">
+            <input v-model="experience" class="input" type="number" placeholder="z.B. 10 Jahre">
           </div>
           <div class="infos">
             <label class="info-subheadline">Preis:</label>
