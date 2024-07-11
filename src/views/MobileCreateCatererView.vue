@@ -16,9 +16,9 @@
                 </div>
                 <div id="right">
                     <div class="input-headline">Erfahrung:</div>
-                    <input v-model="experience" placeholder="z.B. 10 Jahre"/>
+                    <input v-model="experience" type="number" placeholder="z.B. 10 Jahre"/>
                     <div class="input-headline">Preis:</div>
-                    <input v-model="price" placeholder="z.B. 50 €/Portion"/>
+                    <input v-model="price" type="number" placeholder="z.B. 50 €/Portion"/>
                 </div>
             </div>
         </div>

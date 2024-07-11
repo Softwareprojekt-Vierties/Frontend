@@ -119,13 +119,6 @@
                     this.imagePreview = res.data.user.rows[0].profilbild;
                     this.email = res.data.user.rows[0].emailfk;
                     this.userId = res.data.user.rows[0].userid;
-                    res.data.partybilder?.forEach(bild => {
-                        this.dishes.push(bild);
-                    });
-                    console.log(res.data.partybilder);
-                    if ((res.data.partybilder?.length ?? 0) == 0) {
-                        this.dishes.push(null);
-                    }
                     this.fileHeaderStyle = this.profilePicture ? { backgroundImage: `url(${this.profilePicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {};
 
                     // to be implemented
@@ -134,8 +127,9 @@
                         .then(res => {
                             console.log("Bilder: ", res);
                             res.data.rows?.forEach(bild => {
-                                this.dishes.push(bild);
+                                this.dishes.push(bild.partybild_data);
                             })
+                            this.dishes.push(null);
                         })
                         .catch(err => console.log("Error: ", err));
                 })
