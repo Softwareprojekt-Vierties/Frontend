@@ -152,7 +152,7 @@
             formData.beschreibung = this.beschreibung;
             formData.adresse =this.addresse + ',' + this.region;
             formData.kapazitaet = this.kapazitaet;
-            formData.preis = this.preis;
+            formData.preis = +this.preis;
             formData.flaeche = this.flaeche;
             formData.openair = this.openair;
             formData.bild = this.imagePreview;

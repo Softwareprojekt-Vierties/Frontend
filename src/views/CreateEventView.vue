@@ -302,7 +302,7 @@
                 formData.startuhrzeit = this.eventStartTime;
                 formData.enduhrzeit = this.eventEndTime;
                 formData.eventgroesse = this.eventSize;
-                formData.preis = this.price;
+                formData.preis = +this.price;
                 formData.altersfreigabe = this.ageLimit;
                 formData.openair = this.openAir;
                 formData.privat = this.selectedEventType === "private"; 

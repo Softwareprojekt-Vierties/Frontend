@@ -221,7 +221,7 @@
           formData.kurzbeschreibung = this.shortDescription;
           formData.beschreibung = this.longDescription;
           formData.region = this.street +','+ this.region; 
-          formData.preis = this.price;
+          formData.preis = +this.price;
           formData.kategorie = this.category;
           formData.erfahrung = this.experience;
           formData.gerichte = this.dishes;
