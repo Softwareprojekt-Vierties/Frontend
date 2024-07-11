@@ -295,28 +295,28 @@ export default {
     setFormData(data){
       data.rows.forEach(details => 
         {
-          this.mailList.push({
-          ticketpreis : details.ticketpreis,
-          altersfreigabe : details.altersfreigabe,
-          anfragetyp : details.anfragetyp.toUpperCase(),
-          datum : details.datum,
-          dauer : details.dauer,
-          eventname : details.eventname,
-          id : details.id,
-          locationadresse : details.locationadresse,
-          locationflaeche : details.locationflaeche,
-          locationkapazitaet : details.eventgoesse,
-          locationname : details.locationname,
-          locationopenair : details.locationopenair,
-          senderemail : details.senderemail,
-          sendername : details.sendername,
-          senderprofilbild : details.senderprofilbild,
-          startuhrzeit : details.startuhrzeit,
-          enduhrzeit : details.enduhrzeit,
-          gelesen : details.gelesen,
-          angenommen : details.angenommen,
-          empfaengername : details.empfaengername,
-          ticketdata : details.ticketdata
+            this.mailList.push({
+                ticketpreis : details.ticketpreis,
+                altersfreigabe : details.altersfreigabe,
+                anfragetyp : details.anfragetyp.toUpperCase(),
+                datum : details.datum,
+                dauer : details.dauer,
+                eventname : details.eventname,
+                id : details.id,
+                locationadresse : details.locationadresse,
+                locationflaeche : details.locationflaeche,
+                locationkapazitaet : details.locationkapazitaet,
+                locationname : details.locationname,
+                locationopenair : details.locationopenair,
+                senderemail : details.senderemail,
+                sendername : details.sendername,
+                senderprofilbild : details.senderprofilbild,
+                startuhrzeit : details.startuhrzeit,
+                enduhrzeit : details.enduhrzeit,
+                gelesen : details.gelesen,
+                angenommen : details.angenommen,
+                empfaengername : details.empfaengername,
+                ticketdata : details.ticketdata
 
          })
          this.mailList.sort((a,b) => b.id - a.id );
@@ -352,7 +352,7 @@ export default {
 }
 
 #mails {
-    display: grid;
+    display: flex;
     grid-template-columns: auto auto;
     align-items: top;
     justify-content: center;

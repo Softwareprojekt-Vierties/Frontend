@@ -70,7 +70,7 @@
         justify-content: space-between;
         align-items: top;
         width: 184px;
-        height: 50px;
+        height: 60px;
         /*border: 1px solid rgb(100, 100, 100);*/
         padding: 10px;
         border-radius: 12px;
@@ -107,6 +107,7 @@
         font-size: 15px;
         font-weight: bold;
         cursor:pointer;
+        overflow: hidden;
     }
     
     #info {
