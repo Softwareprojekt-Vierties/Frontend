@@ -120,7 +120,7 @@ export default {
       formData.region = this.region;
       formData.kategorie = this.category;
       formData.erfahrung = this.experience;
-      formData.preis = this.price;
+      formData.preis = +this.price;
       formData.email = this.email;
       formData.profilbild = this.imagePreview;
       formData.songs = this.songs;

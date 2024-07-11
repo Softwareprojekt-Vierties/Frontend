@@ -128,7 +128,7 @@ export default {
         formData.region = this.region;
         formData.adresse = this.address;
         formData.kapazitaet = this.quantityPersons;
-        formData.preis = this.price;
+        formData.preis = +this.price;
         formData.flaeche = this.size;
         formData.openair = this.openAir;
         formData.bild = this.imagePreview;

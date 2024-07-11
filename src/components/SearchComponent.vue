@@ -361,8 +361,8 @@
                             break;
                         case "price":
                                 filterValues.price = [
-                                    filtersContainer.querySelectorAll(".filter-price")[0]?.value ?? "",
-                                    filtersContainer.querySelectorAll(".filter-price")[1]?.value ?? "",
+                                    filtersContainer.querySelectorAll(".filter-price")[0]?.value ? +(filtersContainer.querySelectorAll(".filter-price")[0]?.value) : null,
+                                    filtersContainer.querySelectorAll(".filter-price")[1]?.value ? +(filtersContainer.querySelectorAll(".filter-price")[1]?.value) : null,
                                 ];
                             break;
                         case "category":

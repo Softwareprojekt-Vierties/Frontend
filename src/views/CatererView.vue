@@ -18,7 +18,7 @@
             <div class="long-description">
                   <label class="description">Bewertungen:</label>
                   <DishForm v-if="userId" :idFromFather="userId" :typeOfReview="reviewType"/>
-                  <div id="newcomment" @click="togglePopup">
+                  <div id="niwcomment" @click="togglePopup">
                       <div id="newcomment-text">
                           Kommentar hinzufügen:
                       </div>

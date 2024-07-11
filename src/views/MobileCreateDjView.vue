@@ -155,7 +155,7 @@ export default {
         formData.kurzbeschreibung = this.shortDescription;
         formData.beschreibung = this.longDescription;
         formData.region = this.region;
-        formData.preis = this.price;
+        formData.preis = +this.price;
         formData.kategorie = this.category;
         formData.erfahrung = this.experience;
         formData.songs = this.songs;
